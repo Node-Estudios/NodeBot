@@ -1,0 +1,6 @@
+node_modules
+node-ts.rar
+dist
+.vs
+.env
+build

@@ -1,0 +1,10 @@
+{
+    "configurations": [
+        {
+            "type": "command",
+            "name": "tsc && build/index.ts",
+            "program": "",
+        },
+        
+    ]
+}
