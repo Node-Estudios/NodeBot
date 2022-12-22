@@ -57,6 +57,7 @@ export default class Client extends client {
         this.messages = new Collection();
         this.language = JSON.parse(language);
         this.snipes = new Map();
+        // @ts-ignore
         this.customData = data.DATOS;
         this.officialServerURL = 'https://discord.gg/xhAWYggKKh'
         this.logger = new Logger(
@@ -179,6 +180,7 @@ export default class Client extends client {
             // console.log(data.DISCORD_TOKEN);
             // this.cluster.spawnNextCluster();
             // this.cluster.triggerReady();
+            //@ts-ignore
             super.login(data.DISCORD_TOKEN).then(() => {
                 this.logger.startUp(`${this.user!.username} logged in`);
                 this.cluster.spawnNextCluster();
