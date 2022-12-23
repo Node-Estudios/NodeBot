@@ -1,28 +1,12 @@
 "use strict";
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = function (d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
-        return extendStatics(d, b);
-    };
-    return function (d, b) {
-        if (typeof b !== "function" && b !== null)
-            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
 // tslint:disable-next-line:no-var-requires
-var Signale = require('signale').Signale;
-var fs = require('fs');
-var Logger = /** @class */ (function (_super) {
-    __extends(Logger, _super);
-    function Logger(config, client) {
-        return _super.call(this, {
-            config: config,
+const { Signale } = require('signale');
+const fs = require('fs');
+class Logger extends Signale {
+    constructor(config, client) {
+        super({
+            config,
             // stream: [process.stderr, fs.createWriteStream('./log.txt')],
             logLevel: 'info',
             types: {
@@ -30,60 +14,59 @@ var Logger = /** @class */ (function (_super) {
                     badge: '✔',
                     color: 'green',
                     label: 'Inicio',
-                    logLevel: 'info'
+                    logLevel: 'info',
                 },
                 log: {
                     badge: '👍',
                     color: 'white',
                     label: 'Info',
-                    logLevel: 'info'
+                    logLevel: 'info',
                 },
                 db: {
                     badge: '🥭',
                     color: 'greenBright',
                     label: 'Base de datos',
-                    logLevel: 'info'
+                    logLevel: 'info',
                 },
                 music: {
                     badge: '🎶',
                     color: 'magentaBright',
                     label: 'Música',
-                    logLevel: 'info'
+                    logLevel: 'info',
                 },
                 error: {
                     badge: '❌',
                     color: 'red',
                     label: 'Error',
-                    logLevel: 'error'
+                    logLevel: 'error',
                 },
                 down: {
                     badge: '⚫',
                     color: 'grey',
                     label: 'Apagado',
-                    logLevel: 'info'
+                    logLevel: 'info',
                 },
                 command: {
                     badge: '⌨️',
                     color: 'bgGreenBright',
                     label: 'Comando',
-                    logLevel: 'info'
+                    logLevel: 'info',
                 },
                 api: {
                     badge: '🛰️',
                     color: 'blue',
                     label: 'API',
-                    logLevel: 'info'
+                    logLevel: 'info',
                 },
                 warn: {
                     badge: '⚠️',
                     color: 'yellow',
                     label: 'warn',
-                    logLevel: 'warn'
-                }
+                    logLevel: 'warn',
+                },
             },
-            scope: client ? "Cluster ".concat(parseInt(client.cluster.id)) : 'Manager'
-        }) || this;
+            scope: client ? `Cluster ${parseInt(client.cluster.id)}` : 'Manager',
+        });
     }
-    return Logger;
-}(Signale));
-exports["default"] = Logger;
+}
+exports.default = Logger;

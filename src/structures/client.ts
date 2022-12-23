@@ -1,12 +1,11 @@
+import { init } from '@sentry/node';
+import { ClusterClient as HybridClient, getInfo } from 'discord-hybrid-sharding';
+import { Collection, Options, Client as client } from 'discord.js';
+import interactionCreate from '../events/client/interactionCreate';
+import ready from '../events/client/ready';
+import Logger from '../utils/console';
 import MusicManager from './musicManager';
 require('dotenv').config();
-import Logger from '../utils/console';
-import { Collection } from 'discord.js';
-import { Client as client, Options } from 'discord.js-light';
-import { Client as HybridClient, data } from 'discord-hybrid-sharding';
-import ready from '../events/client/ready';
-import interactionCreate from '../events/client/interactionCreate';
-import { init } from '@sentry/node';
 const archivo = require('.././lang/index.json');
 const fs = require('fs');
 const language = fs
@@ -24,11 +23,12 @@ export default class Client extends client {
     config: NodeJS.ProcessEnv;
     devs: string[];
     cluster: HybridClient;
-    customData: data;
+    // customData: data;
     settings: { color: string };
     clusters: Collection<unknown, unknown>;
     music!: MusicManager;
     officialServerURL: string;
+    static language: any;
     // ControlSystem: ControlSystem;
     constructor() {
         super({
@@ -40,14 +40,14 @@ export default class Client extends client {
             makeCache: Options.cacheWithLimits({
                 UserManager: {
                     maxSize: 50,
-                    keepOverLimit: (value: any) => value.id === value.client.user.id
+                    keepOverLimit: (value: any) => value.id === value.client.user.id,
                 },
                 MessageManager: {
-                    maxSize: 100
-                }
+                    maxSize: 100,
+                },
             }),
-            shards: data.SHARD_LIST,
-            shardCount: data.TOTAL_SHARDS,
+            shards: getInfo().SHARD_LIST,
+            shardCount: getInfo().TOTAL_SHARDS,
         });
         this.cluster = new HybridClient(this);
         this.clusters = new Collection();
@@ -57,9 +57,7 @@ export default class Client extends client {
         this.messages = new Collection();
         this.language = JSON.parse(language);
         this.snipes = new Map();
-        // @ts-ignore
-        this.customData = data.DATOS;
-        this.officialServerURL = 'https://discord.gg/xhAWYggKKh'
+        this.officialServerURL = 'https://discord.gg/xhAWYggKKh';
         this.logger = new Logger(
             {
                 displayTimestamp: true,
@@ -74,6 +72,7 @@ export default class Client extends client {
         this.settings = {
             color: 'GREEN',
         };
+        // this.logger.log('testing');
         // this.cluster.evalOnManager(`this.clustersArray`).then((data: Map<any, any> | any) => {
         //     console.log('data: ', data);
         // });
@@ -81,7 +80,7 @@ export default class Client extends client {
         //     console.log(msg);
         // });
 
-        if (process.env.SENTRY_DSN && process.env.NODE_ENV == "production") {
+        if (process.env.SENTRY_DSN && process.env.NODE_ENV == 'production') {
             init({
                 dsn: process.env.SENTRY_DSN,
                 environment: process.env.NODE_ENV,
@@ -145,7 +144,8 @@ export default class Client extends client {
         //     .then(data => {
         //         console.log(data);
         //     });
-        if (!process.env.devs) throw new Error("Add developers to the .env file, expected input (example): devs=123456789,987654321 ");
+        if (!process.env.devs)
+            throw new Error('Add developers to the .env file, expected input (example): devs=123456789,987654321 ');
         this.devs = process.env.devs.split(',');
         try {
             //
@@ -162,9 +162,10 @@ export default class Client extends client {
                 // this.ControlSystem.run();
                 new ready().run(this);
             });
-            if (process.env.enableCmds == "true") this.on('interactionCreate', async interaction => {
-                new interactionCreate().run(interaction, this);
-            });
+            if (process.env.enableCmds == 'true')
+                this.on('interactionCreate', async interaction => {
+                    new interactionCreate().run(interaction, this);
+                });
             this.on('shardReady', async shard => {
                 this.logger.info(`Shard ${shard} ready`);
             });
@@ -181,7 +182,7 @@ export default class Client extends client {
             // this.cluster.spawnNextCluster();
             // this.cluster.triggerReady();
             //@ts-ignore
-            super.login(data.DISCORD_TOKEN).then(() => {
+            super.login(process.env.TOKEN).then(() => {
                 this.logger.startUp(`${this.user!.username} logged in`);
                 this.cluster.spawnNextCluster();
             });

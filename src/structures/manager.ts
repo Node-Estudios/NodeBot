@@ -1,35 +1,23 @@
-import { Collection, Util } from 'discord.js';
-import { Manager, Cluster } from 'discord-hybrid-sharding';
+import { Cluster, HeartbeatManager, ClusterManager as Manager } from 'discord-hybrid-sharding';
 import { textSync } from 'figlet';
-import message from './Interfaces/message';
 import { ShardingClient } from 'statcord.js';
 import Logger from '../utils/console';
-import fs from 'fs';
-
-import { shardMessage } from '../events/client/shardMessage';
-// import IPChandler from './IPChandler'
 import RESTAPI from './restAPIHandler';
-import cluster from 'cluster';
 require('dotenv').config();
-
-const archivo = require('.././lang/index.json');
-const language = fs.readFileSync('./src/lang/' + archivo.find((language: { default: String }) => language.default).archivo).toString();
-
 export default class NodeManager extends Manager {
     public commands: any;
-    public clustersArray: Collection<any, any>;
-    public players: Collection<any, any>;
+    // public clustersArray: Collection<any, any>;
+    // public players: Collection<any, any>;
     public statcord: ShardingClient | undefined;
     public logger: Logger;
 
     constructor() {
-        super('build/bot.js', {
-            totalClusters: 1,
-            totalShards: 1,
+        super(`build/bot.js`, {
+            totalClusters: 'auto',
+            shardsPerClusters: 6,
+            totalShards: 'auto',
             mode: 'worker',
-            queue: {
-                auto: false,
-            },
+            token: process.env.TOKEN,
         });
 
         // * Crea un nuevo objeto de la clase Logger para mejorar la salida en la consola
@@ -37,105 +25,112 @@ export default class NodeManager extends Manager {
             displayTimestamp: true,
             displayDate: true,
         });
-        new RESTAPI(this);
-
         this.logger.startUp(
             'Iniciando Sistema De Node' +
-            '\n' +
-            textSync('Node Bot', {
-                font: 'Ghost', // Fuente de la consola
-                horizontalLayout: 'default',
-                verticalLayout: 'default',
-                width: 80,
-                whitespaceBreak: true,
-            }),
+                '\n' +
+                textSync('Node Bot', {
+                    font: 'Ghost', // Fuente de la consola
+                    horizontalLayout: 'default',
+                    verticalLayout: 'default',
+                    width: 80,
+                    whitespaceBreak: true,
+                }),
         );
 
-        // * Función para dividir los shards en bloques
-        const chunk = (arr: Array<any>, size: any): Array<any> =>
-            Array.from({ length: Math.ceil(arr.length / size) }, (v, i) => arr.slice(i * size, i * size + size));
-        this.clustersArray = new Collection<string, Array<any>>();
-        this.players = new Collection<string, Array<any>>();
-        let clusterList: Array<any>;
-        if (!process.env.TOKEN)
-            throw new Error('No pudimos encontrar tu token, asegurate de añadirlo al .env con el nombre de TOKEN!');
+        // // * Función para dividir los shards en bloques
+        // const chunk = (arr: Array<any>, size: any): Array<any> =>
+        //     Array.from({ length: Math.ceil(arr.length / size) }, (v, i) => arr.slice(i * size, i * size + size));
+        // this.clustersArray = new Collection<string, Array<any>>();
+        // this.players = new Collection<string, Array<any>>();
+        // let clusterList: Array<any>;
+        // if (!process.env.TOKEN)
+        //     throw new Error('No pudimos encontrar tu token, asegurate de añadirlo al .env con el nombre de TOKEN!');
 
-        // * Inicializa las colecciones para los clusters de diferentes nodos
-        this.clustersArray.set('node', []);
-        this.clustersArray.set('customBots', []);
-        this.clustersArray.set('node2', []);
-        this.clustersArray.set('node3', []);
-        this.clustersArray.set('node4', []);
+        // // * Inicializa las colecciones para los clusters de diferentes nodos
+        // this.clustersArray.set('node', []);
+        // this.clustersArray.set('customBots', []);
+        // this.clustersArray.set('node2', []);
+        // this.clustersArray.set('node3', []);
+        // this.clustersArray.set('node4', []);
 
-        // * Obtiene la cantidad recomendada de shards
-        Util.fetchRecommendedShards(process.env.TOKEN)
-            .then(data => {
+        // // * Obtiene la cantidad recomendada de shards
+        // Util.fetchRecommendedShards(process.env.TOKEN)
+        //     .then(data => {
+        //         // * Crea una lista de shards
+        //         let shardList = [...Array(data).keys()];
 
-                // * Crea una lista de shards
-                let shardList = [...Array(data).keys()];
+        //         // * Divide los shards en bloques
+        //         clusterList = chunk(shardList, 10);
 
-                // * Divide los shards en bloques
-                clusterList = chunk(shardList, 10);
+        //         this.queue.queue.shift();
+        //         this.totalClusters = 0;
 
-                this.queue.queue.shift();
-                this.totalClusters = 0;
+        //         for (let i = this.clusterList.length; i < clusterList.length; i++) {
+        //             this.totalClusters = (this.totalClusters as number) + 1;
 
-                for (let i = this.clusterList.length; i < clusterList.length; i++) {
-                    this.totalClusters = (this.totalClusters as number) + 1;
+        //             // const datos: any = {
+        //             //     /**
+        //             //      * @param {string} botType - Type of the bot
+        //             //      * * botType: {
+        //             //      * *  1 - Bot Principal
+        //             //      * *  2 - Bot de Node 2 / 3 / 4 (opcionales de música)
+        //             //      * *  3 - Bot Custom de un usuario que ha comprado la función
+        //             //      * * }
+        //             //      *
+        //             //      * */
+        //             //     botType: 1,
+        //             //     typeData: {
+        //             //         botNumber: 1,
+        //             //     },
+        //             // };
 
-                    const datos: any = {
-                        /**
-                         * @param {string} botType - Type of the bot
-                         * * botType: {
-                         * *  1 - Bot Principal
-                         * *  2 - Bot de Node 2 / 3 / 4 (opcionales de música)
-                         * *  3 - Bot Custom de un usuario que ha comprado la función
-                         * * }
-                         *
-                         * */
-                        botType: 1,
-                        typeData: {
-                            botNumber: 1,
+        //             const cluster = this.createCluster(i, clusterList[i], data);
 
+        //             (this.clustersArray.get('node') as Array<any>).push({
+        //                 id: cluster.id,
+        //                 shardsArray: clusterList[i],
+        //             });
 
-
-                        },
-                    };
-
-                    const cluster = this.createCluster(i, clusterList[i], data);
-
-                    (this.clustersArray.get('node') as Array<any>).push({
-                        id: cluster.id,
-                        shardsArray: clusterList[i],
-                    });
-
-                    this.queue.add({
-                        run: () => {
-                            const cluster = this.clusters.get(i);
-                            return cluster!.spawn(1000000, process.env.TOKEN, datos);
-                        },
-                        args: [],
-                        timeout: 10000,
-                    });
-                }
-                return clusterList;
-            })
-            .then(() => {
-
-                this.queue.start().then(() => {
-
-                });
-                this.queue.next();
-            });
-        const getAvalibleBot = () => {
-            this.clusters.get(0);
-        };
+        //             this.queue.add({
+        //                 run: () => {
+        //                     const cluster = this.clusters.get(i);
+        //                     return cluster!.spawn(1000000, process.env.TOKEN);
+        //                 },
+        //                 args: [],
+        //                 timeout: 10000,
+        //             });
+        //         }
+        //         return clusterList;
+        //     })
+        //     .then(() => {
+        //         console.log(this.queue);
+        //         this.queue.start().then(() => {});
+        //         this.queue.next();
+        //     });
+        // const getAvalibleBot = () => {
+        //     this.clusters.get(0);
+        // };
+        // this.on('debug', (message: any) => {
+        //     this.logger.debug(message);
+        // });
+        let numClustersReady = 0 + (this.totalClusters - 2);
+        this.extend(
+            new HeartbeatManager({
+                interval: 2000, // Interval to send a heartbeat
+                maxMissedHeartbeats: 5, // Maximum amount of missed Heartbeats until Cluster will get respawned
+            }),
+        );
         this.on('debug', (message: any) => {
             this.logger.debug(message);
-        })
-
+        });
+        this.on('clusterReady', (cluster: Cluster) => {
+            console.log('numClustersReadyBefore:', numClustersReady);
+            numClustersReady++;
+            console.log('numClustersReady:', numClustersReady, this.totalClusters);
+            if (numClustersReady == this.totalClusters) new RESTAPI(this);
+            this.logger.startUp(`Cluster ${cluster.id} is ready!`);
+        });
         this.on('clusterCreate', (cluster: Cluster) => {
-
             // cluster.on('message', (message: any) => {
             // this.logger.debug("totalClusters: ", this.totalClusters)
             // this.logger.log("message received: ", cluster.eval('client.user.tag'))

@@ -6,4 +6,6 @@ dist
 build
 FFmpeg/
 testing.js
+test.txt
+nodebot.rar
 testing.ts

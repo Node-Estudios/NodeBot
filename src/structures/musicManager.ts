@@ -3,6 +3,7 @@ import {
     AnonymousGuild,
     AnyChannel,
     MessageEmbed,
+    MessageButton,
     MessageActionRow,
     Channel,
     Guild,
@@ -17,11 +18,13 @@ import EventEmitter from 'events';
 import Client from './client';
 import Player from './player'
 import Logger from '../utils/console';
+import { GuildTextChannelType } from 'discord-api-types/v10';
 
 
 export default class musicManager extends EventEmitter {
     players: Collection<unknown, unknown>;
     logger: Logger;
+    client: Client;
     constructor(client: Client) {
         super()
         this.players = new Collection();
@@ -33,6 +36,7 @@ export default class musicManager extends EventEmitter {
             },
             client, //testear si funciona el Cluster X
         );
+        this.client = client;
     }
     async createNewPlayer(vc: VoiceChannel, textChannel: TextChannel, guild: Guild, volume: number) {
         const player = new Player({
@@ -72,21 +76,21 @@ export default class musicManager extends EventEmitter {
         let song = player.queue.current
 
         const row = new MessageActionRow().addComponents(
-            new Discord.MessageButton()
+            new MessageButton()
                 .setStyle("DANGER")
-                .setLabel(client.language.PLAYER["stopMusic"])
+                .setLabel(this.client.language.PLAYER["stopMusic"])
                 .setCustomId("stopMusic"),
-            new Discord.MessageButton()
+            new MessageButton()
                 .setStyle("SECONDARY")
-                .setLabel(client.language.PLAYER["pauseMusic"])
+                .setLabel(this.client.language.PLAYER["pauseMusic"])
                 .setCustomId("pauseMusic"),
-            new Discord.MessageButton()
+            new MessageButton()
                 .setStyle("PRIMARY")
-                .setLabel(client.language.PLAYER["skipMusic"])
+                .setLabel(this.client.language.PLAYER["skipMusic"])
                 .setCustomId("skipMusic"),
-            new Discord.MessageButton()
+            new MessageButton()
                 .setStyle("PRIMARY")
-                .setLabel(client.language.PLAYER["queueMusic"])
+                .setLabel(this.client.language.PLAYER["queueMusic"])
                 .setCustomId("queueMusic")
         );
 
@@ -97,7 +101,7 @@ export default class musicManager extends EventEmitter {
                 `https://img.youtube.com/vi/${song.id}/maxresdefault.jpg`
             )
             embed.setDescription(
-                `**${client.language.PLAY[3]}\n[${song.title}](https://www.youtube.com/watch?v=${song.id})**`
+                `**${this.client.language.PLAY[3]}\n[${song.title}](https://www.youtube.com/watch?v=${song.id})**`
             )
             // embed.addField(
             //     "Bitrate",
@@ -107,12 +111,12 @@ export default class musicManager extends EventEmitter {
         } else if (song.source === 'Spotify') {
             if (song.thumbnails[0])
                 embed.setDescription(
-                    `**${client.language.PLAY[3]}\n[${song.title}](https://open.spotify.com/track/${song.id})**`
+                    `**${this.client.language.PLAY[3]}\n[${song.title}](https://open.spotify.com/track/${song.id})**`
                 )
             embed.setThumbnail(song.thumbnails[0].url)
 
         }
-        return client.channels.cache.get(player.textChannel.id).send({ embeds: [embed], components: [row] })
+        return (this.client.channels.cache.get(player.textChannel.id) as TextChannel)?.send({ embeds: [embed], components: [row] })
 
         // const track = player.queue.current;
         // this.emit('trackStart', player, track);
