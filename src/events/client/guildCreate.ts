@@ -1,19 +1,17 @@
-const { MessageEmbed, WebhookClient } = require('discord.js');
-import Client from '../../structures/client';
-
-const Event = require('../../structures/event');
-export class guildDelete extends Event {
-    constructor() {
-        super();
+import { ColorResolvable, MessageEmbed, WebhookClient } from 'discord.js';
+import { Events } from '../../structures/event.js';
+module.exports = class guildCreate extends Events {
+    constructor(file: { name: any }, options = { name: 'any' }) {
+        super(file, options);
     }
-    async run(guild: { name: any; memberCount: any }) {
-        console.log('test');
+    async run(guild) {
+        //client.user.displayAvatarURL()
         const embed = new MessageEmbed()
-            .setColor(15548997)
-            .setDescription(`<a:redarrow:969932619229855754> **${guild.name}** (-${guild.memberCount})`);
+            .setColor(process.env.bot1Embed_Color as ColorResolvable)
+            .setDescription(`<a:greenarrow:969929468607090758> **${guild.name}** (+${guild.memberCount})`);
 
         const webhook = new WebhookClient({
-            url: process.env.GuildWebhookURL,
+            url: process.env.GuildWebhookURL as string,
         });
 
         webhook.send({
@@ -59,4 +57,4 @@ export class guildDelete extends Event {
         //   }
         // );
     }
-}
+};

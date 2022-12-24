@@ -1,11 +1,9 @@
-import fetch from 'node-fetch';
-const bot1missing = require('./functions/bot1missing.js');
-const bot2missing = require('./functions/bot2missing.js');
-const bot3missing = require('./functions/bot3missing.js');
-const bot4missing = require('./functions/bot4missing.js');
-require('dotenv').config();
-const getRandomPhrase = require('../../../utils/getRandomPhrase');
-const simplestDiscordWebhook = require('simplest-discord-webhook');
+import bot1missing from './functions/bot1missing.js';
+import bot2missing from './functions/bot2missing.js';
+import bot3missing from './functions/bot3missing.js';
+import bot4missing from './functions/bot4missing.js';
+import getRandomPhrase from '../../utils/getRandomPhrase';
+import simplestDiscordWebhook from 'simplest-discord-webhook';
 let webhookClient = new simplestDiscordWebhook(process.env.errorWebhookURL);
 import { CommandInteraction, Guild, GuildMember, MessageEmbed } from 'discord.js';
 import Client from '../../structures/client';
@@ -408,7 +406,7 @@ function formatTime(ms: number) {
     time.d = Math.floor(time.h / 24);
     time.h %= 24;
 
-    const res = [];
+    const res: any[] = [];
     for (const [k, v] of Object.entries(time)) {
         let first = false;
         if (v < 1 && !first) continue;
