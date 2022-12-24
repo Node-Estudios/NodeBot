@@ -1,7 +1,6 @@
-import { ColorResolvable, CommandInteraction, MessageEmbed } from 'discord.js';
-import Command from '../../../structures/command';
-import Client from '../../../structures/client';
-import fetch from 'node-fetch';
+import { ColorResolvable, CommandInteraction, MessageEmbed } from 'discord.js'
+import Command from '../../../structures/command'
+import Client from '../../../structures/client'
 
 export default class mchistory extends Command {
     constructor(client: Client) {
@@ -26,7 +25,7 @@ export default class mchistory extends Command {
                     required: true,
                 },
             ],
-        });
+        })
     }
     /**,
      * @param {Client} client
@@ -35,14 +34,14 @@ export default class mchistory extends Command {
      */
     async run(client: Client, interaction: CommandInteraction, args: any) {
         // try {
-        let args2 = args.join('%20');
-        let Fecha;
-        let NameMC;
-        if (!args2[1]) return interaction.editReply(client.language.MCHISTORY[1] + '/' + client.language.MCHISTORY[2]);
+        let args2 = args.join('%20')
+        let Fecha
+        let NameMC
+        if (!args2[1]) return interaction.editReply(client.language.MCHISTORY[1] + '/' + client.language.MCHISTORY[2])
         fetch(`https://mc-heads.net/minecraft/profile/${args2}`)
             .then(res => {
                 if (res.status == 200) {
-                    return res.json();
+                    return res.json()
                 } else {
                     const errorembed = new MessageEmbed()
                         .setColor('RED')
@@ -51,36 +50,36 @@ export default class mchistory extends Command {
                         .setFooter(
                             interaction.user.username + '#' + interaction.user.discriminator,
                             interaction.user.displayAvatarURL(),
-                        );
-                    interaction.editReply({ embeds: [errorembed] });
-                    return undefined;
+                        )
+                    interaction.editReply({ embeds: [errorembed] })
+                    return undefined
                 }
             })
             .then(History_Info => {
-                if (!History_Info) return;
+                if (!History_Info) return
 
                 const embedhistory = new MessageEmbed()
                     .setTitle(client.language.MCHISTORY[4])
                     .setColor(process.env.bot1Embed_Color as ColorResolvable)
-                    .setTimestamp();
+                    .setTimestamp()
 
                 // @ts-ignore
                 for (var index = 0; index < History_Info['name_history'].length; index++) {
                     // @ts-ignore
-                    Fecha = History_Info['name_history'][index]['changedToAt'];
+                    Fecha = History_Info['name_history'][index]['changedToAt']
                     // @ts-ignore
-                    NameMC = History_Info['name_history'][index]['name'];
+                    NameMC = History_Info['name_history'][index]['name']
 
                     if (!Fecha) {
-                        embedhistory.addField(client.language.MCHISTORY[5], NameMC); // LENGUAJEEEEEEEEEEEEEEE
+                        embedhistory.addField(client.language.MCHISTORY[5], NameMC) // LENGUAJEEEEEEEEEEEEEEE
                     } else {
-                        embedhistory.addField(parserTimeStamp(Fecha), NameMC);
+                        embedhistory.addField(parserTimeStamp(Fecha), NameMC)
                     }
                 }
                 interaction.editReply({
                     embeds: [embedhistory],
-                });
-            });
+                })
+            })
         //   } catch (e) {
         //     console.error(e);
         //     message.channel.send({
@@ -107,14 +106,14 @@ export default class mchistory extends Command {
 }
 function add_cero_day(numero: number) {
     if (numero.toString().length == 1) {
-        return '0' + numero;
+        return '0' + numero
     } else {
-        return numero;
+        return numero
     }
 }
 
 function parserTimeStamp(date: Date) {
-    date = new Date(date);
+    date = new Date(date)
     return (
         add_cero_day(date.getDate()) +
         '-' +
@@ -127,5 +126,5 @@ function parserTimeStamp(date: Date) {
         add_cero_day(date.getMinutes()) +
         ':' +
         add_cero_day(date.getSeconds())
-    );
+    )
 }
