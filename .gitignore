@@ -7,3 +7,5 @@ build
 FFmpeg/
 testing.js
 testing.ts
+.fleet
+.idea

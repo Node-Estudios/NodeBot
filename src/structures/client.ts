@@ -40,11 +40,11 @@ export default class Client extends client {
             makeCache: Options.cacheWithLimits({
                 UserManager: {
                     maxSize: 50,
-                    keepOverLimit: (value: any) => value.id === value.client.user.id
+                    keepOverLimit: (value: any) => value.id === value.client.user.id,
                 },
                 MessageManager: {
-                    maxSize: 100
-                }
+                    maxSize: 100,
+                },
             }),
             shards: data.SHARD_LIST,
             shardCount: data.TOTAL_SHARDS,
@@ -59,7 +59,7 @@ export default class Client extends client {
         this.snipes = new Map();
         // @ts-ignore
         this.customData = data.DATOS;
-        this.officialServerURL = 'https://discord.gg/xhAWYggKKh'
+        this.officialServerURL = 'https://discord.gg/xhAWYggKKh';
         this.logger = new Logger(
             {
                 displayTimestamp: true,
@@ -81,7 +81,7 @@ export default class Client extends client {
         //     console.log(msg);
         // });
 
-        if (process.env.SENTRY_DSN && process.env.NODE_ENV == "production") {
+        if (process.env.SENTRY_DSN && process.env.NODE_ENV == 'production') {
             init({
                 dsn: process.env.SENTRY_DSN,
                 environment: process.env.NODE_ENV,
@@ -145,7 +145,8 @@ export default class Client extends client {
         //     .then(data => {
         //         console.log(data);
         //     });
-        if (!process.env.devs) throw new Error("Add developers to the .env file, expected input (example): devs=123456789,987654321 ");
+        if (!process.env.devs)
+            throw new Error('Add developers to the .env file, expected input (example): devs=123456789,987654321 ');
         this.devs = process.env.devs.split(',');
         try {
             //
@@ -162,9 +163,10 @@ export default class Client extends client {
                 // this.ControlSystem.run();
                 new ready().run(this);
             });
-            if (process.env.enableCmds == "true") this.on('interactionCreate', async interaction => {
-                new interactionCreate().run(interaction, this);
-            });
+            if (process.env.enableCmds == 'true')
+                this.on('interactionCreate', async interaction => {
+                    new interactionCreate().run(interaction, this);
+                });
             this.on('shardReady', async shard => {
                 this.logger.info(`Shard ${shard} ready`);
             });
