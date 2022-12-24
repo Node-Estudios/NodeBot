@@ -1,11 +1,11 @@
 const Event = require('../../structures/event');
-import Client from '../../structures/client';
-import { connect } from 'mongoose'
-import MusicManager from './../../structures/musicManager';
+import { IPCMessage } from 'discord-hybrid-sharding';
 import 'dotenv/config';
-import { listenerCount } from 'process';
+import { connect } from 'mongoose';
+import Client from '../../structures/client';
+import MusicManager from './../../structures/musicManager';
 export default class ready {
-    constructor() { }
+    constructor() {}
 
     async run(client: Client) {
         // const cmds = await customCmdModel.find({});
@@ -34,58 +34,55 @@ export default class ready {
                 useNewUrlParser: true,
             }).then(() => client.logger.db('Se ha conectado la base de datos correctamente.'));
         client.music = new MusicManager(client);
-        let result: any[]
-        try {
-            const promises = [
-                client.cluster.broadcastEval((c: { guilds: { cache: { size: any; }; }; }) => { c.guilds.cache.size }),
-                client.cluster.broadcastEval((c) => c.guilds.cache.reduce((prev: any, guild: { memberCount: any; }) => prev + guild.memberCount, 0)),
-            ];
-
-            const shardInfo = await client.cluster.broadcastEval((c: any) => ({
-                clustersCount: c.cluster,
-                clusterId: c.cluster.id,
-                internalClusterShards: c.cluster.ids,
-                guilds: c.guilds.cache.size,
-                channels: c.channels.cache.size,
-                members: c.guilds.cache.reduce((prev: any, guild: { memberCount: any; }) => prev + guild.memberCount, 0),
-                memoryUsage: (process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2),
-                players: c.music.players.size,
-                playingPlayers: c.music.players.filter((p: { playing: any; }) => p.playing).size,
-                ping: c.ws.ping,
-            }));
-
-            let totalPlayers = 0;
-            let totalPlayingPlayers = 0;
-            client.logger.debug(shardInfo)
-            for (let n = 0; n < shardInfo.length / 15; n++) {
-                const shardArray = shardInfo.slice(n * 15, n * 15 + 15);
-                Promise.all(promises).then(async results => {
-                    let totalMemory = 0;
-                    shardArray.forEach((s: { memoryUsage: string; }) => (totalMemory += parseInt(s.memoryUsage)));
-                    let totalChannels = 0;
-                    shardArray.forEach((s: { channels: string; }) => (totalChannels += parseInt(s.channels)));
-                    let avgLatency = 0;
-                    shardArray.forEach((s: { ping: number; }) => (avgLatency += s.ping));
-                    avgLatency = avgLatency / shardArray.length;
-                    avgLatency = Math.round(avgLatency);
-                    const totalGuilds = results[0].reduce((prev: any, guildCount: any) => prev + guildCount, 0);
-                    const totalMembers = results[1].reduce((prev: any, memberCount: any) => prev + memberCount, 0);
-                    result.push({ totalChannels, totalGuilds, totalMembers, totalMemory, avgLatency, totalPlayers, totalPlayingPlayers, shardInfo })
-                });
+        let result: any[];
+        client.cluster.on('message', async message2 => {
+            let message = (message2 as IPCMessage).raw;
+            if ((message.content = 'statistics')) {
+                const promises = [
+                    client.cluster.broadcastEval((c: { guilds: { cache: { size: any } } }) => {
+                        c.guilds.cache.size;
+                    }),
+                    client.cluster.broadcastEval(c =>
+                        c.guilds.cache.reduce((prev: any, guild: { memberCount: any }) => prev + guild.memberCount, 0),
+                    ),
+                ];
+                client.cluster
+                    .broadcastEval(
+                        (
+                            c: {
+                                guilds: {
+                                    cache: {
+                                        size: any;
+                                        reduce: (
+                                            arg0: (prev: any, guild: { memberCount: any }) => any,
+                                            arg1: number,
+                                        ) => any;
+                                    };
+                                };
+                                ws: { ping: any };
+                                channels: { cache: { size: any } };
+                            },
+                            context: { clusterID: any },
+                        ) => ({
+                            cluster: context.clusterID,
+                            guilds: c.guilds.cache.size,
+                            ping: c.ws.ping,
+                            channels: c.channels.cache.size,
+                            members: c.guilds.cache.reduce(
+                                (prev: any, guild: { memberCount: any }) => prev + guild.memberCount,
+                                0,
+                            ),
+                            memoryUsage: (process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2),
+                            // players: c.music.players.size,
+                            // playingPlayers: c.music.players.filter((p: { playing: any }) => p.playing).size,
+                        }),
+                        { context: { clusterID: client.cluster.id } },
+                    )
+                    .then(results => {
+                        (message2 as any).reply(results);
+                    });
             }
-        } catch (e) {
-            client.logger.error(e)
-        }
-        client.cluster.on('message', async (message) => {
-            // client.logger.debug(client.cluster.broadcastEval((c: any) => c.guilds.cache.size))
-            // client.ws.client.shard?.broadcastEval((c: any) => c.guilds.cache.size).then((data: any) => {
-            //     console.log(data)
-            // })
-            if (message.content = "statistics" && message._sRequest && !message._sReply) {
-
-                message.reply({ content: result })
-            }
-        })
+        });
         client.logger.debug(`${client.user!.username} ✅`);
         Promise.resolve(true);
         // new CreateManager(client).then(() => {

@@ -1,4 +1,4 @@
-import { CommandInteraction, Interaction, GuildMember } from 'discord.js';
+import { GuildMember, Interaction } from 'discord.js';
 
 import Client from '../../structures/client';
 // const UserModel = require('../../models/user');
@@ -9,7 +9,7 @@ const Statcord = require('statcord.js');
 const cooldowns = new Discord.Collection();
 
 export default class interactionCreate {
-    constructor() { }
+    constructor() {}
     async run(interaction: Interaction, client: Client) {
         if (!client.user) return;
         if (!interaction.guild) return;
@@ -18,7 +18,7 @@ export default class interactionCreate {
             let commandName = interaction.commandName;
             let desc =
                 client.language.NODETHINKING[
-                Math.floor(Math.random() * (Object.keys(client.language.NODETHINKING).length + 1) + 1)
+                    Math.floor(Math.random() * (Object.keys(client.language.NODETHINKING).length + 1) + 1)
                 ];
             if (!desc) desc = client.language.NODETHINKING[1];
 
@@ -138,7 +138,7 @@ export default class interactionCreate {
                     if (
                         cmd.permissions.botPermissions.includes(Discord.Permissions.CONNECT) &&
                         !(interaction.member as GuildMember)!
-                            .voice!.channel!.permissionsFor(client.user)!
+                            .voice!.channel!.permissionsFor(client.user.id)!
                             .has(Discord.Permissions.CONNECT)
                     )
                         return interaction.editReply({
@@ -148,7 +148,7 @@ export default class interactionCreate {
                     if (
                         cmd.permissions.botPermissions.includes(Discord.Permissions.SPEAK) &&
                         !(interaction.member as GuildMember)!
-                            .voice!.channel!.permissionsFor(client.user)!
+                            .voice!.channel!.permissionsFor(client.user.id)!
                             .has(Discord.Permissions.SPEAK)
                     )
                         return interaction.editReply({
@@ -194,7 +194,6 @@ export default class interactionCreate {
                 if (process.env.NODE_ENV == 'production')
                     Statcord.ShardingClient.postCommand(cmd.name, (interaction.member as GuildMember).id, client);
             } else {
-
                 if (!cmd)
                     return interaction.editReply({
                         content: 'No se encontró el comando',

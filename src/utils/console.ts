@@ -62,7 +62,7 @@ export default class Logger extends Signale {
                     color: 'yellow',
                     label: 'warn',
                     logLevel: 'warn',
-                }
+                },
             },
             scope: client ? `Cluster ${parseInt(client.cluster.id)}` : 'Manager',
         });
