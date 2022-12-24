@@ -1,30 +1,30 @@
-import { Cluster, HeartbeatManager, ClusterManager as Manager } from 'discord-hybrid-sharding';
-import { textSync } from 'figlet';
-import { ShardingClient } from 'statcord.js';
-import Logger from '../utils/console';
-import RESTAPI from './restAPIHandler';
-require('dotenv').config();
+import { Cluster, HeartbeatManager, ClusterManager as Manager } from 'discord-hybrid-sharding'
+import { textSync } from 'figlet'
+import { ShardingClient } from 'statcord.js'
+import Logger from '../utils/console'
+import RESTAPI from './restAPIHandler'
+require('dotenv').config()
 export default class NodeManager extends Manager {
-    public commands: any;
+    public commands: any
     // public clustersArray: Collection<any, any>;
     // public players: Collection<any, any>;
-    public statcord: ShardingClient | undefined;
-    public logger: Logger;
+    public statcord: ShardingClient | undefined
+    public logger: Logger
 
     constructor() {
         super(`build/bot.js`, {
             totalClusters: 'auto',
-            shardsPerClusters: 6,
+            shardsPerClusters: 5,
             totalShards: 'auto',
             mode: 'worker',
             token: process.env.TOKEN,
-        });
+        })
 
         // * Crea un nuevo objeto de la clase Logger para mejorar la salida en la consola
         this.logger = new Logger({
             displayTimestamp: true,
             displayDate: true,
-        });
+        })
         this.logger.startUp(
             'Iniciando Sistema De Node' +
                 '\n' +
@@ -35,7 +35,7 @@ export default class NodeManager extends Manager {
                     width: 80,
                     whitespaceBreak: true,
                 }),
-        );
+        )
 
         // // * Función para dividir los shards en bloques
         // const chunk = (arr: Array<any>, size: any): Array<any> =>
@@ -113,23 +113,24 @@ export default class NodeManager extends Manager {
         // this.on('debug', (message: any) => {
         //     this.logger.debug(message);
         // });
-        let numClustersReady = 0 + (this.totalClusters - 2);
+        // let numClustersReady = 0 - this.totalClusters * 2 + this.totalClusters
         this.extend(
             new HeartbeatManager({
                 interval: 2000, // Interval to send a heartbeat
                 maxMissedHeartbeats: 5, // Maximum amount of missed Heartbeats until Cluster will get respawned
             }),
-        );
+        )
         this.on('debug', (message: any) => {
-            this.logger.debug(message);
-        });
+            this.logger.debug(message)
+        })
+        // if (numClustersReady == this.totalClusters)
+        new RESTAPI(this)
         this.on('clusterReady', (cluster: Cluster) => {
-            console.log('numClustersReadyBefore:', numClustersReady);
-            numClustersReady++;
-            console.log('numClustersReady:', numClustersReady, this.totalClusters);
-            if (numClustersReady == this.totalClusters) new RESTAPI(this);
-            this.logger.startUp(`Cluster ${cluster.id} is ready!`);
-        });
+            // console.log('numClustersReadyBefore:', numClustersReady)
+            // numClustersReady++
+            // console.log('numClustersReady:', numClustersReady, this.totalClusters)
+            this.logger.startUp(`Cluster ${cluster.id} is ready!`)
+        })
         this.on('clusterCreate', (cluster: Cluster) => {
             // cluster.on('message', (message: any) => {
             // this.logger.debug("totalClusters: ", this.totalClusters)
@@ -143,8 +144,8 @@ export default class NodeManager extends Manager {
             // new IPChandler(cluster, message, this, logger)
             // });
 
-            this.logger.startUp(`Launched cluster ${cluster.id}`);
-        });
+            this.logger.startUp(`Launched cluster ${cluster.id}`)
+        })
         if (process.env.NODE_ENV != 'development') {
         }
     }

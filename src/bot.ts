@@ -1,10 +1,10 @@
-import 'dotenv/config';
-import node from './structures/client';
-import commands from './handlers/commands';
+import 'dotenv/config'
+import commands from './handlers/commands'
+import node from './structures/client'
 // import './webhook';
-const client = new node();
-new commands(client);
-export default client;
+const client = new node()
+new commands(client)
+export default client
 // import * as fs from "fs";
 
 // import EventsRegister from "./handlers/events";
@@ -26,7 +26,6 @@ export default client;
 // }); //
 // client.cluster.triggerReady();
 
-
 /* setInterval(() => {
     updateStatus();
 }, 300000);
@@ -45,4 +44,4 @@ async function updateStatus() {
         .catch(console.error);
 } */
 
-client.Login(); // Para solucionar el error de "No hay token"
+client.Login() // Para solucionar el error de "No hay token"

@@ -29,6 +29,9 @@ export default class Client extends client {
     music!: MusicManager
     officialServerURL: string
     static language: any
+    formatTime: (inputSeconds: number, complete: boolean) => string
+    services: { sentry: { loggedIn: boolean } }
+    // ControlSystem: ControlSystem;
     // ControlSystem: ControlSystem;
     constructor() {
         super({
@@ -52,7 +55,66 @@ export default class Client extends client {
         this.cluster = new HybridClient(this)
         this.clusters = new Collection()
         this.commands = new Collection()
+        this.formatTime = function formatTime(inputSeconds: number, complete: boolean = false) {
+            if (complete) {
+                const Days = Math.floor(inputSeconds / (60 * 60 * 24))
+                const Hour = Math.floor((inputSeconds % (60 * 60 * 24)) / (60 * 60))
+                const Minutes = Math.floor(((inputSeconds % (60 * 60 * 24)) % (60 * 60)) / 60)
+                const Seconds = Math.floor(((inputSeconds % (60 * 60 * 24)) % (60 * 60)) % 60)
+                let ddhhmmss = ''
+                if (Days > 0 && Days != 1) {
+                    ddhhmmss += Days + 'd '
+                } else if (Days === 1) {
+                    ddhhmmss += Days + 'd '
+                }
+                if (Hour > 0 && Hour != 1) {
+                    ddhhmmss += Hour + 'h '
+                } else if (Hour === 1) {
+                    ddhhmmss += Hour + 'h '
+                }
+                if (Minutes > 0 && Minutes != 1) {
+                    ddhhmmss += Minutes + 'm '
+                } else if (Minutes === 1) {
+                    ddhhmmss += Minutes + 'm '
+                }
+                if (Seconds > 0 && Seconds != 1) {
+                    ddhhmmss += Seconds + 's'
+                } else if (Seconds === 1) {
+                    ddhhmmss += Seconds + 's'
+                }
+                return ddhhmmss
+            } else {
+                const Days = Math.floor(inputSeconds / (60 * 60 * 24))
+                const Hour = Math.floor((inputSeconds % (60 * 60 * 24)) / (60 * 60))
+                const Minutes = Math.floor(((inputSeconds % (60 * 60 * 24)) % (60 * 60)) / 60)
+                const Seconds = Math.floor(((inputSeconds % (60 * 60 * 24)) % (60 * 60)) % 60)
+                let ddhhmmss = ''
+                if (Days > 0 && Days != 1) {
+                    ddhhmmss += Days + ' Días '
+                } else if (Days === 1) {
+                    ddhhmmss += Days + ' Día '
+                }
+                if (Hour > 0 && Hour != 1) {
+                    ddhhmmss += Hour + ' Horas '
+                } else if (Hour === 1) {
+                    ddhhmmss += Hour + ' Hora '
+                }
+                if (Minutes > 0 && Minutes != 1) {
+                    ddhhmmss += Minutes + ' Minutos '
+                } else if (Minutes === 1) {
+                    ddhhmmss += Minutes + ' Minuto '
+                }
+                if (Seconds > 0 && Seconds != 1) {
+                    ddhhmmss += Seconds + ' Segundos'
+                } else if (Seconds === 1) {
+                    ddhhmmss += Seconds + ' Segundo'
+                }
+                return ddhhmmss
+            }
+        }
+
         this.buttons = new Collection()
+        this.services = { sentry: { loggedIn: false } }
         this.selectMenu = new Collection()
         this.messages = new Collection()
         this.language = JSON.parse(language)
@@ -65,6 +127,7 @@ export default class Client extends client {
             },
             this,
         )
+        // this.logger.addSecrets([process.env.TOKEN, process.env.MONGO_URI, process.env.SENTRY_DSN])
         // this.logger.time('readyEvent')
         // this.statcordSongs = 0;
         this.config = process.env
@@ -86,6 +149,7 @@ export default class Client extends client {
                 environment: process.env.NODE_ENV,
                 tracesSampleRate: 0.5,
             })
+            this.services.sentry.loggedIn = true
             this.logger.log('Connected to Sentry')
         } else this.logger.warn('Sentry dsn missing.')
         // if ((this.customData as any).botType == 1) {
@@ -162,10 +226,10 @@ export default class Client extends client {
                 // this.ControlSystem.run();
                 new ready().run(this)
             })
-            if (process.env.enableCmds == 'true')
-                this.on('interactionCreate', async interaction => {
+            this.on('interactionCreate', async interaction => {
+                if (process.env.enableCmds == 'true' || interaction.guildId == process.env.enabledGuild)
                     new interactionCreate().run(interaction, this)
-                })
+            })
             this.on('shardReady', async shard => {
                 this.logger.info(`Shard ${shard} ready`)
             })
@@ -184,13 +248,14 @@ export default class Client extends client {
             //@ts-ignore
             super.login(process.env.TOKEN).then(() => {
                 this.logger.startUp(`${this.user!.username} logged in`)
-                this.cluster.spawnNextCluster()
+                // this.cluster.spawnNextCluster()
             })
         } catch (e: any) {
             // this.cluster.spawnNextCluster();
             // console.log('e', e);
             if (e.code == 'TOKEN_INVALID') {
-                this.cluster.spawnNextCluster()
+                this.logger.error('Invalid token')
+                // this.cluster.spawnNextCluster()
             }
             return
         }
