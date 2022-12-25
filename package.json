@@ -78,5 +78,6 @@
         "bracketSpacing": true,
         "arrowParens": "avoid",
         "endOfLine": "auto"
-    }
+    },
+    "type": "module"
 }
