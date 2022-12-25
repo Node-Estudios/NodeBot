@@ -1,0 +1,12 @@
+node_modules
+node-ts.rar
+dist
+.vs
+build
+FFmpeg/
+testing.js
+test.txt
+nodebot.rar
+testing.ts
+.fleet
+.idea

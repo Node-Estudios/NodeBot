@@ -1,0 +1,14 @@
+version: '1.0'
+
+services:
+    devcontainer:
+        image: node:18-alpine
+        build: .
+        container_name: NodeBot
+        hostname: orderservice-dev.local
+        working_dir: /src
+        volumes:
+            - ..:/src
+            #  # Allow AWS CLI and other tools to read an AWS profile
+            #  - ~/.aws:/home/node/.aws
+        command: sleep infinity
