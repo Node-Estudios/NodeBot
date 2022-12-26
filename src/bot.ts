@@ -1,4 +1,4 @@
 import Client from './structures/Client.js'
 const client = new Client()
-client.Login()
+client.init()
 export default client

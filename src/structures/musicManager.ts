@@ -1,6 +1,7 @@
 import { Collection, Guild, MessageActionRow, MessageButton, MessageEmbed, TextChannel, VoiceChannel } from 'discord.js'
 import EventEmitter from 'events'
 import { Source, VoiceConnection } from 'yasha'
+import formatTime from '../utils/formatTime'
 import Logger from '../utils/logger'
 import Client from './Client'
 import Player from './player'
@@ -282,5 +283,5 @@ function getMax(arr: any, prop: any) {
 function formatDuration(client: Client, duration: number) {
     if (isNaN(duration) || typeof duration === 'undefined') return '00:00'
     if (duration > 3600000000) return client.language.LIVE
-    return client.formatTime(duration, true)
+    return formatTime(duration, true)
 }

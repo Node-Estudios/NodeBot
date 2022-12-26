@@ -1,8 +1,9 @@
 require('dotenv').config()
 import { CommandInteraction, Guild, GuildMember, MessageEmbed, TextChannel, VoiceChannel } from 'discord.js'
-import Client from '../../../structures/Client'
+import Client from '../../../structures/Client.js'
 
-import Command from '../../../structures/Command'
+import Command from '../../../structures/Command.js'
+import formatTime from '../../../utils/formatTime.js'
 
 export default class play extends Command {
     constructor(client: Client) {
@@ -138,7 +139,7 @@ export default class play extends Command {
                     .setColor('GREEN')
                     .addField(client.language.PLAY[4], search.author, true)
                     .addField(client.language.PLAY[5], '<@' + interaction.user.id + '>', true)
-                    .addField(client.language.PLAY[6], client.formatTime(Math.trunc(search.duration), false), true)
+                    .addField(client.language.PLAY[6], formatTime(Math.trunc(search.duration), false), true)
                 if (source === 'Youtube') {
                     logger.info(search)
                     if (search.streams) embed.addField('bitrate', search.streams[0].bitrate, true)
