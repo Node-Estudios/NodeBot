@@ -29,7 +29,7 @@ export default class Queue extends Array {
         this.current = null
         this.previous = null
     }
-    add(track: any, index: number) {
+    add(track: any, index?: number) {
         if (!this.current) this.current = track
         else if (!index || typeof index !== 'number') this.push(track)
         else this.splice(index, 0, track)

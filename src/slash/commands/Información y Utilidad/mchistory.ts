@@ -1,10 +1,10 @@
-import { ColorResolvable, CommandInteraction, MessageEmbed } from 'discord.js'
-import Command from '../../../structures/Command'
-import Client from '../../../structures/Client'
+import { CommandInteraction, MessageEmbed } from 'discord.js'
+import Command from '../../../structures/Command.js'
+import client from '../../../bot.js'
 
 export default class mchistory extends Command {
-    constructor(client: Client) {
-        super(client, {
+    constructor() {
+        super({
             name: 'mchistory',
             description: 'Show the history of a Minecraft account.',
             description_localizations: {
@@ -27,92 +27,49 @@ export default class mchistory extends Command {
             ],
         })
     }
-    /**,
-     * @param {Client} client
-     * @param {CommandInteraction} interaction
-     * @param {String[]} args
-     */
-    async run(client: Client, interaction: CommandInteraction, args: any) {
-        // try {
-        let args2 = args.join('%20')
-        let Fecha
-        let NameMC
-        if (!args2[1]) return interaction.editReply(client.language.MCHISTORY[1] + '/' + client.language.MCHISTORY[2])
-        fetch(`https://mc-heads.net/minecraft/profile/${args2}`)
-            .then(res => {
-                if (res.status == 200) {
-                    return res.json()
-                } else {
-                    const errorembed = new MessageEmbed()
+
+    override async run(interaction: CommandInteraction<'cached'>) {
+        const res = await fetch(
+            `https://mc-heads.net/minecraft/profile/${interaction.options.getString('account', true)}`,
+        )
+            .then(r => r.json())
+            .catch(() => null)
+        if (!res)
+            return interaction.reply({
+                embeds: [
+                    new MessageEmbed()
                         .setColor('RED')
                         .setTitle(client.language.ERROREMBED)
                         .setDescription(client.language.MCHISTORY[3])
-                        .setFooter(
-                            interaction.user.username + '#' + interaction.user.discriminator,
-                            interaction.user.displayAvatarURL(),
-                        )
-                    interaction.editReply({ embeds: [errorembed] })
-                    return undefined
-                }
+                        .setFooter({
+                            text: interaction.user.username + '#' + interaction.user.discriminator,
+                            iconURL: interaction.user.displayAvatarURL(),
+                        }),
+                ],
             })
-            .then(History_Info => {
-                if (!History_Info) return
 
-                const embedhistory = new MessageEmbed()
+        interaction.reply({
+            embeds: [
+                new MessageEmbed()
                     .setTitle(client.language.MCHISTORY[4])
-                    .setColor(process.env.bot1Embed_Color as ColorResolvable)
-                    .setTimestamp()
-
-                // @ts-ignore
-                for (var index = 0; index < History_Info['name_history'].length; index++) {
-                    // @ts-ignore
-                    Fecha = History_Info['name_history'][index]['changedToAt']
-                    // @ts-ignore
-                    NameMC = History_Info['name_history'][index]['name']
-
-                    if (!Fecha) {
-                        embedhistory.addField(client.language.MCHISTORY[5], NameMC) // LENGUAJEEEEEEEEEEEEEEE
-                    } else {
-                        embedhistory.addField(parserTimeStamp(Fecha), NameMC)
-                    }
-                }
-                interaction.editReply({
-                    embeds: [embedhistory],
-                })
-            })
-        //   } catch (e) {
-        //     console.error(e);
-        //     message.channel.send({
-        //       embeds: [
-        //         new Discord.MessageEmbed()
-        //         .setColor("RED")
-        //         .setTitle(client.language.ERROREMBED)
-        //         .setDescription(client.language.fatal_error)
-        //         .setFooter(message.author.username, message.author.avatarURL())
-        //       ]
-        //     });
-        //     webhookClient.send(
-        //       `Ha habido un error en **${message.guild.name} [ID Server: ${message.guild.id}] [ID Usuario: ${message.author.id}] [Owner: ${message.guild.ownerId}]**. Numero de usuarios: **${message.guild.memberCount}**\nMensaje: ${message.content}\n\nError: ${e}\n\n**------------------------------------**`
-        //     );
-        //     try {
-        //       message.author
-        //         .send(
-        //           "Oops... Ha ocurrido un eror con el comando ejecutado. Aunque ya he notificado a mis desarrolladores del problema, ¿te importaría ir a discord.gg/nodebot y dar más información?\n\nMuchísimas gracias rey <a:corazonmulticolor:836295982768586752>"
-        //         )
-        //         .catch(e);
-        //     } catch (e) {}
-        //   }
+                    .setColor(client.settings.color)
+                    .setFields(
+                        res['name_history'].map((i: any) => ({
+                            name: i['changedToAt'] ? parserTimeStamp(i['changedToAt']) : client.language.MCHISTORY[5],
+                            value: i['name'],
+                        })),
+                    )
+                    .setTimestamp(),
+            ],
+        })
     }
 }
 function add_cero_day(numero: number) {
-    if (numero.toString().length == 1) {
-        return '0' + numero
-    } else {
-        return numero
-    }
+    if (numero < 10) return '0' + numero
+    else return numero + ''
 }
 
-function parserTimeStamp(date: Date) {
+function parserTimeStamp(date: Date): string {
     date = new Date(date)
     return (
         add_cero_day(date.getDate()) +

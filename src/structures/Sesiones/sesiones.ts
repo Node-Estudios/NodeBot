@@ -1,5 +1,6 @@
-import { Client, CommandInteraction, MessageEmbed, ColorResolvable } from 'discord.js';
-import Command from '../../structures/command';
+import { Client, CommandInteraction, MessageEmbed, ColorResolvable } from 'discord.js'
+import { DiscordTogether } from 'discord-together'
+import Command from '../../structures/Command.js'
 module.exports = class sesions extends Command {
     constructor(client) {
         super(client, {
@@ -54,18 +55,17 @@ module.exports = class sesions extends Command {
                     required: true,
                 },
             ],
-        });
+        })
     }
     async run(client, interaction, args) {
         // try {
 
-        const { DiscordTogether } = require('discord-together');
-        client.discordTogether = new DiscordTogether(client);
-        const Guild = await client.guilds.fetch(interaction.guild.id); // Getting the guild.
+        client.discordTogether = new DiscordTogether(client)
+        const Guild = await client.guilds.fetch(interaction.guild.id) // Getting the guild.
         await Guild.members.fetch(interaction.member.id).then(async Member => {
-            const channel = await Member.voice.channel;
-            if (!Guild) return;
-            if (!Member) return;
+            const channel = await Member.voice.channel
+            if (!Guild) return
+            if (!Member) return
             if (!channel) {
                 const errorembed = new MessageEmbed()
                     .setColor('RED')
@@ -74,11 +74,11 @@ module.exports = class sesions extends Command {
                     .setFooter(
                         interaction.member.user.username + '#' + interaction.member.user.discriminator,
                         interaction.member.displayAvatarURL(),
-                    );
+                    )
                 return interaction.editReply({
                     embeds: [errorembed],
                     ephemeral: true,
-                });
+                })
             }
             if (args[0]) {
                 switch (args[0]) {
@@ -92,13 +92,13 @@ module.exports = class sesions extends Command {
                                     .setFooter(
                                         interaction.member.user.username + '#' + interaction.member.user.discriminator,
                                         interaction.member.displayAvatarURL(),
-                                    );
+                                    )
                                 return interaction.editReply({
                                     embeds: [errorembed],
                                     ephemeral: true,
-                                });
+                                })
                             }
-                            const embed = new MessageEmbed();
+                            const embed = new MessageEmbed()
                             if (!invite.code) {
                                 const errorembed = new MessageEmbed()
                                     .setColor('RED')
@@ -107,20 +107,20 @@ module.exports = class sesions extends Command {
                                     .setFooter(
                                         interaction.member.user.username + '#' + interaction.member.user.discriminator,
                                         interaction.member.displayAvatarURL(),
-                                    );
+                                    )
                                 return interaction.editReply({
                                     embeds: [errorembed],
                                     ephemeral: true,
-                                });
+                                })
                             }
-                            embed.setColor(process.env.bot1Embed_Color as ColorResolvable);
+                            embed.setColor(process.env.bot1Embed_Color as ColorResolvable)
                             embed.setDescription(
                                 `<a:arrowright:970388686816550912> **${client.language.BETRAYAL[1]}(${invite.code} 'Enlace de Youtube') <a:arrowleft:893553168108093560>**`,
-                            );
+                            )
                             return interaction.editReply({
                                 embeds: [embed],
-                            });
-                        });
+                            })
+                        })
                     case 'betrayal':
                         client.discordTogether.createTogetherCode(channel.id, 'betrayal', 0).then(async invite => {
                             if (invite.code === 50013) {
@@ -131,13 +131,13 @@ module.exports = class sesions extends Command {
                                     .setFooter(
                                         interaction.member.user.username + '#' + interaction.member.user.discriminator,
                                         interaction.member.displayAvatarURL(),
-                                    );
+                                    )
                                 return interaction.editReply({
                                     embeds: [errorembed],
                                     ephemeral: true,
-                                });
+                                })
                             }
-                            const embed = new MessageEmbed();
+                            const embed = new MessageEmbed()
                             if (!invite.code) {
                                 const errorembed = new MessageEmbed()
                                     .setColor('RED')
@@ -146,20 +146,20 @@ module.exports = class sesions extends Command {
                                     .setFooter(
                                         interaction.member.user.username + '#' + interaction.member.user.discriminator,
                                         interaction.member.displayAvatarURL(),
-                                    );
+                                    )
                                 return interaction.editReply({
                                     embeds: [errorembed],
                                     ephemeral: true,
-                                });
+                                })
                             }
-                            embed.setColor(process.env.bot1Embed_Color as ColorResolvable);
+                            embed.setColor(process.env.bot1Embed_Color as ColorResolvable)
                             embed.setDescription(
                                 `<a:arrowright:970388686816550912> **${client.language.BETRAYAL[1]}(${invite.code} 'Enlace de Youtube') <a:arrowleft:893553168108093560>**`,
-                            );
+                            )
                             return interaction.editReply({
                                 embeds: [embed],
-                            });
-                        });
+                            })
+                        })
                     case 'poker':
                         client.discordTogether.createTogetherCode(channel.id, 'poker', 0).then(async invite => {
                             if (invite.code === 50013) {
@@ -170,13 +170,13 @@ module.exports = class sesions extends Command {
                                     .setFooter(
                                         interaction.member.user.username + '#' + interaction.member.user.discriminator,
                                         interaction.member.displayAvatarURL(),
-                                    );
+                                    )
                                 return interaction.reply({
                                     embeds: [errorembed],
                                     ephemeral: true,
-                                });
+                                })
                             }
-                            const embed = new MessageEmbed();
+                            const embed = new MessageEmbed()
                             if (!invite.code) {
                                 const errorembed = new MessageEmbed()
                                     .setColor('RED')
@@ -185,20 +185,20 @@ module.exports = class sesions extends Command {
                                     .setFooter(
                                         interaction.member.user.username + '#' + interaction.member.user.discriminator,
                                         interaction.member.displayAvatarURL(),
-                                    );
+                                    )
                                 return interaction.editReply({
                                     embeds: [errorembed],
                                     ephemeral: true,
-                                });
+                                })
                             }
-                            embed.setColor(process.env.bot1Embed_Color as ColorResolvable);
+                            embed.setColor(process.env.bot1Embed_Color as ColorResolvable)
                             embed.setDescription(
                                 `<a:arrowright:970388686816550912> **${client.language.BETRAYAL[1]}(${invite.code} 'Enlace de Youtube') <a:arrowleft:893553168108093560>**`,
-                            );
+                            )
                             return interaction.editReply({
                                 embeds: [embed],
-                            });
-                        });
+                            })
+                        })
                     case 'fishing':
                         client.discordTogether.createTogetherCode(channel.id, 'fishing', 0).then(async invite => {
                             if (invite.code === 50013) {
@@ -209,13 +209,13 @@ module.exports = class sesions extends Command {
                                     .setFooter(
                                         interaction.member.user.username + '#' + interaction.member.user.discriminator,
                                         interaction.member.displayAvatarURL(),
-                                    );
+                                    )
                                 return interaction.editReply({
                                     embeds: [errorembed],
                                     ephemeral: true,
-                                });
+                                })
                             }
-                            const embed = new MessageEmbed();
+                            const embed = new MessageEmbed()
                             if (!invite.code) {
                                 const errorembed = new MessageEmbed()
                                     .setColor('RED')
@@ -224,20 +224,20 @@ module.exports = class sesions extends Command {
                                     .setFooter(
                                         interaction.member.user.username + '#' + interaction.member.user.discriminator,
                                         interaction.member.displayAvatarURL(),
-                                    );
+                                    )
                                 return interaction.editReply({
                                     embeds: [errorembed],
                                     ephemeral: true,
-                                });
+                                })
                             }
-                            embed.setColor(process.env.bot1Embed_Color as ColorResolvable);
+                            embed.setColor(process.env.bot1Embed_Color as ColorResolvable)
                             embed.setDescription(
                                 `<a:arrowright:970388686816550912> **${client.language.BETRAYAL[1]}(${invite.code} 'Enlace de Youtube') <a:arrowleft:893553168108093560>**`,
-                            );
+                            )
                             return interaction.editReply({
                                 embeds: [embed],
-                            });
-                        });
+                            })
+                        })
                     case 'chess':
                         client.discordTogether.createTogetherCode(channel.id, 'chess', 0).then(async invite => {
                             if (invite.code === 50013) {
@@ -248,13 +248,13 @@ module.exports = class sesions extends Command {
                                     .setFooter(
                                         interaction.member.user.username + '#' + interaction.member.user.discriminator,
                                         interaction.member.displayAvatarURL(),
-                                    );
+                                    )
                                 return interaction.editReply({
                                     embeds: [errorembed],
                                     ephemeral: true,
-                                });
+                                })
                             }
-                            const embed = new MessageEmbed();
+                            const embed = new MessageEmbed()
                             if (!invite.code) {
                                 const errorembed = new MessageEmbed()
                                     .setColor('RED')
@@ -263,20 +263,20 @@ module.exports = class sesions extends Command {
                                     .setFooter(
                                         interaction.member.user.username + '#' + interaction.member.user.discriminator,
                                         interaction.member.displayAvatarURL(),
-                                    );
+                                    )
                                 return interaction.editReply({
                                     embeds: [errorembed],
                                     ephemeral: true,
-                                });
+                                })
                             }
-                            embed.setColor(process.env.bot1Embed_Color as ColorResolvable);
+                            embed.setColor(process.env.bot1Embed_Color as ColorResolvable)
                             embed.setDescription(
                                 `<a:arrowright:970388686816550912> **${client.language.BETRAYAL[1]}(${invite.code} 'Enlace de Youtube') <a:arrowleft:893553168108093560>**`,
-                            );
+                            )
                             return interaction.editReply({
                                 embeds: [embed],
-                            });
-                        });
+                            })
+                        })
                 }
             }
 
@@ -302,6 +302,6 @@ module.exports = class sesions extends Command {
             //       .catch(e);
             //   } catch (e) { }
             // }
-        });
+        })
     }
-};
+}

@@ -1,7 +1,6 @@
+import Command from '../../../structures/Command.js'
 import { CommandInteraction } from 'discord.js'
-import Client from '../../../structures/Client'
-
-import Command from '../../../structures/Command'
+import client from '../../../bot.js'
 
 export default class reboot extends Command {
     constructor() {
@@ -22,7 +21,7 @@ export default class reboot extends Command {
                     description_localizations: {
                         'es-ES': 'Reiniciar una o todas las shards.',
                     },
-                    required: false,
+                    required: true,
                     choices: [
                         {
                             name: 'all',
@@ -43,18 +42,15 @@ export default class reboot extends Command {
             ],
         })
     }
-    async run(client: Client, interaction: CommandInteraction, args: any) {
-        if (!interaction.options.getString('choice') || interaction.options.getString('choice') == 'all') {
-            await interaction.editReply({ content: 'Reiniciando todas las shards...', embeds: [] })
+    override async run(interaction: CommandInteraction<'cached'>) {
+        const choice = interaction.options.getString('choice', true)
+        if (choice === 'all') {
+            await interaction.reply('Reiniciando todas las shards...')
             client.cluster.send({ type: 'reboot', shard: 'all' })
-        } else if (!interaction.options.getString('choice') || interaction.options.getString('choice') == 'shard') {
-            await interaction.editReply({
-                content: `Reinciando Shard ${interaction.options.getString('shard')}...`,
-                embeds: [],
-            })
+        } else if (choice === 'shard') {
+            await interaction.editReply(`Reinciando Shard ${interaction.options.getString('shard')}...`)
+            // TODO: Revisar si shard es opcional
             client.cluster.send({ type: 'reboot', shard: interaction.options.getNumber('shard') })
-        } else {
-            await interaction.reply('Invalid argument. Please specify a shard or "all".')
         }
     }
 }

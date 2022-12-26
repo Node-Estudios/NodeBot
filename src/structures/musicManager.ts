@@ -9,6 +9,10 @@ import client from '../bot.js'
 export default class musicManager extends EventEmitter {
     players = new Collection<string, Player>()
 
+    constructor() {
+        super()
+    }
+
     async createNewPlayer(vc: VoiceChannel, textChannel: TextChannel, guild: Guild, volume: number) {
         const player = new Player({
             musicManager: this,

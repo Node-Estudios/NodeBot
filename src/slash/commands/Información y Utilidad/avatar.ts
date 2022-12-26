@@ -1,9 +1,8 @@
-import { ColorResolvable, CommandInteraction, MessageEmbed } from 'discord.js'
-import Command from '../../../structures/Command'
-import Client from '../../../structures/Client'
+import { CommandInteraction, MessageEmbed } from 'discord.js'
+import Command from '../../../structures/Command.js'
 export default class avatar extends Command {
-    constructor(client: Client) {
-        super(client, {
+    constructor() {
+        super({
             name: 'avatar',
             description: 'Send your avatar!',
             name_localizations: {
@@ -32,41 +31,15 @@ export default class avatar extends Command {
             ],
         })
     }
-    async run(client: Client, interaction: CommandInteraction, args: any) {
-        let embed = new MessageEmbed()
-        let member
-        if (args[0]) {
-            member = await interaction.guild?.members.fetch(args[0]).catch(e => {
-                return interaction.user
-            })
-        }
-        if (args[0] && !member) {
-            const errorembed = new MessageEmbed()
-                .setColor('RED')
-                .setTitle(client.language.ERROREMBED)
-                .setDescription(client.language.AVATAR[1])
-                .setFooter({ text: interaction.user.username, iconURL: interaction.user.displayAvatarURL() })
-            return interaction.editReply({ embeds: [errorembed] })
-        }
-        if (!args[0]) {
-            member = interaction.user
-            embed.setColor(`00ff00` as ColorResolvable)
-            embed.setImage(
-                member.displayAvatarURL({
-                    dynamic: true,
-                    size: 4096,
-                }),
-            )
-            interaction.editReply({ embeds: [embed] })
-        } else {
-            embed.setFooter({ text: `Aqui tienes el avatar de <@${member?.id}>!` })
-            let memberAvatar = member?.displayAvatarURL({
-                dynamic: true,
-                size: 4096,
-            })
-            if (memberAvatar) embed.setImage(memberAvatar)
-            embed.setColor('#00ff00')
-            interaction.editReply({ embeds: [embed] })
-        }
+    override async run(interaction: CommandInteraction<'cached'>) {
+        const member = interaction.options.getMember('user') ?? interaction.member
+        interaction.editReply({
+            embeds: [
+                new MessageEmbed()
+                    .setColor('GREEN')
+                    .setImage(member.displayAvatarURL({ dynamic: true, size: 4096 }))
+                    .setFooter({ text: `Aqui tienes el avatar de <@${member.displayName}>!` }),
+            ],
+        })
     }
 }

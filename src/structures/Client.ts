@@ -1,6 +1,6 @@
 const defaultLang = await import('../lang/' + langFile.find(l => l.default)?.archivo)
 import { ClusterClient as HybridClient, getInfo } from 'discord-hybrid-sharding'
-import { Collection, Options, Client as ClientBase } from 'discord.js'
+import { Collection, Options, Client as ClientBase, ColorResolvable } from 'discord.js'
 import langFile from '../lang/index.json' assert { type: 'json' }
 import MusicManager from './musicManager.js'
 import ready from '../events/client/ready'
@@ -11,13 +11,13 @@ export default class Client extends ClientBase<true> {
     selectMenu: any
     messages: any
     language = defaultLang.default
-    snipes: Map<any, any>
     config: NodeJS.ProcessEnv
     devs: string[]
-    cluster: HybridClient
-    settings: { color: string }
-    clusters: Collection<unknown, unknown>
-    music = new MusicManager(this)
+    //@ts-ignores
+    cluster = new HybridClient(this)
+    settings: { color: ColorResolvable }
+    clusters = new Collection<string, unknown>()
+    music = new MusicManager()
     officialServerURL: string
     services: { sentry: { loggedIn: boolean } }
     constructor() {
@@ -39,9 +39,6 @@ export default class Client extends ClientBase<true> {
             shards: getInfo().SHARD_LIST,
             shardCount: getInfo().TOTAL_SHARDS,
         })
-        // @ts-ignore
-        this.cluster = new HybridClient(this)
-        this.clusters = new Collection()
 
         this.buttons = new Collection()
         this.services = { sentry: { loggedIn: false } }

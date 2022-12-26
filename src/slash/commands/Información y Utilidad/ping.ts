@@ -1,23 +1,24 @@
-import { ColorResolvable, CommandInteraction, GuildMember, MessageEmbed } from 'discord.js'
-import Command from '../../../structures/Command'
-import Client from '../../../structures/Client'
+import { CommandInteraction, MessageEmbed } from 'discord.js'
+import Command from '../../../structures/Command.js'
+import client from '../../../bot.js'
 export default class ping extends Command {
-    constructor(client: Client) {
-        super(client, {
+    constructor() {
+        super({
             name: 'ping',
             description: 'Muestra la latencia del Bot.',
             cooldown: 5,
         })
     }
-    async run(client: Client, interaction: CommandInteraction, args: any) {
-        console.log(client.shard)
-        let ping = Math.abs((interaction.createdTimestamp - Date.now()) / 1000)
+    override async run(interaction: CommandInteraction) {
+        const ping = Math.abs((interaction.createdTimestamp - Date.now()) / 1000)
         interaction.editReply({
             embeds: [
                 new MessageEmbed()
                     .setColor('GREEN')
-                    .addField(`API`, `${interaction.client.ws.ping}ms`, true)
-                    .addField(`Ping`, `${ping}ms`, true)
+                    .setFields(
+                        { name: `API`, value: `${client.ws.ping}ms`, inline: true },
+                        { name: 'PING', value: `${ping}ms`, inline: true },
+                    )
                     .setTitle('Ping')
                     .setTimestamp(),
             ],

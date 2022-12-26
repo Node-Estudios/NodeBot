@@ -59,7 +59,7 @@ export default class Player extends TrackPlayer {
         if (this.connection) this.connection.destroy()
     }
 
-    play(track: any) {
+    play(track?: any) {
         if (!track) super.play(this.queue.current)
         else super.play(track)
         clearTimeout(this.leaveTimeout)

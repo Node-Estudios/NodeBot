@@ -1,5 +1,6 @@
 import { ColorResolvable, CommandInteraction, MessageEmbed } from 'discord.js'
 import Command from '../../../structures/Command'
+//TODO: refactor this
 
 export default class embed extends Command {
     constructor() {

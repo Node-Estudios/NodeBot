@@ -22,7 +22,7 @@ export default class Command {
             userPermissions: options.permissions?.userPermissions || [],
         }
     }
-    async run(interaction: CommandInteraction, args: (string | number | boolean)[]) {
+    async run(interaction: CommandInteraction<'cached'>): Promise<any> {
         throw new Error(`Command ${this.name} doesn't provide a run method!`)
     }
 }
