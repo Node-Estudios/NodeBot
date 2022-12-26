@@ -1,8 +1,5 @@
 import { GuildMember } from 'discord.js'
 
-const {
-    Track: { Track, TrackPlaylist },
-} = require('yasha')
 interface YoutubeStreams {
     url: string
 }
@@ -33,13 +30,9 @@ export default class Queue extends Array {
         this.previous = null
     }
     add(track: any, index: number) {
-        if (!this.current) {
-            this.current = track
-        } else if (typeof index === 'undefined' && typeof index !== 'number') {
-            this.push(track)
-        } else {
-            this.splice(index, 0, track)
-        }
+        if (!this.current) this.current = track
+        else if (!index || typeof index !== 'number') this.push(track)
+        else this.splice(index, 0, track)
     }
 
     remove(index: number) {

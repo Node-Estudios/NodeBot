@@ -1,7 +1,8 @@
 import { Guild, Message, TextChannel, VoiceChannel } from 'discord.js'
 import { TrackPlayer, VoiceConnection } from 'yasha'
-import Queue from '../utils/music/queue'
-import musicManager from './musicManager'
+import musicManager from './musicManager.js'
+import logger from '../utils/logger.js'
+import Queue from './Queue.js'
 
 export default class Player extends TrackPlayer {
     trackRepeat: boolean
@@ -15,11 +16,11 @@ export default class Player extends TrackPlayer {
     manager: musicManager
     textChannel: TextChannel
     voiceChannel: VoiceChannel
-    message: Message | null
+    message?: Message
     guild: Guild
     leaveTimeout: any
     connection: any
-    bitrate: number | null
+    bitrate?: number
     subscription: any
     player: any
     constructor(options: any) {
@@ -32,7 +33,6 @@ export default class Player extends TrackPlayer {
         this.stayInVoice = false
 
         this.queue = new Queue()
-        this.message = null
 
         this.bitrate = options.bitrate
 
@@ -40,10 +40,6 @@ export default class Player extends TrackPlayer {
         this.playing = false
         this.paused = false
         this.volume = options.volume ? options.volume : 100
-
-        /*        if (this.music.players.has(options.guild.id)) {
-                    return this.music.players.get(options.guild.id);
-                }*/
 
         this.voiceChannel = options.voiceChannel
         this.textChannel = options.textChannel
@@ -56,9 +52,7 @@ export default class Player extends TrackPlayer {
             selfDeaf: true,
         })
         this.subscription = this.connection.subscribe(this)
-        this.connection.on('error', (error: any) => {
-            this.musicManager.logger.error(error)
-        })
+        this.connection.on('error', (error: Error) => this.musicManager.logger.error(error))
     }
 
     disconnect() {
@@ -66,41 +60,35 @@ export default class Player extends TrackPlayer {
     }
 
     play(track: any) {
-        if (!track) {
-            super.play(this.queue.current)
-        } else {
-            super.play(track)
-        }
+        if (!track) super.play(this.queue.current)
+        else super.play(track)
         clearTimeout(this.leaveTimeout)
         this.leaveTimeout = null
         this.start()
     }
     stop() {
-        this.manager.logger.debug('stopping player')
+        logger.debug('stopping player')
         this.manager.trackEnd(this, true)
     }
     async softDestroy(force: boolean) {
         try {
             if (this.stayInVoice && !force) return
 
-            if (this.message) {
-                // if (this.nowPlayingMessageInterval) clearInterval(this.nowPlayingMessageInterval);
-                // eslint-disable-next-line no-empty-function
-                await this.message.edit({ components: [] }).catch(() => {})
-            }
+            if (this.message) await this.message.edit({ components: [] }).catch(() => null)
+
             if (this.connection) this.disconnect()
             if (this.player) super.destroy()
 
             this.manager.players.delete(this.guild.id)
         } catch (e) {
-            this.manager.logger.error(e)
+            logger.error(e)
         }
     }
 
     async destroy(force: boolean) {
         super.destroy()
 
-        await this.softDestroy(force).catch((e: any) => this.manager.logger.error(e))
+        await this.softDestroy(force).catch(logger.error)
     }
 
     skip() {
@@ -144,9 +132,7 @@ export default class Player extends TrackPlayer {
         if (repeat) {
             this.trackRepeat = true
             this.queueRepeat = false
-        } else {
-            this.trackRepeat = false
-        }
+        } else this.trackRepeat = false
 
         return this
     }
@@ -155,9 +141,7 @@ export default class Player extends TrackPlayer {
         if (repeat) {
             this.trackRepeat = false
             this.queueRepeat = true
-        } else {
-            this.queueRepeat = false
-        }
+        } else this.queueRepeat = false
 
         return this
     }
@@ -174,10 +158,9 @@ export default class Player extends TrackPlayer {
     }
 
     seek(time: number) {
-        if (!this.queue.current) return undefined
-        time = Number(time)
+        if (!this.queue.current) return
 
         //set timer in the player too
-        super.seek(time)
+        super.seek(Number(time))
     }
 }

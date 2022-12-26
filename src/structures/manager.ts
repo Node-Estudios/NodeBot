@@ -115,17 +115,10 @@ export default class NodeManager extends Manager {
                 maxMissedHeartbeats: 5, // Maximum amount of missed Heartbeats until Cluster will get respawned
             }),
         )
-        this.on('debug', (message: any) => {
-            logger.debug(message)
-        })
+        this.on('debug', logger.debug)
         // if (numClustersReady == this.totalClusters)
-        new RESTAPI(this)
-        this.on('clusterReady', (cluster: Cluster) => {
-            // console.log('numClustersReadyBefore:', numClustersReady)
-            // numClustersReady++
-            // console.log('numClustersReady:', numClustersReady, this.totalClusters)
-            logger.startUp(`Cluster ${cluster.id} is ready!`)
-        })
+        RESTAPI(this)
+        this.on('clusterReady', (cluster: Cluster) => logger.startUp(`Cluster ${cluster.id} is ready!`))
         this.on('clusterCreate', (cluster: Cluster) => {
             // cluster.on('message', (message: any) => {
             // logger.debug("totalClusters: ", this.totalClusters)
@@ -141,7 +134,5 @@ export default class NodeManager extends Manager {
 
             logger.startUp(`Launched cluster ${cluster.id}`)
         })
-        if (process.env.NODE_ENV != 'development') {
-        }
     }
 }

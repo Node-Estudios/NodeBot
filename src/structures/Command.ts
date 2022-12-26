@@ -1,14 +1,13 @@
 import { CommandInteraction } from 'discord.js'
 export default class Command {
-    opciones: any
     name: string
-    description: any
+    description: string
     args: any
-    cooldown: any
+    cooldown: number
     options: any
     name_localizations: any
     description_localizations: any
-    permissions: { dev: any; botPermissions: any; userPermissions: any }
+    permissions = { dev: false, botPermissions: [], userPermissions: [] }
     constructor(options: any) {
         this.name = options.name
         this.description = options.description
@@ -18,9 +17,9 @@ export default class Command {
         this.name_localizations = options.name_localizations || null
         this.description_localizations = options.description_localizations || null
         this.permissions = {
-            dev: options.permissions ? options.permissions.dev || false : false,
-            botPermissions: options.permissions ? options.permissions.botPermissions || [] : [],
-            userPermissions: options.permissions ? options.permissions.userPermissions || [] : [],
+            dev: !!options.permissions?.dev,
+            botPermissions: options.permissions?.botPermissions || [],
+            userPermissions: options.permissions?.userPermissions || [],
         }
     }
     async run(interaction: CommandInteraction, args: (string | number | boolean)[]) {

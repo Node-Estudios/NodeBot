@@ -1,31 +1,26 @@
-import cors from 'cors'
+import logger from '../utils/logger.js'
+import Manager from './manager.js'
 import express from 'express'
-import Manager from './manager'
+import cors from 'cors'
 
 //funcione logger:
 //Logger.log, Logger.error, Logger.warn, Logger.info, Logger.debug
 
-export default class IPChandler {
-    private manager: Manager
-    //Iniciamos el constructor
-    // * @param {Manager} manager
-    // * @memberof IPChandler
-    constructor(manager: Manager) {
-        this.manager = manager
-        const app = express()
-        app.use(cors())
-        //Definimos las variables necesarias en el oncstructor para la rest API
+export default function (manager: Manager) {
+    const app = express()
+    app.use(cors())
+    //Definimos las variables necesarias en el oncstructor para la rest API
 
-        let result: any
-        app.get('/statistics', async (req: express.Request, res: express.Response) => {
-            res.json(result)
-        })
+    let result: any[] = []
+    app.get('/statistics', async (req: express.Request, res: express.Response) => {
+        res.json(result)
+    })
 
-        // Iniciamos el servidor en el puerto 3000
-        app.listen(3000, () => {
-            manager.logger.log('Server listening on port 3000')
-        })
-        /*
+    // Iniciamos el servidor en el puerto 3000
+    app.listen(3000, () => {
+        logger.log('Server listening on port 3000')
+    })
+    /*
             & My function for get data from clusters, it only took me 4 hours ._.
             ? Example output:
             [{
@@ -112,91 +107,88 @@ export default class IPChandler {
             
         */
 
-        async function getData() {
-            /* Posible responses:
+    async function getData() {
+        /* Posible responses:
                     ~ 503: Shards still spawning
                     * 200: OK
                     ! 500: Internal error (inside cluster event ready)
                 */
-            try {
-                if (manager.queue.queue.length !== 0) return
-                result = []
-                // Convertimos el objeto Map en un array y lo iteramos con map
-                const Promises = Array.from(manager.clusters).map(([key, cluster]) => {
-                    return cluster.request({ content: 'statistics' }).then((data: any) => {
-                        Object.assign(data[0], { cluster: cluster.id, shardList: cluster.shardList })
-                        result.push(data[0])
-                        return data[0]
-                    })
+        try {
+            if (manager.queue.queue.length !== 0) return
+            result = []
+            // Convertimos el objeto Map en un array y lo iteramos con map
+            const Promises = Array.from(manager.clusters).map(([key, cluster]) => {
+                return cluster.request({ content: 'statistics' }).then((data: any) => {
+                    Object.assign(data[0], { cluster: cluster.id, shardList: cluster.shardList })
+                    result.push(data[0])
+                    return data[0]
                 })
-                // Esperamos a que todas las promesas se completen
-                await Promise.all(Promises).then(data => {
-                    // console.log(result)
-                    if (data.length === 0) return (result = { error: 'Shards still spawning', status: 503 })
-                    const sum = result.reduce(
-                        (
-                            acc: {
-                                guilds: any
-                                players: any
-                                memoryUsage: string
-                                members: any
-                                channels: any
-                                playingPlayers: any
-                            },
-                            element: {
-                                guilds: any
-                                players: any
-                                memoryUsage: string
-                                members: any
-                                channels: any
-                                playingPlayers: any
-                            },
-                        ) => {
-                            // Accedemos a las propiedades del elemento actual del array y las sumamos al acumulador
-                            return {
-                                guilds: acc.guilds + element.guilds,
-                                players: acc.players + element.players,
-                                memoryUsage: parseInt(acc.memoryUsage) + parseInt(element.memoryUsage),
-                                members: acc.members + element.members,
-                                channels: acc.channels + element.channels,
-                                playingPlayers: acc.playingPlayers + element.playingPlayers,
-                            }
+            })
+            // Esperamos a que todas las promesas se completen
+            await Promise.all(Promises).then(data => {
+                // console.log(result)
+                if (data.length === 0) return (result = [{ error: 'Shards still spawning', status: 503 }])
+                const sum = result.reduce(
+                    (
+                        acc: {
+                            guilds: any
+                            players: any
+                            memoryUsage: string
+                            members: any
+                            channels: any
+                            playingPlayers: any
                         },
-                        { guilds: 0, playingPlayers: 0, players: 0, memoryUsage: 0, members: 0, channels: 0 },
-                    )
-                    Object.assign(sum, {
-                        cluster: -1,
-                        dateNow: Date.now(),
-                        dateHumanNow: new Date().toLocaleString(undefined, {
-                            year: 'numeric',
-                            month: '2-digit',
-                            day: '2-digit',
-                            weekday: 'long',
-                            hour: '2-digit',
-                            hour12: false,
-                            minute: '2-digit',
-                            second: '2-digit',
-                        }),
-                        status: { error: '', status: 200 },
-                    })
-                    // Agregamos la suma al final del array
-                    result.push(sum)
-                    // manager.logger.log(`Guilds: ${sum.guilds} | Playing Players: ${sum.playingPlayers}`)
+                        element: {
+                            guilds: any
+                            players: any
+                            memoryUsage: string
+                            members: any
+                            channels: any
+                            playingPlayers: any
+                        },
+                    ) => {
+                        // Accedemos a las propiedades del elemento actual del array y las sumamos al acumulador
+                        return {
+                            guilds: acc.guilds + element.guilds,
+                            players: acc.players + element.players,
+                            memoryUsage: parseInt(acc.memoryUsage) + parseInt(element.memoryUsage),
+                            members: acc.members + element.members,
+                            channels: acc.channels + element.channels,
+                            playingPlayers: acc.playingPlayers + element.playingPlayers,
+                        }
+                    },
+                    { guilds: 0, playingPlayers: 0, players: 0, memoryUsage: 0, members: 0, channels: 0 },
+                )
+                Object.assign(sum, {
+                    cluster: -1,
+                    dateNow: Date.now(),
+                    dateHumanNow: new Date().toLocaleString(undefined, {
+                        year: 'numeric',
+                        month: '2-digit',
+                        day: '2-digit',
+                        weekday: 'long',
+                        hour: '2-digit',
+                        hour12: false,
+                        minute: '2-digit',
+                        second: '2-digit',
+                    }),
+                    status: { error: '', status: 200 },
                 })
-            } catch (e: any) {
-                if (e) manager.logger.error(new Error(e))
-                // * Status 500 is Internal Server Error
-                result.push({
-                    error: 'Statistics internal error, call the developer with the next id',
-                    status: 500,
-                })
-            }
+                // Agregamos la suma al final del array
+                result.push(sum)
+                // manager.logger.log(`Guilds: ${sum.guilds} | Playing Players: ${sum.playingPlayers}`)
+            })
+        } catch (e: any) {
+            if (e) logger.error(new Error(e))
+            // * Status 500 is Internal Server Error
+            result.push({
+                error: 'Statistics internal error, call the developer with the next id',
+                status: 500,
+            })
         }
-        getData()
-        setInterval(() => {
-            getData()
-        }, 6000)
     }
-
-    // Primera función para inicializar el rest API
+    getData()
+    setInterval(() => {
+        getData()
+    }, 6000)
 }
