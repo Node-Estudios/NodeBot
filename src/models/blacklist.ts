@@ -1,12 +1,13 @@
-const {
-    Schema,
-    model
-} = require('mongoose');
+import { Schema, model } from 'mongoose'
 
-const modelo = Schema({
-    userID: { type: String, required: true },
-}, {
-    collection: 'BlackList'
-})
-
-module.exports = model('BlackList', modelo)
+export default model(
+    'BlackList',
+    new Schema(
+        {
+            userID: { type: String, required: true },
+        },
+        {
+            collection: 'BlackList',
+        },
+    ),
+)

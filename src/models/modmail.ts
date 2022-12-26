@@ -1,13 +1,17 @@
-const { Schema, model } = require('mongoose');
+import { Schema, model } from 'mongoose'
 
-const modelo = Schema({
-    guildID: { type: String, required: true },
-    userID: { type: String, required: true },
-    channelID: { type: String, required: true },
-    messages: { type: Array, required: true },
-    webhookURL: { type: String, required: true },
-}, {
-    collection: "modMails"
-})
-
-module.exports = model('modMails', modelo)
+export default model(
+    'modMails',
+    new Schema(
+        {
+            guildID: { type: String, required: true },
+            userID: { type: String, required: true },
+            channelID: { type: String, required: true },
+            messages: { type: Array, required: true },
+            webhookURL: { type: String, required: true },
+        },
+        {
+            collection: 'modMails',
+        },
+    ),
+)

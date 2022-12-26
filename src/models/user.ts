@@ -1,58 +1,58 @@
-const mongoose = require("mongoose");
+import { model, Schema } from 'mongoose'
 
-// const Premium = new mongoose.Schema({
+// const Premium = new Schema({
 //   Enabled: { type: Boolean, required: true },
 //   Date: { type: String },
 // });
 
-// const EarlyPremium = new mongoose.Schema({
+// const EarlyPremium = new Schema({
 //   Enabled: { type: Boolean, required: true },
 //   Date: { type: String },
 // });
 
-// const Support = new mongoose.Schema({
+// const Support = new Schema({
 //   Enabled: { type: Boolean, required: true },
 //   Date: { type: String },
 // });
 
-const Tester = new mongoose.Schema({
-  Enabled: { type: Boolean, required: true },
-  Date: { type: String },
-});
+const Tester = new Schema({
+    Enabled: { type: Boolean, required: true },
+    Date: { type: String },
+})
 
-// const Booster = new mongoose.Schema({
+// const Booster = new Schema({
 //   Enabled: { type: Boolean, required: true },
 //   Date: { type: String },
 // });
 
-// const Notifications = new mongoose.Schema({
+// const Notifications = new Schema({
 //   Enabled: { type: Boolean, required: true },
 //   Date: { type: String },
 // });
 
-const Developer = new mongoose.Schema({
-  Enabled: { type: Boolean, required: true },
-  Date: { type: String },
-});
+const Developer = new Schema({
+    Enabled: { type: Boolean, required: true },
+    Date: { type: String },
+})
 
-// const Event25k = new mongoose.Schema({
+// const Event25k = new Schema({
 //     CODE: { type: String, required: true },
 //     SERVERS: { type: String },
 //     USERS: { type: String },
 // })
 
-const Roles = new mongoose.Schema({
-//   Premium: Premium,
-  Developer: Developer,
-//   EarlyPremium: EarlyPremium,
-  Tester: Tester,
-//   Notifications: Notifications,
-//   Booster: Booster,
-//   Support: Support,
-//   Event25k: Event25k
-});
+const Roles = new Schema({
+    //   Premium: Premium,
+    Developer: Developer,
+    //   EarlyPremium: EarlyPremium,
+    Tester: Tester,
+    //   Notifications: Notifications,
+    //   Booster: Booster,
+    //   Support: Support,
+    //   Event25k: Event25k
+})
 
-// const Enviadas = new mongoose.Schema({
+// const Enviadas = new Schema({
 //   bite: { type: Number },
 //   blush: { type: Number },
 //   bonk: { type: Number },
@@ -104,7 +104,7 @@ const Roles = new mongoose.Schema({
 //   yes: { type: Number },
 // });
 
-// const Recibidas = new mongoose.Schema({
+// const Recibidas = new Schema({
 //   bite: { type: Number },
 //   blush: { type: Number },
 //   bonk: { type: Number },
@@ -156,26 +156,27 @@ const Roles = new mongoose.Schema({
 //   yes: { type: Number },
 // });
 
-// const Interacciones = new mongoose.Schema({
+// const Interacciones = new Schema({
 //   Enviadas: Enviadas,
 //   Recibidas: Recibidas,
 // });
 
-// const Eventos = new mongoose.Schema({
+// const Eventos = new Schema({
 //   Event25k: Event25k
 // })
 
-const model = new mongoose.Schema(
-  {
-    USERID: { type: String, required: true },
-    LANG: { type: String },
-    COMMANDS_EXECUTED: { type: Number },
-    BANNED: { type: Boolean },
-    OLDMODE: { type: Boolean },
-    Roles: Roles,
-    // Interacciones: Interacciones,
-  },
-  { collection: "Users" }
-);
-
-module.exports = mongoose.model("Users", model);
+module.exports = model(
+    'Users',
+    new Schema(
+        {
+            USERID: { type: String, required: true },
+            LANG: { type: String },
+            COMMANDS_EXECUTED: { type: Number },
+            BANNED: { type: Boolean },
+            OLDMODE: { type: Boolean },
+            Roles: Roles,
+            // Interacciones: Interacciones,
+        },
+        { collection: 'Users' },
+    ),
+)
