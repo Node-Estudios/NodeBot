@@ -108,7 +108,7 @@ export default class help extends Command {
         //         )
         //         .setTimestamp()
 
-        //     interaction.editReply({
+        //     interaction.reply({
         //         embeds: [embed2],
         //     })
     }

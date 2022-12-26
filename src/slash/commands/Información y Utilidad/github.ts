@@ -43,7 +43,7 @@ export default class github extends Command {
             .then(r => r.json())
             .catch(() => null)
         if (!account?.id)
-            return interaction.editReply({
+            return interaction.reply({
                 embeds: [
                     new MessageEmbed()
                         .setColor('RED')

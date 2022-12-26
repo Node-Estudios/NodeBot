@@ -33,7 +33,7 @@ export default class avatar extends Command {
     }
     override async run(interaction: CommandInteraction<'cached'>) {
         const member = interaction.options.getMember('user') ?? interaction.member
-        interaction.editReply({
+        interaction.reply({
             embeds: [
                 new MessageEmbed()
                     .setColor('GREEN')

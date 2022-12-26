@@ -40,7 +40,7 @@ export default class play extends Command {
     }
     override async run(interaction: CommandInteraction<'cached'>) {
         // if (!(interaction.member as GuildMember).voice.channel)
-        //     return interaction.editReply({ content: 'No estás en un canal de voz', embeds: [] });
+        //     return interaction.reply({ content: 'No estás en un canal de voz', embeds: [] });
         /*        client.cluster.request({ content: { system: 'music', command: 'play', data } }).then(res => {
                     console.log(res);
                 });*/
@@ -55,7 +55,7 @@ export default class play extends Command {
             player.connect()
         }
         if (player.voiceChannel.id !== interaction.member.voice.channel?.id)
-            return interaction.editReply({
+            return interaction.reply({
                 embeds: [
                     new MessageEmbed().setColor(15548997).setFooter({
                         text: client.language.PLAY[2],
@@ -72,7 +72,7 @@ export default class play extends Command {
                 search = await client.music.search(song, interaction.member, source)
             } catch (e) {
                 logger.error(e)
-                interaction.editReply({
+                interaction.reply({
                     embeds: [
                         new MessageEmbed().setColor(15548997).setFooter({
                             text: client.language.PLAY[9],
@@ -142,7 +142,7 @@ export default class play extends Command {
             //         if (search.thumbnails[0])
             //             e.setThumbnail(search.thumbnails[0])
             //     }
-            //     interaction.editReply({ embeds: [e], content: '' })
+            //     interaction.reply({ embeds: [e], content: '' })
             // }
 
             player.queue.add(search)

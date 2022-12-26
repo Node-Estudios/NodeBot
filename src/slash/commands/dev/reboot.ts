@@ -48,7 +48,7 @@ export default class reboot extends Command {
             await interaction.reply('Reiniciando todas las shards...')
             client.cluster.send({ type: 'reboot', shard: 'all' })
         } else if (choice === 'shard') {
-            await interaction.editReply(`Reinciando Shard ${interaction.options.getString('shard')}...`)
+            await interaction.reply(`Reinciando Shard ${interaction.options.getString('shard')}...`)
             // TODO: Revisar si shard es opcional
             client.cluster.send({ type: 'reboot', shard: interaction.options.getNumber('shard') })
         }

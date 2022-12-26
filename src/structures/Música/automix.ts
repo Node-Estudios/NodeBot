@@ -1,17 +1,18 @@
-import { Client, CommandInteraction, MessageEmbed, ColorResolvable } from 'discord.js';
-import Command from '../../structures/command.js';
-require('dotenv').config();
-import getUsedBot from '../../utils/getUsedBot';
-import bot1missing from './functions/bot1missing';
-import bot2missing from './functions/bot2missing';
-import bot3missing from './functions/bot3missing';
-import bot4missing from './functions/bot4missing';
-import getRandomPhrase from '../../utils/getRandomPhrase.js';
-import simplestDiscordWebhook from 'simplest-discord-webhook';
-let webhookClient = new simplestDiscordWebhook(process.env.errorWebhookURL);
+import { CommandInteraction, MessageEmbed, ColorResolvable } from 'discord.js'
+import Command from '../../structures/Command.js'
+require('dotenv').config()
+// import getUsedBot from '../../utils/getUsedBot'
+import bot1missing from './functions/bot1missing'
+import bot2missing from './functions/bot2missing'
+import bot3missing from './functions/bot3missing'
+import bot4missing from './functions/bot4missing'
+import getRandomPhrase from '../../utils/getRandomPhrase.js'
+import simplestDiscordWebhook from 'simplest-discord-webhook'
+import client from '../../bot.js'
+let webhookClient = new simplestDiscordWebhook(process.env.errorWebhookURL)
 module.exports = class automix extends Command {
-    constructor(client) {
-        super(client, {
+    constructor() {
+        super({
             name: 'automix',
             description: 'Create a playlist from a random selection of tracks related to a song.',
             name_localizations: {
@@ -35,9 +36,9 @@ module.exports = class automix extends Command {
                     required: true,
                 },
             ],
-        });
+        })
     }
-    async run(client, interaction, args) {
+    override async run(interaction: CommandInteraction<'cached'>) {
         const embed = new MessageEmbed()
             .setDescription(client.language.AUTOMIX[2])
             .setColor(process.env.bot1Embed_Color as ColorResolvable)
@@ -46,42 +47,42 @@ module.exports = class automix extends Command {
                 interaction.member.displayAvatarURL({
                     dynamic: true,
                 }),
-            );
-        await interaction.editReply({
+            )
+        await interaction.reply({
             embeds: [embed],
-        });
+        })
         if (!interaction.member.voice.channel) {
             const errorembed = new MessageEmbed().setColor(15548997).setFooter(
                 getRandomPhrase(client.language.AUTOMIX[1]),
                 interaction.member.displayAvatarURL({
                     dynamic: true,
                 }),
-            );
-            return interaction.editReply({
+            )
+            return interaction.reply({
                 embeds: [errorembed],
                 ephemeral: true,
-            });
+            })
         }
 
-        const data: any[] = [];
+        const data: any[] = []
 
-        data.push(args);
-        data.push(interaction.member.user.username);
-        data.push(interaction.member.user.discriminator);
+        data.push(args)
+        data.push(interaction.member.user.username)
+        data.push(interaction.member.user.discriminator)
         data.push(
             interaction.member.displayAvatarURL({
                 dynamic: true,
             }),
-        );
-        data.push(interaction.member.voice.channelId);
-        data.push(interaction.guild.id);
-        data.push(interaction.channel.id);
-        data.push(interaction.member);
-        data.push(interaction.member.voice);
-        data.push(interaction.guild.shardId);
+        )
+        data.push(interaction.member.voice.channelId)
+        data.push(interaction.guild.id)
+        data.push(interaction.channel.id)
+        data.push(interaction.member)
+        data.push(interaction.member.voice)
+        data.push(interaction.guild.shardId)
 
-        let bot1Availability = false;
-        let addToQueue = false;
+        let bot1Availability = false
+        let addToQueue = false
         await interaction.guild.members
             .fetch(process.env.bot1id)
             .then(member => {
@@ -99,10 +100,10 @@ module.exports = class automix extends Command {
                                 })
                                     .then(response => response.json())
                                     .then(embed => {
-                                        interaction.editReply({
+                                        interaction.reply({
                                             embeds: [embed],
                                             ephemeral: false,
-                                        });
+                                        })
                                     })
                                     .catch(() => {
                                         const errorembed = new MessageEmbed().setColor(15548997).setFooter(
@@ -110,10 +111,10 @@ module.exports = class automix extends Command {
                                             client.user.displayAvatarURL({
                                                 dynamic: true,
                                             }),
-                                        );
-                                        webhookClient.send(errorembed);
-                                        bot2missing(client, interaction, data, 'automix');
-                                    });
+                                        )
+                                        webhookClient.send(errorembed)
+                                        bot2missing(client, interaction, data, 'automix')
+                                    })
 
                             case process.env.bot3id:
                                 fetch(`http://${process.env.IP}:${process.env.bot3Port}/api/v1/automix`, {
@@ -126,10 +127,10 @@ module.exports = class automix extends Command {
                                 })
                                     .then(response => response.json())
                                     .then(embed => {
-                                        interaction.editReply({
+                                        interaction.reply({
                                             embeds: [embed],
                                             ephemeral: false,
-                                        });
+                                        })
                                     })
                                     .catch(() => {
                                         const errorembed = new MessageEmbed().setColor(15548997).setFooter(
@@ -137,10 +138,10 @@ module.exports = class automix extends Command {
                                             client.user.displayAvatarURL({
                                                 dynamic: true,
                                             }),
-                                        );
-                                        webhookClient.send(errorembed);
-                                        bot3missing(client, interaction, data, 'automix');
-                                    });
+                                        )
+                                        webhookClient.send(errorembed)
+                                        bot3missing(client, interaction, data, 'automix')
+                                    })
                             case process.env.bot4id:
                                 fetch(`http://${process.env.IP}:${process.env.bot4Port}/api/v1/automix`, {
                                     method: 'POST',
@@ -152,10 +153,10 @@ module.exports = class automix extends Command {
                                 })
                                     .then(response => response.json())
                                     .then(embed => {
-                                        interaction.editReply({
+                                        interaction.reply({
                                             embeds: [embed],
                                             ephemeral: false,
-                                        });
+                                        })
                                     })
                                     .catch(() => {
                                         const errorembed = new MessageEmbed().setColor(15548997).setFooter(
@@ -163,19 +164,18 @@ module.exports = class automix extends Command {
                                             client.user.displayAvatarURL({
                                                 dynamic: true,
                                             }),
-                                        );
-                                        webhookClient.send(errorembed);
-                                        bot4missing(client, interaction, data, 'automix');
-                                    });
+                                        )
+                                        webhookClient.send(errorembed)
+                                        bot4missing(client, interaction, data, 'automix')
+                                    })
                         }
-                    });
-                    if (member.voice.channel && member.voice.channel == interaction.member.voice.channel)
-                        addToQueue = true;
+                    })
+                    if (member.voice.channel == interaction.member.voice.channel) addToQueue = true
                 } else {
-                    bot1Availability = true;
+                    bot1Availability = true
                 }
             })
-            .catch(e => {});
+            .catch(e => {})
         if (bot1Availability || addToQueue) {
             fetch(`http://${process.env.IP}:${process.env.bot1Port}/api/v1/automix`, {
                 method: 'POST',
@@ -187,10 +187,10 @@ module.exports = class automix extends Command {
             })
                 .then(response => response.json())
                 .then(embed => {
-                    interaction.editReply({
+                    interaction.reply({
                         embeds: [embed],
                         ephemeral: false,
-                    });
+                    })
                 })
                 .catch(() => {
                     const errorembed = new MessageEmbed().setColor(15548997).setFooter(
@@ -198,25 +198,25 @@ module.exports = class automix extends Command {
                         client.user.displayAvatarURL({
                             dynamic: true,
                         }),
-                    );
-                    webhookClient.send(errorembed);
-                    bot1missing(client, interaction, data, 'automix');
-                });
+                    )
+                    webhookClient.send(errorembed)
+                    bot1missing(client, interaction, data, 'automix')
+                })
         } else {
-            let bot2Availability;
-            let addToQueue2;
+            let bot2Availability
+            let addToQueue2
             await interaction.guild.members
                 .fetch(process.env.bot2id)
                 .then(member => {
-                    member.voice.channel ? (bot2Availability = false) : (bot2Availability = true);
+                    member.voice.channel ? (bot2Availability = false) : (bot2Availability = true)
                     if (member.voice.channel && member.voice.channel != interaction.member.voice.channel)
-                        bot2Availability = false;
+                        bot2Availability = false
                     if (member.voice.channel && member.voice.channel == interaction.member.voice.channel)
-                        addToQueue2 = true;
+                        addToQueue2 = true
                 })
                 .catch(e => {
-                    bot2Availability = false;
-                });
+                    bot2Availability = false
+                })
 
             if (bot2Availability || addToQueue2) {
                 fetch(`http://${process.env.IP}:${process.env.bot2Port}/api/v1/automix`, {
@@ -229,10 +229,10 @@ module.exports = class automix extends Command {
                 })
                     .then(response => response.json())
                     .then(embed => {
-                        interaction.editReply({
+                        interaction.reply({
                             embeds: [embed],
                             ephemeral: false,
-                        });
+                        })
                     })
                     .catch(() => {
                         const errorembed = new MessageEmbed().setColor(15548997).setFooter(
@@ -240,25 +240,25 @@ module.exports = class automix extends Command {
                             client.user.displayAvatarURL({
                                 dynamic: true,
                             }),
-                        );
-                        webhookClient.send(errorembed);
-                        bot2missing(client, interaction, data, 'automix');
-                    });
+                        )
+                        webhookClient.send(errorembed)
+                        bot2missing(client, interaction, data, 'automix')
+                    })
             } else {
-                let bot3Availability;
-                let addToQueue3;
+                let bot3Availability
+                let addToQueue3
                 await interaction.guild.members
                     .fetch(process.env.bot3id)
                     .then(member => {
-                        member.voice.channel ? (bot3Availability = false) : (bot3Availability = true);
+                        member.voice.channel ? (bot3Availability = false) : (bot3Availability = true)
                         if (member.voice.channel && member.voice.channel != interaction.member.voice.channel)
-                            bot3Availability = false;
+                            bot3Availability = false
                         if (member.voice.channel && member.voice.channel == interaction.member.voice.channel)
-                            addToQueue3 = true;
+                            addToQueue3 = true
                     })
                     .catch(e => {
-                        bot3Availability = false;
-                    });
+                        bot3Availability = false
+                    })
 
                 if (bot3Availability || addToQueue3) {
                     fetch(`http://${process.env.IP}:${process.env.bot3Port}/api/v1/automix`, {
@@ -271,10 +271,10 @@ module.exports = class automix extends Command {
                     })
                         .then(response => response.json())
                         .then(embed => {
-                            interaction.editReply({
+                            interaction.reply({
                                 embeds: [embed],
                                 ephemeral: false,
-                            });
+                            })
                         })
                         .catch(() => {
                             const errorembed = new MessageEmbed().setColor(15548997).setFooter(
@@ -282,25 +282,25 @@ module.exports = class automix extends Command {
                                 client.user.displayAvatarURL({
                                     dynamic: true,
                                 }),
-                            );
-                            webhookClient.send(errorembed);
-                            bot3missing(client, interaction, data, 'automix');
-                        });
+                            )
+                            webhookClient.send(errorembed)
+                            bot3missing(client, interaction, data, 'automix')
+                        })
                 } else {
-                    let bot4Availability;
-                    let addToQueue4;
+                    let bot4Availability
+                    let addToQueue4
                     await interaction.guild.members
                         .fetch(process.env.bot4id)
                         .then(member => {
-                            member.voice.channel ? (bot4Availability = false) : (bot4Availability = true);
+                            member.voice.channel ? (bot4Availability = false) : (bot4Availability = true)
                             if (member.voice.channel && member.voice.channel != interaction.member.voice.channel)
-                                bot4Availability = false;
+                                bot4Availability = false
                             if (member.voice.channel && member.voice.channel == interaction.member.voice.channel)
-                                addToQueue4 = true;
+                                addToQueue4 = true
                         })
                         .catch(e => {
-                            bot4Availability = false;
-                        });
+                            bot4Availability = false
+                        })
 
                     if (bot4Availability || addToQueue4) {
                         fetch(`http://${process.env.IP}:${process.env.bot4Port}/api/v1/automix`, {
@@ -312,10 +312,10 @@ module.exports = class automix extends Command {
                         })
                             .then(response => response.json())
                             .then(embed => {
-                                interaction.editReply({
+                                interaction.reply({
                                     embeds: [embed],
                                     ephemeral: false,
-                                });
+                                })
                             })
                             .catch(() => {
                                 const errorembed = new MessageEmbed().setColor(15548997).setFooter(
@@ -323,22 +323,22 @@ module.exports = class automix extends Command {
                                     client.user.displayAvatarURL({
                                         dynamic: true,
                                     }),
-                                );
-                                webhookClient.send(errorembed);
-                                bot4missing(client, interaction, data, 'automix');
-                            });
+                                )
+                                webhookClient.send(errorembed)
+                                bot4missing(client, interaction, data, 'automix')
+                            })
                     } else {
                         const errorembed = new MessageEmbed().setColor(15548997).setFooter(
                             'El bot4 ha dado error en el automix',
                             client.user.displayAvatarURL({
                                 dynamic: true,
                             }),
-                        );
-                        webhookClient.send(errorembed);
-                        bot4missing(client, interaction, data, 'automix');
+                        )
+                        webhookClient.send(errorembed)
+                        bot4missing(client, interaction, data, 'automix')
                     }
                 }
             }
         }
     }
-};
+}

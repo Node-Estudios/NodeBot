@@ -85,6 +85,6 @@ export default class roleinfo extends Command {
             )
             .setImage(interaction.guild.iconURL({ dynamic: true }) ?? '')
 
-        return interaction.editReply({ embeds: [rol] })
+        return interaction.reply({ embeds: [rol] })
     }
 }

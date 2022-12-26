@@ -11,7 +11,7 @@ export default class ping extends Command {
     }
     override async run(interaction: CommandInteraction) {
         const ping = Math.abs((interaction.createdTimestamp - Date.now()) / 1000)
-        interaction.editReply({
+        interaction.reply({
             embeds: [
                 new MessageEmbed()
                     .setColor('GREEN')

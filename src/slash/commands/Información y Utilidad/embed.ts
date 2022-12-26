@@ -1,4 +1,5 @@
-import { ColorResolvable, CommandInteraction, MessageEmbed } from 'discord.js'
+import { ColorResolvable, CommandInteraction, MessageEmbed, TextChannel } from 'discord.js'
+import client from '../../../bot'
 import Command from '../../../structures/Command'
 //TODO: refactor this
 
@@ -35,181 +36,12 @@ export default class embed extends Command {
                     description_localizations: {
                         'es-ES': 'Color a elegir del embed.',
                     },
-                    choices: [
-                        {
-                            name: 'Default',
-                            name_localizations: {
-                                'es-ES': 'Defecto',
-                            },
-                            value: 'default',
-                        },
-                        {
-                            name: 'Aqua',
-                            name_localizations: {
-                                'es-ES': 'Agua',
-                            },
-                            value: 'aqua',
-                        },
-                        {
-                            name: 'Dark Aqua',
-                            name_localizations: {
-                                'es-ES': 'Agua Oscuro',
-                            },
-                            value: 'DARK_AQUA',
-                        },
-                        {
-                            name: 'Green',
-                            name_localizations: {
-                                'es-ES': 'Verde',
-                            },
-                            value: 'GREEN',
-                        },
-                        {
-                            name: 'Dark Green',
-                            name_localizations: {
-                                'es-ES': 'Verde Oscuro',
-                            },
-                            value: 'DARK_GREEN',
-                        },
-                        {
-                            name: 'Blue',
-                            name_localizations: {
-                                'es-ES': 'Azul',
-                            },
-                            value: 'BLUE',
-                        },
-                        {
-                            name: 'Dark Blue',
-                            name_localizations: {
-                                'es-ES': 'Azul Oscuro',
-                            },
-                            value: 'DARK_BLUE',
-                        },
-                        {
-                            name: 'Purple',
-                            name_localizations: {
-                                'es-ES': 'Morado',
-                            },
-                            value: 'PURPLE',
-                        },
-                        {
-                            name: 'Dark Purple',
-                            name_localizations: {
-                                'es-ES': 'Morado Oscuro',
-                            },
-                            value: 'DARK_PURPLE',
-                        },
-                        {
-                            name: 'Lumious Vivid Pink',
-                            name_localizations: {
-                                'es-ES': 'Rosa Brillante',
-                            },
-                            value: 'LUMINOUS_VIVID_PINK',
-                        },
-                        {
-                            name: 'Dark Vivid Pink',
-                            name_localizations: {
-                                'es-ES': 'Rosa Brillante Oscuro',
-                            },
-                            value: 'DARK_VIVID_PINK',
-                        },
-                        {
-                            name: 'Gold',
-                            name_localizations: {
-                                'es-ES': 'Oro',
-                            },
-                            value: 'GOLD',
-                        },
-                        {
-                            name: 'Dark Gold',
-                            name_localizations: {
-                                'es-ES': 'Oro Oscuro',
-                            },
-                            value: 'DARK_GOLD',
-                        },
-                        {
-                            name: 'Orange',
-                            name_localizations: {
-                                'es-ES': 'Naranja',
-                            },
-                            value: 'ORANGE',
-                        },
-                        {
-                            name: 'Dark Orange',
-                            name_localizations: {
-                                'es-ES': 'Naranja Oscuro',
-                            },
-                            value: 'DARK_ORANGE',
-                        },
-                        {
-                            name: 'Red',
-                            name_localizations: {
-                                'es-ES': 'Rojo',
-                            },
-                            value: 'RED',
-                        },
-                        {
-                            name: 'Dark Red',
-                            name_localizations: {
-                                'es-ES': 'Rojo Oscuro',
-                            },
-                            value: 'DARK_RED',
-                        },
-                        {
-                            name: 'Grey',
-                            name_localizations: {
-                                'es-ES': 'Gris',
-                            },
-                            value: 'GREY',
-                        },
-                        {
-                            name: 'Dark Grey',
-                            name_localizations: {
-                                'es-ES': 'Gris Oscuro',
-                            },
-                            value: 'DARK_GREY',
-                        },
-                        {
-                            name: 'Darker Grey',
-                            name_localizations: {
-                                'es-ES': 'Gris Oscuro',
-                            },
-                            value: 'DARKER_GREY',
-                        },
-                        {
-                            name: 'Light Grey',
-                            name_localizations: {
-                                'es-ES': 'Gris Claro',
-                            },
-                            value: 'LIGHT_GREY',
-                        },
-                        {
-                            name: 'Navy',
-                            name_localizations: {
-                                'es-ES': 'Azul Marino',
-                            },
-                            value: 'NAVY',
-                        },
-                        {
-                            name: 'Dark Navy',
-                            name_localizations: {
-                                'es-ES': 'Azul Marino Oscuro',
-                            },
-                            value: 'DARK_NAVY',
-                        },
-                        {
-                            name: 'Yellow',
-                            name_localizations: {
-                                'es-ES': 'Amarillo',
-                            },
-                            value: 'YELLOW',
-                        },
-                    ],
+                    choices: getColorChoices(),
                     required: true,
                 },
                 {
                     type: 3,
-                    name: 'titulo',
+                    name: 'title',
                     name_localizations: {
                         'es-ES': 'titulo',
                     },
@@ -221,7 +53,7 @@ export default class embed extends Command {
                 },
                 {
                     type: 3,
-                    name: 'descripcion',
+                    name: 'description',
                     name_localizations: {
                         'es-ES': 'descripcion',
                     },
@@ -234,132 +66,21 @@ export default class embed extends Command {
             ],
         })
     }
-    async run(interaction: CommandInteraction, args: any) {
-        // try {
-        if (!args[0]) {
-            const errorembed = new MessageEmbed()
-                .setColor('RED')
-                .setTitle(client.language.ERROREMBED)
-                .setDescription(client.language.CREATEEMBED[5])
-                .setFooter(
-                    interaction.user.username + '#' + interaction.user.discriminator,
-                    interaction.user.displayAvatarURL(),
-                )
-            return interaction.editReply({ embeds: [errorembed] })
-        }
-        if (!args[1]) {
-            const errorembed = new MessageEmbed()
-                .setColor('RED')
-                .setTitle(client.language.ERROREMBED)
-                .setDescription(client.language.CREATEEMBED[1])
-                .setFooter(
-                    interaction.user.username + '#' + interaction.user.discriminator,
-                    interaction.user.displayAvatarURL(),
-                )
-            return interaction.editReply({ embeds: [errorembed] })
-        }
-        if (!args[2]) {
-            const errorembed = new MessageEmbed()
-                .setColor('RED')
-                .setTitle(client.language.ERROREMBED)
-                .setDescription(client.language.CREATEEMBED[2])
-                .setFooter(
-                    interaction.user.username + '#' + interaction.user.discriminator,
-                    interaction.user.displayAvatarURL(),
-                )
-            return interaction.editReply({ embeds: [errorembed] })
-        }
-        if (!args[3]) {
-            const errorembed = new MessageEmbed()
-                .setColor('RED')
-                .setTitle(client.language.ERROREMBED)
-                .setDescription(client.language.CREATEEMBED[2])
-                .setFooter(
-                    interaction.user.username + '#' + interaction.user.discriminator,
-                    interaction.user.displayAvatarURL(),
-                )
-            return interaction.editReply({ embeds: [errorembed] })
-        }
-        let canal, descripcion, color, titulo
+    override async run(interaction: CommandInteraction<'cached'>) {
+        const canal = interaction.options.getChannel('channel', true) as TextChannel,
+            descripcion = interaction.options.getString('description', true),
+            color = interaction.options.getString('color', true) as ColorResolvable,
+            titulo = interaction.options.getString('title', true)
+        var embed = new MessageEmbed().setDescription(`${descripcion}`).setColor(color).setTitle(titulo)
 
-        canal = interaction.guild?.channels.cache.get(args[0])
-        descripcion = args[3]
-        titulo = args[2]
-        if (!canal || canal.type !== 'GUILD_TEXT') {
-            const errorembed = new MessageEmbed()
-                .setColor('RED')
-                .setTitle(client.language.ERROREMBED)
-                .setDescription(client.language.CREATEEMBED[4])
-                .setFooter(
-                    interaction.user.username + '#' + interaction.user.discriminator,
-                    interaction.user.displayAvatarURL(),
-                )
-            return interaction.editReply({ embeds: [errorembed] })
-        }
-        let colors = [
-            'DEFAULT',
-            'AQUA',
-            'DARK_AQUA',
-            'GREEN',
-            'DARK_GREEN',
-            'BLUE',
-            'DARK_BLUE',
-            'PURPLE',
-            'DARK_PURPLE',
-            'LUMINOUS_VIVID_PINK',
-            'DARK_VIVID_PINK',
-            'GOLD',
-            'DARK_GOLD',
-            'ORANGE',
-            'DARK_ORANGE',
-            'RED',
-            'DARK_RED',
-            'GREY',
-            'DARK_GREY',
-            'DARKER_GREY',
-            'LIGHT_GREY',
-            'NAVY',
-            'DARK_NAVY',
-            'YELLOW',
-        ]
-        for (let index in colors) {
-            if (args[1].toUpperCase() == colors[index]) {
-                color = colors[index]
-            }
-        }
-        if (!color) {
-            const errorembed = new MessageEmbed()
-                .setColor('RED')
-                .setTitle(client.language.ERROREMBED)
-                .setDescription(client.language.CREATEEMBED[6])
-                .setFooter(
-                    interaction.user.username + '#' + interaction.user.discriminator,
-                    interaction.user.displayAvatarURL(),
-                )
-                .setImage('https://i.postimg.cc/gj8NSLsy/embed-colors.png')
-            return interaction.editReply({ embeds: [errorembed] })
-        }
-        var embed = new MessageEmbed().setDescription(`${descripcion}`).setColor(`${color}` as ColorResolvable)
-
-        if (
-            (titulo || titulo !== 'null') &&
-            titulo != 'none' &&
-            titulo != 'ninguno' &&
-            titulo != 'no' &&
-            titulo != "''" &&
-            titulo != '""'
-        ) {
-            embed.setTitle(titulo)
-        }
-        if (!canal.permissionsFor(client!.user!.id as any).has(['SEND_MESSAGES', 'EMBED_LINKS', 'VIEW_CHANNEL'])) {
-            interaction.editReply({
+        if (!canal.permissionsFor(client.user.id)?.has(['SEND_MESSAGES', 'EMBED_LINKS', 'VIEW_CHANNEL']))
+            return interaction.reply({
                 content:
                     'No tengo los permisos `SEND_MESSAGES`, `EMBED_LINKS` ni `VIEW_CHANNEL`, que son necesarios para enviar el embed.',
             })
-            return
-        }
+
         canal.send({ embeds: [embed] })
-        interaction.editReply({ content: 'Embed creado y enviado con éxito.' })
+        interaction.reply({ content: 'Embed creado y enviado con éxito.' })
         // } catch (e) {
         //     console.error(e);
         //     message.channel.send({
@@ -383,4 +104,176 @@ export default class embed extends Command {
         //     } catch (e) { }
         // }
     }
+}
+function getColorChoices() {
+    return [
+        {
+            name: 'Default',
+            name_localizations: {
+                'es-ES': 'Defecto',
+            },
+            value: 'default',
+        },
+        {
+            name: 'Aqua',
+            name_localizations: {
+                'es-ES': 'Agua',
+            },
+            value: 'AQUA',
+        },
+        {
+            name: 'Dark Aqua',
+            name_localizations: {
+                'es-ES': 'Agua Oscuro',
+            },
+            value: 'DARK_AQUA',
+        },
+        {
+            name: 'Green',
+            name_localizations: {
+                'es-ES': 'Verde',
+            },
+            value: 'GREEN',
+        },
+        {
+            name: 'Dark Green',
+            name_localizations: {
+                'es-ES': 'Verde Oscuro',
+            },
+            value: 'DARK_GREEN',
+        },
+        {
+            name: 'Blue',
+            name_localizations: {
+                'es-ES': 'Azul',
+            },
+            value: 'BLUE',
+        },
+        {
+            name: 'Dark Blue',
+            name_localizations: {
+                'es-ES': 'Azul Oscuro',
+            },
+            value: 'DARK_BLUE',
+        },
+        {
+            name: 'Purple',
+            name_localizations: {
+                'es-ES': 'Morado',
+            },
+            value: 'PURPLE',
+        },
+        {
+            name: 'Dark Purple',
+            name_localizations: {
+                'es-ES': 'Morado Oscuro',
+            },
+            value: 'DARK_PURPLE',
+        },
+        {
+            name: 'Lumious Vivid Pink',
+            name_localizations: {
+                'es-ES': 'Rosa Brillante',
+            },
+            value: 'LUMINOUS_VIVID_PINK',
+        },
+        {
+            name: 'Dark Vivid Pink',
+            name_localizations: {
+                'es-ES': 'Rosa Brillante Oscuro',
+            },
+            value: 'DARK_VIVID_PINK',
+        },
+        {
+            name: 'Gold',
+            name_localizations: {
+                'es-ES': 'Oro',
+            },
+            value: 'GOLD',
+        },
+        {
+            name: 'Dark Gold',
+            name_localizations: {
+                'es-ES': 'Oro Oscuro',
+            },
+            value: 'DARK_GOLD',
+        },
+        {
+            name: 'Orange',
+            name_localizations: {
+                'es-ES': 'Naranja',
+            },
+            value: 'ORANGE',
+        },
+        {
+            name: 'Dark Orange',
+            name_localizations: {
+                'es-ES': 'Naranja Oscuro',
+            },
+            value: 'DARK_ORANGE',
+        },
+        {
+            name: 'Red',
+            name_localizations: {
+                'es-ES': 'Rojo',
+            },
+            value: 'RED',
+        },
+        {
+            name: 'Dark Red',
+            name_localizations: {
+                'es-ES': 'Rojo Oscuro',
+            },
+            value: 'DARK_RED',
+        },
+        {
+            name: 'Grey',
+            name_localizations: {
+                'es-ES': 'Gris',
+            },
+            value: 'GREY',
+        },
+        {
+            name: 'Dark Grey',
+            name_localizations: {
+                'es-ES': 'Gris Oscuro',
+            },
+            value: 'DARK_GREY',
+        },
+        {
+            name: 'Darker Grey',
+            name_localizations: {
+                'es-ES': 'Gris Oscuro',
+            },
+            value: 'DARKER_GREY',
+        },
+        {
+            name: 'Light Grey',
+            name_localizations: {
+                'es-ES': 'Gris Claro',
+            },
+            value: 'LIGHT_GREY',
+        },
+        {
+            name: 'Navy',
+            name_localizations: {
+                'es-ES': 'Azul Marino',
+            },
+            value: 'NAVY',
+        },
+        {
+            name: 'Dark Navy',
+            name_localizations: {
+                'es-ES': 'Azul Marino Oscuro',
+            },
+            value: 'DARK_NAVY',
+        },
+        {
+            name: 'Yellow',
+            name_localizations: {
+                'es-ES': 'Amarillo',
+            },
+            value: 'YELLOW',
+        },
+    ]
 }

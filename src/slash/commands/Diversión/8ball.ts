@@ -34,7 +34,7 @@ export default class ball extends Command {
         let respuesta = client.language.QUESTIONBALL[4]
         let question = interaction.options.getString('question', true)
         if (!question.endsWith('?'))
-            return interaction.editReply({
+            return interaction.reply({
                 embeds: [
                     new MessageEmbed()
                         .setColor('RED')
@@ -47,7 +47,7 @@ export default class ball extends Command {
                 ],
             })
 
-        interaction.editReply({
+        interaction.reply({
             embeds: [
                 new MessageEmbed()
                     .setFields(
