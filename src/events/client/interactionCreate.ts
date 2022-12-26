@@ -1,9 +1,11 @@
 import { GuildMember, CommandInteraction, Interaction, ButtonInteraction, Collection } from 'discord.js'
-const cooldowns = new Collection<string, Collection<string, number>>()
 import commands from '../../cache/commands.js'
+import buttons from '../../cache/buttons.js'
 import logger from '../../utils/logger.js'
 import Statcord from 'statcord.js'
 import client from '../../bot.js'
+
+const cooldowns = new Collection<string, Collection<string, number>>()
 
 export default async function (interaction: Interaction<'cached'>) {
     if (interaction.guildId !== process.env.enabledGuild && process.env.enableCmds !== 'true') return
@@ -17,7 +19,7 @@ async function handleCommand(interaction: CommandInteraction<'cached'>) {
     const cmd = commands.find(c => c.name === interaction.commandName)
 
     if (!cmd)
-        return interaction.editReply({
+        return interaction.reply({
             content: 'No se encontró el comando',
             embeds: [],
             components: [],
@@ -97,12 +99,12 @@ async function handleCommand(interaction: CommandInteraction<'cached'>) {
                 })
         }
     }
-    cmd.run(interaction, args)
+    cmd.run(interaction)
     if (process.env.NODE_ENV == 'production')
         Statcord.ShardingClient.postCommand(cmd.name, (interaction.member as GuildMember).id, client)
 }
 
 async function handleButton(interaction: ButtonInteraction<'cached'>) {
     logger.debug(`Button ${interaction.customId} pressed`)
-    client.buttons.get(interaction.customId)?.run(client, interaction)
+    buttons.get(interaction.customId)?.(interaction)
 }

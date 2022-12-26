@@ -1,25 +1,13 @@
-import {
-    Client,
-    CommandInteraction,
-    MessageEmbed,
-    ButtonInteraction,
-    TextChannel,
-    ColorResolvable,
-    MessageActionRow,
-    MessageButton,
-} from 'discord.js'
-import Logger from '../../../utils/logger.js'
+import { MessageEmbed, ButtonInteraction, MessageActionRow, MessageButton } from 'discord.js'
+import client from '../../../bot.js'
+import logger from '../../../utils/logger.js'
 
 export default {
     name: 'pauseMusic',
-    /**,
-     * @param {Client} client
-     * @param {CommandInteraction} interaction
-     * @param {String[]} args
-     */
-    run: async (client: any, interaction: ButtonInteraction<'cached'>) => {
+
+    run: async (interaction: ButtonInteraction<'cached'>) => {
         try {
-            const botChannelID = interaction.guild.members.cache.get(process.env.bot1id as string)?.voice.channelId
+            const botChannelID = interaction.guild.me?.voice?.channelId
             if (interaction.member.voice.channelId != botChannelID) {
                 const errorembed = new MessageEmbed().setColor(15548997).setFooter(
                     client.language.STOP[3],
@@ -33,13 +21,10 @@ export default {
                 })
             }
 
-            const player = client.manager.players.get(interaction.guild.id)
-            if (!player) return
-            if (!player.queue.current) return
-            const message = await (
-                interaction.guild.channels.cache.get(interaction.channel?.id as string) as TextChannel
-            ).messages.fetch(interaction.message.id)
-            const embed = new MessageEmbed().setColor(process.env.bot1Embed_Color as ColorResolvable)
+            const player = (client as any).manager.players.get(interaction.guild.id)
+            if (!player?.queue.current) return
+            const message = await interaction.message.fetch()
+            const embed = new MessageEmbed().setColor(client.settings.color)
             if (message.embeds[0].thumbnail) embed.setThumbnail(message.embeds[0].thumbnail.url)
 
             const prevDesc = message.embeds[0].description?.split('\n')[0]
@@ -80,7 +65,7 @@ export default {
                 components: [row],
             })
         } catch (e) {
-            Logger.error(e)
+            logger.error(e)
         }
     },
 }

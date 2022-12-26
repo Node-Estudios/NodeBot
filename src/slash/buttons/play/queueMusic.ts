@@ -1,34 +1,30 @@
-require('dotenv').config()
-const Logger = require('../../../utils/console')
+import { ButtonInteraction } from 'discord.js'
+import client from '../../../bot.js'
+import logger from '../../../utils/logger.js'
 
 export default {
     name: 'queueMusic',
-    /**,
-     * @param {Client} client
-     * @param {CommandInteraction} interaction
-     * @param {String[]} args
-     */
-    run: async (client, interaction) => {
+    run: async (interaction: ButtonInteraction<'cached'>) => {
         try {
             await interaction.deferReply({
                 ephemeral: true,
             })
 
-            const player = client.manager.players.get(interaction.guild.id)
+            const player = (client as any).manager.players.get(interaction.guild.id)
             if (!player) return
 
             const data = []
-
+            //TODO????
             data.push(interaction.member.user.username)
             data.push(interaction.member.user.discriminator)
             data.push(interaction.member.displayAvatarURL())
             data.push(interaction.guild.id)
             data.push(interaction.guild.name)
-            data.push(interaction.options)
+            // data.push(interaction.options)
             data.push(client.user.displayAvatarURL())
             data.push(interaction.member.voice)
             data.push(interaction.guild.shardId)
-            await interaction.guild.members.fetch(process.env.bot1id).then(member => {
+            await interaction.guild.members.fetch(process.env.bot1id ?? '').then(member => {
                 data.push(member.voice)
             })
 
@@ -37,7 +33,7 @@ export default {
                 body: JSON.stringify(data),
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: process.env.jwt,
+                    Authorization: process.env.jwt as string,
                 },
             })
                 .then(response => response.json())
@@ -47,7 +43,7 @@ export default {
                     })
                 })
         } catch (e) {
-            Logger.error(e)
+            logger.error(e)
         }
     },
 }

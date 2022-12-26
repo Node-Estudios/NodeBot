@@ -4,7 +4,6 @@ import { ShardingClient } from 'statcord.js'
 import logger from '../utils/logger.js'
 import RESTAPI from './restAPIHandler.js'
 export default class NodeManager extends ClusterManager {
-    public commands: any
     // public clustersArray: Collection<any, any>;
     // public players: Collection<any, any>;
     public statcord: ShardingClient | undefined

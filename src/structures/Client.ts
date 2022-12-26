@@ -3,15 +3,10 @@ import { ClusterClient as HybridClient, getInfo } from 'discord-hybrid-sharding'
 import { Collection, Options, Client as ClientBase, ColorResolvable } from 'discord.js'
 import langFile from '../lang/index.json' assert { type: 'json' }
 import MusicManager from './musicManager.js'
-import ready from '../events/client/ready'
 import logger from '../utils/logger.js'
 import { init } from '@sentry/node'
 export default class Client extends ClientBase<true> {
-    buttons: any
-    selectMenu: any
-    messages: any
     language = defaultLang.default
-    config: NodeJS.ProcessEnv
     devs: string[]
     //@ts-ignores
     cluster = new HybridClient(this)
@@ -40,11 +35,8 @@ export default class Client extends ClientBase<true> {
             shardCount: getInfo().TOTAL_SHARDS,
         })
 
-        this.buttons = new Collection()
         this.services = { sentry: { loggedIn: false } }
-        this.selectMenu = new Collection()
         this.officialServerURL = 'https://discord.gg/xhAWYggKKh'
-        this.config = process.env
         this.settings = {
             color: 'GREEN',
         }

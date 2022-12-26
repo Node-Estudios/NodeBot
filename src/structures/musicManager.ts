@@ -1,8 +1,8 @@
 import { Collection, Guild, MessageActionRow, MessageButton, MessageEmbed, TextChannel, VoiceChannel } from 'discord.js'
-import EventEmitter from 'events'
 import { Source, VoiceConnection } from 'yasha'
 import formatTime from '../utils/formatTime'
-import logger from '../utils/logger'
+import logger from '../utils/logger.js'
+import EventEmitter from 'events'
 import Player from './Player.js'
 import client from '../bot.js'
 
