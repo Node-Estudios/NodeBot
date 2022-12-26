@@ -1,21 +1,21 @@
-import Client from './client';
-import 'dotenv/config';
-import { play } from './music/index';
+import Client from './client'
+import 'dotenv/config'
+import { play } from './music/index'
 interface message {
-    nonce: string;
+    nonce: string
     content: {
-        system: string;
-        command: string;
-        args: string;
-    };
-    _sRequest: boolean;
-    _sReply: boolean;
-    error: any;
+        system: string
+        command: string
+        args: string
+    }
+    _sRequest: boolean
+    _sReply: boolean
+    error: any
 }
 export default class ControlSystem {
-    client: Client;
+    client: Client
     constructor(client: Client) {
-        this.client = client;
+        this.client = client
     }
 
     async run() {
@@ -26,7 +26,7 @@ export default class ControlSystem {
          * * 400: BAD REQUEST, THE REQUEST WAS NOT SUCCESSFULLY EXECUTED
          * * 404: NOT FOUND, THE REQUEST WAS NOT SUCCESSFULLY EXECUTED
          */
-        // this.client.logger.music('Sistema de música iniciado');
+        // this.logger.music('Sistema de música iniciado');
         // this.client.cluster.on('message', message => {
         //     // console.log(message.content.data);
         //     //{
@@ -46,7 +46,7 @@ export default class ControlSystem {
         //                 default:
         //                     message.reply({ content: { status: '404' } });
         //             }
-        //     // this.client.logger.log('mensaje recibido');
+        //     // this.logger.log('mensaje recibido');
         //     if (!message._sRequest) return; // Check if the message needs a reply
         //     message.reply({ content: '200' });
         // });

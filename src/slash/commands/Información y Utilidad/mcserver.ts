@@ -1,7 +1,7 @@
-import { ColorResolvable, CommandInteraction, MessageAttachment, MessageEmbed } from 'discord.js';
-import Command from '../../../structures/command';
-import Client from '../../../structures/client';
-import axios from 'axios';
+import { ColorResolvable, CommandInteraction, MessageAttachment, MessageEmbed } from 'discord.js'
+import Command from '../../../structures/Command'
+import Client from '../../../structures/Client'
+import axios from 'axios'
 
 export default class mcserver extends Command {
     constructor(client: Client) {
@@ -26,7 +26,7 @@ export default class mcserver extends Command {
                     required: true,
                 },
             ],
-        });
+        })
     }
     /**,
      * @param {Client} client
@@ -35,24 +35,24 @@ export default class mcserver extends Command {
      */
     async run(client: Client, interaction: CommandInteraction, args: any) {
         // try {
-        let url;
-        args = args[0].split(':');
+        let url
+        args = args[0].split(':')
         if (args[1]) {
-            url = `http://status.mclive.eu/${args[0]}/${args[0]}/${args[1]}/banner.png`;
+            url = `http://status.mclive.eu/${args[0]}/${args[0]}/${args[1]}/banner.png`
         } else {
-            url = `http://status.mclive.eu/${args[0]}/${args[0]}/25565/banner.png`;
+            url = `http://status.mclive.eu/${args[0]}/${args[0]}/25565/banner.png`
         }
         axios
             .get(url, {
                 responseType: 'arraybuffer',
             })
             .then(image => {
-                let returnedB64 = Buffer.from(image.data).toString('base64');
-                const sfattach = new MessageAttachment(image.data, 'output.png');
+                let returnedB64 = Buffer.from(image.data).toString('base64')
+                const sfattach = new MessageAttachment(image.data, 'output.png')
                 interaction.editReply({
                     embeds: [],
                     files: [sfattach],
-                });
+                })
             })
             .catch(() => {
                 const errorembed = new MessageEmbed()
@@ -62,11 +62,11 @@ export default class mcserver extends Command {
                     .setFooter(
                         interaction.user.username + '#' + interaction.user.discriminator,
                         interaction.user.displayAvatarURL(),
-                    );
+                    )
                 return interaction.editReply({
                     embeds: [errorembed],
-                });
-            });
+                })
+            })
         //   } catch (e) {
         //     console.error(e);
         //     message.channel.send({

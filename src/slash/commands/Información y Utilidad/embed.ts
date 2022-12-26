@@ -1,10 +1,9 @@
-import { ColorResolvable, CommandInteraction, MessageEmbed } from 'discord.js';
-import Command from '../../../structures/command';
-import Client from '../../../structures/client';
+import { ColorResolvable, CommandInteraction, MessageEmbed } from 'discord.js'
+import Command from '../../../structures/Command'
 
 export default class embed extends Command {
-    constructor(client: Client) {
-        super(client, {
+    constructor() {
+        super({
             name: 'embed',
             description: 'Sends a embed.',
             description_localizations: {
@@ -232,9 +231,9 @@ export default class embed extends Command {
                     required: true,
                 },
             ],
-        });
+        })
     }
-    async run(client: Client, interaction: CommandInteraction, args: any) {
+    async run(interaction: CommandInteraction, args: any) {
         // try {
         if (!args[0]) {
             const errorembed = new MessageEmbed()
@@ -244,8 +243,8 @@ export default class embed extends Command {
                 .setFooter(
                     interaction.user.username + '#' + interaction.user.discriminator,
                     interaction.user.displayAvatarURL(),
-                );
-            return interaction.editReply({ embeds: [errorembed] });
+                )
+            return interaction.editReply({ embeds: [errorembed] })
         }
         if (!args[1]) {
             const errorembed = new MessageEmbed()
@@ -255,8 +254,8 @@ export default class embed extends Command {
                 .setFooter(
                     interaction.user.username + '#' + interaction.user.discriminator,
                     interaction.user.displayAvatarURL(),
-                );
-            return interaction.editReply({ embeds: [errorembed] });
+                )
+            return interaction.editReply({ embeds: [errorembed] })
         }
         if (!args[2]) {
             const errorembed = new MessageEmbed()
@@ -266,8 +265,8 @@ export default class embed extends Command {
                 .setFooter(
                     interaction.user.username + '#' + interaction.user.discriminator,
                     interaction.user.displayAvatarURL(),
-                );
-            return interaction.editReply({ embeds: [errorembed] });
+                )
+            return interaction.editReply({ embeds: [errorembed] })
         }
         if (!args[3]) {
             const errorembed = new MessageEmbed()
@@ -277,14 +276,14 @@ export default class embed extends Command {
                 .setFooter(
                     interaction.user.username + '#' + interaction.user.discriminator,
                     interaction.user.displayAvatarURL(),
-                );
-            return interaction.editReply({ embeds: [errorembed] });
+                )
+            return interaction.editReply({ embeds: [errorembed] })
         }
-        let canal, descripcion, color, titulo;
+        let canal, descripcion, color, titulo
 
-        canal = interaction.guild?.channels.cache.get(args[0]);
-        descripcion = args[3];
-        titulo = args[2];
+        canal = interaction.guild?.channels.cache.get(args[0])
+        descripcion = args[3]
+        titulo = args[2]
         if (!canal || canal.type !== 'GUILD_TEXT') {
             const errorembed = new MessageEmbed()
                 .setColor('RED')
@@ -293,8 +292,8 @@ export default class embed extends Command {
                 .setFooter(
                     interaction.user.username + '#' + interaction.user.discriminator,
                     interaction.user.displayAvatarURL(),
-                );
-            return interaction.editReply({ embeds: [errorembed] });
+                )
+            return interaction.editReply({ embeds: [errorembed] })
         }
         let colors = [
             'DEFAULT',
@@ -321,10 +320,10 @@ export default class embed extends Command {
             'NAVY',
             'DARK_NAVY',
             'YELLOW',
-        ];
+        ]
         for (let index in colors) {
             if (args[1].toUpperCase() == colors[index]) {
-                color = colors[index];
+                color = colors[index]
             }
         }
         if (!color) {
@@ -336,10 +335,10 @@ export default class embed extends Command {
                     interaction.user.username + '#' + interaction.user.discriminator,
                     interaction.user.displayAvatarURL(),
                 )
-                .setImage('https://i.postimg.cc/gj8NSLsy/embed-colors.png');
-            return interaction.editReply({ embeds: [errorembed] });
+                .setImage('https://i.postimg.cc/gj8NSLsy/embed-colors.png')
+            return interaction.editReply({ embeds: [errorembed] })
         }
-        var embed = new MessageEmbed().setDescription(`${descripcion}`).setColor(`${color}` as ColorResolvable);
+        var embed = new MessageEmbed().setDescription(`${descripcion}`).setColor(`${color}` as ColorResolvable)
 
         if (
             (titulo || titulo !== 'null') &&
@@ -349,17 +348,17 @@ export default class embed extends Command {
             titulo != "''" &&
             titulo != '""'
         ) {
-            embed.setTitle(titulo);
+            embed.setTitle(titulo)
         }
         if (!canal.permissionsFor(client!.user!.id as any).has(['SEND_MESSAGES', 'EMBED_LINKS', 'VIEW_CHANNEL'])) {
             interaction.editReply({
                 content:
                     'No tengo los permisos `SEND_MESSAGES`, `EMBED_LINKS` ni `VIEW_CHANNEL`, que son necesarios para enviar el embed.',
-            });
-            return;
+            })
+            return
         }
-        canal.send({ embeds: [embed] });
-        interaction.editReply({ content: 'Embed creado y enviado con éxito.' });
+        canal.send({ embeds: [embed] })
+        interaction.editReply({ content: 'Embed creado y enviado con éxito.' })
         // } catch (e) {
         //     console.error(e);
         //     message.channel.send({

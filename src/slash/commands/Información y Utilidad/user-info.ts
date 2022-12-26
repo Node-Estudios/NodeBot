@@ -19,7 +19,7 @@
 //     DISCORD_CERTIFIED_MODERATOR: 'Discord Certified Moderator',
 // };
 
-// module.exports = class userinfo extends Command {
+// export default class userinfo extends Command {
 //     constructor(client) {
 //         super(client, {
 //             name: 'userinfo',

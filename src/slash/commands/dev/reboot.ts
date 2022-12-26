@@ -1,11 +1,11 @@
-import { CommandInteraction } from 'discord.js';
-import Client from '../../../structures/client';
+import { CommandInteraction } from 'discord.js'
+import Client from '../../../structures/Client'
 
-import Command from '../../../structures/command';
+import Command from '../../../structures/Command'
 
 export default class reboot extends Command {
-    constructor(client: Client) {
-        super(client, {
+    constructor() {
+        super({
             name: 'reboot',
             description: 'Reboot a shard or all shards.',
             permissions: {
@@ -41,20 +41,20 @@ export default class reboot extends Command {
                     required: false,
                 },
             ],
-        });
+        })
     }
     async run(client: Client, interaction: CommandInteraction, args: any) {
         if (!interaction.options.getString('choice') || interaction.options.getString('choice') == 'all') {
-            await interaction.editReply({ content: 'Reiniciando todas las shards...', embeds: [] });
-            client.cluster.send({ type: 'reboot', shard: 'all' });
+            await interaction.editReply({ content: 'Reiniciando todas las shards...', embeds: [] })
+            client.cluster.send({ type: 'reboot', shard: 'all' })
         } else if (!interaction.options.getString('choice') || interaction.options.getString('choice') == 'shard') {
             await interaction.editReply({
                 content: `Reinciando Shard ${interaction.options.getString('shard')}...`,
                 embeds: [],
-            });
-            client.cluster.send({ type: 'reboot', shard: interaction.options.getNumber('shard') });
+            })
+            client.cluster.send({ type: 'reboot', shard: interaction.options.getNumber('shard') })
         } else {
-            await interaction.reply('Invalid argument. Please specify a shard or "all".');
+            await interaction.reply('Invalid argument. Please specify a shard or "all".')
         }
     }
 }

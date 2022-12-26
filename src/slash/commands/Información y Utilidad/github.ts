@@ -1,7 +1,7 @@
-import axios from 'axios';
-import { ColorResolvable, CommandInteraction, MessageEmbed } from 'discord.js';
-import Command from '../../../structures/command';
-import Client from '../../../structures/client';
+import axios from 'axios'
+import { ColorResolvable, CommandInteraction, MessageEmbed } from 'discord.js'
+import Command from '../../../structures/Command'
+import Client from '../../../structures/Client'
 
 export default class github extends Command {
     constructor(client: Client) {
@@ -26,7 +26,7 @@ export default class github extends Command {
                     required: true,
                 },
             ],
-        });
+        })
     }
     /**,
      * @param {Client} client
@@ -43,10 +43,10 @@ export default class github extends Command {
                 .setFooter(
                     interaction.user.username + '#' + interaction.user.discriminator,
                     interaction.user.displayAvatarURL(),
-                );
+                )
             return interaction.editReply({
                 embeds: [errorembed],
-            });
+            })
         }
         let response = await axios
             .get(`https://api.github.com/users/${args[0]}`, {
@@ -64,9 +64,9 @@ export default class github extends Command {
                 return interaction.editReply({
                     content: 'Ese usuario no existe.',
                     embeds: [],
-                });
-            });
-        const account = await (response as any).data;
+                })
+            })
+        const account = await (response as any).data
         if (!account) {
             const errorembed = new MessageEmbed()
                 .setColor('RED')
@@ -75,10 +75,10 @@ export default class github extends Command {
                 .setFooter(
                     interaction.user.username + '#' + interaction.user.discriminator,
                     interaction.user.displayAvatarURL(),
-                );
+                )
             return interaction.editReply({
                 embeds: [errorembed],
-            });
+            })
         }
         if (!account.id) {
             const errorembed = new MessageEmbed()
@@ -88,33 +88,33 @@ export default class github extends Command {
                 .setFooter(
                     interaction.user.username + '#' + interaction.user.discriminator,
                     interaction.user.displayAvatarURL(),
-                );
+                )
             return interaction.editReply({
                 embeds: [errorembed],
-            });
+            })
         }
 
         const embed2 = new MessageEmbed()
             .setDescription('')
             .setColor(process.env.bot1Embed_Color as ColorResolvable)
-            .setThumbnail(account.avatar_url);
-        if (account.name) embed2.addField(client.language.GITHUB[2].toString(), account.name.toString());
-        if (account.type) embed2.addField(client.language.GITHUB[3].toString(), account.type.toString());
-        if (account.company) embed2.addField(client.language.GITHUB[4].toString(), account.company.toString());
-        if (account.blog) embed2.addField(client.language.GITHUB[5].toString(), account.blog.toString());
-        if (account.location) embed2.addField(client.language.GITHUB[6].toString(), account.location.toString());
-        if (account.email) embed2.addField(client.language.GITHUB[7].toString(), account.email.toString());
-        if (account.bio) embed2.addField(client.language.GITHUB[8].toString(), account.bio.toString());
+            .setThumbnail(account.avatar_url)
+        if (account.name) embed2.addField(client.language.GITHUB[2].toString(), account.name.toString())
+        if (account.type) embed2.addField(client.language.GITHUB[3].toString(), account.type.toString())
+        if (account.company) embed2.addField(client.language.GITHUB[4].toString(), account.company.toString())
+        if (account.blog) embed2.addField(client.language.GITHUB[5].toString(), account.blog.toString())
+        if (account.location) embed2.addField(client.language.GITHUB[6].toString(), account.location.toString())
+        if (account.email) embed2.addField(client.language.GITHUB[7].toString(), account.email.toString())
+        if (account.bio) embed2.addField(client.language.GITHUB[8].toString(), account.bio.toString())
         if (account.twitter_username)
-            embed2.addField(client.language.GITHUB[9].toString(), account.twitter_username.toString());
+            embed2.addField(client.language.GITHUB[9].toString(), account.twitter_username.toString())
         if (account.public_repos)
-            embed2.addField(client.language.GITHUB[10].toString(), account.public_repos.toString());
-        if (account.followers) embed2.addField(client.language.GITHUB[11].toString(), account.followers.toString());
+            embed2.addField(client.language.GITHUB[10].toString(), account.public_repos.toString())
+        if (account.followers) embed2.addField(client.language.GITHUB[11].toString(), account.followers.toString())
 
         interaction.editReply({
             content: ' ',
             embeds: [embed2],
-        });
+        })
         //  } catch (e) {
         //    console.log(e)
         //    webhookClient.send(
@@ -126,10 +126,10 @@ export default class github extends Command {
 
 function formatNumber(parameter: number) {
     if (parameter.toString().length >= 7) {
-        return parameter / 1000000 + 'M';
+        return parameter / 1000000 + 'M'
     } else if (parameter.toString().length >= 5) {
-        return parameter / 1000 + 'K';
+        return parameter / 1000 + 'K'
     } else {
-        return parameter.toString();
+        return parameter.toString()
     }
 }

@@ -1,8 +1,8 @@
 require('dotenv').config()
 import { CommandInteraction, Guild, GuildMember, MessageEmbed, TextChannel, VoiceChannel } from 'discord.js'
-import Client from '../../../structures/client'
+import Client from '../../../structures/Client'
 
-import Command from '../../../structures/command'
+import Command from '../../../structures/Command'
 
 export default class play extends Command {
     constructor(client: Client) {
@@ -61,7 +61,7 @@ export default class play extends Command {
                 try {
                     search = await client.music.search(args[0], interaction.member, source)
                 } catch (e) {
-                    client.logger.error(e)
+                    logger.error(e)
                     const errorembed = new MessageEmbed().setColor(15548997).setFooter({
                         text: client.language.PLAY[9],
                         iconURL: client.user?.displayAvatarURL(),
@@ -90,7 +90,7 @@ export default class play extends Command {
                 //             search = await search.next();
                 //         }
                 //         catch (e) {
-                //             client.logger.error(e);
+                //             logger.error(e);
                 //             throw e;
                 //         }
                 //     }
@@ -140,7 +140,7 @@ export default class play extends Command {
                     .addField(client.language.PLAY[5], '<@' + interaction.user.id + '>', true)
                     .addField(client.language.PLAY[6], client.formatTime(Math.trunc(search.duration), false), true)
                 if (source === 'Youtube') {
-                    client.logger.info(search)
+                    logger.info(search)
                     if (search.streams) embed.addField('bitrate', search.streams[0].bitrate, true)
                     embed.setThumbnail(`https://img.youtube.com/vi/${search.id}/maxresdefault.jpg`)
                     embed.setDescription(
@@ -161,7 +161,7 @@ export default class play extends Command {
                 // console.log(embed)
                 interaction.editReply({ embeds: [embed] })
             } catch (e) {
-                client.logger.error(e)
+                logger.error(e)
                 interaction.editReply({
                     content: `Ups! Parece que hubo un error. \nPuede contactar con el desarrollador para avisarle en [El Discord Oficial](${client.officialServerURL})`,
                     embeds: [],

@@ -2,7 +2,7 @@
 // import Command from '../../../structures/command';
 // const QRCode = require("easyqrcodejs-nodejs");
 
-// module.exports = class qr extends Command {
+// export default class qr extends Command {
 //     constructor(client) {
 //        super(client, {
 //         name: 'qr',

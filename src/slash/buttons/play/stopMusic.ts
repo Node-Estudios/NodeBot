@@ -1,7 +1,7 @@
 import { CommandInteraction, GuildMember, MessageEmbed } from 'discord.js'
-import Client from '../../../structures/client'
-import Command from '../../../structures/command'
-export default class stopMusic extends Command {
+import Client from '../../../structures/Client'
+import Command from '../../../structures/Command'
+export default default class stopMusic extends Command {
     constructor(client: Client) {
         super(client, {
             name: 'stopMusic',
@@ -33,10 +33,10 @@ export default class stopMusic extends Command {
             // if (player.queueRepeat) player.setQueueRepeat(false)
 
             // const { title } = player.queue.current;
-            // client.logger.debug(player)
+            // logger.debug(player)
             if (player) player.stop()
         } catch (e) {
-            client.logger.error(e)
+            logger.error(e)
         }
     }
 }

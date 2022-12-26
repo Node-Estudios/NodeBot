@@ -1,8 +1,8 @@
 import { Collection, Guild, MessageActionRow, MessageButton, MessageEmbed, TextChannel, VoiceChannel } from 'discord.js'
 import EventEmitter from 'events'
 import { Source, VoiceConnection } from 'yasha'
-import Logger from '../utils/console'
-import Client from './client'
+import Logger from '../utils/logger'
+import Client from './Client'
 import Player from './player'
 
 export default class musicManager extends EventEmitter {
@@ -31,7 +31,7 @@ export default class musicManager extends EventEmitter {
         })
         this.players.set(guild.id, player)
         player.on('ready', () => {
-            // client.logger.log("Evento Ready Ejecutado")
+            // logger.log("Evento Ready Ejecutado")
             this.trackStart(player)
         })
 
@@ -162,7 +162,7 @@ export default class musicManager extends EventEmitter {
 
     trackEnd(player: any, finished: boolean) {
         const track = player.queue.current
-        this.client.logger.log(player.queue.length, player.queue.previous)
+        this.logger.log(player.queue.length, player.queue.previous)
         if (!track.duration) track.duration = player.getDuration()
 
         if (track && player.trackRepeat) {

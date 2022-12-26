@@ -3,7 +3,7 @@
 // const moment = require('moment');
 // require('moment-duration-format');
 
-// module.exports = class shards extends Command {
+// export default class shards extends Command {
 //     constructor(client) {
 //         super(client, {
 //             name: 'shards',

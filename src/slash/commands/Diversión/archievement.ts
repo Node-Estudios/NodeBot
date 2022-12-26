@@ -1,7 +1,7 @@
 // const { Client, CommandInteraction, MessageEmbed, Discord } = require('discord.js');
 // import Command from '../../../structures/command';
 
-// module.exports = class archievement extends Command {
+// export default class archievement extends Command {
 //     constructor(client) {
 //        super(client, {
 //         name: 'archievement',

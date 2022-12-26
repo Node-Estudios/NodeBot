@@ -1,7 +1,7 @@
-import { ColorResolvable, CommandInteraction, MessageEmbed } from 'discord.js';
-import Command from '../../../structures/command';
-import Client from '../../../structures/client';
-import moment from 'moment';
+import { ColorResolvable, CommandInteraction, MessageEmbed } from 'discord.js'
+import Command from '../../../structures/Command'
+import Client from '../../../structures/Client'
+import moment from 'moment'
 
 export default class serverinfo extends Command {
     constructor(client: Client) {
@@ -15,7 +15,7 @@ export default class serverinfo extends Command {
                 'es-ES': 'Obtener información sobre el servidor.',
             },
             cooldown: 5,
-        });
+        })
     }
     /**,
      * @param {Client} client
@@ -43,7 +43,7 @@ export default class serverinfo extends Command {
             london: 'London',
             amsterdam: 'Amsterdam',
             india: 'India',
-        };
+        }
 
         let verification = {
             NONE: client.language.SERVERINFO[1],
@@ -51,34 +51,34 @@ export default class serverinfo extends Command {
             MEDIUM: client.language.SERVERINFO[3],
             HIGH: client.language.SERVERINFO[4],
             VERY_HIGH: client.language.SERVERINFO[5],
-        };
+        }
 
         let explicitContent = {
             DISABLED: client.language.SERVERINFO[6],
             MEMBERS_WITHOUT_ROLES: client.language.SERVERINFO[7],
             ALL_MEMBERS: client.language.SERVERINFO[8],
-        };
-        const guild = interaction.guild!;
+        }
+        const guild = interaction.guild!
         // const channel = guild.channels.cache
         //   .sort((a, b) => b.position - a.position)
         //   .map((role) => role.toString())
         //   .slice(0, -1);
-        const members = guild.members.cache;
+        const members = guild.members.cache
         const role = guild.roles.cache
             .sort((a, b) => b.position - a.position)
             .map(role => role.toString())
-            .slice(0, -1);
-        const boost = guild.premiumTier;
-        const emojis = interaction.guild!.emojis.cache;
-        const boostcount = guild.premiumSubscriptionCount;
-        const bots = members.filter(member => member.user.bot).size;
-        const humans = members.filter(member => !member.user.bot).size;
-        const create = moment(interaction.guild!.createdTimestamp).format('DD-MM-YYYY');
-        const banner = guild.banner;
+            .slice(0, -1)
+        const boost = guild.premiumTier
+        const emojis = interaction.guild!.emojis.cache
+        const boostcount = guild.premiumSubscriptionCount
+        const bots = members.filter(member => member.user.bot).size
+        const humans = members.filter(member => !member.user.bot).size
+        const create = moment(interaction.guild!.createdTimestamp).format('DD-MM-YYYY')
+        const banner = guild.banner
 
-        let iconURL = guild.iconURL({ dynamic: true }) ? guild.iconURL({ dynamic: true }) : undefined;
-        let embed = new MessageEmbed().setColor(process.env.bot1Embed_Color as ColorResolvable);
-        if (iconURL) embed.setThumbnail(iconURL).setTimestamp();
+        let iconURL = guild.iconURL({ dynamic: true }) ? guild.iconURL({ dynamic: true }) : undefined
+        let embed = new MessageEmbed().setColor(process.env.bot1Embed_Color as ColorResolvable)
+        if (iconURL) embed.setThumbnail(iconURL).setTimestamp()
         if (iconURL)
             embed
                 .setFooter(guild.name, iconURL)
@@ -133,11 +133,11 @@ export default class serverinfo extends Command {
                 .addField(
                     `**${client.language.SERVERINFO[26]}**`,
                     '```' + `${explicitContent[guild.explicitContentFilter]}` + '```',
-                );
-        if (iconURL) embed.setImage(iconURL);
+                )
+        if (iconURL) embed.setImage(iconURL)
         interaction.editReply({
             embeds: [embed],
-        });
+        })
         //   } catch (e) {
         //     console.error(e);
         //     message.channel.send({
@@ -165,9 +165,9 @@ export default class serverinfo extends Command {
 
 function trimArray(arr: Array<any>, maxLen = 10) {
     if (arr.length > maxLen) {
-        const len = arr.length - maxLen;
-        arr = arr.slice(0, maxLen);
-        arr.push(`${len} more...`);
+        const len = arr.length - maxLen
+        arr = arr.slice(0, maxLen)
+        arr.push(`${len} more...`)
     }
-    return arr;
+    return arr
 }

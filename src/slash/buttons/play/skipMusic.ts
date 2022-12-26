@@ -1,7 +1,7 @@
 import { CommandInteraction, GuildMember, MessageEmbed } from 'discord.js'
-import Client from '../../../structures/client'
-import Command from '../../../structures/command'
-export default class skipMusic extends Command {
+import Client from '../../../structures/Client'
+import Command from '../../../structures/Command'
+export default default class skipMusic extends Command {
     constructor(client: Client) {
         super(client, {
             name: 'skipMusic',
@@ -37,7 +37,7 @@ export default class skipMusic extends Command {
 
             if (player) player.skip()
         } catch (e) {
-            client.logger.error(e)
+            logger.error(e)
         }
     }
 }

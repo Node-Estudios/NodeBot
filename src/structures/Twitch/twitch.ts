@@ -1,11 +1,11 @@
-import { Client, CommandInteraction, MessageEmbed } from 'discord.js';
-import Command from '../../structures/command.js';
-import TwitchModel from '../../models/twitch.js';
-import axios from 'axios';
+import { Client, CommandInteraction, MessageEmbed } from 'discord.js'
+import Command from '../../structures/command.js'
+import TwitchModel from '../../models/twitch.js'
+import axios from 'axios'
 const headers = {
     'Client-ID': process.env.twitch_client_id as string,
     Authorization: process.env.twitch_authorization as string,
-};
+}
 
 module.exports = class twitch extends Command {
     constructor(client) {
@@ -316,7 +316,7 @@ module.exports = class twitch extends Command {
                     ],
                 },
             ],
-        });
+        })
     }
     /**,
      * @param {Client} client
@@ -328,7 +328,7 @@ module.exports = class twitch extends Command {
             case 'guild':
                 switch (interaction.options._subcommand) {
                     case 'embed':
-                        let color;
+                        let color
                         let colors = [
                             'DEFAULT',
                             'AQUA',
@@ -354,10 +354,10 @@ module.exports = class twitch extends Command {
                             'NAVY',
                             'DARK_NAVY',
                             'YELLOW',
-                        ];
+                        ]
                         for (let index in colors) {
                             if (interaction.options.getString('color').toUpperCase() == colors[index]) {
-                                color = colors[index];
+                                color = colors[index]
                             }
                         }
                         axios
@@ -375,7 +375,7 @@ module.exports = class twitch extends Command {
                                         content: 'The streamer does not exist',
                                         embeds: [],
                                         components: [],
-                                    });
+                                    })
                                 }
                                 TwitchModel.findOne({
                                     broadcaster_user_id:
@@ -458,11 +458,11 @@ module.exports = class twitch extends Command {
                                                             ],
                                                             Users: [],
                                                         },
-                                                    });
+                                                    })
                                                     const tituloEmbed = interaction.options
                                                         .getString('title')
                                                         .toString()
-                                                        .replace('{streamer}', res.data.data[0].display_name);
+                                                        .replace('{streamer}', res.data.data[0].display_name)
                                                     const descripcionEmbed = interaction.options
                                                         .getString('description')
                                                         .toString()
@@ -470,7 +470,7 @@ module.exports = class twitch extends Command {
                                                         .replace(
                                                             '{link}',
                                                             `https://twitch.tv/${res.data.data[0].display_name}`,
-                                                        );
+                                                        )
                                                     const embed = new MessageEmbed()
                                                         .setTitle(tituloEmbed)
                                                         .setColor(color)
@@ -482,7 +482,7 @@ module.exports = class twitch extends Command {
                                                         )
                                                         .setImage(
                                                             `https://static-cdn.jtvnw.net/previews-ttv/live_user_${res.data.data[0].login}-1920x1089.jpg`,
-                                                        );
+                                                        )
                                                     if (
                                                         interaction.options.getString('footer') &&
                                                         interaction.options.getString('footericon')
@@ -499,7 +499,7 @@ module.exports = class twitch extends Command {
                                                             iconURL: interaction.options
                                                                 .getString('footericon')
                                                                 .toString(),
-                                                        });
+                                                        })
                                                     } else if (
                                                         interaction.options.getString('footer') &&
                                                         !interaction.options.getString('footericon')
@@ -513,12 +513,12 @@ module.exports = class twitch extends Command {
                                                                     '{link}',
                                                                     `https://twitch.tv/${res.data.data[0].display_name}`,
                                                                 ),
-                                                        });
+                                                        })
                                                     }
                                                     if (interaction.options.getString('thumbnail')) {
                                                         embed.setThumbnail(
                                                             interaction.options.getString('thumbnail').toString(),
-                                                        );
+                                                        )
                                                     }
                                                     if (interaction.options.getString('titleurl')) {
                                                         embed.setURL(
@@ -529,10 +529,10 @@ module.exports = class twitch extends Command {
                                                                     '{link}',
                                                                     `https://twitch.tv/${res.data.data[0].display_name}`,
                                                                 ),
-                                                        );
+                                                        )
                                                     }
                                                     if (interaction.options.getBoolean('timestamp') == true) {
-                                                        embed.setTimestamp();
+                                                        embed.setTimestamp()
                                                     }
                                                     interaction.guild.channels.cache
                                                         .get(
@@ -545,18 +545,18 @@ module.exports = class twitch extends Command {
                                                         .send({
                                                             embeds: [embed],
                                                             content: `Test Message`,
-                                                        });
+                                                        })
                                                     interaction.editReply({
                                                         content:
                                                             'The notification has been created for this guild, we will send in the channel a test notification so u can see how it looks like',
                                                         embeds: [],
-                                                    });
+                                                    })
                                                 })
                                                 .catch(e => {
-                                                    client.logger.error(e);
+                                                    logger.error(e)
                                                     if (e.response.status.status === 409) {
                                                     }
-                                                });
+                                                })
                                         }
                                     } else {
                                         /*
@@ -597,23 +597,23 @@ module.exports = class twitch extends Command {
                                                         timestamp: interaction.options.getBoolean('timestamp'),
                                                     },
                                                 },
-                                            });
-                                            s.save();
+                                            })
+                                            s.save()
                                             interaction.editReply({
                                                 content: `Añadido a la base de datos correctamente, a partir de ahora recibiras las notificaciones en ${interaction.options
                                                     .getChannel('channel')
                                                     .toString()}`,
                                                 embeds: [],
-                                            });
+                                            })
                                             const tituloEmbed = interaction.options
                                                 .getString('title')
                                                 .toString()
-                                                .replace('{streamer}', s.display_name);
+                                                .replace('{streamer}', s.display_name)
                                             const descripcionEmbed = interaction.options
                                                 .getString('description')
                                                 .toString()
                                                 .replace('{streamer}', s.display_name)
-                                                .replace('{link}', `https://twitch.tv/${s.display_name}`);
+                                                .replace('{link}', `https://twitch.tv/${s.display_name}`)
                                             const embed = new MessageEmbed()
                                                 .setTitle(tituloEmbed)
                                                 .setColor(color)
@@ -625,7 +625,7 @@ module.exports = class twitch extends Command {
                                                 )
                                                 .setImage(
                                                     `https://static-cdn.jtvnw.net/previews-ttv/live_user_${res.data.data[0].login}-1920x1089.jpg`,
-                                                );
+                                                )
                                             if (
                                                 interaction.options.getString('footer') &&
                                                 interaction.options.getString('footericon')
@@ -640,7 +640,7 @@ module.exports = class twitch extends Command {
                                                             `https://twitch.tv/${res.data.data[0].display_name}`,
                                                         ),
                                                     iconURL: interaction.options.getString('footericon').toString(),
-                                                });
+                                                })
                                             } else if (
                                                 interaction.options.getString('footer') &&
                                                 !interaction.options.getString('footericon')
@@ -651,12 +651,12 @@ module.exports = class twitch extends Command {
                                                         .toString()
                                                         .replace('{streamer}', res.data.data[0].display_name)
                                                         .replace('{link}'),
-                                                });
+                                                })
                                             }
                                             if (interaction.options.getString('thumbnail')) {
                                                 embed.setThumbnail(
                                                     interaction.options.getString('thumbnail').toString(),
-                                                );
+                                                )
                                             }
                                             if (interaction.options.getString('titleurl')) {
                                                 embed.setURL(
@@ -667,10 +667,10 @@ module.exports = class twitch extends Command {
                                                             '{link}',
                                                             `https://twitch.tv/${res.data.data[0].display_name}`,
                                                         ),
-                                                );
+                                                )
                                             }
                                             if (interaction.options.getBoolean('timestamp') == true) {
-                                                embed.setTimestamp();
+                                                embed.setTimestamp()
                                             }
                                             interaction.guild.channels.cache
                                                 .get(
@@ -683,7 +683,7 @@ module.exports = class twitch extends Command {
                                                 .send({
                                                     embeds: [embed],
                                                     content: `Mensaje de prueba`,
-                                                });
+                                                })
                                         } else {
                                             if (
                                                 s.Interacciones.Guilds[
@@ -694,16 +694,16 @@ module.exports = class twitch extends Command {
                                                     content:
                                                         'Esta guild ya está registrada en nuestra base de datos con este streamer. ',
                                                     embeds: [],
-                                                });
+                                                })
                                             }
                                         }
                                     }
-                                });
+                                })
                             })
                             .catch(e => {
-                                client.logger.debug(e);
-                            });
-                        break;
+                                logger.debug(e)
+                            })
+                        break
                     case 'remove':
                         axios
                             .get(
@@ -716,7 +716,7 @@ module.exports = class twitch extends Command {
                             )
                             .then(async res => {
                                 if (!res.data.data[0]) {
-                                    return interaction.editReply('The streamer does not exist');
+                                    return interaction.editReply('The streamer does not exist')
                                 }
                                 TwitchModel.findOne({
                                     broadcaster_user_id:
@@ -728,7 +728,7 @@ module.exports = class twitch extends Command {
                                             s.Interacciones.Guilds.splice(
                                                 s.Interacciones.Guilds.findIndex(i => i.id === interaction.guild.id),
                                                 1,
-                                            );
+                                            )
                                             s.save().then(s => {
                                                 if (
                                                     s.Interacciones.Users.length == 0 &&
@@ -745,17 +745,17 @@ module.exports = class twitch extends Command {
                                                             interaction.editReply({
                                                                 content: `Se ha eliminado la subscripción correctamente`,
                                                                 embeds: [],
-                                                            });
-                                                        });
+                                                            })
+                                                        })
                                                 }
-                                            });
+                                            })
                                         }
-                                    } else if (!s) return;
-                                });
-                            });
-                        break;
+                                    } else if (!s) return
+                                })
+                            })
+                        break
                 }
-                break;
+                break
             case 'private':
                 switch (interaction.options._subcommand) {
                     case 'create':
@@ -770,7 +770,7 @@ module.exports = class twitch extends Command {
                             )
                             .then(async res => {
                                 if (!res.data.data[0]) {
-                                    return interaction.editReply('The streamer does not exist');
+                                    return interaction.editReply('The streamer does not exist')
                                 }
                                 TwitchModel.findOne({
                                     broadcaster_user_id:
@@ -819,7 +819,7 @@ module.exports = class twitch extends Command {
                                                             ],
                                                             Guilds: [],
                                                         },
-                                                    });
+                                                    })
                                                     const message = interaction.options
                                                         .getString('message')
                                                         .toString()
@@ -827,21 +827,21 @@ module.exports = class twitch extends Command {
                                                         .replace(
                                                             '{link}',
                                                             `https://twitch.tv/${res.data.data[0].display_name}`,
-                                                        );
+                                                        )
                                                     interaction.member.send({
                                                         content: message,
-                                                    });
+                                                    })
                                                     interaction.editReply({
                                                         content:
                                                             'The notification has been created, we will send you a private message with a test notification so u can see how it looks like',
                                                         embeds: [],
-                                                    });
+                                                    })
                                                 })
                                                 .catch(e => {
-                                                    client.logger.error(e);
+                                                    logger.error(e)
                                                     if (e.response.status.status === 409) {
                                                     }
-                                                });
+                                                })
                                         }
                                     } else {
                                         /*
@@ -864,38 +864,35 @@ module.exports = class twitch extends Command {
                                             s.Interacciones.Users.push({
                                                 id: interaction.member.id.toString(),
                                                 message: interaction.options.getString('message').toString(),
-                                            });
-                                            s.save();
+                                            })
+                                            s.save()
                                             const message = interaction.options
                                                 .getString('message')
                                                 .toString()
                                                 .replace('{streamer}', res.data.data[0].display_name)
-                                                .replace(
-                                                    '{link}',
-                                                    `https://twitch.tv/${res.data.data[0].display_name}`,
-                                                );
+                                                .replace('{link}', `https://twitch.tv/${res.data.data[0].display_name}`)
                                             interaction.member.send({
                                                 content: message,
-                                            });
+                                            })
                                             interaction.editReply({
                                                 content:
                                                     'The notification has been created, we will send you a private message with a test notification so u can see how it looks like',
                                                 embeds: [],
-                                            });
+                                            })
                                         } else {
                                             interaction.editReply({
                                                 content:
                                                     'Usted ya está registrado para recibir notificaciones privadas de este streamer.',
                                                 embeds: [],
-                                            });
+                                            })
                                         }
                                     }
-                                });
+                                })
                             })
                             .catch(e => {
-                                client.logger.debug(e);
-                            });
-                        break;
+                                logger.debug(e)
+                            })
+                        break
                     case 'remove':
                         axios
                             .get(
@@ -908,7 +905,7 @@ module.exports = class twitch extends Command {
                             )
                             .then(async res => {
                                 if (!res.data.data[0]) {
-                                    return interaction.editReply('The streamer does not exist');
+                                    return interaction.editReply('The streamer does not exist')
                                 }
                                 TwitchModel.findOne({
                                     broadcaster_user_id:
@@ -926,7 +923,7 @@ module.exports = class twitch extends Command {
                                                         i => i.id === interaction.member.id,
                                                     ),
                                                     1,
-                                                );
+                                                )
                                                 s.save().then(s => {
                                                     if (
                                                         s.Interacciones.Users.length == 0 &&
@@ -946,23 +943,23 @@ module.exports = class twitch extends Command {
                                                                 interaction.editReply({
                                                                     content: `Se ha eliminado la subscripción correctamente`,
                                                                     embeds: [],
-                                                                });
-                                                            });
+                                                                })
+                                                            })
                                                     }
-                                                });
+                                                })
                                             } else {
                                                 interaction.editReply({
                                                     content:
                                                         'Usted no está registrado para recibir notificaciones privadas de este streamer.',
                                                     embeds: [],
-                                                });
+                                                })
                                             }
                                         }
-                                    } else if (!s) return;
-                                });
-                            });
-                        break;
+                                    } else if (!s) return
+                                })
+                            })
+                        break
                 }
         }
     }
-};
+}

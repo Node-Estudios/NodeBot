@@ -1,6 +1,6 @@
 import { ColorResolvable, CommandInteraction, MessageEmbed } from 'discord.js'
-import Command from '../../../structures/command'
-import Client from '../../../structures/client'
+import Command from '../../../structures/Command'
+import Client from '../../../structures/Client'
 
 export default class mchistory extends Command {
     constructor(client: Client) {

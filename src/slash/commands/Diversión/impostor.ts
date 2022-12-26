@@ -1,6 +1,6 @@
-import { ColorResolvable, CommandInteraction, MessageEmbed } from 'discord.js';
-import Command from '../../../structures/command';
-import Client from '../../../structures/client';
+import { ColorResolvable, CommandInteraction, MessageEmbed } from 'discord.js'
+import Command from '../../../structures/Command'
+import Client from '../../../structures/Client'
 
 export default class impostor extends Command {
     constructor(client: Client) {
@@ -25,7 +25,7 @@ export default class impostor extends Command {
                     required: false,
                 },
             ],
-        });
+        })
     }
     /**,
      * @param {Client} client
@@ -34,11 +34,11 @@ export default class impostor extends Command {
      */
     async run(client: Client, interaction: CommandInteraction, args: any) {
         // try {
-        let mencionado;
+        let mencionado
         if (args[0]) {
             mencionado = await interaction.guild?.members.fetch(args[0].replace('<@', '').replace('>', '')).catch(e => {
-                return;
-            });
+                return
+            })
         }
         if (!mencionado && args[0]) {
             const errorembed = new MessageEmbed()
@@ -48,12 +48,12 @@ export default class impostor extends Command {
                 .setFooter(
                     interaction.user.username + '#' + interaction.user.discriminator,
                     interaction.user.displayAvatarURL(),
-                );
+                )
             return interaction.editReply({
                 embeds: [errorembed],
-            });
+            })
         }
-        let random = [client.language.IMPOSTOR[1], client.language.IMPOSTOR[2]]; //Hacemos frases para ver si es o no
+        let random = [client.language.IMPOSTOR[1], client.language.IMPOSTOR[2]] //Hacemos frases para ver si es o no
 
         if (!mencionado)
             //Si el autor no menciono a nadie
@@ -73,7 +73,7 @@ export default class impostor extends Command {
 
         　　ﾟ　　　.　　　. ,　　　　.　 .`,
                 embeds: [],
-            }); //Enviamos el mensaje
+            }) //Enviamos el mensaje
 
         //Pero si menciona
 
@@ -92,7 +92,7 @@ export default class impostor extends Command {
         。  
         　　ﾟ　　　.　　　. ,　　　　.　 .`,
             embeds: [],
-        });
+        })
         // } catch (e) {
         //     console.error(e);
         //     message.channel.send({ embeds: [

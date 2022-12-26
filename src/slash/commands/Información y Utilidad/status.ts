@@ -5,7 +5,7 @@
 // const os = require('os');
 // require('moment-duration-format');
 
-// module.exports = class status extends Command {
+// export default class status extends Command {
 //     constructor(client) {
 //         super(client, {
 //             name: 'status',

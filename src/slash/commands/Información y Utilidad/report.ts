@@ -8,7 +8,7 @@
 // const Command = require("../../../structures/command.js");
 // const report = require("../../../models/report");
 
-// module.exports = class ping extends Command {
+// export default class ping extends Command {
 //   constructor(client) {
 //     super(client, {
 //       name: "bugreport",

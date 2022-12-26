@@ -1,38 +1,25 @@
-import { init } from '@sentry/node'
+const defaultLang = await import('../lang/' + langFile.find(l => l.default)?.archivo)
 import { ClusterClient as HybridClient, getInfo } from 'discord-hybrid-sharding'
-import { Collection, Options, Client as client } from 'discord.js'
-import interactionCreate from '../events/client/interactionCreate'
+import { Collection, Options, Client as ClientBase } from 'discord.js'
+import langFile from '../lang/index.json' assert { type: 'json' }
+import MusicManager from './musicManager.js'
 import ready from '../events/client/ready'
-import Logger from '../utils/console'
-import MusicManager from './musicManager'
-require('dotenv').config()
-const archivo = require('.././lang/index.json')
-const fs = require('fs')
-const language = fs
-    .readFileSync('src/lang/' + archivo.find((language: { default: any }) => language.default).archivo)
-    .toString()
-export default class Client extends client {
-    commands: any
+import logger from '../utils/logger.js'
+import { init } from '@sentry/node'
+export default class Client extends ClientBase<true> {
     buttons: any
     selectMenu: any
     messages: any
-    language: any
+    language = defaultLang.default
     snipes: Map<any, any>
-    logger: Logger
-    // statcordSongs: number;
     config: NodeJS.ProcessEnv
     devs: string[]
     cluster: HybridClient
-    // customData: data;
     settings: { color: string }
     clusters: Collection<unknown, unknown>
-    music!: MusicManager
+    music = new MusicManager(this)
     officialServerURL: string
-    static language: any
-    formatTime: (inputSeconds: number, complete: boolean) => string
     services: { sentry: { loggedIn: boolean } }
-    // ControlSystem: ControlSystem;
-    // ControlSystem: ControlSystem;
     constructor() {
         super({
             partials: ['MESSAGE', 'CHANNEL', 'REACTION'],
@@ -52,90 +39,22 @@ export default class Client extends client {
             shards: getInfo().SHARD_LIST,
             shardCount: getInfo().TOTAL_SHARDS,
         })
+        // @ts-ignore
         this.cluster = new HybridClient(this)
         this.clusters = new Collection()
-        this.commands = new Collection()
-        this.formatTime = function formatTime(inputSeconds: number, complete: boolean = false) {
-            if (complete) {
-                const Days = Math.floor(inputSeconds / (60 * 60 * 24))
-                const Hour = Math.floor((inputSeconds % (60 * 60 * 24)) / (60 * 60))
-                const Minutes = Math.floor(((inputSeconds % (60 * 60 * 24)) % (60 * 60)) / 60)
-                const Seconds = Math.floor(((inputSeconds % (60 * 60 * 24)) % (60 * 60)) % 60)
-                let ddhhmmss = ''
-                if (Days > 0 && Days != 1) {
-                    ddhhmmss += Days + 'd '
-                } else if (Days === 1) {
-                    ddhhmmss += Days + 'd '
-                }
-                if (Hour > 0 && Hour != 1) {
-                    ddhhmmss += Hour + 'h '
-                } else if (Hour === 1) {
-                    ddhhmmss += Hour + 'h '
-                }
-                if (Minutes > 0 && Minutes != 1) {
-                    ddhhmmss += Minutes + 'm '
-                } else if (Minutes === 1) {
-                    ddhhmmss += Minutes + 'm '
-                }
-                if (Seconds > 0 && Seconds != 1) {
-                    ddhhmmss += Seconds + 's'
-                } else if (Seconds === 1) {
-                    ddhhmmss += Seconds + 's'
-                }
-                return ddhhmmss
-            } else {
-                const Days = Math.floor(inputSeconds / (60 * 60 * 24))
-                const Hour = Math.floor((inputSeconds % (60 * 60 * 24)) / (60 * 60))
-                const Minutes = Math.floor(((inputSeconds % (60 * 60 * 24)) % (60 * 60)) / 60)
-                const Seconds = Math.floor(((inputSeconds % (60 * 60 * 24)) % (60 * 60)) % 60)
-                let ddhhmmss = ''
-                if (Days > 0 && Days != 1) {
-                    ddhhmmss += Days + ' Días '
-                } else if (Days === 1) {
-                    ddhhmmss += Days + ' Día '
-                }
-                if (Hour > 0 && Hour != 1) {
-                    ddhhmmss += Hour + ' Horas '
-                } else if (Hour === 1) {
-                    ddhhmmss += Hour + ' Hora '
-                }
-                if (Minutes > 0 && Minutes != 1) {
-                    ddhhmmss += Minutes + ' Minutos '
-                } else if (Minutes === 1) {
-                    ddhhmmss += Minutes + ' Minuto '
-                }
-                if (Seconds > 0 && Seconds != 1) {
-                    ddhhmmss += Seconds + ' Segundos'
-                } else if (Seconds === 1) {
-                    ddhhmmss += Seconds + ' Segundo'
-                }
-                return ddhhmmss
-            }
-        }
 
         this.buttons = new Collection()
         this.services = { sentry: { loggedIn: false } }
         this.selectMenu = new Collection()
         this.messages = new Collection()
-        this.language = JSON.parse(language)
         this.snipes = new Map()
         this.officialServerURL = 'https://discord.gg/xhAWYggKKh'
-        this.logger = new Logger(
-            {
-                displayTimestamp: true,
-                displayDate: true,
-            },
-            this,
-        )
-        // this.logger.addSecrets([process.env.TOKEN, process.env.MONGO_URI, process.env.SENTRY_DSN])
-        // this.logger.time('readyEvent')
         // this.statcordSongs = 0;
         this.config = process.env
         // this.ControlSystem = new ControlSystem(this);
         this.settings = {
             color: 'GREEN',
         }
-        // this.logger.log('testing');
         // this.cluster.evalOnManager(`this.clustersArray`).then((data: Map<any, any> | any) => {
         //     console.log('data: ', data);
         // });
@@ -150,8 +69,8 @@ export default class Client extends client {
                 tracesSampleRate: 0.5,
             })
             this.services.sentry.loggedIn = true
-            this.logger.log('Connected to Sentry')
-        } else this.logger.warn('Sentry dsn missing.')
+            logger.log('Connected to Sentry')
+        } else logger.warn('Sentry dsn missing.')
         // if ((this.customData as any).botType == 1) {
         //     this.clusters.set('node', []);
         //     (this.clusters.get('node') as Array<any>).push(this.cluster);
@@ -212,29 +131,11 @@ export default class Client extends client {
             throw new Error('Add developers to the .env file, expected input (example): devs=123456789,987654321 ')
         this.devs = process.env.devs.split(',')
         try {
-            //
-            //RUN ALL CLIENT.ON()
-            //
-            // this.on('debug', debug => {
-            //     this.logger.debug('Cluster ' + this.cluster.id + ': ' + debug);
-            // });
-            // this.cluster.on('TOKEN_INVALID', async (message: any) => {
-            //     console.log(message);
-            this.once('ready', async () => {
-                this.cluster.triggerReady()
-                // console.log("test");
-                // this.ControlSystem.run();
-                new ready().run(this)
-            })
-            this.on('interactionCreate', async interaction => {
-                if (process.env.enableCmds == 'true' || interaction.guildId == process.env.enabledGuild)
-                    new interactionCreate().run(interaction, this)
-            })
             this.on('shardReady', async shard => {
-                this.logger.info(`Shard ${shard} ready`)
+                logger.info(`Shard ${shard} ready`)
             })
         } catch (e) {
-            this.logger.error(e)
+            logger.error(e)
         }
         // this.cluster.on('message', message => {
         //     console.log(message);
@@ -247,17 +148,74 @@ export default class Client extends client {
             // this.cluster.triggerReady();
             //@ts-ignore
             super.login(process.env.TOKEN).then(() => {
-                this.logger.startUp(`${this.user!.username} logged in`)
+                logger.startUp(`${this.user!.username} logged in`)
                 // this.cluster.spawnNextCluster()
             })
         } catch (e: any) {
             // this.cluster.spawnNextCluster();
             // console.log('e', e);
             if (e.code == 'TOKEN_INVALID') {
-                this.logger.error('Invalid token')
+                logger.error('Invalid token')
                 // this.cluster.spawnNextCluster()
             }
             return
+        }
+    }
+    formatTime(inputSeconds: number, complete: boolean = false) {
+        if (complete) {
+            const Days = Math.floor(inputSeconds / (60 * 60 * 24))
+            const Hour = Math.floor((inputSeconds % (60 * 60 * 24)) / (60 * 60))
+            const Minutes = Math.floor(((inputSeconds % (60 * 60 * 24)) % (60 * 60)) / 60)
+            const Seconds = Math.floor(((inputSeconds % (60 * 60 * 24)) % (60 * 60)) % 60)
+            let ddhhmmss = ''
+            if (Days > 0 && Days != 1) {
+                ddhhmmss += Days + 'd '
+            } else if (Days === 1) {
+                ddhhmmss += Days + 'd '
+            }
+            if (Hour > 0 && Hour != 1) {
+                ddhhmmss += Hour + 'h '
+            } else if (Hour === 1) {
+                ddhhmmss += Hour + 'h '
+            }
+            if (Minutes > 0 && Minutes != 1) {
+                ddhhmmss += Minutes + 'm '
+            } else if (Minutes === 1) {
+                ddhhmmss += Minutes + 'm '
+            }
+            if (Seconds > 0 && Seconds != 1) {
+                ddhhmmss += Seconds + 's'
+            } else if (Seconds === 1) {
+                ddhhmmss += Seconds + 's'
+            }
+            return ddhhmmss
+        } else {
+            const Days = Math.floor(inputSeconds / (60 * 60 * 24))
+            const Hour = Math.floor((inputSeconds % (60 * 60 * 24)) / (60 * 60))
+            const Minutes = Math.floor(((inputSeconds % (60 * 60 * 24)) % (60 * 60)) / 60)
+            const Seconds = Math.floor(((inputSeconds % (60 * 60 * 24)) % (60 * 60)) % 60)
+            let ddhhmmss = ''
+            if (Days > 0 && Days != 1) {
+                ddhhmmss += Days + ' Días '
+            } else if (Days === 1) {
+                ddhhmmss += Days + ' Día '
+            }
+            if (Hour > 0 && Hour != 1) {
+                ddhhmmss += Hour + ' Horas '
+            } else if (Hour === 1) {
+                ddhhmmss += Hour + ' Hora '
+            }
+            if (Minutes > 0 && Minutes != 1) {
+                ddhhmmss += Minutes + ' Minutos '
+            } else if (Minutes === 1) {
+                ddhhmmss += Minutes + ' Minuto '
+            }
+            if (Seconds > 0 && Seconds != 1) {
+                ddhhmmss += Seconds + ' Segundos'
+            } else if (Seconds === 1) {
+                ddhhmmss += Seconds + ' Segundo'
+            }
+            return ddhhmmss
         }
     }
 }

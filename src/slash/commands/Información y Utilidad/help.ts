@@ -1,10 +1,11 @@
-import { ColorResolvable, CommandInteraction, MessageEmbed } from 'discord.js';
-import Command from '../../../structures/command';
-import Client from '../../../structures/client';
+import { ColorResolvable, CommandInteraction, MessageEmbed } from 'discord.js'
+import Command from '../../../structures/Command'
+import commands from '../../../cache/commands'
+import client from '../../../bot'
 
 export default class help extends Command {
-    constructor(client: Client) {
-        super(client, {
+    constructor() {
+        super({
             name: 'help',
             description: 'Show information about me.',
             name_localizations: {
@@ -28,9 +29,9 @@ export default class help extends Command {
                     required: false,
                 },
             ],
-        });
+        })
     }
-    async run(client: Client, interaction: CommandInteraction, args: any) {
+    async run(interaction: CommandInteraction, args: any) {
         // try {
         if (!args[0]) {
             // let web = new MessageButton()
@@ -69,18 +70,18 @@ export default class help extends Command {
                         dynamic: true,
                     }),
                 )
-                .setTitle('✨' + client.language.HELP[13]);
+                .setTitle('✨' + client.language.HELP[13])
             //let user = client.users.cache.get(message.author.id)
 
             //message.lineReply(client.language.HELP[4]);
             interaction.editReply({
                 embeds: [embed],
                 //buttons: ButtonArray,
-            });
+            })
         } else {
-            const data = [];
-            const name = args[0].toLowerCase();
-            const command = client.commands.get(name);
+            const data: string[] = []
+            const name = args[0].toLowerCase()
+            const command = commands.get(name)
 
             if (!command) {
                 const errorembed = new MessageEmbed()
@@ -90,26 +91,26 @@ export default class help extends Command {
                     .setFooter(
                         interaction.user.username + '#' + interaction.user.discriminator,
                         interaction.user.displayAvatarURL(),
-                    );
+                    )
                 return interaction.editReply({
                     embeds: [errorembed],
-                });
+                })
             }
 
-            data.push(`**${client.language.HELP[15]}:** ${command.name}`);
+            data.push(`**${client.language.HELP[15]}:** ${command.name}`)
 
-            if (command.description) data.push(`**${client.language.HELP[17]}:** ${command.description}`);
-            let ajj;
+            if (command.description) data.push(`**${client.language.HELP[17]}:** ${command.description}`)
+            let ajj
             if (command.options)
                 data.push(
                     `**${client.language.HELP[18]}:** .${command.name} ${command.options
                         .map((a: any) => {
-                            return (ajj = a.name ? a.name : null);
+                            return (ajj = a.name ? a.name : null)
                         })
                         .join(' ')}`,
-                );
+                )
 
-            data.push(`**${client.language.HELP[19]}:** ${command.cooldown || 3} ${client.language.HELP[30]}(s)`);
+            data.push(`**${client.language.HELP[19]}:** ${command.cooldown || 3} ${client.language.HELP[30]}(s)`)
             let embed2 = new MessageEmbed()
                 .setTitle(client.language.HELP[20] + command.name + client.language.HELP[24])
                 .setColor(process.env.bot1Embed_Color as ColorResolvable)
@@ -128,11 +129,11 @@ export default class help extends Command {
                 .setFooter(
                     `\n${client.language.HELP[26]} \`/${interaction.commandName} [${client.language.HELP[27]}]\` ${client.language.HELP[28]}`,
                 )
-                .setTimestamp();
+                .setTimestamp()
 
             interaction.editReply({
                 embeds: [embed2],
-            });
+            })
         }
         //   } catch (e) {
         //     console.error(e);

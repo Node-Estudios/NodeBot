@@ -1,8 +1,7 @@
 require('dotenv').config()
-const { Client, MessageEmbed, CommandInteraction } = require('discord.js')
 const Logger = require('../../../utils/console')
 
-module.exports = {
+export default {
     name: 'queueMusic',
     /**,
      * @param {Client} client

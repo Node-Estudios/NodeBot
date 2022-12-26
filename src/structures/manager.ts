@@ -1,15 +1,13 @@
 import { Cluster, HeartbeatManager, ClusterManager as Manager } from 'discord-hybrid-sharding'
 import { textSync } from 'figlet'
 import { ShardingClient } from 'statcord.js'
-import Logger from '../utils/console'
+import logger from '../utils/logger'
 import RESTAPI from './restAPIHandler'
-require('dotenv').config()
 export default class NodeManager extends Manager {
     public commands: any
     // public clustersArray: Collection<any, any>;
     // public players: Collection<any, any>;
     public statcord: ShardingClient | undefined
-    public logger: Logger
 
     constructor() {
         super(`build/bot.js`, {
@@ -21,11 +19,8 @@ export default class NodeManager extends Manager {
         })
 
         // * Crea un nuevo objeto de la clase Logger para mejorar la salida en la consola
-        this.logger = new Logger({
-            displayTimestamp: true,
-            displayDate: true,
-        })
-        this.logger.startUp(
+
+        logger.startUp(
             'Iniciando Sistema De Node' +
                 '\n' +
                 textSync('Node Bot', {
@@ -111,7 +106,7 @@ export default class NodeManager extends Manager {
         //     this.clusters.get(0);
         // };
         // this.on('debug', (message: any) => {
-        //     this.logger.debug(message);
+        //     logger.debug(message);
         // });
         // let numClustersReady = 0 - this.totalClusters * 2 + this.totalClusters
         this.extend(
@@ -121,7 +116,7 @@ export default class NodeManager extends Manager {
             }),
         )
         this.on('debug', (message: any) => {
-            this.logger.debug(message)
+            logger.debug(message)
         })
         // if (numClustersReady == this.totalClusters)
         new RESTAPI(this)
@@ -129,12 +124,12 @@ export default class NodeManager extends Manager {
             // console.log('numClustersReadyBefore:', numClustersReady)
             // numClustersReady++
             // console.log('numClustersReady:', numClustersReady, this.totalClusters)
-            this.logger.startUp(`Cluster ${cluster.id} is ready!`)
+            logger.startUp(`Cluster ${cluster.id} is ready!`)
         })
         this.on('clusterCreate', (cluster: Cluster) => {
             // cluster.on('message', (message: any) => {
-            // this.logger.debug("totalClusters: ", this.totalClusters)
-            // this.logger.log("message received: ", cluster.eval('client.user.tag'))
+            // logger.debug("totalClusters: ", this.totalClusters)
+            // logger.log("message received: ", cluster.eval('client.user.tag'))
             /**
              * * STATUS QUE PUEDES RECIVIR DE VUELTA:
              * * 200: EVERTYHTING IS OKEY, THE REQUEST WAS SUCCESSFULLY EXECUTED
@@ -144,7 +139,7 @@ export default class NodeManager extends Manager {
             // new IPChandler(cluster, message, this, logger)
             // });
 
-            this.logger.startUp(`Launched cluster ${cluster.id}`)
+            logger.startUp(`Launched cluster ${cluster.id}`)
         })
         if (process.env.NODE_ENV != 'development') {
         }

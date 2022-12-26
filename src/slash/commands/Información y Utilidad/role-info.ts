@@ -1,6 +1,6 @@
-import { ColorResolvable, CommandInteraction, MessageEmbed } from 'discord.js';
-import Command from '../../../structures/command';
-import Client from '../../../structures/client';
+import { ColorResolvable, CommandInteraction, MessageEmbed } from 'discord.js'
+import Command from '../../../structures/Command'
+import Client from '../../../structures/Client'
 
 export default class roleinfo extends Command {
     constructor(client: Client) {
@@ -28,7 +28,7 @@ export default class roleinfo extends Command {
                     required: true,
                 },
             ],
-        });
+        })
     }
     /**,
      * @param {Client} client
@@ -37,7 +37,7 @@ export default class roleinfo extends Command {
      */
     async run(client: Client, interaction: CommandInteraction, args: any) {
         // try {
-        let role = await interaction.guild?.roles.fetch(args[0]);
+        let role = await interaction.guild?.roles.fetch(args[0])
         if (!role) {
             const errorembed = new MessageEmbed()
                 .setColor('RED')
@@ -46,57 +46,57 @@ export default class roleinfo extends Command {
                 .setFooter(
                     interaction.user.username + '#' + interaction.user.discriminator,
                     interaction.user.displayAvatarURL(),
-                );
-            return interaction.editReply({ embeds: [errorembed] });
+                )
+            return interaction.editReply({ embeds: [errorembed] })
         }
-        const guild = interaction.guild;
+        const guild = interaction.guild
         if (guild) {
             const rol = new MessageEmbed()
                 .setThumbnail(interaction.user.displayAvatarURL({ dynamic: true }))
                 .setTimestamp()
-                .setColor((role.hexColor as ColorResolvable) || ('#1DC44F' as ColorResolvable));
-            let iconURL = guild.iconURL({ dynamic: true }) ? guild.iconURL({ dynamic: true }) : undefined;
-            if (iconURL) rol.setAuthor(guild.name, iconURL);
+                .setColor((role.hexColor as ColorResolvable) || ('#1DC44F' as ColorResolvable))
+            let iconURL = guild.iconURL({ dynamic: true }) ? guild.iconURL({ dynamic: true }) : undefined
+            if (iconURL) rol.setAuthor(guild.name, iconURL)
             rol.addField(
                 `<:pepeblink:967941236029788160> ${client.language.ROLEINFO[1]}: `,
                 '```' + `${role.name}` + '```',
                 true,
-            ); //Nombre del rol
+            ) //Nombre del rol
             rol.addField(
                 `<:textchannelblurple:893490117451333632> ${client.language.ROLEINFO[2]}: `,
                 '```' + `${role.id}` + '```',
                 true,
-            ); //Id del rol
+            ) //Id del rol
             rol.addField(
                 `🔢 ${client.language.ROLEINFO[4]}: `,
                 '```' + `${Math.abs(role.rawPosition - interaction.guild.roles.cache.size)}` + '```',
                 true,
-            ); //Su pocision en cuanto los otros roles
-            rol.addField(`🎩 ${client.language.ROLEINFO[5]}: `, '```' + `${role.hexColor}` + '```', true); //Su hexColor
+            ) //Su pocision en cuanto los otros roles
+            rol.addField(`🎩 ${client.language.ROLEINFO[5]}: `, '```' + `${role.hexColor}` + '```', true) //Su hexColor
             rol.addField(
                 `<:star:893553167915188275> ${client.language.ROLEINFO[6]}: `,
                 role.mentionable
                     ? '```' + client.language.ROLEINFO[10] + '```'
                     : '```' + client.language.ROLEINFO[11] + '```',
                 true,
-            ); //Devolvera true o false, segun si se puede mencionar este rol o no
+            ) //Devolvera true o false, segun si se puede mencionar este rol o no
             rol.addField(
                 `<:share:893553167894216744> ${client.language.ROLEINFO[7]}: `,
                 role.hoist
                     ? '```' + client.language.ROLEINFO[10] + '```'
                     : '```' + client.language.ROLEINFO[11] + '```',
                 true,
-            ); //Devolvera true o false, segun si se esta separado(visible ante los roles) o no
+            ) //Devolvera true o false, segun si se esta separado(visible ante los roles) o no
             rol.addField(
                 `<:cmd:894171593431994388> ${client.language.ROLEINFO[8]}: `,
                 role.managed
                     ? '```' + client.language.ROLEINFO[10] + '```'
                     : '```' + client.language.ROLEINFO[11] + '```',
                 true,
-            ); //Devolvera true o false, segun si lo creo el sistema(El propio discord)
-            if (iconURL) rol.setImage(iconURL);
+            ) //Devolvera true o false, segun si lo creo el sistema(El propio discord)
+            if (iconURL) rol.setImage(iconURL)
 
-            return interaction.editReply({ embeds: [rol] });
+            return interaction.editReply({ embeds: [rol] })
         }
 
         // } catch (e) {
@@ -124,9 +124,9 @@ export default class roleinfo extends Command {
 
 function trimArray(arr: Array<any>, maxLen = 10) {
     if (arr.length > maxLen) {
-        const len = arr.length - maxLen;
-        arr = arr.slice(0, maxLen);
-        arr.push(`${len} more...`);
+        const len = arr.length - maxLen
+        arr = arr.slice(0, maxLen)
+        arr.push(`${len} more...`)
     }
-    return arr;
+    return arr
 }
