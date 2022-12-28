@@ -15,7 +15,6 @@ export default {
             if (!player) return
 
             const data = []
-            //TODO????
             data.push(interaction.member.user.username)
             data.push(interaction.member.user.discriminator)
             data.push(interaction.member.displayAvatarURL())

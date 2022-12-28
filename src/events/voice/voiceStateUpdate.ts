@@ -2,10 +2,8 @@ import { ColorResolvable, MessageEmbed, TextChannel } from 'discord.js'
 import client from '../../bot.js'
 
 export default async function (oldState, newState) {
-    //TODO? add type
-    // TODO: client.music
-    if (!(client as any).manager) return
-    const player = (client as any).manager.players.get(oldState.guild.id)
+    if (!client.music) return
+    const player = client.music.players.get(oldState.guild.id)
 
     if (!player || player.stayInVoice) return
     if (!newState.guild.me.voice.channel || !oldState.guild.me.voice.channel) return player.destroy(true)
@@ -41,11 +39,7 @@ export default async function (oldState, newState) {
     if (!player.waitingMessage || !newState.guild.me.voice.channel) return
     const voiceMembers = newState.guild.me.voice.channel.members.filter(member => !member.user.bot).size
     if (voiceMembers.length) return msg.delete()
-    const newPlayer = await (client as any).manager.newPlayer(
-        oldState.guild,
-        oldState.guild.me.voice.channel,
-        player.textChannel,
-    )
+    const newPlayer = await client.music.newPlayer(oldState.guild, oldState.guild.me.voice.channel, player.textChannel)
     await newPlayer.connect()
     newPlayer.destroy(false)
 

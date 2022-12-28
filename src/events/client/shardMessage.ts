@@ -4,9 +4,6 @@
 // import { writeFile, readFile } from 'node:fs'
 // import logger from '../../utils/logger.js'
 
-// // TODO: Add types
-// // TODO! Fix this
-
 // export default async function (
 //     originShard: Cluster,
 //     message: {
