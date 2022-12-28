@@ -1,6 +1,6 @@
 import { Guild, Message, TextChannel, VoiceChannel } from 'discord.js'
 import { TrackPlayer, VoiceConnection } from 'yasha'
-import musicManager from './MusicManager.js'
+import MusicManager from './MusicManager.js'
 import logger from '../utils/logger.js'
 import Queue from './Queue.js'
 
@@ -13,16 +13,21 @@ export default class Player extends TrackPlayer {
     paused: boolean
     volume: number
     queue: Queue
-    manager: musicManager
+    manager: MusicManager
     textChannel: TextChannel
     voiceChannel: VoiceChannel
     message?: Message
     guild: Guild
-    leaveTimeout: any
-    connection: any
+    leaveTimeout?: NodeJS.Timeout
     bitrate?: number
-    subscription: any
+    // TODO: remove this when the types are resolved
+    //yasha
     player: any
+    subscription: any
+    connection: any
+    waitingMessage: any
+    stayInVc: any
+    previouslyPaused: any
     constructor(options: any) {
         super({ external_packet_send: true, external_encrypt: true })
 
@@ -45,7 +50,7 @@ export default class Player extends TrackPlayer {
         this.textChannel = options.textChannel
         this.guild = options.guild
 
-        this.leaveTimeout = null
+        this.leaveTimeout = undefined
     }
     async connect() {
         this.connection = await VoiceConnection.connect(this.voiceChannel, {
@@ -63,7 +68,7 @@ export default class Player extends TrackPlayer {
         if (!track) super.play(this.queue.current)
         else super.play(track)
         clearTimeout(this.leaveTimeout)
-        this.leaveTimeout = null
+        this.leaveTimeout = undefined
         this.start()
     }
     stop() {

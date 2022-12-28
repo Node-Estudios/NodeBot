@@ -11,7 +11,6 @@ export default class Client extends ClientBase<true> {
     //@ts-ignores
     cluster = new HybridClient(this)
     settings: { color: ColorResolvable }
-    clusters = new Collection<string, unknown>()
     music = new MusicManager()
     officialServerURL: string
     services: { sentry: { loggedIn: boolean } }

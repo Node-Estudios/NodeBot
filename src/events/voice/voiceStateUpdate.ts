@@ -39,6 +39,7 @@ export default async function (oldState, newState) {
     if (!player.waitingMessage || !newState.guild.me.voice.channel) return
     const voiceMembers = newState.guild.me.voice.channel.members.filter(member => !member.user.bot).size
     if (voiceMembers.length) return msg.delete()
+    //TODO! Fix this
     const newPlayer = await client.music.newPlayer(oldState.guild, oldState.guild.me.voice.channel, player.textChannel)
     await newPlayer.connect()
     newPlayer.destroy(false)
