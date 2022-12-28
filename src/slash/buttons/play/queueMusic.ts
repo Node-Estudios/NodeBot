@@ -11,7 +11,7 @@ export default {
                 ephemeral: true,
             })
 
-            const player = (client as any).manager.players.get(interaction.guild.id)
+            const player = client.music.players.get(interaction.guild.id)
             if (!player) return
 
             const data = []

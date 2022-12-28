@@ -22,7 +22,7 @@ export default {
                 })
             }
 
-            const player = (client as any).manager.players.get(interaction.guild.id)
+            const player = client.music.players.get(interaction.guild.id)
             if (!player?.queue.current) return
             const message = await interaction.message.fetch()
             const embed = new MessageEmbed().setColor(client.settings.color)
