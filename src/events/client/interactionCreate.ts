@@ -1,9 +1,9 @@
 import { GuildMember, CommandInteraction, Interaction, ButtonInteraction, Collection } from 'discord.js'
+import Client from '../../structures/Client.js'
 import commands from '../../cache/commands.js'
 import buttons from '../../cache/buttons.js'
 import logger from '../../utils/logger.js'
 import Statcord from 'statcord.js'
-import client from '../../bot.js'
 
 const cooldowns = new Collection<string, Collection<string, number>>()
 
@@ -16,6 +16,7 @@ export default async function (interaction: Interaction<'cached'>) {
 }
 
 async function handleCommand(interaction: CommandInteraction<'cached'>) {
+    const client = interaction.client as Client
     const cmd = commands.find(c => c.name === interaction.commandName)
 
     if (!cmd)
@@ -26,17 +27,6 @@ async function handleCommand(interaction: CommandInteraction<'cached'>) {
             files: [],
         })
     logger.debug(`Comando ${cmd.name} ejecutado`)
-
-    // TODO: Pendiente eliminar
-    const args: (string | number | boolean)[] = []
-    for (let option of interaction.options.data) {
-        if (option.type === 'SUB_COMMAND') {
-            if (option.name) args.push(option.name)
-            option.options?.forEach(x => {
-                if (x.value) args.push(x.value)
-            })
-        } else if (option.value) args.push(option.value)
-    }
 
     //CHECK PERMISSIONS *COPIADO DE OTRO BOT XD
     // ! no used for now

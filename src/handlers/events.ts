@@ -1,4 +1,5 @@
 import { readdirSync } from 'node:fs'
+// TODO? use global client?
 import client from '../bot.js'
 
 for (const category of readdirSync('./build/events'))

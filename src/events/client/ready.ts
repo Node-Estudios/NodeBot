@@ -2,6 +2,7 @@ import { IPCMessage } from 'discord-hybrid-sharding'
 import logger from '../../utils/logger.js'
 import * as Sentry from '@sentry/node'
 import { connect } from 'mongoose'
+//TODO? use global client?
 import client from '../../bot.js'
 
 export default function () {

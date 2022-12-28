@@ -6,7 +6,6 @@ import getUsedBot from '../../utils/getUsedBot'
 import simplestDiscordWebhook from 'simplest-discord-webhook'
 let webhookClient = new simplestDiscordWebhook(process.env.errorWebhookURL)
 import getRandomPhrase from '../../utils/getRandomPhrase'
-import client from '../../bot'
 module.exports = class nowplaying extends Command {
     constructor() {
         super({
@@ -54,6 +53,7 @@ module.exports = class nowplaying extends Command {
     }
 
     async run(interaction) {
+        const client = interaction.client
         let usedBotID
         let option = interaction.options.getString('bot')
         if (option) {

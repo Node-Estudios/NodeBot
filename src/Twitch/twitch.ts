@@ -5,6 +5,7 @@ const port = '8085'
 const twitchSigningSecret = '273823283ehywdh'
 import logger from '../utils/logger.js'
 import TwitchModel from '../models/twitch'
+// TODO? use global client?
 import client from '../bot.js'
 import { MessageEmbed, TextChannel } from 'discord.js'
 

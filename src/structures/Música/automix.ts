@@ -1,14 +1,13 @@
 import { CommandInteraction, MessageEmbed, ColorResolvable } from 'discord.js'
-import Command from '../../structures/Command.js'
-require('dotenv').config()
-// import getUsedBot from '../../utils/getUsedBot'
-import bot1missing from './functions/bot1missing'
-import bot2missing from './functions/bot2missing'
-import bot3missing from './functions/bot3missing'
-import bot4missing from './functions/bot4missing'
-import getRandomPhrase from '../../utils/getRandomPhrase.js'
 import simplestDiscordWebhook from 'simplest-discord-webhook'
-import client from '../../bot.js'
+import getRandomPhrase from '../../utils/getRandomPhrase.js'
+import bot1missing from './functions/bot1missing.js'
+import bot2missing from './functions/bot2missing.js'
+import bot3missing from './functions/bot3missing.js'
+import bot4missing from './functions/bot4missing.js'
+import Command from '../../structures/Command.js'
+import Client from '../Client.js'
+
 let webhookClient = new simplestDiscordWebhook(process.env.errorWebhookURL)
 module.exports = class automix extends Command {
     constructor() {
@@ -39,6 +38,7 @@ module.exports = class automix extends Command {
         })
     }
     override async run(interaction: CommandInteraction<'cached'>) {
+        const client = interaction.client as Client
         const embed = new MessageEmbed()
             .setDescription(client.language.AUTOMIX[2])
             .setColor(process.env.bot1Embed_Color as ColorResolvable)

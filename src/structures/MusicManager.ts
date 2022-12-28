@@ -4,6 +4,7 @@ import formatTime from '../utils/formatTime'
 import logger from '../utils/logger.js'
 import EventEmitter from 'events'
 import Player from './Player.js'
+// ? use client for lang
 import client from '../bot.js'
 
 export default class MusicManager extends EventEmitter {
@@ -135,7 +136,7 @@ export default class MusicManager extends EventEmitter {
                 }
             }
             player.message.delete()
-            const msg = await (client.channels.cache.get(player.textChannel.id) as TextChannel)?.send({
+            const msg = await player.textChannel.send({
                 embeds: [embed],
                 components: [row],
             })

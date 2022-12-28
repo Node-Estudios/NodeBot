@@ -1,12 +1,13 @@
-import { ColorResolvable, MessageEmbed, TextChannel } from 'discord.js'
-import client from '../../bot.js'
+import { ColorResolvable, MessageEmbed, VoiceState } from 'discord.js'
+import Client from '../../structures/Client.js'
 
-export default async function (oldState, newState) {
+export default async function (oldState: VoiceState, newState: VoiceState) {
+    const client = oldState.client as Client
     if (!client.music) return
     const player = client.music.players.get(oldState.guild.id)
 
     if (!player || player.stayInVoice) return
-    if (!newState.guild.me.voice.channel || !oldState.guild.me.voice.channel) return player.destroy(true)
+    if (!newState.guild.me?.voice.channel || !oldState.guild.me?.voice.channel) return player.destroy(true)
     if (newState.guild.me.voice.channel.members.filter(member => !member.user.bot).size >= 1) {
         if (!player.waitingMessage && player.stayInVc) player.pause(false)
         if (player.waitingMessage) {
@@ -19,7 +20,7 @@ export default async function (oldState, newState) {
     if (player.waitingMessage) return
     if (player.stayInVc) return player.pause(true)
 
-    const msg = await (client.channels.cache.get(player.textChannel) as TextChannel).send({
+    const msg = await player.textChannel.send({
         embeds: [
             new MessageEmbed()
                 .setDescription(
@@ -38,7 +39,7 @@ export default async function (oldState, newState) {
 
     if (!player.waitingMessage || !newState.guild.me.voice.channel) return
     const voiceMembers = newState.guild.me.voice.channel.members.filter(member => !member.user.bot).size
-    if (voiceMembers.length) return msg.delete()
+    if (voiceMembers) return msg.delete()
     //TODO! Fix this
     const newPlayer = await client.music.newPlayer(oldState.guild, oldState.guild.me.voice.channel, player.textChannel)
     await newPlayer.connect()

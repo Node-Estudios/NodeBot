@@ -1,4 +1,5 @@
 import { Signale } from 'signale'
+// TODO? use global client?
 import client from '../bot.js'
 export default new Signale({
     scope: `Cluster ${client.cluster.id}`,
