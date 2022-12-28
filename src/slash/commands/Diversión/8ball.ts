@@ -1,6 +1,6 @@
 import { CommandInteraction, MessageEmbed } from 'discord.js'
 import Command from '../../../structures/Command.js'
-import client from '../../../bot.js'
+import Client from '../../../structures/Client.js'
 
 export default class ball extends Command {
     constructor() {
@@ -31,6 +31,7 @@ export default class ball extends Command {
         })
     }
     override async run(interaction: CommandInteraction<'cached'>) {
+        const client = interaction.client as Client
         let respuesta = client.language.QUESTIONBALL[4]
         let question = interaction.options.getString('question', true)
         if (!question.endsWith('?'))

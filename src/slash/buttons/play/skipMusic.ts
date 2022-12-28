@@ -1,9 +1,11 @@
 import { MessageEmbed, ButtonInteraction } from 'discord.js'
+import Client from '../../../structures/Client.js'
 import logger from '../../../utils/logger.js'
-import client from '../../../bot.js'
+
 export default {
     name: 'skipMusic',
     async run(interaction: ButtonInteraction<'cached'>) {
+        const client = interaction.client as Client
         try {
             if (interaction.member?.voice?.channelId !== interaction.guild.me?.voice.channelId) {
                 const errorembed = new MessageEmbed().setColor(client.settings.color).setFooter({

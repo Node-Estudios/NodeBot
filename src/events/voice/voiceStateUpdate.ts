@@ -3,6 +3,7 @@ import client from '../../bot.js'
 
 export default async function (oldState, newState) {
     //TODO? add type
+    // TODO: client.music
     if (!(client as any).manager) return
     const player = (client as any).manager.players.get(oldState.guild.id)
 

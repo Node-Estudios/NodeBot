@@ -1,6 +1,6 @@
 import { ColorResolvable, CommandInteraction, MessageEmbed } from 'discord.js'
 import Command from '../../../structures/Command.js'
-import client from '../../../bot.js'
+import Client from '../../../structures/Client.js'
 
 export default class roleinfo extends Command {
     constructor() {
@@ -31,6 +31,7 @@ export default class roleinfo extends Command {
         })
     }
     override async run(interaction: CommandInteraction<'cached'>) {
+        const client = interaction.client as Client
         let role = interaction.options.getRole('role', true)
         const rol = new MessageEmbed()
             .setThumbnail(interaction.user.displayAvatarURL({ dynamic: true }))

@@ -1,10 +1,11 @@
+import Client from '../../../structures/Client.js'
 import { ButtonInteraction } from 'discord.js'
-import client from '../../../bot.js'
 import logger from '../../../utils/logger.js'
 
 export default {
     name: 'queueMusic',
     run: async (interaction: ButtonInteraction<'cached'>) => {
+        const client = interaction.client as Client
         try {
             await interaction.deferReply({
                 ephemeral: true,

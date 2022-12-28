@@ -1,5 +1,3 @@
 import 'dotenv/config'
-import './handlers/commands.js'
-import './handlers/antiCrash.js'
-import NodeManager from './structures/manager.js'
+import NodeManager from './structures/NodeManager.js'
 new NodeManager().spawn()

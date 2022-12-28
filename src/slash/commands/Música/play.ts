@@ -1,7 +1,5 @@
-import { CommandInteraction, Guild, GuildMember, MessageEmbed, TextChannel, VoiceChannel } from 'discord.js'
-import client from '../../../bot.js'
+import { CommandInteraction, MessageEmbed, TextChannel, VoiceChannel } from 'discord.js'
 import Client from '../../../structures/Client.js'
-
 import Command from '../../../structures/Command.js'
 import formatTime from '../../../utils/formatTime.js'
 import logger from '../../../utils/logger.js'
@@ -39,6 +37,7 @@ export default class play extends Command {
         })
     }
     override async run(interaction: CommandInteraction<'cached'>) {
+        const client = interaction.client as Client
         // if (!(interaction.member as GuildMember).voice.channel)
         //     return interaction.reply({ content: 'No estás en un canal de voz', embeds: [] });
         /*        client.cluster.request({ content: { system: 'music', command: 'play', data } }).then(res => {

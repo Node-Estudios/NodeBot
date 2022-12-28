@@ -1,6 +1,6 @@
 import { CommandInteraction, MessageEmbed } from 'discord.js'
 import Command from '../../../structures/Command.js'
-import client from '../../../bot.js'
+import Client from '../../../structures/Client.js'
 
 export default class serverinfo extends Command {
     constructor() {
@@ -18,6 +18,7 @@ export default class serverinfo extends Command {
     }
 
     override async run(interaction: CommandInteraction<'cached'>) {
+        const client = interaction.client as Client
         // try {
         // let region = {
         //     europe: 'Europa',

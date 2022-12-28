@@ -1,6 +1,6 @@
 import Command from '../../../structures/Command.js'
+import Client from '../../../structures/Client.js'
 import { CommandInteraction } from 'discord.js'
-import client from '../../../bot.js'
 
 export default class impostor extends Command {
     constructor() {
@@ -29,6 +29,7 @@ export default class impostor extends Command {
     }
 
     override async run(interaction: CommandInteraction<'cached'>) {
+        const client = interaction.client as Client
         interaction.reply(`. 　　　。　　　　•　 　ﾟ　　。 　　.
 
         　　　.　　　 　　.　　　　　。　　 。　. 　

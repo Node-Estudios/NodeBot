@@ -1,7 +1,6 @@
 import { ColorResolvable, CommandInteraction, MessageEmbed, TextChannel } from 'discord.js'
-import client from '../../../bot'
-import Command from '../../../structures/Command'
-//TODO: refactor this
+import Command from '../../../structures/Command.js'
+import Client from '../../../structures/Client.js'
 
 export default class embed extends Command {
     constructor() {
@@ -67,6 +66,7 @@ export default class embed extends Command {
         })
     }
     override async run(interaction: CommandInteraction<'cached'>) {
+        const client = interaction.client as Client
         const canal = interaction.options.getChannel('channel', true) as TextChannel,
             descripcion = interaction.options.getString('description', true),
             color = interaction.options.getString('color', true) as ColorResolvable,

@@ -1,9 +1,10 @@
 import { MessageEmbed, ButtonInteraction } from 'discord.js'
+import Client from '../../../structures/Client.js'
 import logger from '../../../utils/logger.js'
-import client from '../../../bot.js'
 export default {
     name: 'readMore',
     run: async (interaction: ButtonInteraction<'cached'>) => {
+        const client = interaction.client as Client
         try {
             let bots = await botsInServer(interaction)
             let onlineBot = await getOnlineBots()
@@ -52,6 +53,7 @@ export default {
 }
 
 async function botsInServer(interaction: ButtonInteraction<'cached'>) {
+    const client = interaction.client as Client
     let bot2 = ''
     await interaction.guild.members
         .fetch(process.env.bot2id as string)

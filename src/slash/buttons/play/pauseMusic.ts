@@ -1,11 +1,12 @@
 import { MessageEmbed, ButtonInteraction, MessageActionRow, MessageButton } from 'discord.js'
-import client from '../../../bot.js'
+import Client from '../../../structures/Client.js'
 import logger from '../../../utils/logger.js'
 
 export default {
     name: 'pauseMusic',
 
     run: async (interaction: ButtonInteraction<'cached'>) => {
+        const client = interaction.client as Client
         try {
             const botChannelID = interaction.guild.me?.voice?.channelId
             if (interaction.member.voice.channelId != botChannelID) {

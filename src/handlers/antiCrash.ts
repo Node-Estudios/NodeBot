@@ -1,6 +1,7 @@
 import Logger from '../utils/logger'
 import simplestDiscordWebhook from 'simplest-discord-webhook'
 import { MessageEmbed } from 'discord.js'
+// TODO: se cmbiara a sentry
 import Sentry from '@sentry/node'
 const webhookClient = new simplestDiscordWebhook(process.env.errorWebhookURL)
 process.on('unhandledRejection', async (reason, p) => {

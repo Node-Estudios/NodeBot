@@ -6,7 +6,7 @@ import EventEmitter from 'events'
 import Player from './Player.js'
 import client from '../bot.js'
 
-export default class musicManager extends EventEmitter {
+export default class MusicManager extends EventEmitter {
     players = new Collection<string, Player>()
 
     constructor() {

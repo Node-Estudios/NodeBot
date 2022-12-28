@@ -1,5 +1,5 @@
 import logger from '../utils/logger.js'
-import Manager from './manager.js'
+import Manager from './NodeManager.js'
 import express from 'express'
 import cors from 'cors'
 

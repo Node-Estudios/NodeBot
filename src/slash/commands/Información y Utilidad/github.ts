@@ -1,6 +1,6 @@
 import { ColorResolvable, CommandInteraction, MessageEmbed } from 'discord.js'
 import Command from '../../../structures/Command.js'
-import client from '../../../bot.js'
+import Client from '../../../structures/Client.js'
 
 export default class github extends Command {
     constructor() {
@@ -29,6 +29,7 @@ export default class github extends Command {
     }
 
     override async run(interaction: CommandInteraction<'cached'>) {
+        const client = interaction.client as Client
         const args = interaction.options.getString('account', true)
         const account = await fetch(`https://api.github.com/users/${args[0]}`, {
             headers: {

@@ -1,6 +1,6 @@
 import { Guild, Message, TextChannel, VoiceChannel } from 'discord.js'
 import { TrackPlayer, VoiceConnection } from 'yasha'
-import musicManager from './musicManager.js'
+import musicManager from './MusicManager.js'
 import logger from '../utils/logger.js'
 import Queue from './Queue.js'
 

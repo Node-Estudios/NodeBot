@@ -1,6 +1,6 @@
 import { CommandInteraction, MessageEmbed } from 'discord.js'
 import Command from '../../../structures/Command.js'
-import client from '../../../bot.js'
+import Client from '../../../structures/Client.js'
 export default class ping extends Command {
     constructor() {
         super({
@@ -10,6 +10,7 @@ export default class ping extends Command {
         })
     }
     override async run(interaction: CommandInteraction) {
+        const client = interaction.client as Client
         const ping = Math.abs((interaction.createdTimestamp - Date.now()) / 1000)
         interaction.reply({
             embeds: [

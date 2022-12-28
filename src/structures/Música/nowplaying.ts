@@ -1,16 +1,15 @@
-import { Client, CommandInteraction, MessageEmbed } from 'discord.js';
+import { MessageEmbed } from 'discord.js'
 
-import Command from '../../structures/command.js';
-import moment from 'moment';
-import momentDurationFormatSetup from 'moment-duration-format';
-momentDurationFormatSetup(moment);
-import getUsedBot from '../../utils/getUsedBot';
-import simplestDiscordWebhook from 'simplest-discord-webhook';
-let webhookClient = new simplestDiscordWebhook(process.env.errorWebhookURL);
-import getRandomPhrase from '../../utils/getRandomPhrase';
+import Command from '../../structures/Command.js'
+
+import getUsedBot from '../../utils/getUsedBot'
+import simplestDiscordWebhook from 'simplest-discord-webhook'
+let webhookClient = new simplestDiscordWebhook(process.env.errorWebhookURL)
+import getRandomPhrase from '../../utils/getRandomPhrase'
+import client from '../../bot'
 module.exports = class nowplaying extends Command {
-    constructor(client) {
-        super(client, {
+    constructor() {
+        super({
             name: 'nowplaying',
             description: 'See the current song playing.',
             name_localizations: {
@@ -51,20 +50,16 @@ module.exports = class nowplaying extends Command {
                     ],
                 },
             ],
-        });
+        })
     }
-    /**,
-     * @param {Client} client
-     * @param {CommandInteraction} interaction
-     * @param {String[]} args
-     */
-    async run(client, interaction, args) {
-        let usedBotID;
-        let option = interaction.options.getString('bot');
+
+    async run(interaction) {
+        let usedBotID
+        let option = interaction.options.getString('bot')
         if (option) {
-            usedBotID = option;
+            usedBotID = option
         } else {
-            usedBotID = await getUsedBot(interaction);
+            usedBotID = await getUsedBot(interaction)
         }
         if (!usedBotID) {
             const errorembed = new MessageEmbed().setColor(15548997).setFooter(
@@ -72,30 +67,30 @@ module.exports = class nowplaying extends Command {
                 interaction.member.displayAvatarURL({
                     dynamic: true,
                 }),
-            );
+            )
             return interaction.editReply({
                 embeds: [errorembed],
-            });
+            })
         }
 
-        const data: any = [];
+        const data: any = []
 
-        data.push(interaction.guild.id);
-        data.push(interaction.member.user.username);
-        data.push(interaction.member.user.discriminator);
+        data.push(interaction.guild.id)
+        data.push(interaction.member.user.username)
+        data.push(interaction.member.user.discriminator)
         data.push(
             interaction.member.displayAvatarURL({
                 dynamic: true,
             }),
-        );
-        data.push(interaction.member.voice);
+        )
+        data.push(interaction.member.voice)
 
         await interaction.guild.members
             .fetch(usedBotID)
             .then(member => {
-                data.push(member.voice);
-                data.push(interaction.guild.shardId);
-                data.push(args);
+                data.push(member.voice)
+                data.push(interaction.guild.shardId)
+                data.push(args)
                 switch (usedBotID) {
                     case process.env.bot1id:
                         fetch(`http://${process.env.IP}:${process.env.bot1Port}/api/v1/get_queue`, {
@@ -110,9 +105,9 @@ module.exports = class nowplaying extends Command {
                             .then(embed => {
                                 interaction.editReply({
                                     embeds: [embed],
-                                });
-                            });
-                        break;
+                                })
+                            })
+                        break
                     case process.env.bot2id:
                         fetch(`http://${process.env.IP}:${process.env.bot2Port}/api/v1/get_queue`, {
                             method: 'POST',
@@ -126,7 +121,7 @@ module.exports = class nowplaying extends Command {
                             .then(embed => {
                                 interaction.editReply({
                                     embeds: [embed],
-                                });
+                                })
                             })
                             .catch(() => {
                                 const errorembed = new MessageEmbed().setColor(15548997).setFooter(
@@ -134,19 +129,19 @@ module.exports = class nowplaying extends Command {
                                     interaction.member.displayAvatarURL({
                                         dynamic: true,
                                     }),
-                                );
+                                )
                                 const errorembed2 = new MessageEmbed().setColor(15548997).setFooter(
                                     'Error en el comando nowplaying (1)',
                                     client.user.displayAvatarURL({
                                         dynamic: true,
                                     }),
-                                );
-                                webhookClient.send(errorembed2);
+                                )
+                                webhookClient.send(errorembed2)
                                 interaction.editReply({
                                     embeds: [errorembed],
-                                });
-                            });
-                        break;
+                                })
+                            })
+                        break
                     case process.env.bot3id:
                         fetch(`http://${process.env.IP}:${process.env.bot3Port}/api/v1/get_queue`, {
                             method: 'POST',
@@ -160,7 +155,7 @@ module.exports = class nowplaying extends Command {
                             .then(embed => {
                                 interaction.editReply({
                                     embeds: [embed],
-                                });
+                                })
                             })
                             .catch(() => {
                                 const errorembed = new MessageEmbed().setColor(15548997).setFooter(
@@ -168,19 +163,19 @@ module.exports = class nowplaying extends Command {
                                     interaction.member.displayAvatarURL({
                                         dynamic: true,
                                     }),
-                                );
+                                )
                                 const errorembed2 = new MessageEmbed().setColor(15548997).setFooter(
                                     'Error en el comando nowplaying (2)',
                                     client.user.displayAvatarURL({
                                         dynamic: true,
                                     }),
-                                );
-                                webhookClient.send(errorembed2);
+                                )
+                                webhookClient.send(errorembed2)
                                 interaction.editReply({
                                     embeds: [errorembed],
-                                });
-                            });
-                        break;
+                                })
+                            })
+                        break
                     case process.env.bot4id:
                         fetch(`http://${process.env.IP}:${process.env.bot4Port}/api/v1/get_queue`, {
                             method: 'POST',
@@ -194,7 +189,7 @@ module.exports = class nowplaying extends Command {
                             .then(embed => {
                                 interaction.editReply({
                                     embeds: [embed],
-                                });
+                                })
                             })
                             .catch(() => {
                                 const errorembed = new MessageEmbed().setColor(15548997).setFooter(
@@ -202,19 +197,19 @@ module.exports = class nowplaying extends Command {
                                     interaction.member.displayAvatarURL({
                                         dynamic: true,
                                     }),
-                                );
+                                )
                                 const errorembed2 = new MessageEmbed().setColor(15548997).setFooter(
                                     'Error en el comando nowplaying (3)',
                                     client.user.displayAvatarURL({
                                         dynamic: true,
                                     }),
-                                );
-                                webhookClient.send(errorembed2);
+                                )
+                                webhookClient.send(errorembed2)
                                 interaction.editReply({
                                     embeds: [errorembed],
-                                });
-                            });
-                        break;
+                                })
+                            })
+                        break
                 }
             })
             .catch(e => {
@@ -223,29 +218,29 @@ module.exports = class nowplaying extends Command {
                     interaction.member.displayAvatarURL({
                         dynamic: true,
                     }),
-                );
+                )
 
                 switch (option) {
                     case '963496530818506802':
                         errorembed.setDescription(
                             `Node2 <:logonodemorado:968094477480771584> ${client.language.NOTINSERVER}(https://discord.com/api/oauth2/authorize?client_id=963496530818506802&permissions=137475976512&scope=bot)`,
-                        );
-                        break;
+                        )
+                        break
                     case '963954741837201540':
                         errorembed.setDescription(
                             `Node3 <:logonodenaranja:968094477019402292> ${client.language.NOTINSERVER}(https://discord.com/api/oauth2/authorize?client_id=963954741837201540&permissions=137475976512&scope=bot)`,
-                        );
-                        break;
+                        )
+                        break
                     case '853888393917497384':
                         errorembed.setDescription(
                             `Node4 <:logonodeazul:968094477866659850> ${client.language.NOTINSERVER}(https://discord.com/api/oauth2/authorize?client_id=853888393917497384&permissions=137475976512&scope=bot)`,
-                        );
-                        break;
+                        )
+                        break
                 }
-                console.log(errorembed);
+                console.log(errorembed)
                 interaction.editReply({
                     embeds: [errorembed],
-                });
-            });
+                })
+            })
     }
-};
+}

@@ -1,6 +1,6 @@
 import Command from '../../../structures/Command.js'
+import Client from '../../../structures/Client.js'
 import { CommandInteraction } from 'discord.js'
-import client from '../../../bot.js'
 
 export default class reboot extends Command {
     constructor() {
@@ -43,13 +43,14 @@ export default class reboot extends Command {
         })
     }
     override async run(interaction: CommandInteraction<'cached'>) {
+        const client = interaction.client as Client
         const choice = interaction.options.getString('choice', true)
         if (choice === 'all') {
             await interaction.reply('Reiniciando todas las shards...')
             client.cluster.send({ type: 'reboot', shard: 'all' })
         } else if (choice === 'shard') {
             await interaction.reply(`Reinciando Shard ${interaction.options.getString('shard')}...`)
-            // TODO: Revisar si shard es opcional
+            // TODO: Revisar si shard es opcional en el send
             client.cluster.send({ type: 'reboot', shard: interaction.options.getNumber('shard') })
         }
     }
