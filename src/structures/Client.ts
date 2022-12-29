@@ -1,10 +1,10 @@
-const defaultLang = await import('../lang/' + langFile.find(l => l.default)?.archivo)
-import { ClusterClient as HybridClient, getInfo } from 'discord-hybrid-sharding'
-import { Collection, Options, Client as ClientBase, ColorResolvable } from 'discord.js'
-import langFile from '../lang/index.json' assert { type: 'json' }
-import MusicManager from './MusicManager.js'
-import logger from '../utils/logger.js'
+const defaultLang = await import('../lang/' + langFile.find(l => l.default)?.archivo, { assert: { type: "json" }}) 
 import { init } from '@sentry/node'
+import { ClusterClient as HybridClient, getInfo } from 'discord-hybrid-sharding'
+import { Client as ClientBase, ColorResolvable, Options } from 'discord.js'
+import langFile from '../lang/index.json' assert { type: 'json' }
+import logger from '../utils/logger.js'
+import MusicManager from './MusicManager.js'
 export default class Client extends ClientBase<true> {
     language = defaultLang.default
     devs: string[]

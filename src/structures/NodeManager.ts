@@ -1,8 +1,9 @@
-import { Cluster, HeartbeatManager, ClusterManager } from 'discord-hybrid-sharding'
-import { ShardingClient } from 'statcord.js'
-import RESTAPI from './restAPIHandler.js'
-import logger from '../utils/logger.js'
-import { textSync } from 'figlet'
+import { Cluster, ClusterManager, HeartbeatManager } from 'discord-hybrid-sharding';
+import pkg from 'figlet';
+import { ShardingClient } from 'statcord.js';
+import logger from '../utils/logger.js';
+import RESTAPI from './restAPIHandler.js';
+const { textSync } = pkg;
 
 export default class NodeManager extends ClusterManager {
     // public clustersArray: Collection<any, any>;

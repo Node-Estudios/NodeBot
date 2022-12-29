@@ -1,8 +1,9 @@
-import { Signale } from 'signale'
+import signale from 'signale'
+const {Signale} = signale
 // TODO? use global client?
-import client from '../bot.js'
 export default new Signale({
-    scope: `Cluster ${client.cluster.id}`,
+    // TODO: use cluster id
+    scope: `Cluster $ID`,
     config: {
         displayTimestamp: true,
         displayDate: true,

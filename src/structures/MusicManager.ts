@@ -1,8 +1,9 @@
 import { Collection, Guild, MessageActionRow, MessageButton, MessageEmbed, TextChannel, VoiceChannel } from 'discord.js'
-import { Source, VoiceConnection } from 'yasha'
-import formatTime from '../utils/formatTime'
-import logger from '../utils/logger.js'
 import EventEmitter from 'events'
+// TODO: When types are finished, change the yasha import to { Source, VoiceConnection } from 'yasha'
+import yasha from 'yasha'
+import formatTime from '../utils/formatTime.js'
+import logger from '../utils/logger.js'
 import Player from './Player.js'
 // ? use client for lang
 import client from '../bot.js'
@@ -30,7 +31,7 @@ export default class MusicManager extends EventEmitter {
         //     console.log(`Packet: ${frame_size} samples`);
         // });
 
-        player.on(VoiceConnection.Status.Destroyed, () => player.destroy(true))
+        player.on(yasha.VoiceConnection.Status.Destroyed, () => player.destroy(true))
 
         player.on('error', (err: any) => {
             logger.error(err)
@@ -212,12 +213,12 @@ export default class MusicManager extends EventEmitter {
     async search(query: any, requester: any, source: 'Spotify' | 'Youtube' | 'Soundcloud') {
         let track =
             source === 'Spotify'
-                ? (await Source.Spotify.search(query))[0]
+                ? (await yasha.Source.Spotify.search(query))[0]
                 : source === 'Youtube'
-                ? (await Source.Youtube.search(query))[0]
+                ? (await yasha.Source.Youtube.search(query))[0]
                 : source === 'Soundcloud'
-                ? (await Source.Soundcloud.search(query))[0]
-                : await Source.resolve(query)
+                ? (await yasha.Source.Soundcloud.search(query))[0]
+                : await yasha.Source.resolve(query)
 
         try {
             if (!track) logger.log('No track found')

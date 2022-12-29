@@ -38,7 +38,7 @@
         "signale": "1.4.0",
         "simplest-discord-webhook": "1.2.0",
         "statcord.js": "3.4.3",
-        "yasha": "github:eliyya/yasha"
+        "yasha": "github:davidzeng0/yasha"
     },
     "devDependencies": {
         "@types/cors": "2.8.13",

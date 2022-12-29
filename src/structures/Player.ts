@@ -1,10 +1,11 @@
 import { Guild, Message, TextChannel, VoiceChannel } from 'discord.js'
-import { TrackPlayer, VoiceConnection } from 'yasha'
-import MusicManager from './MusicManager.js'
+// TODO: When the types are resolved, change this to  { TrackPlayer, VoiceConnection } from 'yasha'
+import yasha from 'yasha'
 import logger from '../utils/logger.js'
+import MusicManager from './MusicManager.js'
 import Queue from './Queue.js'
 
-export default class Player extends TrackPlayer {
+export default class Player extends yasha.TrackPlayer {
     trackRepeat: boolean
     queueRepeat: boolean
     stayInVoice: boolean
@@ -25,11 +26,14 @@ export default class Player extends TrackPlayer {
     player: any
     subscription: any
     connection: any
-    waitingMessage: any
     stayInVc: any
     previouslyPaused: any
     constructor(options: any) {
-        super({ external_packet_send: true, external_encrypt: true })
+        super({
+            external_packet_send: true,
+            external_encrypt: true,
+            normalize_volume: false,
+        })
 
         this.manager = options.musicManager
         this.trackRepeat = false
@@ -53,11 +57,11 @@ export default class Player extends TrackPlayer {
         this.leaveTimeout = undefined
     }
     async connect() {
-        this.connection = await VoiceConnection.connect(this.voiceChannel, {
+        this.connection = await yasha.VoiceConnection.connect(this.voiceChannel, {
             selfDeaf: true,
         })
         this.subscription = this.connection.subscribe(this)
-        this.connection.on('error', (error: Error) => this.musicManager.logger.error(error))
+        this.connection.on('error', (error: Error) => logger.error(error))
     }
 
     disconnect() {
