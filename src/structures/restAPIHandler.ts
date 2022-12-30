@@ -1,7 +1,7 @@
+import cors from 'cors'
+import express from 'express'
 import logger from '../utils/logger.js'
 import Manager from './NodeManager.js'
-import express from 'express'
-import cors from 'cors'
 
 //funcione logger:
 //Logger.log, Logger.error, Logger.warn, Logger.info, Logger.debug
@@ -175,7 +175,7 @@ export default function (manager: Manager) {
                     status: { error: '', status: 200 },
                 })
                 // Agregamos la suma al final del array
-                result.push(sum)
+                return result.push(sum)
                 // manager.logger.log(`Guilds: ${sum.guilds} | Playing Players: ${sum.playingPlayers}`)
             })
         } catch (e: any) {

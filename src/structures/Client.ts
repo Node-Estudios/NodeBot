@@ -2,6 +2,7 @@ const defaultLang = await import('../lang/' + langFile.find(l => l.default)?.arc
 import { init } from '@sentry/node'
 import { ClusterClient as HybridClient, getInfo } from 'discord-hybrid-sharding'
 import { Client as ClientBase, ColorResolvable, Options } from 'discord.js'
+import events from '../handlers/events.js'
 import langFile from '../lang/index.json' assert { type: 'json' }
 import logger from '../utils/logger.js'
 import MusicManager from './MusicManager.js'
@@ -55,6 +56,8 @@ export default class Client extends ClientBase<true> {
     }
     async init() {
         try {
+            // * Load Events (./handlers/events.js) ==> ./events/*/* ==> ./cache/events.ts (Collection)
+            new events(this)
             return super.login(process.env.TOKEN).then(() => logger.startUp(`${this.user!.username} logged in`))
         } catch (e) {
             if ((e as any).code == 'TOKEN_INVALID') logger.error('Invalid token')

@@ -1,9 +1,11 @@
-import { IPCMessage } from 'discord-hybrid-sharding'
-import logger from '../../utils/logger.js'
 import * as Sentry from '@sentry/node'
+import { IPCMessage } from 'discord-hybrid-sharding'
 import { connect } from 'mongoose'
+import logger from '../../utils/logger.js'
 //TODO? use global client?
 import client from '../../bot.js'
+
+// TODO: Remove (variable: any) in the code
 
 export default function () {
     //* ADD DATABASE CONNECTION
@@ -15,7 +17,7 @@ export default function () {
         }).then(() => logger.db('Se ha conectado la base de datos correctamente.'))
     // cluster
     client.cluster.triggerReady()
-    client.cluster.on('message', async message2 => {
+    client.cluster.on('message', async (message2: any) => {
         let message = (message2 as IPCMessage).raw
         if (message.content == 'statistics') {
             try {
@@ -36,7 +38,7 @@ export default function () {
                         }),
                         { cluster: client.cluster.id },
                     )
-                    .then(results => {
+                    .then((results: any) => {
                         // console.log(results)
                         ;(message2 as any).reply(results)
                     })
