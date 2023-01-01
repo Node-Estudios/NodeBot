@@ -1,4 +1,5 @@
-import { CommandInteraction } from 'discord.js'
+import { CacheType, CommandInteraction } from 'discord.js'
+import Client from './Client'
 export default class Command {
     name: string
     description: string
@@ -7,13 +8,16 @@ export default class Command {
     options: any
     name_localizations: any
     description_localizations: any
-    permissions = { dev: false, botPermissions: [], userPermissions: [] }
+    only?: { guilds: boolean, dm: boolean }
+    permissions: { dev: boolean, botPermissions: String[], userPermissions: String[] }
     constructor(options: any) {
         this.name = options.name
         this.description = options.description
         this.args = options.args || false
         this.cooldown = options.cooldown || false
         this.options = options.options || []
+        //TODO: Add funcitonality in interactionCreate for this.only && add more options
+        this.only = { guilds: options.only?.guilds, dm: options.only?.dm }
         this.name_localizations = options.name_localizations || null
         this.description_localizations = options.description_localizations || null
         this.permissions = {
@@ -22,7 +26,7 @@ export default class Command {
             userPermissions: options.permissions?.userPermissions || [],
         }
     }
-    async run(interaction: CommandInteraction<'cached'>): Promise<any> {
+    async _run(client: Client, interaction: CommandInteraction<CacheType>, args: number[] | string[] | boolean[]): Promise<any> {
         throw new Error(`Command ${this.name} doesn't provide a run method!`)
     }
 }

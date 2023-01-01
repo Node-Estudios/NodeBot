@@ -1,6 +1,8 @@
-import { ColorResolvable, CommandInteraction, MessageEmbed } from 'discord.js'
-import Command from '../../../structures/Command.js'
+import { ColorResolvable, MessageEmbed } from 'discord.js'
+import { interactionCommandExtend } from '../../../events/client/interactionCreate.js'
+import langFile from '../../../lang/index.json' assert { type: 'json' }
 import Client from '../../../structures/Client.js'
+import Command from '../../../structures/Command.js'
 
 export default class help extends Command {
     constructor() {
@@ -30,32 +32,33 @@ export default class help extends Command {
             ],
         })
     }
-    override async run(interaction: CommandInteraction<'cached'>) {
+    async run(interaction: interactionCommandExtend, args: any[]) {
+        const language = await import('../lang/' + langFile.find(l => l.nombre == interaction.language)?.archivo, { assert: { type: "json" } })
         const client = interaction.client as Client
         return interaction.reply({
             embeds: [
                 new MessageEmbed()
                     .setColor(process.env.bot1Embed_Color as ColorResolvable)
                     .setDescription(
-                        `<a:pin:893553168259121172> ${client.language.HELP[5]} \`Node\`, ${client.language.HELP[6]}`,
+                        `<a:pin:893553168259121172> ${language.HELP[5]} \`Node\`, ${language.HELP[6]}`,
                     )
                     .addFields({
-                        name: client.language.HELP[7],
-                        value: `${client.language.HELP[8]} \`/${interaction.commandName}\`.`,
+                        name: language.HELP[7],
+                        value: `${language.HELP[8]} \`/${interaction.commandName}\`.`,
                     })
-                    .addFields({ name: client.language.HELP[9], value: client.language.HELP[10] })
+                    .addFields({ name: language.HELP[9], value: language.HELP[10] })
                     .addFields({
-                        name: client.language.HELP[11],
+                        name: language.HELP[11],
                         value:
-                            client.language.HELP[12] +
-                            `<a:arrowright:970388686816550912> \`/vote\` <a:arrowleft:893553168108093560> ${client.language.HELP[14]}(https://vote.nodebot.xyz 'Estamos esperando tu voto :)')`,
+                            language.HELP[12] +
+                            `<a:arrowright:970388686816550912> \`/vote\` <a:arrowleft:893553168108093560> ${language.HELP[14]}(https://vote.nodebot.xyz 'Estamos esperando tu voto :)')`,
                     })
                     .setThumbnail(
                         interaction.user.displayAvatarURL({
                             dynamic: true,
                         }),
                     )
-                    .setTitle('✨' + client.language.HELP[13]),
+                    .setTitle('✨' + language.HELP[13]),
             ],
         })
         // const command = commands.get(cmd)

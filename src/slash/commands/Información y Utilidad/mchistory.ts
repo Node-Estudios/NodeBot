@@ -1,6 +1,8 @@
-import { CommandInteraction, MessageEmbed } from 'discord.js'
-import Command from '../../../structures/Command.js'
+import { MessageEmbed } from 'discord.js'
+import { interactionCommandExtend } from '../../../events/client/interactionCreate.js'
+import langFile from '../../../lang/index.json' assert { type: 'json' }
 import Client from '../../../structures/Client.js'
+import Command from '../../../structures/Command.js'
 
 export default class mchistory extends Command {
     constructor() {
@@ -27,8 +29,8 @@ export default class mchistory extends Command {
             ],
         })
     }
-
-    override async run(interaction: CommandInteraction<'cached'>) {
+    async run(interaction: interactionCommandExtend, args: any[]) {
+        const language = await import('../lang/' + langFile.find(l => l.nombre == interaction.language)?.archivo, { assert: { type: "json" } })
         const client = interaction.client as Client
         const res = await fetch(
             `https://mc-heads.net/minecraft/profile/${interaction.options.getString('account', true)}`,
@@ -40,8 +42,8 @@ export default class mchistory extends Command {
                 embeds: [
                     new MessageEmbed()
                         .setColor('RED')
-                        .setTitle(client.language.ERROREMBED)
-                        .setDescription(client.language.MCHISTORY[3])
+                        .setTitle(language.ERROREMBED)
+                        .setDescription(language.MCHISTORY[3])
                         .setFooter({
                             text: interaction.user.username + '#' + interaction.user.discriminator,
                             iconURL: interaction.user.displayAvatarURL(),
@@ -52,11 +54,11 @@ export default class mchistory extends Command {
         interaction.reply({
             embeds: [
                 new MessageEmbed()
-                    .setTitle(client.language.MCHISTORY[4])
+                    .setTitle(language.MCHISTORY[4])
                     .setColor(client.settings.color)
                     .setFields(
                         res['name_history'].map((i: any) => ({
-                            name: i['changedToAt'] ? parserTimeStamp(i['changedToAt']) : client.language.MCHISTORY[5],
+                            name: i['changedToAt'] ? parserTimeStamp(i['changedToAt']) : language.MCHISTORY[5],
                             value: i['name'],
                         })),
                     )

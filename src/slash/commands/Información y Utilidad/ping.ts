@@ -1,6 +1,7 @@
-import { CommandInteraction, MessageEmbed } from 'discord.js'
-import Command from '../../../structures/Command.js'
+import { MessageEmbed } from 'discord.js'
+import { interactionCommandExtend } from '../../../events/client/interactionCreate.js'
 import Client from '../../../structures/Client.js'
+import Command from '../../../structures/Command.js'
 export default class ping extends Command {
     constructor() {
         super({
@@ -9,10 +10,10 @@ export default class ping extends Command {
             cooldown: 5,
         })
     }
-    override async run(interaction: CommandInteraction) {
+    async run(interaction: interactionCommandExtend, args: any[]) {
         const client = interaction.client as Client
         const ping = Math.abs((interaction.createdTimestamp - Date.now()) / 1000)
-        interaction.reply({
+        interaction.editReply({
             embeds: [
                 new MessageEmbed()
                     .setColor('GREEN')

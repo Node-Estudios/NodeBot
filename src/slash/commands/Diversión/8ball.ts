@@ -1,6 +1,8 @@
-import { CommandInteraction, MessageEmbed } from 'discord.js'
-import Command from '../../../structures/Command.js'
+import { MessageEmbed } from 'discord.js'
+import { interactionCommandExtend } from '../../../events/client/interactionCreate.js'
+import langFile from '../../../lang/index.json' assert { type: 'json' }
 import Client from '../../../structures/Client.js'
+import Command from '../../../structures/Command.js'
 
 export default class ball extends Command {
     constructor() {
@@ -30,20 +32,21 @@ export default class ball extends Command {
             ],
         })
     }
-    override async run(interaction: CommandInteraction<'cached'>) {
+    async run(interaction: interactionCommandExtend, args: any[]) {
+        const language = await import('../lang/' + langFile.find(l => l.nombre == interaction.language)?.archivo, { assert: { type: "json" } })
         const client = interaction.client as Client
-        let respuesta = client.language.QUESTIONBALL[4]
+        let respuesta = language.QUESTIONBALL[4]
         let question = interaction.options.getString('question', true)
         if (!question.endsWith('?'))
             return interaction.reply({
                 embeds: [
                     new MessageEmbed()
                         .setColor('RED')
-                        .setTitle(client.language.ERROREMBED)
-                        .setDescription(client.language.QUESTIONBALL[3])
+                        .setTitle(language.ERROREMBED)
+                        .setDescription(language.QUESTIONBALL[3])
                         .setFooter({
-                            text: interaction.member.user.tag,
-                            iconURL: interaction.member.displayAvatarURL({ format: 'png', dynamic: true }),
+                            text: interaction.user.tag,
+                            iconURL: interaction.user.displayAvatarURL({ format: 'png', dynamic: true }),
                         }),
                 ],
             })
@@ -53,11 +56,11 @@ export default class ball extends Command {
                 new MessageEmbed()
                     .setFields(
                         {
-                            name: client.language.QUESTIONBALL[1],
+                            name: language.QUESTIONBALL[1],
                             value: question,
                         },
                         {
-                            name: client.language.QUESTIONBALL[2],
+                            name: language.QUESTIONBALL[2],
                             value: respuesta[Math.floor(Math.random() * respuesta.length)],
                         },
                     )

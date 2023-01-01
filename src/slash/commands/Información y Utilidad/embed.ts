@@ -1,6 +1,8 @@
-import { ColorResolvable, CommandInteraction, MessageEmbed, TextChannel } from 'discord.js'
-import Command from '../../../structures/Command.js'
+import { ColorResolvable, MessageEmbed, TextChannel } from 'discord.js'
+import { interactionCommandExtend } from '../../../events/client/interactionCreate.js'
+import langFile from '../../../lang/index.json' assert { type: 'json' }
 import Client from '../../../structures/Client.js'
+import Command from '../../../structures/Command.js'
 
 export default class embed extends Command {
     constructor() {
@@ -65,7 +67,10 @@ export default class embed extends Command {
             ],
         })
     }
-    override async run(interaction: CommandInteraction<'cached'>) {
+    async run(interaction: interactionCommandExtend, args: any[]) {
+
+        //TODO: Add more colors && make it work with hex colors && Add language support
+        const language = await import('../lang/' + langFile.find(l => l.nombre == interaction.language)?.archivo, { assert: { type: "json" } })
         const client = interaction.client as Client
         const canal = interaction.options.getChannel('channel', true) as TextChannel,
             descripcion = interaction.options.getString('description', true),

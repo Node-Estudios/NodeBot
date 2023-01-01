@@ -1,4 +1,4 @@
-import { Collection, Guild, MessageActionRow, MessageButton, MessageEmbed, TextChannel, VoiceChannel } from 'discord.js'
+import { ButtonBuilder, ButtonStyle, Collection, Guild, ActionRowBuilder as MessageActionRow, ButtonBuilder as MessageButton, EmbedBuilder as MessageEmbed, TextChannel, VoiceChannel } from 'discord.js'
 import EventEmitter from 'events'
 // TODO: When types are finished, change the yasha import to { Source, VoiceConnection } from 'yasha'
 import yasha from 'yasha'
@@ -7,6 +7,8 @@ import logger from '../utils/logger.js'
 import Player from './Player.js'
 // ? use client for lang
 import client from '../bot.js'
+import languageCache from '../cache/idioms.js'
+import retrieveUserLang from '../utils/db/retrieveUserLang.js'
 
 export default class MusicManager extends EventEmitter {
     players = new Collection<string, Player>()
@@ -22,6 +24,7 @@ export default class MusicManager extends EventEmitter {
             voiceChannel: vc,
             textChannel,
             volume,
+            language: await retrieveUserLang(guild),
         })
         this.players.set(guild.id, player)
         player.on('ready', () => this.trackStart(player))
@@ -44,36 +47,37 @@ export default class MusicManager extends EventEmitter {
         player.playing = true
         player.paused = false
         let song = player.queue.current!
+        player.language = await retrieveUserLang(player.queue.current!.requester.user.id) // es_ES // en_US
+        let language = languageCache.get(player.language)
 
         // ^ Si no tenemos un mensaje ya enviado, lo enviamos, y si lo tenemos, borramos el anterior y enviamos uno nuevo <3
         if (!player.message) {
-            const row = new MessageActionRow().addComponents(
+            const row = new MessageActionRow<ButtonBuilder>().addComponents(
                 new MessageButton()
-                    .setStyle('DANGER')
-                    .setLabel(client.language.PLAYER['stopMusic'])
+                    .setStyle(ButtonStyle.Danger)
+                    .setLabel(language.PLAYER['stopMusic'])
                     .setCustomId('stopMusic'),
                 new MessageButton()
-                    .setStyle('SECONDARY')
-                    .setLabel(client.language.PLAYER['pauseMusic'])
+                    .setStyle(ButtonStyle.Secondary)
+                    .setLabel(language.PLAYER['pauseMusic'])
                     .setCustomId('pauseMusic'),
                 new MessageButton()
-                    .setStyle('PRIMARY')
-                    .setLabel(client.language.PLAYER['skipMusic'])
+                    .setStyle(ButtonStyle.Primary)
+                    .setLabel(language.PLAYER['skipMusic'])
                     .setCustomId('skipMusic'),
                 new MessageButton()
-                    .setStyle('PRIMARY')
-                    .setLabel(client.language.PLAYER['queueMusic'])
+                    .setStyle(ButtonStyle.Primary)
+                    .setLabel(language.PLAYER['queueMusic'])
                     .setCustomId('queueMusic'),
             )
 
-            const embed = new MessageEmbed().setColor('GREEN')
+            const embed = new MessageEmbed().setColor(client.settings.color)
             if (song.platform === 'Youtube') {
                 embed
                     .setThumbnail(`https://img.youtube.com/vi/${song.id}/maxresdefault.jpg`)
                     .setDescription(
-                        `${client.language.PLAYING} **[${song.title}](https://music.youtube.com/watch?v=${
-                            song.id
-                        })** [${formatDuration(song.duration)}] • <@${song.requester.user.id}>`,
+                        `${language.PLAYING} **[${song.title}](https://music.youtube.com/watch?v=${song.id
+                        })** [${formatDuration(song.duration, language)}] • <@${song.requester.user.id}>`,
                     )
                 // embed.addField(
                 //     "Bitrate",
@@ -83,7 +87,7 @@ export default class MusicManager extends EventEmitter {
             } else if (song.platform === 'Spotify') {
                 if (song.thumbnails[0]) {
                     embed.setDescription(
-                        `**${client.language.PLAY[3]}\n[${song.title}](https://open.spotify.com/track/${song.id})**`,
+                        `**${language.PLAY[3]}\n[${song.title}](https://open.spotify.com/track/${song.id})**`,
                     )
                     embed.setThumbnail(song.thumbnails[0].url)
                 }
@@ -95,33 +99,32 @@ export default class MusicManager extends EventEmitter {
             player.message = msg
             return msg
         } else {
-            const row = new MessageActionRow().addComponents(
+            const row = new MessageActionRow<ButtonBuilder>().addComponents(
                 new MessageButton()
-                    .setStyle('DANGER')
-                    .setLabel(client.language.PLAYER['stopMusic'])
+                    .setStyle(ButtonStyle.Danger)
+                    .setLabel(language.PLAYER['stopMusic'])
                     .setCustomId('stopMusic'),
                 new MessageButton()
-                    .setStyle('SECONDARY')
-                    .setLabel(client.language.PLAYER['pauseMusic'])
+                    .setStyle(ButtonStyle.Danger)
+                    .setLabel(language.PLAYER['pauseMusic'])
                     .setCustomId('pauseMusic'),
                 new MessageButton()
-                    .setStyle('PRIMARY')
-                    .setLabel(client.language.PLAYER['skipMusic'])
+                    .setStyle(ButtonStyle.Primary)
+                    .setLabel(language.PLAYER['skipMusic'])
                     .setCustomId('skipMusic'),
                 new MessageButton()
-                    .setStyle('PRIMARY')
-                    .setLabel(client.language.PLAYER['queueMusic'])
+                    .setStyle(ButtonStyle.Primary)
+                    .setLabel(language.PLAYER['queueMusic'])
                     .setCustomId('queueMusic'),
             )
 
-            const embed = new MessageEmbed().setColor('GREEN')
+            const embed = new MessageEmbed().setColor(client.settings.color)
             if (song.platform === 'Youtube') {
                 embed
                     .setThumbnail(`https://img.youtube.com/vi/${song.id}/maxresdefault.jpg`)
                     .setDescription(
-                        `${client.language.PLAYING} **[${song.title}](https://music.youtube.com/watch?v=${
-                            song.id
-                        })** [${formatDuration(song.duration)}] • <@${song.requester.user.id}>`,
+                        `${language.PLAYING} **[${song.title}](https://music.youtube.com/watch?v=${song.id
+                        })** [${formatDuration(song.duration, language)}] • <@${song.requester.user.id}>`,
                     )
                 // embed.addField(
                 //     "Bitrate",
@@ -131,7 +134,7 @@ export default class MusicManager extends EventEmitter {
             } else if (song.platform === 'Spotify') {
                 if (song.thumbnails[0]) {
                     embed.setDescription(
-                        `**${client.language.PLAY[3]}\n[${song.title}](https://open.spotify.com/track/${song.id})**`,
+                        `**${language.PLAY[3]}\n[${song.title}](https://open.spotify.com/track/${song.id})**`,
                     )
                     embed.setThumbnail(song.thumbnails[0].url)
                 }
@@ -182,15 +185,14 @@ export default class MusicManager extends EventEmitter {
         return this
     }
     queueEnd(player: Player) {
+        let language = languageCache.get(player.language)
         const embed = new MessageEmbed()
-            .setColor('GREEN')
+            .setColor(client.settings.color)
             .setDescription(
                 `Ha terminado ` +
-                    `**[${player.queue.current?.title}](https://music.youtube.com/watch?v=${
-                        player.queue.current?.id
-                    })** [${formatDuration(player.queue.current?.duration ?? 0)}] • <@${
-                        player.queue.current?.requester.user.id
-                    }>`,
+                `**[${player.queue.current?.title}](https://music.youtube.com/watch?v=${player.queue.current?.id
+                })** [${formatDuration(player.queue.current?.duration ?? 0, language)}] • <@${player.queue.current?.requester.user.id
+                }>`,
             )
             .setThumbnail(`https://img.youtube.com/vi/${player.queue.current!.id}/maxresdefault.jpg`)
         player.queue.current = null
@@ -215,10 +217,10 @@ export default class MusicManager extends EventEmitter {
             source === 'Spotify'
                 ? (await yasha.Source.Spotify.search(query))[0]
                 : source === 'Youtube'
-                ? (await yasha.Source.Youtube.search(query))[0]
-                : source === 'Soundcloud'
-                ? (await yasha.Source.Soundcloud.search(query))[0]
-                : await yasha.Source.resolve(query)
+                    ? (await yasha.Source.Youtube.search(query))[0]
+                    : source === 'Soundcloud'
+                        ? (await yasha.Source.Soundcloud.search(query))[0]
+                        : await yasha.Source.resolve(query)
 
         try {
             if (!track) logger.log('No track found')
@@ -250,7 +252,7 @@ export default class MusicManager extends EventEmitter {
         return this.players.filter((p: any) => p.playing)
     }
 }
-
+//TODO: REMOVE ANY TYPES
 function getMax(arr: any, prop: any) {
     var max: any
     for (var i = 0; i < arr.length; i++)
@@ -258,8 +260,8 @@ function getMax(arr: any, prop: any) {
 
     return arr.findIndex((o: any) => o.url === max.url)
 }
-function formatDuration(duration: number) {
+function formatDuration(duration: number, language: any) {
     if (isNaN(duration) || typeof duration === 'undefined') return '00:00'
-    if (duration > 3600000000) return client.language.LIVE
+    if (duration > 3600000000) return language.LIVE
     return formatTime(duration, true)
 }

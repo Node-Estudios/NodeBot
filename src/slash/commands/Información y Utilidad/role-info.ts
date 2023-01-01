@@ -1,6 +1,8 @@
-import { ColorResolvable, CommandInteraction, MessageEmbed } from 'discord.js'
-import Command from '../../../structures/Command.js'
+import { ColorResolvable, MessageEmbed } from 'discord.js'
+import { interactionCommandExtend } from '../../../events/client/interactionCreate.js'
+import langFile from '../../../lang/index.json' assert { type: 'json' }
 import Client from '../../../structures/Client.js'
+import Command from '../../../structures/Command.js'
 
 export default class roleinfo extends Command {
     constructor() {
@@ -14,6 +16,7 @@ export default class roleinfo extends Command {
                 'es-ES': 'Obtener información sobre un rol.',
             },
             cooldown: 5,
+            only: { guilds: true },
             options: [
                 {
                     type: 8,
@@ -30,61 +33,62 @@ export default class roleinfo extends Command {
             ],
         })
     }
-    override async run(interaction: CommandInteraction<'cached'>) {
+    async run(interaction: interactionCommandExtend, args: any[]) {
+        const language = await import('../lang/' + langFile.find(l => l.nombre == interaction.language)?.archivo, { assert: { type: "json" } })
         const client = interaction.client as Client
         let role = interaction.options.getRole('role', true)
         const rol = new MessageEmbed()
             .setThumbnail(interaction.user.displayAvatarURL({ dynamic: true }))
             .setTimestamp()
-            .setColor((role.hexColor as ColorResolvable) || ('#1DC44F' as ColorResolvable))
+            .setColor((role.color as ColorResolvable) || ('#1DC44F' as ColorResolvable))
             .setAuthor({
-                name: interaction.guild.name,
-                iconURL: interaction.guild.iconURL({ dynamic: true }) ?? '',
+                name: interaction.guild!.name,
+                iconURL: interaction.guild!.iconURL({ dynamic: true }) ?? '',
             })
             .setFields(
                 {
-                    name: `<:pepeblink:967941236029788160> ${client.language.ROLEINFO[1]}: `,
+                    name: `<:pepeblink:967941236029788160> ${language.ROLEINFO[1]}: `,
                     value: '```' + role.name + '```',
                     inline: true,
                 },
                 {
-                    name: `<:textchannelblurple:893490117451333632> ${client.language.ROLEINFO[2]}: `,
+                    name: `<:textchannelblurple:893490117451333632> ${language.ROLEINFO[2]}: `,
                     value: '```' + role.id + '```',
                     inline: true,
                 },
                 {
-                    name: `🔢 ${client.language.ROLEINFO[4]}: `,
-                    value: '```' + Math.abs(role.rawPosition - interaction.guild.roles.cache.size) + '```',
+                    name: `🔢 ${language.ROLEINFO[4]}: `,
+                    value: '```' + Math.abs(role.position - interaction.guild!.roles.cache.size) + '```',
                     inline: true,
                 },
                 {
-                    name: `🎩 ${client.language.ROLEINFO[5]}: `,
-                    value: '```' + role.hexColor + '```',
+                    name: `🎩 ${language.ROLEINFO[5]}: `,
+                    value: '```' + role.color + '```',
                     inline: true,
                 },
                 {
-                    name: `<:star:893553167915188275> ${client.language.ROLEINFO[6]}: `,
+                    name: `<:star:893553167915188275> ${language.ROLEINFO[6]}: `,
                     value: role.mentionable
-                        ? '```' + client.language.ROLEINFO[10] + '```'
-                        : '```' + client.language.ROLEINFO[11] + '```',
+                        ? '```' + language.ROLEINFO[10] + '```'
+                        : '```' + language.ROLEINFO[11] + '```',
                     inline: true,
                 },
                 {
-                    name: `<:share:893553167894216744> ${client.language.ROLEINFO[7]}: `,
+                    name: `<:share:893553167894216744> ${language.ROLEINFO[7]}: `,
                     value: role.hoist
-                        ? '```' + client.language.ROLEINFO[10] + '```'
-                        : '```' + client.language.ROLEINFO[11] + '```',
+                        ? '```' + language.ROLEINFO[10] + '```'
+                        : '```' + language.ROLEINFO[11] + '```',
                     inline: true,
                 },
                 {
-                    name: `<:cmd:894171593431994388> ${client.language.ROLEINFO[8]}: `,
+                    name: `<:cmd:894171593431994388> ${language.ROLEINFO[8]}: `,
                     value: role.managed
-                        ? '```' + client.language.ROLEINFO[10] + '```'
-                        : '```' + client.language.ROLEINFO[11] + '```',
+                        ? '```' + language.ROLEINFO[10] + '```'
+                        : '```' + language.ROLEINFO[11] + '```',
                     inline: true,
                 },
             )
-            .setImage(interaction.guild.iconURL({ dynamic: true }) ?? '')
+            .setImage(interaction.guild!.iconURL({ dynamic: true }) ?? '')
 
         return interaction.reply({ embeds: [rol] })
     }

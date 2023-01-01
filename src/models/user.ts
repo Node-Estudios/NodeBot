@@ -165,11 +165,12 @@ const Roles = new Schema({
 //   Event25k: Event25k
 // })
 
-module.exports = model(
+export default model(
     'Users',
     new Schema(
         {
             USERID: { type: String, required: true },
+            //LANG SHOULD BE A STRING, FOR EXAMPLE "ES" OR "EN"
             LANG: { type: String },
             COMMANDS_EXECUTED: { type: Number },
             BANNED: { type: Boolean },

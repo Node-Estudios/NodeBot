@@ -1,13 +1,16 @@
-import { CommandInteraction } from 'discord.js'
-import Client from './Client'
+import logger from '../utils/logger.js';
+import Client from './Client.js';
 export default class Event {
-    name: string
-    description: string
-    constructor(options: any) {
-        this.name = options.name
-        this.description = options.description
+    client: Client
+    constructor(client: Client) {
+        this.client = client
     }
-    async run(interaction: CommandInteraction<'cached'>, Client: Client): Promise<any> {
-        throw new Error(`Command ${this.name} doesn't provide a run method!`)
+    async _run(...args: any[]): Promise<any> {
+        try {
+            await (this as any).run(...args);
+        } catch (err) {
+            // TDOO: Add error handler
+            logger.error(err);
+        }
     }
 }

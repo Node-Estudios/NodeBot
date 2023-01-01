@@ -1,13 +1,10 @@
-const defaultLang = await import('../lang/' + langFile.find(l => l.default)?.archivo, { assert: { type: "json" }}) 
 import { init } from '@sentry/node'
 import { ClusterClient as HybridClient, getInfo } from 'discord-hybrid-sharding'
-import { Client as ClientBase, ColorResolvable, Options } from 'discord.js'
+import { Client as ClientBase, ColorResolvable, GatewayIntentBits, Partials } from 'discord.js'
 import events from '../handlers/events.js'
-import langFile from '../lang/index.json' assert { type: 'json' }
 import logger from '../utils/logger.js'
 import MusicManager from './MusicManager.js'
 export default class Client extends ClientBase<true> {
-    language = defaultLang.default
     devs: string[]
     //@ts-ignores
     cluster = new HybridClient(this)
@@ -17,20 +14,9 @@ export default class Client extends ClientBase<true> {
     services: { sentry: { loggedIn: boolean } }
     constructor() {
         super({
-            partials: ['MESSAGE', 'CHANNEL', 'REACTION'],
-            intents: ['GUILDS', 'GUILD_MEMBERS', 'GUILD_VOICE_STATES', 'GUILD_MESSAGE_REACTIONS'],
+            partials: [/*Partials.Message,*/ Partials.Channel, Partials.Reaction],
+            intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers, GatewayIntentBits.GuildVoiceStates, GatewayIntentBits.GuildMessageReactions],
             allowedMentions: { parse: ['users', 'roles'], repliedUser: true },
-            messageCacheLifetime: 60,
-            retryLimit: 2,
-            makeCache: Options.cacheWithLimits({
-                UserManager: {
-                    maxSize: 50,
-                    keepOverLimit: (value: any) => value.id === value.client.user.id,
-                },
-                MessageManager: {
-                    maxSize: 100,
-                },
-            }),
             shards: getInfo().SHARD_LIST,
             shardCount: getInfo().TOTAL_SHARDS,
         })
@@ -38,7 +24,7 @@ export default class Client extends ClientBase<true> {
         this.services = { sentry: { loggedIn: false } }
         this.officialServerURL = 'https://discord.gg/xhAWYggKKh'
         this.settings = {
-            color: 'GREEN',
+            color: 'Green',
         }
 
         if (process.env.SENTRY_DSN && process.env.NODE_ENV == 'production') {

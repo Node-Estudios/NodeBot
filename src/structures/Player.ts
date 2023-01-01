@@ -16,6 +16,7 @@ export default class Player extends yasha.TrackPlayer {
     queue: Queue
     manager: MusicManager
     textChannel: TextChannel
+    language: string
     voiceChannel: VoiceChannel
     message?: Message
     guild: Guild
@@ -38,6 +39,7 @@ export default class Player extends yasha.TrackPlayer {
         this.manager = options.musicManager
         this.trackRepeat = false
         this.queueRepeat = false
+        this.language = options.lang
 
         this.stayInVoice = false
 

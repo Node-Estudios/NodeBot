@@ -1,6 +1,7 @@
-import Command from '../../../structures/Command.js'
+import { interactionCommandExtend } from '../../../events/client/interactionCreate.js'
+import langFile from '../../../lang/index.json' assert { type: 'json' }
 import Client from '../../../structures/Client.js'
-import { CommandInteraction } from 'discord.js'
+import Command from '../../../structures/Command.js'
 
 export default class impostor extends Command {
     constructor() {
@@ -27,8 +28,8 @@ export default class impostor extends Command {
             ],
         })
     }
-
-    override async run(interaction: CommandInteraction<'cached'>) {
+    async run(interaction: interactionCommandExtend, args: any[]) {
+        const language = await import('../lang/' + langFile.find(l => l.nombre == interaction.language)?.archivo, { assert: { type: "json" } })
         const client = interaction.client as Client
         interaction.reply(`. 　　　。　　　　•　 　ﾟ　　。 　　.
 
@@ -36,9 +37,8 @@ export default class impostor extends Command {
 
         .　　 。　　　　　 ඞ 。 . 　　 • 　　　　•
 
-        　　ﾟ　　 ${(interaction.options.getUser('user') ?? interaction.user).tag} ${
-            Math.random() < 0.7 ? client.language.IMPOSTOR[1] : client.language.IMPOSTOR[2]
-        } 　 。　.
+        　　ﾟ　　 ${(interaction.options.getUser('user') ?? interaction.user).tag} ${Math.random() < 0.7 ? language.IMPOSTOR[1] : language.IMPOSTOR[2]
+            } 　 。　.
 
         　　'　　　  　 　　。     ,         ﾟ             ,   ﾟ      .       ,        .             ,
 

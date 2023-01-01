@@ -1,6 +1,6 @@
-import { CommandInteraction, MessageAttachment } from 'discord.js'
+import { MessageAttachment } from 'discord.js'
+import { interactionCommandExtend } from '../../../events/client/interactionCreate.js'
 import Command from '../../../structures/Command.js'
-
 export default class mcserver extends Command {
     constructor() {
         super({
@@ -27,7 +27,7 @@ export default class mcserver extends Command {
         })
     }
 
-    override async run(interaction: CommandInteraction<'cached'>) {
+    async run(interaction: interactionCommandExtend, args: any[]) {
         const server = interaction.options.getString('server', true)
         const [ip, port] = server.split(':')
         interaction.reply({

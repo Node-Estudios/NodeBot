@@ -1,6 +1,8 @@
-import { ColorResolvable, CommandInteraction, MessageEmbed } from 'discord.js'
-import Command from '../../../structures/Command.js'
+import { ColorResolvable, MessageEmbed } from 'discord.js'
+import { interactionCommandExtend } from '../../../events/client/interactionCreate.js'
+import langFile from '../../../lang/index.json' assert { type: 'json' }
 import Client from '../../../structures/Client.js'
+import Command from '../../../structures/Command.js'
 
 export default class github extends Command {
     constructor() {
@@ -27,11 +29,11 @@ export default class github extends Command {
             ],
         })
     }
-
-    override async run(interaction: CommandInteraction<'cached'>) {
+    async run(interaction: interactionCommandExtend, args: any[]) {
+        const language = await import('../lang/' + langFile.find(l => l.nombre == interaction.language)?.archivo, { assert: { type: "json" } })
         const client = interaction.client as Client
-        const args = interaction.options.getString('account', true)
-        const account = await fetch(`https://api.github.com/users/${args[0]}`, {
+        const args2 = interaction.options.getString('account', true)
+        const account = await fetch(`https://api.github.com/users/${args2[0]}`, {
             headers: {
                 Accept: 'application/vnd.github.v3+json',
                 scheme: 'https',
@@ -48,8 +50,8 @@ export default class github extends Command {
                 embeds: [
                     new MessageEmbed()
                         .setColor('RED')
-                        .setTitle(client.language.ERROREMBED)
-                        .setDescription(client.language.INSTAGRAM[13])
+                        .setTitle(language.ERROREMBED)
+                        .setDescription(language.INSTAGRAM[13])
                         .setFooter({
                             text: interaction.user.username + '#' + interaction.user.discriminator,
                             iconURL: interaction.user.displayAvatarURL(),
@@ -62,24 +64,24 @@ export default class github extends Command {
             .setColor(process.env.bot1Embed_Color as ColorResolvable)
             .setThumbnail(account.avatar_url)
         if (account.name)
-            embed.addFields({ name: client.language.GITHUB[2].toString(), value: account.name.toString() })
+            embed.addFields({ name: language.GITHUB[2].toString(), value: account.name.toString() })
         if (account.type)
-            embed.addFields({ name: client.language.GITHUB[3].toString(), value: account.type.toString() })
+            embed.addFields({ name: language.GITHUB[3].toString(), value: account.type.toString() })
         if (account.company)
-            embed.addFields({ name: client.language.GITHUB[4].toString(), value: account.company.toString() })
+            embed.addFields({ name: language.GITHUB[4].toString(), value: account.company.toString() })
         if (account.blog)
-            embed.addFields({ name: client.language.GITHUB[5].toString(), value: account.blog.toString() })
+            embed.addFields({ name: language.GITHUB[5].toString(), value: account.blog.toString() })
         if (account.location)
-            embed.addFields({ name: client.language.GITHUB[6].toString(), value: account.location.toString() })
+            embed.addFields({ name: language.GITHUB[6].toString(), value: account.location.toString() })
         if (account.email)
-            embed.addFields({ name: client.language.GITHUB[7].toString(), value: account.email.toString() })
-        if (account.bio) embed.addFields({ name: client.language.GITHUB[8].toString(), value: account.bio.toString() })
+            embed.addFields({ name: language.GITHUB[7].toString(), value: account.email.toString() })
+        if (account.bio) embed.addFields({ name: language.GITHUB[8].toString(), value: account.bio.toString() })
         if (account.twitter_username)
-            embed.addFields({ name: client.language.GITHUB[9].toString(), value: account.twitter_username.toString() })
+            embed.addFields({ name: language.GITHUB[9].toString(), value: account.twitter_username.toString() })
         if (account.public_repos)
-            embed.addFields({ name: client.language.GITHUB[10].toString(), value: account.public_repos.toString() })
+            embed.addFields({ name: language.GITHUB[10].toString(), value: account.public_repos.toString() })
         if (account.followers)
-            embed.addFields({ name: client.language.GITHUB[11].toString(), value: account.followers.toString() })
+            embed.addFields({ name: language.GITHUB[11].toString(), value: account.followers.toString() })
 
         interaction.reply({
             embeds: [embed],
