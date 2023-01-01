@@ -4,15 +4,15 @@ import { connect } from 'mongoose'
 import logger from '../../utils/logger.js'
 //TODO? use global client?
 import Client from '../../structures/Client.js'
-import Event from '../../structures/Events.js'
 
 // TODO: Remove (variable: any) in the code
+// Interfaz de eventos
+import { EventHandler } from '../../handlers/events.js'
 
-export default class Ready extends Event {
-    constructor(...args: any) {
-        super([...args][0]);
-    }
-    async run(client: Client) {
+export default class Ready extends EventHandler {
+    async run(client: Client): Promise<void> {
+
+        // ...
 
         //* ADD DATABASE CONNECTION
         if (process.env.mongoURL)

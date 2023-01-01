@@ -1,34 +1,29 @@
 // TODO? use global client?
-import Events from '../events/index.js';
 import Client from '../structures/Client.js';
+interface Event {
+    run(client: Client, ...args: any[]): Promise<void>;
+}
 
-// Events
-// for (const category of readdirSync('./build'))
-// console.log(category)
-// for (const file of readdirSync(`../events/${category}`)) {
-//     const eventFile = await import(`../events/${category}/${file}.js`)
-//     const event = new eventFile.default()
-//     events.set(event.name, event)
-// }
-// const fs = require("fs");
-// const eventFolders = fs.readdirSync("./src/events/");
-// import ready from "../events/client/ready";
-// import Client from "../structures/client";
 
-export default class Event {
-    constructor(Client: Client) {
-        for (var key in Events) {
-            // const file = require(`../events/${eventFolder}/${jsevents[i]}`);
-            const event = new Events[key](Client);
-            console.log('loading event: ' + key + '.js')
-            Client.on(key, async (...args) => {
-                console.log(`Event ${key} loaded`);
-                await event.run([...args][0])
-            })
-            // events.set(key, Events[key])
+export class EventHandler {
+    constructor(private client: Client) { }
+
+    load(events: Event): void {
+        for (const [eventName, EventClass] of Object.entries(events)) {
+            console.log(eventName);
+            const event = new EventClass(this.client);
+            console.log(`Loading event: ${eventName}.js`);
+            this.client.on(eventName, async (...args) => {
+                console.log(`Event ${eventName} loaded`);
+                await event._run(() => event.run(...args));
+            });
         }
     }
+
 }
+
+
+
 
 // export default class Event {
 //   constructor() {}

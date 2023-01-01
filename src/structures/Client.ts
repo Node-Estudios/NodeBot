@@ -1,7 +1,8 @@
 import { init } from '@sentry/node'
 import { ClusterClient as HybridClient, getInfo } from 'discord-hybrid-sharding'
 import { Client as ClientBase, ColorResolvable, GatewayIntentBits, Partials } from 'discord.js'
-import events from '../handlers/events.js'
+import event from '../events/index.js'
+import { EventHandler } from '../handlers/events.js'
 import logger from '../utils/logger.js'
 import MusicManager from './MusicManager.js'
 export default class Client extends ClientBase<true> {
@@ -43,7 +44,8 @@ export default class Client extends ClientBase<true> {
     async init() {
         try {
             // * Load Events (./handlers/events.js) ==> ./events/*/* ==> ./cache/events.ts (Collection)
-            new events(this)
+            const eventLoader = new EventHandler(this);
+            eventLoader.load(event);
             return super.login(process.env.TOKEN).then(() => logger.startUp(`${this.user!.username} logged in`))
         } catch (e) {
             if ((e as any).code == 'TOKEN_INVALID') logger.error('Invalid token')
