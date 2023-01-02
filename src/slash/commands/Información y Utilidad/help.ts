@@ -1,6 +1,5 @@
-import { ColorResolvable, MessageEmbed } from 'discord.js'
+import { ColorResolvable, EmbedBuilder as MessageEmbed } from 'discord.js'
 import { interactionCommandExtend } from '../../../events/client/interactionCreate.js'
-import langFile from '../../../lang/index.json' assert { type: 'json' }
 import Client from '../../../structures/Client.js'
 import Command from '../../../structures/Command.js'
 
@@ -33,7 +32,7 @@ export default class help extends Command {
         })
     }
     async run(interaction: interactionCommandExtend, args: any[]) {
-        const language = await import('../lang/' + langFile.find(l => l.nombre == interaction.language)?.archivo, { assert: { type: "json" } })
+        const language = interaction.language
         const client = interaction.client as Client
         return interaction.reply({
             embeds: [
@@ -67,8 +66,8 @@ export default class help extends Command {
         //         return interaction.reply({
         //             embeds: [new MessageEmbed()
         //             .setColor('RED')
-        //             .setTitle(client.language.ERROREMBED)
-        //             .setDescription(name + client.language.HELP[25])
+        //             .setTitle(interaction.language.ERROREMBED)
+        //             .setDescription(name + interaction.language.HELP[25])
         //             .setFooter(
         //                 interaction.user.username + '#' + interaction.user.discriminator,
         //                 interaction.user.displayAvatarURL(),
@@ -76,37 +75,37 @@ export default class help extends Command {
         //         })
         //     }
 
-        //     data.push(`**${client.language.HELP[15]}:** ${command.name}`)
+        //     data.push(`**${interaction.language.HELP[15]}:** ${command.name}`)
 
-        //     if (command.description) data.push(`**${client.language.HELP[17]}:** ${command.description}`)
+        //     if (command.description) data.push(`**${interaction.language.HELP[17]}:** ${command.description}`)
         //     let ajj
         //     if (command.options)
         //         data.push(
-        //             `**${client.language.HELP[18]}:** .${command.name} ${command.options
+        //             `**${interaction.language.HELP[18]}:** .${command.name} ${command.options
         //                 .map((a: any) => {
         //                     return (ajj = a.name ? a.name : null)
         //                 })
         //                 .join(' ')}`,
         //         )
 
-        //     data.push(`**${client.language.HELP[19]}:** ${command.cooldown || 3} ${client.language.HELP[30]}(s)`)
+        //     data.push(`**${interaction.language.HELP[19]}:** ${command.cooldown || 3} ${interaction.language.HELP[30]}(s)`)
         //     let embed2 = new MessageEmbed()
-        //         .setTitle(client.language.HELP[20] + command.name + client.language.HELP[24])
+        //         .setTitle(interaction.language.HELP[20] + command.name + interaction.language.HELP[24])
         //         .setColor(process.env.bot1Embed_Color as ColorResolvable)
         //         .addFields(
         //             {
-        //                 name: `**${client.language.HELP[17]}**`,
+        //                 name: `**${interaction.language.HELP[17]}**`,
         //                 value: command.description ,
         //                 inline: true,
         //             },
         //             {
-        //                 name: `**${client.language.HELP[18]}**`,
-        //                 value: ajj ? ajj : client.language.HELP[29],
+        //                 name: `**${interaction.language.HELP[18]}**`,
+        //                 value: ajj ? ajj : interaction.language.HELP[29],
         //                 inline: true,
         //             },
         //         )
         //         .setFooter(
-        //             `\n${client.language.HELP[26]} \`/${interaction.commandName} [${client.language.HELP[27]}]\` ${client.language.HELP[28]}`,
+        //             `\n${interaction.language.HELP[26]} \`/${interaction.commandName} [${interaction.language.HELP[27]}]\` ${interaction.language.HELP[28]}`,
         //         )
         //         .setTimestamp()
 

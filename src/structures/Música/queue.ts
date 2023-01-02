@@ -1,8 +1,8 @@
-import { Client, CommandInteraction, MessageEmbed } from 'discord.js';
-import Command from '../../structures/command.js';
-import getUsedBot from '../../utils/getUsedBot';
+import { MessageEmbed } from 'discord.js';
 import simplestDiscordWebhook from 'simplest-discord-webhook';
+import Command from '../../structures/command.js';
 import getRandomPhrase from '../../utils/getRandomPhrase';
+import getUsedBot from '../../utils/getUsedBot';
 let webhookClient = new simplestDiscordWebhook(process.env.errorWebhookURL);
 export default class queue extends Command {
     constructor(client) {
@@ -67,7 +67,7 @@ export default class queue extends Command {
 
         if (!usedBotID) {
             const errorembed = new MessageEmbed().setColor(15548997).setFooter(
-                client.language.QUEUE[1],
+                interaction.language.QUEUE[1],
                 interaction.member.displayAvatarURL({
                     dynamic: true,
                 }),
@@ -120,7 +120,7 @@ export default class queue extends Command {
                             })
                             .catch(() => {
                                 const errorembed = new MessageEmbed().setColor(15548997).setFooter(
-                                    getRandomPhrase(client.language.INTERNALERROR),
+                                    getRandomPhrase(interaction.language.INTERNALERROR),
                                     interaction.member.displayAvatarURL({
                                         dynamic: true,
                                     }),
@@ -154,7 +154,7 @@ export default class queue extends Command {
                             })
                             .catch(() => {
                                 const errorembed = new MessageEmbed().setColor(15548997).setFooter(
-                                    getRandomPhrase(client.language.INTERNALERROR),
+                                    getRandomPhrase(interaction.language.INTERNALERROR),
                                     interaction.member.displayAvatarURL({
                                         dynamic: true,
                                     }),
@@ -188,7 +188,7 @@ export default class queue extends Command {
                             })
                             .catch(() => {
                                 const errorembed = new MessageEmbed().setColor(15548997).setFooter(
-                                    getRandomPhrase(client.language.INTERNALERROR),
+                                    getRandomPhrase(interaction.language.INTERNALERROR),
                                     interaction.member.displayAvatarURL({
                                         dynamic: true,
                                     }),
@@ -222,7 +222,7 @@ export default class queue extends Command {
                             })
                             .catch(() => {
                                 const errorembed = new MessageEmbed().setColor(15548997).setFooter(
-                                    getRandomPhrase(client.language.INTERNALERROR),
+                                    getRandomPhrase(interaction.language.INTERNALERROR),
                                     interaction.member.displayAvatarURL({
                                         dynamic: true,
                                     }),

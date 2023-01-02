@@ -1,12 +1,12 @@
+import { CommandInteraction, Guild, GuildMember, MessageEmbed } from 'discord.js';
+import simplestDiscordWebhook from 'simplest-discord-webhook';
+import Client from '../../structures/client';
+import getRandomPhrase from '../../utils/getRandomPhrase';
 import bot1missing from './functions/bot1missing.js';
 import bot2missing from './functions/bot2missing.js';
 import bot3missing from './functions/bot3missing.js';
 import bot4missing from './functions/bot4missing.js';
-import getRandomPhrase from '../../utils/getRandomPhrase';
-import simplestDiscordWebhook from 'simplest-discord-webhook';
 let webhookClient = new simplestDiscordWebhook(process.env.errorWebhookURL);
-import { CommandInteraction, Guild, GuildMember, MessageEmbed } from 'discord.js';
-import Client from '../../structures/client';
 
 import Command from '../../structures/command';
 
@@ -41,7 +41,7 @@ export default class play extends Command {
     async run(client: Client, interaction: CommandInteraction, args: any) {
         if (!(interaction.member as GuildMember).voice.channel) {
             const errorembed = new MessageEmbed().setColor(15548997).setFooter(
-                client.language.PLAY[1],
+                interaction.language.PLAY[1],
                 (interaction.member as GuildMember).displayAvatarURL({
                     dynamic: true,
                 }),
@@ -94,7 +94,7 @@ export default class play extends Command {
                                     })
                                     .catch(() => {
                                         const errorembed = new MessageEmbed().setColor(15548997).setFooter(
-                                            getRandomPhrase(client.language.INTERNALERROR),
+                                            getRandomPhrase(interaction.language.INTERNALERROR),
                                             (interaction.member as GuildMember).displayAvatarURL({
                                                 dynamic: true,
                                             }),
@@ -128,7 +128,7 @@ export default class play extends Command {
                                     })
                                     .catch(() => {
                                         const errorembed = new MessageEmbed().setColor(15548997).setFooter(
-                                            getRandomPhrase(client.language.INTERNALERROR),
+                                            getRandomPhrase(interaction.language.INTERNALERROR),
                                             (interaction.member as GuildMember).displayAvatarURL({
                                                 dynamic: true,
                                             }),
@@ -161,7 +161,7 @@ export default class play extends Command {
                                     })
                                     .catch(() => {
                                         const errorembed = new MessageEmbed().setColor(15548997).setFooter(
-                                            getRandomPhrase(client.language.INTERNALERROR),
+                                            getRandomPhrase(interaction.language.INTERNALERROR),
                                             (interaction.member as GuildMember).displayAvatarURL({
                                                 dynamic: true,
                                             }),

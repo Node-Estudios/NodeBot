@@ -2,9 +2,9 @@ import { Client, CommandInteraction, MessageEmbed } from 'discord.js';
 
 import Command from '../../structures/command.js';
 
-import getUsedBot from '../../utils/getUsedBot';
 import simplestDiscordWebhook from 'simplest-discord-webhook';
 import getRandomPhrase from '../../utils/getRandomPhrase';
+import getUsedBot from '../../utils/getUsedBot';
 let webhookClient = new simplestDiscordWebhook(process.env.errorWebhookURL);
 module.exports = class resume extends Command {
     constructor(client) {
@@ -36,7 +36,7 @@ module.exports = class resume extends Command {
 
         if (!usedBotID) {
             const errorembed = new MessageEmbed().setColor(15548997).setFooter(
-                client.language.NOWPLAYING[2],
+                interaction.language.NOWPLAYING[2],
                 interaction.member.displayAvatarURL({
                     dynamic: true,
                 }),
@@ -77,7 +77,7 @@ module.exports = class resume extends Command {
                     })
                     .catch(() => {
                         const errorembed = new MessageEmbed().setColor(15548997).setFooter(
-                            getRandomPhrase(client.language.INTERNALERROR),
+                            getRandomPhrase(interaction.language.INTERNALERROR),
                             interaction.member.displayAvatarURL({
                                 dynamic: true,
                             }),
@@ -111,7 +111,7 @@ module.exports = class resume extends Command {
                     })
                     .catch(() => {
                         const errorembed = new MessageEmbed().setColor(15548997).setFooter(
-                            getRandomPhrase(client.language.INTERNALERROR),
+                            getRandomPhrase(interaction.language.INTERNALERROR),
                             interaction.member.displayAvatarURL({
                                 dynamic: true,
                             }),
@@ -145,7 +145,7 @@ module.exports = class resume extends Command {
                     })
                     .catch(() => {
                         const errorembed = new MessageEmbed().setColor(15548997).setFooter(
-                            getRandomPhrase(client.language.INTERNALERROR),
+                            getRandomPhrase(interaction.language.INTERNALERROR),
                             interaction.member.displayAvatarURL({
                                 dynamic: true,
                             }),
@@ -179,7 +179,7 @@ module.exports = class resume extends Command {
                     })
                     .catch(() => {
                         const errorembed = new MessageEmbed().setColor(15548997).setFooter(
-                            getRandomPhrase(client.language.INTERNALERROR),
+                            getRandomPhrase(interaction.language.INTERNALERROR),
                             interaction.member.displayAvatarURL({
                                 dynamic: true,
                             }),

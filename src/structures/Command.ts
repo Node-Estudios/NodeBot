@@ -1,6 +1,12 @@
-import { CacheType, CommandInteraction } from 'discord.js'
-import Client from './Client'
+import logger from "../utils/logger.js";
+import Client from "./Client.js";
+
+interface Commands {
+    run(client: Client, ...args: any[]): Promise<void>;
+}
+
 export default class Command {
+    [x: string]: any;
     name: string
     description: string
     args: any
@@ -26,7 +32,12 @@ export default class Command {
             userPermissions: options.permissions?.userPermissions || [],
         }
     }
-    async _run(client: Client, interaction: CommandInteraction<CacheType>, args: number[] | string[] | boolean[]): Promise<any> {
-        throw new Error(`Command ${this.name} doesn't provide a run method!`)
+    async _run(run: (...args: any[]) => Promise<any>): Promise<any> {
+        try {
+            await run();
+        } catch (err) {
+            // TODO: Add error handler
+            logger.error(err);
+        }
     }
 }

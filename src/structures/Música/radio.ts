@@ -1,11 +1,11 @@
 import { Client, CommandInteraction, MessageEmbed } from 'discord.js';
 
+import simplestDiscordWebhook from 'simplest-discord-webhook';
 import Command from '../../structures/command.js';
 import bot1missing from './functions/bot1missing.js';
 import bot2missing from './functions/bot2missing.js';
 import bot3missing from './functions/bot3missing.js';
 import bot4missing from './functions/bot4missing.js';
-import simplestDiscordWebhook from 'simplest-discord-webhook';
 let webhookClient = new simplestDiscordWebhook(process.env.errorWebhookURL);
 module.exports = class radio extends Command {
     constructor(client) {
@@ -43,7 +43,7 @@ module.exports = class radio extends Command {
     async run(client, interaction, args) {
         if (!interaction.member.voice.channel) {
             const errorembed = new MessageEmbed().setColor(15548997).setFooter(
-                client.language.PLAY[1],
+                interaction.language.PLAY[1],
                 interaction.member.displayAvatarURL({
                     dynamic: true,
                 }),

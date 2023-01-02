@@ -1,6 +1,5 @@
-import { MessageEmbed } from 'discord.js'
+import { EmbedBuilder as MessageEmbed } from 'discord.js'
 import { interactionCommandExtend } from '../../../events/client/interactionCreate.js'
-import langFile from '../../../lang/index.json' assert { type: 'json' }
 import Client from '../../../structures/Client.js'
 import Command from '../../../structures/Command.js'
 
@@ -33,7 +32,7 @@ export default class ball extends Command {
         })
     }
     async run(interaction: interactionCommandExtend, args: any[]) {
-        const language = await import('../lang/' + langFile.find(l => l.nombre == interaction.language)?.archivo, { assert: { type: "json" } })
+        const language = interaction.language
         const client = interaction.client as Client
         let respuesta = language.QUESTIONBALL[4]
         let question = interaction.options.getString('question', true)
@@ -41,7 +40,7 @@ export default class ball extends Command {
             return interaction.reply({
                 embeds: [
                     new MessageEmbed()
-                        .setColor('RED')
+                        .setColor('Red')
                         .setTitle(language.ERROREMBED)
                         .setDescription(language.QUESTIONBALL[3])
                         .setFooter({

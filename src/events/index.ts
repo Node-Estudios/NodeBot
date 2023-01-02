@@ -1,13 +1,12 @@
-import { EventHandler } from "../handlers/events.js";
 import Client from "../structures/Client.js";
+import { BaseEvent } from '../structures/Events.js';
+import { interactionCreate as interactioncreator } from "./client/interactionCreate.js";
 import Ready from "./client/ready.js";
-interface Event {
-    run(client: Client, ...args: any[]): Promise<void>;
+export interface Event {
+    [eventName: string]: new (client: Client) => BaseEvent;
 }
-type Events = {
-    [eventName: string]: new (client: Client) => EventHandler;
-};
-const events: Events = {
+const events: Event = {
     ready: Ready,
+    interactionCreate: interactioncreator
 }
 export default events

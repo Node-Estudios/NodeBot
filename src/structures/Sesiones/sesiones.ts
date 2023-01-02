@@ -1,5 +1,5 @@
-import { Client, CommandInteraction, MessageEmbed, ColorResolvable } from 'discord.js'
 import { DiscordTogether } from 'discord-together'
+import { ColorResolvable, MessageEmbed } from 'discord.js'
 import Command from '../../structures/Command.js'
 module.exports = class sesions extends Command {
     constructor(client) {
@@ -69,8 +69,8 @@ module.exports = class sesions extends Command {
             if (!channel) {
                 const errorembed = new MessageEmbed()
                     .setColor('RED')
-                    .setTitle(client.language.ERROREMBED)
-                    .setDescription(client.language.BETRAYAL[2])
+                    .setTitle(interaction.language.ERROREMBED)
+                    .setDescription(interaction.language.BETRAYAL[2])
                     .setFooter(
                         interaction.member.user.username + '#' + interaction.member.user.discriminator,
                         interaction.member.displayAvatarURL(),
@@ -87,8 +87,8 @@ module.exports = class sesions extends Command {
                             if (invite.code === 50013) {
                                 const errorembed = new MessageEmbed()
                                     .setColor('RED')
-                                    .setTitle(client.language.ERROREMBED)
-                                    .setDescription(client.language.CREATEINVITEPERMS)
+                                    .setTitle(interaction.language.ERROREMBED)
+                                    .setDescription(interaction.language.CREATEINVITEPERMS)
                                     .setFooter(
                                         interaction.member.user.username + '#' + interaction.member.user.discriminator,
                                         interaction.member.displayAvatarURL(),
@@ -102,8 +102,8 @@ module.exports = class sesions extends Command {
                             if (!invite.code) {
                                 const errorembed = new MessageEmbed()
                                     .setColor('RED')
-                                    .setTitle(client.language.ERROREMBED)
-                                    .setDescription(client.language.BETRAYAL[2])
+                                    .setTitle(interaction.language.ERROREMBED)
+                                    .setDescription(interaction.language.BETRAYAL[2])
                                     .setFooter(
                                         interaction.member.user.username + '#' + interaction.member.user.discriminator,
                                         interaction.member.displayAvatarURL(),
@@ -115,7 +115,7 @@ module.exports = class sesions extends Command {
                             }
                             embed.setColor(process.env.bot1Embed_Color as ColorResolvable)
                             embed.setDescription(
-                                `<a:arrowright:970388686816550912> **${client.language.BETRAYAL[1]}(${invite.code} 'Enlace de Youtube') <a:arrowleft:893553168108093560>**`,
+                                `<a:arrowright:970388686816550912> **${interaction.language.BETRAYAL[1]}(${invite.code} 'Enlace de Youtube') <a:arrowleft:893553168108093560>**`,
                             )
                             return interaction.editReply({
                                 embeds: [embed],
@@ -126,8 +126,8 @@ module.exports = class sesions extends Command {
                             if (invite.code === 50013) {
                                 const errorembed = new MessageEmbed()
                                     .setColor('RED')
-                                    .setTitle(client.language.ERROREMBED)
-                                    .setDescription(client.language.CREATEINVITEPERMS)
+                                    .setTitle(interaction.language.ERROREMBED)
+                                    .setDescription(interaction.language.CREATEINVITEPERMS)
                                     .setFooter(
                                         interaction.member.user.username + '#' + interaction.member.user.discriminator,
                                         interaction.member.displayAvatarURL(),
@@ -141,8 +141,8 @@ module.exports = class sesions extends Command {
                             if (!invite.code) {
                                 const errorembed = new MessageEmbed()
                                     .setColor('RED')
-                                    .setTitle(client.language.ERROREMBED)
-                                    .setDescription(client.language.BETRAYAL[2])
+                                    .setTitle(interaction.language.ERROREMBED)
+                                    .setDescription(interaction.language.BETRAYAL[2])
                                     .setFooter(
                                         interaction.member.user.username + '#' + interaction.member.user.discriminator,
                                         interaction.member.displayAvatarURL(),
@@ -154,7 +154,7 @@ module.exports = class sesions extends Command {
                             }
                             embed.setColor(process.env.bot1Embed_Color as ColorResolvable)
                             embed.setDescription(
-                                `<a:arrowright:970388686816550912> **${client.language.BETRAYAL[1]}(${invite.code} 'Enlace de Youtube') <a:arrowleft:893553168108093560>**`,
+                                `<a:arrowright:970388686816550912> **${interaction.language.BETRAYAL[1]}(${invite.code} 'Enlace de Youtube') <a:arrowleft:893553168108093560>**`,
                             )
                             return interaction.editReply({
                                 embeds: [embed],
@@ -165,8 +165,8 @@ module.exports = class sesions extends Command {
                             if (invite.code === 50013) {
                                 const errorembed = new MessageEmbed()
                                     .setColor('RED')
-                                    .setTitle(client.language.ERROREMBED)
-                                    .setDescription(client.language.CREATEINVITEPERMS)
+                                    .setTitle(interaction.language.ERROREMBED)
+                                    .setDescription(interaction.language.CREATEINVITEPERMS)
                                     .setFooter(
                                         interaction.member.user.username + '#' + interaction.member.user.discriminator,
                                         interaction.member.displayAvatarURL(),
@@ -180,8 +180,8 @@ module.exports = class sesions extends Command {
                             if (!invite.code) {
                                 const errorembed = new MessageEmbed()
                                     .setColor('RED')
-                                    .setTitle(client.language.ERROREMBED)
-                                    .setDescription(client.language.BETRAYAL[2])
+                                    .setTitle(interaction.language.ERROREMBED)
+                                    .setDescription(interaction.language.BETRAYAL[2])
                                     .setFooter(
                                         interaction.member.user.username + '#' + interaction.member.user.discriminator,
                                         interaction.member.displayAvatarURL(),
@@ -193,7 +193,7 @@ module.exports = class sesions extends Command {
                             }
                             embed.setColor(process.env.bot1Embed_Color as ColorResolvable)
                             embed.setDescription(
-                                `<a:arrowright:970388686816550912> **${client.language.BETRAYAL[1]}(${invite.code} 'Enlace de Youtube') <a:arrowleft:893553168108093560>**`,
+                                `<a:arrowright:970388686816550912> **${interaction.language.BETRAYAL[1]}(${invite.code} 'Enlace de Youtube') <a:arrowleft:893553168108093560>**`,
                             )
                             return interaction.editReply({
                                 embeds: [embed],
@@ -204,8 +204,8 @@ module.exports = class sesions extends Command {
                             if (invite.code === 50013) {
                                 const errorembed = new MessageEmbed()
                                     .setColor('RED')
-                                    .setTitle(client.language.ERROREMBED)
-                                    .setDescription(client.language.CREATEINVITEPERMS)
+                                    .setTitle(interaction.language.ERROREMBED)
+                                    .setDescription(interaction.language.CREATEINVITEPERMS)
                                     .setFooter(
                                         interaction.member.user.username + '#' + interaction.member.user.discriminator,
                                         interaction.member.displayAvatarURL(),
@@ -219,8 +219,8 @@ module.exports = class sesions extends Command {
                             if (!invite.code) {
                                 const errorembed = new MessageEmbed()
                                     .setColor('RED')
-                                    .setTitle(client.language.ERROREMBED)
-                                    .setDescription(client.language.BETRAYAL[2])
+                                    .setTitle(interaction.language.ERROREMBED)
+                                    .setDescription(interaction.language.BETRAYAL[2])
                                     .setFooter(
                                         interaction.member.user.username + '#' + interaction.member.user.discriminator,
                                         interaction.member.displayAvatarURL(),
@@ -232,7 +232,7 @@ module.exports = class sesions extends Command {
                             }
                             embed.setColor(process.env.bot1Embed_Color as ColorResolvable)
                             embed.setDescription(
-                                `<a:arrowright:970388686816550912> **${client.language.BETRAYAL[1]}(${invite.code} 'Enlace de Youtube') <a:arrowleft:893553168108093560>**`,
+                                `<a:arrowright:970388686816550912> **${interaction.language.BETRAYAL[1]}(${invite.code} 'Enlace de Youtube') <a:arrowleft:893553168108093560>**`,
                             )
                             return interaction.editReply({
                                 embeds: [embed],
@@ -243,8 +243,8 @@ module.exports = class sesions extends Command {
                             if (invite.code === 50013) {
                                 const errorembed = new MessageEmbed()
                                     .setColor('RED')
-                                    .setTitle(client.language.ERROREMBED)
-                                    .setDescription(client.language.CREATEINVITEPERMS)
+                                    .setTitle(interaction.language.ERROREMBED)
+                                    .setDescription(interaction.language.CREATEINVITEPERMS)
                                     .setFooter(
                                         interaction.member.user.username + '#' + interaction.member.user.discriminator,
                                         interaction.member.displayAvatarURL(),
@@ -258,8 +258,8 @@ module.exports = class sesions extends Command {
                             if (!invite.code) {
                                 const errorembed = new MessageEmbed()
                                     .setColor('RED')
-                                    .setTitle(client.language.ERROREMBED)
-                                    .setDescription(client.language.BETRAYAL[2])
+                                    .setTitle(interaction.language.ERROREMBED)
+                                    .setDescription(interaction.language.BETRAYAL[2])
                                     .setFooter(
                                         interaction.member.user.username + '#' + interaction.member.user.discriminator,
                                         interaction.member.displayAvatarURL(),
@@ -271,7 +271,7 @@ module.exports = class sesions extends Command {
                             }
                             embed.setColor(process.env.bot1Embed_Color as ColorResolvable)
                             embed.setDescription(
-                                `<a:arrowright:970388686816550912> **${client.language.BETRAYAL[1]}(${invite.code} 'Enlace de Youtube') <a:arrowleft:893553168108093560>**`,
+                                `<a:arrowright:970388686816550912> **${interaction.language.BETRAYAL[1]}(${invite.code} 'Enlace de Youtube') <a:arrowleft:893553168108093560>**`,
                             )
                             return interaction.editReply({
                                 embeds: [embed],
@@ -286,8 +286,8 @@ module.exports = class sesions extends Command {
             //     embeds: [
             //       new Discord.MessageEmbed()
             //         .setColor("RED")
-            //         .setTitle(client.language.ERROREMBED)
-            //         .setDescription(client.language.fatal_error)
+            //         .setTitle(interaction.language.ERROREMBED)
+            //         .setDescription(interaction.language.fatal_error)
             //         .setFooter(message.author.username, message.author.avatarURL())
             //     ]
             //   });

@@ -2,10 +2,10 @@ import { MessageEmbed } from 'discord.js'
 
 import Command from '../../structures/Command.js'
 
-import getUsedBot from '../../utils/getUsedBot'
 import simplestDiscordWebhook from 'simplest-discord-webhook'
-let webhookClient = new simplestDiscordWebhook(process.env.errorWebhookURL)
 import getRandomPhrase from '../../utils/getRandomPhrase'
+import getUsedBot from '../../utils/getUsedBot'
+let webhookClient = new simplestDiscordWebhook(process.env.errorWebhookURL)
 module.exports = class nowplaying extends Command {
     constructor() {
         super({
@@ -63,7 +63,7 @@ module.exports = class nowplaying extends Command {
         }
         if (!usedBotID) {
             const errorembed = new MessageEmbed().setColor(15548997).setFooter(
-                client.language.NOWPLAYING[2],
+                interaction.language.NOWPLAYING[2],
                 interaction.member.displayAvatarURL({
                     dynamic: true,
                 }),
@@ -125,7 +125,7 @@ module.exports = class nowplaying extends Command {
                             })
                             .catch(() => {
                                 const errorembed = new MessageEmbed().setColor(15548997).setFooter(
-                                    getRandomPhrase(client.language.INTERNALERROR),
+                                    getRandomPhrase(interaction.language.INTERNALERROR),
                                     interaction.member.displayAvatarURL({
                                         dynamic: true,
                                     }),
@@ -159,7 +159,7 @@ module.exports = class nowplaying extends Command {
                             })
                             .catch(() => {
                                 const errorembed = new MessageEmbed().setColor(15548997).setFooter(
-                                    getRandomPhrase(client.language.INTERNALERROR),
+                                    getRandomPhrase(interaction.language.INTERNALERROR),
                                     interaction.member.displayAvatarURL({
                                         dynamic: true,
                                     }),
@@ -193,7 +193,7 @@ module.exports = class nowplaying extends Command {
                             })
                             .catch(() => {
                                 const errorembed = new MessageEmbed().setColor(15548997).setFooter(
-                                    getRandomPhrase(client.language.INTERNALERROR),
+                                    getRandomPhrase(interaction.language.INTERNALERROR),
                                     interaction.member.displayAvatarURL({
                                         dynamic: true,
                                     }),
@@ -223,17 +223,17 @@ module.exports = class nowplaying extends Command {
                 switch (option) {
                     case '963496530818506802':
                         errorembed.setDescription(
-                            `Node2 <:logonodemorado:968094477480771584> ${client.language.NOTINSERVER}(https://discord.com/api/oauth2/authorize?client_id=963496530818506802&permissions=137475976512&scope=bot)`,
+                            `Node2 <:logonodemorado:968094477480771584> ${interaction.language.NOTINSERVER}(https://discord.com/api/oauth2/authorize?client_id=963496530818506802&permissions=137475976512&scope=bot)`,
                         )
                         break
                     case '963954741837201540':
                         errorembed.setDescription(
-                            `Node3 <:logonodenaranja:968094477019402292> ${client.language.NOTINSERVER}(https://discord.com/api/oauth2/authorize?client_id=963954741837201540&permissions=137475976512&scope=bot)`,
+                            `Node3 <:logonodenaranja:968094477019402292> ${interaction.language.NOTINSERVER}(https://discord.com/api/oauth2/authorize?client_id=963954741837201540&permissions=137475976512&scope=bot)`,
                         )
                         break
                     case '853888393917497384':
                         errorembed.setDescription(
-                            `Node4 <:logonodeazul:968094477866659850> ${client.language.NOTINSERVER}(https://discord.com/api/oauth2/authorize?client_id=853888393917497384&permissions=137475976512&scope=bot)`,
+                            `Node4 <:logonodeazul:968094477866659850> ${interaction.language.NOTINSERVER}(https://discord.com/api/oauth2/authorize?client_id=853888393917497384&permissions=137475976512&scope=bot)`,
                         )
                         break
                 }

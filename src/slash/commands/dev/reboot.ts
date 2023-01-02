@@ -1,6 +1,6 @@
-import Command from '../../../structures/Command.js'
+import { interactionCommandExtend } from '../../../events/client/interactionCreate.js'
 import Client from '../../../structures/Client.js'
-import { CommandInteraction } from 'discord.js'
+import Command from '../../../structures/Command.js'
 
 export default class reboot extends Command {
     constructor() {
@@ -42,7 +42,8 @@ export default class reboot extends Command {
             ],
         })
     }
-    override async run(interaction: CommandInteraction<'cached'>) {
+    async run(interaction: interactionCommandExtend) {
+        //TODO: Change reboot system 
         const client = interaction.client as Client
         const choice = interaction.options.getString('choice', true)
         if (choice === 'all') {

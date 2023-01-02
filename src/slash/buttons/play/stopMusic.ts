@@ -1,15 +1,16 @@
-import { MessageEmbed, ButtonInteraction } from 'discord.js'
+import { EmbedBuilder as MessageEmbed } from 'discord.js'
+import { interactionCommandExtend } from '../../../events/client/interactionCreate.js'
 import Client from '../../../structures/Client.js'
 import logger from '../../../utils/logger.js'
 
 export default {
     name: 'stopMusic',
-    async run(interaction: ButtonInteraction<'cached'>) {
+    async run(interaction: interactionCommandExtend) {
         const client = interaction.client as Client
         try {
             if (interaction.member?.voice.channelId != interaction.guild.me?.voice.channelId) {
                 const errorembed = new MessageEmbed().setColor(client.settings.color).setFooter({
-                    text: client.language.QUEUE[10],
+                    text: interaction.language.QUEUE[10],
                     iconURL: interaction.user.displayAvatarURL({
                         dynamic: true,
                     }),

@@ -1,4 +1,4 @@
-import { MessageAttachment } from 'discord.js'
+import { AttachmentBuilder } from 'discord.js'
 import { interactionCommandExtend } from '../../../events/client/interactionCreate.js'
 import Command from '../../../structures/Command.js'
 export default class mcserver extends Command {
@@ -32,7 +32,7 @@ export default class mcserver extends Command {
         const [ip, port] = server.split(':')
         interaction.reply({
             files: [
-                new MessageAttachment(`http://status.mclive.eu/${server}/${ip}/${port}/banner.png`, server + '.png'),
+                new AttachmentBuilder(`http://status.mclive.eu/${server}/${ip}/${port}/banner.png`, { name: server + '.png' }),
             ],
         })
     }

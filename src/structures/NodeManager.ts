@@ -1,4 +1,4 @@
-import { Cluster, ClusterManager, HeartbeatManager } from 'discord-hybrid-sharding';
+import { Cluster, ClusterManager, HeartbeatManager, ReClusterManager } from 'discord-hybrid-sharding';
 import pkg from 'figlet';
 import { ShardingClient } from 'statcord.js';
 import logger from '../utils/logger.js';
@@ -22,14 +22,14 @@ export default class NodeManager extends ClusterManager {
 
         logger.startUp(
             'Iniciando Sistema De Node' +
-                '\n' +
-                textSync('Node Bot', {
-                    font: 'Ghost', // Fuente de la consola
-                    horizontalLayout: 'default',
-                    verticalLayout: 'default',
-                    width: 80,
-                    whitespaceBreak: true,
-                }),
+            '\n' +
+            textSync('Node Bot', {
+                font: 'Ghost', // Fuente de la consola
+                horizontalLayout: 'default',
+                verticalLayout: 'default',
+                width: 80,
+                whitespaceBreak: true,
+            }),
         )
 
         // // * Función para dividir los shards en bloques
@@ -110,6 +110,7 @@ export default class NodeManager extends ClusterManager {
         // });
         // let numClustersReady = 0 - this.totalClusters * 2 + this.totalClusters
         this.extend(
+            new ReClusterManager({ restartMode: 'gracefulSwitch', }),
             new HeartbeatManager({
                 interval: 2000, // Interval to send a heartbeat
                 maxMissedHeartbeats: 5, // Maximum amount of missed Heartbeats until Cluster will get respawned

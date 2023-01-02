@@ -1,5 +1,6 @@
-import { MessageEmbed } from 'discord.js'
-import { interactionCommandExtend } from '../../../events/client/interactionCreate.js'
+import { EmbedBuilder as MessageEmbed } from 'discord.js'
+import performanceMeters from '../../../cache/performanceMeters.js'
+import { interactionCommandExtended } from '../../../events/client/interactionCreate.js'
 import Client from '../../../structures/Client.js'
 import Command from '../../../structures/Command.js'
 export default class ping extends Command {
@@ -10,20 +11,31 @@ export default class ping extends Command {
             cooldown: 5,
         })
     }
-    async run(interaction: interactionCommandExtend, args: any[]) {
-        const client = interaction.client as Client
-        const ping = Math.abs((interaction.createdTimestamp - Date.now()) / 1000)
-        interaction.editReply({
-            embeds: [
-                new MessageEmbed()
-                    .setColor('GREEN')
-                    .setFields(
-                        { name: `API`, value: `${client.ws.ping}ms`, inline: true },
-                        { name: 'PING', value: `${ping}ms`, inline: true },
-                    )
-                    .setTitle('Ping')
-                    .setTimestamp(),
-            ],
-        })
+    async run(client: Client, interaction: interactionCommandExtended, args: any[]) {
+        const ping = Math.abs((interaction.createdAt.getTime() - Date.now()) / 1000)
+        client.cluster
+            .broadcastEval(
+                (c: any) => ({
+                    ping: c.ws.ping,
+                }),
+                { cluster: client.cluster.id },
+            )
+            .then(async (results: any) => {
+                let performance = await performanceMeters.get('ping_' + interaction.id)
+                if (performance) { performance = await performance.stop(); performanceMeters.delete('ping_' + interaction.id) }
+                interaction.reply({
+                    embeds: [
+                        new MessageEmbed()
+                            .setColor('Green')
+                            .setFields(
+                                { name: `API`, value: `${results[0].ping}ms`, inline: true },
+                                { name: 'Internal Processing (database + processing)', value: performance + 'ms' },
+                                { name: 'Global Ping', value: `${ping}ms`, inline: true },
+                            )
+                            .setTitle('Ping')
+                            .setTimestamp(),
+                    ],
+                })
+            })
     }
 }

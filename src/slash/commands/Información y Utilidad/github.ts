@@ -1,6 +1,5 @@
-import { ColorResolvable, MessageEmbed } from 'discord.js'
+import { ColorResolvable, EmbedBuilder as MessageEmbed } from 'discord.js'
 import { interactionCommandExtend } from '../../../events/client/interactionCreate.js'
-import langFile from '../../../lang/index.json' assert { type: 'json' }
 import Client from '../../../structures/Client.js'
 import Command from '../../../structures/Command.js'
 
@@ -30,7 +29,7 @@ export default class github extends Command {
         })
     }
     async run(interaction: interactionCommandExtend, args: any[]) {
-        const language = await import('../lang/' + langFile.find(l => l.nombre == interaction.language)?.archivo, { assert: { type: "json" } })
+        const language = interaction.language
         const client = interaction.client as Client
         const args2 = interaction.options.getString('account', true)
         const account = await fetch(`https://api.github.com/users/${args2[0]}`, {
@@ -49,7 +48,7 @@ export default class github extends Command {
             return interaction.reply({
                 embeds: [
                     new MessageEmbed()
-                        .setColor('RED')
+                        .setColor('Red')
                         .setTitle(language.ERROREMBED)
                         .setDescription(language.INSTAGRAM[13])
                         .setFooter({

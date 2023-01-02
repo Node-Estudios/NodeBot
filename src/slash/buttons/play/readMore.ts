@@ -1,87 +1,89 @@
-import { MessageEmbed, ButtonInteraction } from 'discord.js'
+import Sentry from '@sentry/node'
+import { ButtonInteraction, MessageEmbed } from 'discord.js'
+import { interactionButtonExtend } from '../../../events/client/interactionCreate'
 import Client from '../../../structures/Client.js'
-import logger from '../../../utils/logger.js'
 export default {
     name: 'readMore',
-    run: async (interaction: ButtonInteraction<'cached'>) => {
-        const client = interaction.client as Client
+    async run(interaction: interactionButtonExtend) {
         try {
-            let bots = await botsInServer(interaction)
+            let client = interaction.client as Client
+            let bots = await botsInServer(client, interaction)
             let onlineBot = await getOnlineBots()
 
             const embed = new MessageEmbed()
-                .setColor(client.settings.color)
-                .setDescription(client.language.READMORE[1])
-                .setFields(
-                    {
-                        name: client.language.READMORE[2],
-                        value: client.language.READMORE[3],
-                    },
-                    {
-                        name: client.language.READMORE[4],
-                        value: client.language.READMORE[5],
-                    },
-                    {
-                        name: client.language.READMORE[6],
-                        value:
-                            client.language.READMORE[7] +
-                            bots[0] +
-                            onlineBot[0] +
-                            client.language.READMORE[8] +
-                            bots[1] +
-                            onlineBot[1] +
-                            client.language.READMORE[9] +
-                            bots[2] +
-                            onlineBot[2] +
-                            client.language.READMORE[10],
-                    },
+                .setColor("GREEN")
+                .setDescription(interaction.language.READMORE[1])
+                .addField(interaction.language.READMORE[2], interaction.language.READMORE[3])
+                .addField(interaction.language.READMORE[4], interaction.language.READMORE[5])
+                .addField(
+                    interaction.language.READMORE[6],
+                    interaction.language.READMORE[7] +
+                    bots[0] +
+                    onlineBot[0] +
+                    interaction.language.READMORE[8] +
+                    bots[1] +
+                    onlineBot[1] +
+                    interaction.language.READMORE[9] +
+                    bots[2] +
+                    onlineBot[2] +
+                    interaction.language.READMORE[10],
                 )
                 .setThumbnail(
-                    interaction.member.displayAvatarURL({
+                    interaction.user.displayAvatarURL({
                         dynamic: true,
                     }),
                 )
-                .setTitle(client.language.READMORE[11])
-            await interaction.update({
+                .setTitle(interaction.language.READMORE[11])
+            await interaction.editReply({
                 embeds: [embed],
                 components: [],
             })
         } catch (e) {
-            logger.error(e)
+            Sentry.captureException(e, scope => {
+                scope.clear()
+                scope.setContext('Statistics', {
+                    context: 'readMore',
+                    cluster: client.cluster.id,
+                })
+                return scope
+            })
+            client.logger.error(e)
         }
-    },
+    }
 }
 
-async function botsInServer(interaction: ButtonInteraction<'cached'>) {
-    const client = interaction.client as Client
+async function botsInServer(client: Client, interaction: ButtonInteraction<'cached'>) {
     let bot2 = ''
     await interaction.guild.members
         .fetch(process.env.bot2id as string)
         .then(() => {
-            bot2 = client.language.READMORE[12]
+            bot2 = interaction.language.READMORE[12]
         })
-        .catch(() => null)
+        .catch(() => { })
     let bot3 = ''
     await interaction.guild.members
         .fetch(process.env.bot3id as string)
         .then(() => {
-            bot3 = client.language.READMORE[12]
+            bot3 = interaction.language.READMORE[12]
         })
-        .catch(() => null)
+        .catch(() => { })
     let bot4 = ''
     await interaction.guild.members
         .fetch(process.env.bot4id as string)
         .then(() => {
-            bot4 = client.language.READMORE[12]
+            bot4 = interaction.language.READMORE[12]
         })
-        .catch(() => null)
+        .catch(() => { })
 
     return [bot2, bot3, bot4]
 }
 
 async function getOnlineBots() {
+    const axios = require('axios')
+
     let bot2Emoji = ''
-    await fetch(`http://${process.env.IP}:${process.env.bot2Port}`)
+    await axios
+        .get(`http://${process.env.IP}:${process.env.bot2Port}`)
         .then(() => {
             bot2Emoji = '<:botOn:894171595365560340>'
         })
@@ -90,7 +92,8 @@ async function getOnlineBots() {
         })
 
     let bot3Emoji = ''
-    await fetch(`http://${process.env.IP}:${process.env.bot3Port}`)
+    await axios
+        .get(`http://${process.env.IP}:${process.env.bot3Port}`)
         .then(() => {
             bot3Emoji = '<:botOn:894171595365560340>'
         })
@@ -99,7 +102,8 @@ async function getOnlineBots() {
         })
 
     let bot4Emoji = ''
-    await fetch(`http://${process.env.IP}:${process.env.bot4Port}`)
+    await axios
+        .get(`http://${process.env.IP}:${process.env.bot4Port}`)
         .then(() => {
             bot4Emoji = '<:botOn:894171595365560340>'
         })

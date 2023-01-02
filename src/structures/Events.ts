@@ -1,20 +1,13 @@
-import logger from '../utils/logger';
-import Client from './Client';
+import { Event } from '../handlers/events.js';
+import logger from '../utils/logger.js';
+import Client from './Client.js';
 
-// Interfaz de la clase base de eventos
-interface Event {
-    run(client: Client, ...args: any[]): Promise<void>;
-}
-
-
-// Clase base de eventos
-export class EventHandler implements Event {
-    constructor(private client: Client) { }
-
-    async run(client: Client, ...args: any[]): Promise<void> {
-        throw new Error('Method not implemented.');
+export class BaseEvent implements Event {
+    [x: string]: any;
+    client: Client;
+    constructor(client: Client) {
+        this.client = client;
     }
-
     async _run(run: (...args: any[]) => Promise<any>): Promise<any> {
         try {
             await run();

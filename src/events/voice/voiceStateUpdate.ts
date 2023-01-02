@@ -24,9 +24,8 @@ export default async function (oldState: VoiceState, newState: VoiceState) {
         embeds: [
             new MessageEmbed()
                 .setDescription(
-                    `${client.language.VOICESTATEUPDATE[1]}${oldState.guild.me.voice.channel.id}${
-                        client.language.VOICESTATEUPDATE[2]
-                    }${300000 / 60 / 1000}${client.language.VOICESTATEUPDATE[3]}`,
+                    `${interaction.language.VOICESTATEUPDATE[1]}${oldState.guild.me.voice.channel.id}${interaction.language.VOICESTATEUPDATE[2]
+                    }${300000 / 60 / 1000}${interaction.language.VOICESTATEUPDATE[3]}`,
                 )
                 .setColor(process.env.bot1Embed_Color as ColorResolvable),
         ],
@@ -49,7 +48,7 @@ export default async function (oldState: VoiceState, newState: VoiceState) {
         embeds: [
             new MessageEmbed()
                 .setDescription(
-                    `${client.language.VOICESTATEUPDATE[4]}${oldState.guild.me.voice.channel.id}${client.language.VOICESTATEUPDATE[5]}`,
+                    `${interaction.language.VOICESTATEUPDATE[4]}${oldState.guild.me.voice.channel.id}${interaction.language.VOICESTATEUPDATE[5]}`,
                 )
                 .setColor(process.env.bot1Embed_Color as ColorResolvable),
         ],

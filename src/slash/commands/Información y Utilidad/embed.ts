@@ -1,4 +1,4 @@
-import { ColorResolvable, MessageEmbed, TextChannel } from 'discord.js'
+import { ColorResolvable, EmbedBuilder as MessageEmbed, PermissionsBitField, TextChannel } from 'discord.js'
 import { interactionCommandExtend } from '../../../events/client/interactionCreate.js'
 import langFile from '../../../lang/index.json' assert { type: 'json' }
 import Client from '../../../structures/Client.js'
@@ -78,7 +78,7 @@ export default class embed extends Command {
             titulo = interaction.options.getString('title', true)
         var embed = new MessageEmbed().setDescription(`${descripcion}`).setColor(color).setTitle(titulo)
 
-        if (!canal.permissionsFor(client.user.id)?.has(['SEND_MESSAGES', 'EMBED_LINKS', 'VIEW_CHANNEL']))
+        if (!canal.permissionsFor(client.user.id)?.has([PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.EmbedLinks, PermissionsBitField.Flags.ViewChannel]))
             return interaction.reply({
                 content:
                     'No tengo los permisos `SEND_MESSAGES`, `EMBED_LINKS` ni `VIEW_CHANNEL`, que son necesarios para enviar el embed.',
@@ -92,8 +92,8 @@ export default class embed extends Command {
         //         embeds: [
         //             new Discord.MessageEmbed()
         //                 .setColor("RED")
-        //                 .setTitle(client.language.ERROREMBED)
-        //                 .setDescription(client.language.fatal_error)
+        //                 .setTitle(interaction.language.ERROREMBED)
+        //                 .setDescription(interaction.language.fatal_error)
         //                 .setFooter(message.author.username, message.author.avatarURL())
         //         ]
         //     });

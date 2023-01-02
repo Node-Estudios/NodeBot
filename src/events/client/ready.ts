@@ -7,11 +7,11 @@ import Client from '../../structures/Client.js'
 
 // TODO: Remove (variable: any) in the code
 // Interfaz de eventos
-import { EventHandler } from '../../handlers/events.js'
+import { BaseEvent } from '../../structures/Events.js'
 
-export default class Ready extends EventHandler {
+export default class Ready extends BaseEvent {
     async run(client: Client): Promise<void> {
-
+        // console.log('client: \n', client.cluster)
         // ...
 
         //* ADD DATABASE CONNECTION

@@ -1,4 +1,4 @@
-import { MessageEmbed, ButtonInteraction, MessageActionRow, MessageButton } from 'discord.js'
+import { ButtonInteraction, MessageActionRow, MessageButton, MessageEmbed } from 'discord.js'
 import Client from '../../../structures/Client.js'
 import logger from '../../../utils/logger.js'
 
@@ -11,7 +11,7 @@ export default {
             const botChannelID = interaction.guild.me?.voice?.channelId
             if (interaction.member.voice.channelId != botChannelID) {
                 const errorembed = new MessageEmbed().setColor(15548997).setFooter(
-                    client.language.STOP[3],
+                    interaction.language.STOP[3],
                     interaction.member.displayAvatarURL({
                         dynamic: true,
                     }),
@@ -33,31 +33,31 @@ export default {
             if (player.paused) {
                 player.pause(false)
                 player.resumedUser = interaction.user.id
-                buttonName = client.language.PLAYER['resumeMusic']
+                buttonName = interaction.language.PLAYER['resumeMusic']
 
-                let desc = client.language.STOP[5] + player.resumedUser + client.language.STOP[6]
+                let desc = interaction.language.STOP[5] + player.resumedUser + interaction.language.STOP[6]
                 embed.setDescription(prevDesc + '\n\n' + desc)
             } else {
                 player.pause(true)
                 player.pausedUser = interaction.user.id
-                let desc = client.language.STOP[4] + player.pausedUser + client.language.STOP[6]
+                let desc = interaction.language.STOP[4] + player.pausedUser + interaction.language.STOP[6]
                 embed.setDescription(prevDesc + '\n\n' + desc)
 
-                buttonName = client.language.PLAYER['pauseMusic']
+                buttonName = interaction.language.PLAYER['pauseMusic']
             }
             const row = new MessageActionRow().addComponents(
                 new MessageButton()
                     .setStyle('DANGER')
-                    .setLabel(client.language.PLAYER['stopMusic'])
+                    .setLabel(interaction.language.PLAYER['stopMusic'])
                     .setCustomId('stopMusic'),
                 new MessageButton().setStyle('SECONDARY').setLabel(buttonName).setCustomId('pauseMusic'),
                 new MessageButton()
                     .setStyle('PRIMARY')
-                    .setLabel(client.language.PLAYER['skipMusic'])
+                    .setLabel(interaction.language.PLAYER['skipMusic'])
                     .setCustomId('skipMusic'),
                 new MessageButton()
                     .setStyle('PRIMARY')
-                    .setLabel(client.language.PLAYER['queueMusic'])
+                    .setLabel(interaction.language.PLAYER['queueMusic'])
                     .setCustomId('queueMusic'),
             )
 

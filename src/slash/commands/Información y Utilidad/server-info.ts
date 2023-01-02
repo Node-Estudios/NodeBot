@@ -1,6 +1,7 @@
-import { CommandInteraction, MessageEmbed } from 'discord.js'
-import Command from '../../../structures/Command.js'
+import { EmbedBuilder as MessageEmbed } from 'discord.js'
+import { interactionCommandExtend } from '../../../events/client/interactionCreate.js'
 import Client from '../../../structures/Client.js'
+import Command from '../../../structures/Command.js'
 
 export default class serverinfo extends Command {
     constructor() {
@@ -17,7 +18,7 @@ export default class serverinfo extends Command {
         })
     }
 
-    override async run(interaction: CommandInteraction<'cached'>) {
+    async run(interaction: interactionCommandExtend) {
         const client = interaction.client as Client
         // try {
         // let region = {
@@ -42,28 +43,28 @@ export default class serverinfo extends Command {
         // }
 
         const verification = {
-            NONE: client.language.SERVERINFO[1],
-            LOW: client.language.SERVERINFO[2],
-            MEDIUM: client.language.SERVERINFO[3],
-            HIGH: client.language.SERVERINFO[4],
-            VERY_HIGH: client.language.SERVERINFO[5],
+            NONE: interaction.language.SERVERINFO[1],
+            LOW: interaction.language.SERVERINFO[2],
+            MEDIUM: interaction.language.SERVERINFO[3],
+            HIGH: interaction.language.SERVERINFO[4],
+            VERY_HIGH: interaction.language.SERVERINFO[5],
         }
 
         const explicitContent = {
-            DISABLED: client.language.SERVERINFO[6],
-            MEMBERS_WITHOUT_ROLES: client.language.SERVERINFO[7],
-            ALL_MEMBERS: client.language.SERVERINFO[8],
+            DISABLED: interaction.language.SERVERINFO[6],
+            MEMBERS_WITHOUT_ROLES: interaction.language.SERVERINFO[7],
+            ALL_MEMBERS: interaction.language.SERVERINFO[8],
         }
         // const channel = interaction.guild.channels.cache
         //   .sort((a, b) => b.position - a.position)
         //   .map((role) => role.toString())
         //   .slice(0, -1);
-        const role = interaction.guild.roles.cache.sort((a, b) => b.position - a.position).map(role => role.toString())
+        const role = interaction.guild.roles.cache.sort((a: { position: number }, b: { position: number }) => b.position - a.position).map((role: any) => role.toString())
         const boost = interaction.guild.premiumTier
         const emojis = interaction.guild.emojis.cache
         const boostcount = interaction.guild.premiumSubscriptionCount
-        const [category, others] = interaction.guild.channels.cache.partition(c => c.type === 'GUILD_CATEGORY')
-        const [text, voice] = others.partition(c => c.type === 'GUILD_TEXT')
+        const [category, others] = interaction.guild.channels.cache.partition((c: any) => c.type === 'GUILD_CATEGORY')
+        const [text, voice] = others.partition((c: any) => c.type === 'GUILD_TEXT')
         // const [bots, humans] = interaction.guild.members.cache.partition(m => m.user.bot)
         // const banner = interaction.guild.banner
 
@@ -76,60 +77,60 @@ export default class serverinfo extends Command {
             .setTitle(interaction.guild.name)
             .setFields(
                 {
-                    name: `<:Badge_PartneredServerOwner:970394871414259732> ${client.language.SERVERINFO[9]}`,
+                    name: `<:Badge_PartneredServerOwner:970394871414259732> ${interaction.language.SERVERINFO[9]}`,
                     value: `<@${interaction.guild.ownerId}>`,
                 },
                 {
-                    name: client.language.SERVERINFO[10],
+                    name: interaction.language.SERVERINFO[10],
                     value: '```' + `${interaction.guild.id}` + '```',
                     inline: true,
                 },
                 {
-                    name: `<:Members:970395202219049030> ${client.language.SERVERINFO[11]}`,
+                    name: `<:Members:970395202219049030> ${interaction.language.SERVERINFO[11]}`,
                     value: '```' + `${interaction.guild.memberCount}` + '```',
                     inline: true,
                 },
                 {
-                    name: `😀 ${client.language.SERVERINFO[12]} [${emojis.size}]`,
-                    value: `<:pepeblink:967941236029788160> ${client.language.SERVERINFO[13]}: ${
-                        emojis.filter(emoji => !emoji.animated).size
-                    }\n<a:DJPeepo:969757766744944700> ${client.language.SERVERINFO[14]}: ${
-                        emojis.filter(emoji => (emoji.animated ? true : false)).size
-                    }`,
+                    name: `😀 ${interaction.language.SERVERINFO[12]} [${emojis.size}]`,
+                    value: `<:pepeblink:967941236029788160> ${interaction.language.SERVERINFO[13]}: ${emojis.filter((emoji: any) => !emoji.animated).size
+                        }\n<a:DJPeepo:969757766744944700> ${interaction.language.SERVERINFO[14]}: ${emojis.filter((emoji: any) => (emoji.animated ? true : false)).size
+                        }`,
                     inline: true,
                 },
                 {
-                    name: `<:ticketblurple:893490671615361024> ${client.language.SERVERINFO[15]}`,
+                    name: `<:ticketblurple:893490671615361024> ${interaction.language.SERVERINFO[15]}`,
                     value: '```' + `${role.length}` + '```',
                     inline: true,
                 },
                 {
-                    name: `<:plus:893553167709655091> ${client.language.SERVERINFO[16]} [${interaction.guild.channels.cache.size}]`,
-                    value: `<:List_Bottom_Large:970441521637769287> ${client.language.SERVERINFO[17]}: ${category.size}\n<:textchannelblurple:893490117451333632> ${client.language.SERVERINFO[18]}: ${text.size}\n<:blurple_voicechannel:970441881144156190> ${client.language.SERVERINFO[19]}: ${voice.size}`,
+                    name: `<:plus:893553167709655091> ${interaction.language.SERVERINFO[16]} [${interaction.guild.channels.cache.size}]`,
+                    value: `<:List_Bottom_Large:970441521637769287> ${interaction.language.SERVERINFO[17]}: ${category.size}\n<:textchannelblurple:893490117451333632> ${interaction.language.SERVERINFO[18]}: ${text.size}\n<:blurple_voicechannel:970441881144156190> ${interaction.language.SERVERINFO[19]}: ${voice.size}`,
                     inline: true,
                 },
                 {
-                    name: `📆 ${client.language.SERVERINFO[20]}`,
+                    name: `📆 ${interaction.language.SERVERINFO[20]}`,
                     value: '```' + `<t:${Math.floor(interaction.guild.createdTimestamp / 1000)}:d>` + '```',
                     inline: true,
                 },
                 {
-                    name: `<:boost:893553167499948135> ${client.language.SERVERINFO[21]}`,
+                    name: `<:boost:893553167499948135> ${interaction.language.SERVERINFO[21]}`,
                     value: '```' + `${boostcount}` + '```',
                     inline: true,
                 },
                 {
-                    name: `<:money:893553167596421131> ${client.language.SERVERINFO[22]}`,
-                    value: '```' + (boost ? `${client.language.SERVERINFO[23]} ${boost}` : 'No') + '```',
+                    name: `<:money:893553167596421131> ${interaction.language.SERVERINFO[22]}`,
+                    value: '```' + (boost ? `${interaction.language.SERVERINFO[23]} ${boost}` : 'No') + '```',
                     inline: true,
                 },
                 {
-                    name: `**${client.language.SERVERINFO[25]}**`,
-                    value: `${verification[interaction.guild.verificationLevel]}`,
+                    name: `**${interaction.language.SERVERINFO[25]}**`,
+                    // @ts-ignore
+                    value: `${verification[interaction.guild?.verificationLevel]}`,
                 },
                 {
-                    name: `**${client.language.SERVERINFO[26]}**`,
-                    value: '```' + explicitContent[interaction.guild.explicitContentFilter] + '```',
+                    name: `**${interaction.language.SERVERINFO[26]}**`,
+                    //@ts-ignore
+                    value: '```' + explicitContent[interaction.guild?.explicitContentFilter] + '```',
                 },
             )
             .setImage(iconURL)

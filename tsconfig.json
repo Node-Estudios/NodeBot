@@ -1,5 +1,5 @@
 {
-    "include": ["src/lang/*.json", "src/*", "global.d.ts", "src/utils/*"],
+    "include": ["src/lang/*.json", "src/*", "global.d.ts", "src/utils/*", "src/slash/commands/*/*"],
     "compilerOptions": {
         /* Visit https://aka.ms/tsconfig.json to read more about this file */
         /* Projects */

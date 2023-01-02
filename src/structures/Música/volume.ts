@@ -1,9 +1,9 @@
 import { Client, CommandInteraction, MessageEmbed } from 'discord.js'
 
-import getUsedBot from '../../utils/getUsedBot'
+import simplestDiscordWebhook from 'simplest-discord-webhook'
 import Command from '../../structures/command'
 import getRandomPhrase from '../../utils/getRandomPhrase'
-import simplestDiscordWebhook from 'simplest-discord-webhook'
+import getUsedBot from '../../utils/getUsedBot'
 let webhookClient = new simplestDiscordWebhook(process.env.errorWebhookURL)
 module.exports = class volume extends Command {
     constructor(client) {
@@ -43,7 +43,7 @@ module.exports = class volume extends Command {
 
         if (!usedBotID) {
             const errorembed = new MessageEmbed().setColor(15548997).setFooter(
-                getRandomPhrase(client.language.SKIP[1]),
+                getRandomPhrase(interaction.language.SKIP[1]),
                 interaction.member.displayAvatarURL({
                     dynamic: true,
                 }),
@@ -86,7 +86,7 @@ module.exports = class volume extends Command {
                     })
                     .catch(() => {
                         const errorembed = new MessageEmbed().setColor(15548997).setFooter(
-                            getRandomPhrase(client.language.INTERNALERROR),
+                            getRandomPhrase(interaction.language.INTERNALERROR),
                             interaction.member.displayAvatarURL({
                                 dynamic: true,
                             }),
@@ -120,7 +120,7 @@ module.exports = class volume extends Command {
                     })
                     .catch(() => {
                         const errorembed = new MessageEmbed().setColor(15548997).setFooter(
-                            getRandomPhrase(client.language.INTERNALERROR),
+                            getRandomPhrase(interaction.language.INTERNALERROR),
                             interaction.member.displayAvatarURL({
                                 dynamic: true,
                             }),
@@ -154,7 +154,7 @@ module.exports = class volume extends Command {
                     })
                     .catch(() => {
                         const errorembed = new MessageEmbed().setColor(15548997).setFooter(
-                            getRandomPhrase(client.language.INTERNALERROR),
+                            getRandomPhrase(interaction.language.INTERNALERROR),
                             interaction.member.displayAvatarURL({
                                 dynamic: true,
                             }),
@@ -188,7 +188,7 @@ module.exports = class volume extends Command {
                     })
                     .catch(() => {
                         const errorembed = new MessageEmbed().setColor(15548997).setFooter(
-                            getRandomPhrase(client.language.INTERNALERROR),
+                            getRandomPhrase(interaction.language.INTERNALERROR),
                             interaction.member.displayAvatarURL({
                                 dynamic: true,
                             }),

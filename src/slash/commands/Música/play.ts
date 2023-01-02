@@ -1,4 +1,5 @@
-import { CommandInteraction, MessageEmbed, TextChannel, VoiceChannel } from 'discord.js'
+import { EmbedBuilder as MessageEmbed, TextChannel, VoiceChannel } from 'discord.js'
+import { interactionCommandExtend } from '../../../events/client/interactionCreate.js'
 import Client from '../../../structures/Client.js'
 import Command from '../../../structures/Command.js'
 import formatTime from '../../../utils/formatTime.js'
@@ -36,13 +37,7 @@ export default class play extends Command {
             ],
         })
     }
-    override async run(interaction: CommandInteraction<'cached'>) {
-        const client = interaction.client as Client
-        // if (!(interaction.member as GuildMember).voice.channel)
-        //     return interaction.reply({ content: 'No estás en un canal de voz', embeds: [] });
-        /*        client.cluster.request({ content: { system: 'music', command: 'play', data } }).then(res => {
-                    console.log(res);
-                });*/
+    async run(client: Client, interaction: interactionCommandExtend) {
         let player = client.music.players.get(interaction.guildId)
         if (!player) {
             player = await client.music.createNewPlayer(
@@ -57,7 +52,7 @@ export default class play extends Command {
             return interaction.reply({
                 embeds: [
                     new MessageEmbed().setColor(15548997).setFooter({
-                        text: client.language.PLAY[2],
+                        text: interaction.language.PLAY[2],
                         iconURL: client.user?.displayAvatarURL(),
                     }),
                 ],
@@ -74,7 +69,7 @@ export default class play extends Command {
                 interaction.reply({
                     embeds: [
                         new MessageEmbed().setColor(15548997).setFooter({
-                            text: client.language.PLAY[9],
+                            text: interaction.language.PLAY[9],
                             iconURL: client.user?.displayAvatarURL(),
                         }),
                     ],
@@ -119,20 +114,20 @@ export default class play extends Command {
             //     if (!player.playing && !player.paused) player.play();
 
             //     const e = new MessageEmbed()
-            //         .setTitle(client.language.PLAY[11])
+            //         .setTitle(interaction.language.PLAY[11])
             //         .setColor("GREEN")
-            //         .addField(client.language.PLAY[12], `${search.title}`, true)
+            //         .addField(interaction.language.PLAY[12], `${search.title}`, true)
             //         .addField(
-            //             client.language.PLAY[13],
+            //             interaction.language.PLAY[13],
             //             `\`${list.length}\``,
             //             true
             //         )
             //         .addField(
-            //             client.language.PLAY[5],
+            //             interaction.language.PLAY[5],
             //             interaction.user.tag,
             //             true
             //         )
-            //         .addField(client.language.PLAY[6], `${totalDuration}`, true)
+            //         .addField(interaction.language.PLAY[6], `${totalDuration}`, true)
             //     if (search.platform === 'Youtube') {
             //         e.setThumbnail(
             //             `https://img.youtube.com/vi/${search.id}/maxresdefault.jpg`
@@ -146,19 +141,19 @@ export default class play extends Command {
 
             player.queue.add(search)
             if (!player.playing && !player.paused) player.play()
-            const embed = new MessageEmbed().setColor('GREEN').setFields(
+            const embed = new MessageEmbed().setColor(client.settings.color).setFields(
                 {
-                    name: client.language.PLAY[4],
+                    name: interaction.language.PLAY[4],
                     value: search.author,
                     inline: true,
                 },
                 {
-                    name: client.language.PLAY[5],
+                    name: interaction.language.PLAY[5],
                     value: '<@' + interaction.user.id + '>',
                     inline: true,
                 },
                 {
-                    name: client.language.PLAY[6],
+                    name: interaction.language.PLAY[6],
                     value: formatTime(Math.trunc(search.duration), false),
                     inline: true,
                 },
@@ -168,7 +163,7 @@ export default class play extends Command {
                 if (search.streams) embed.addFields({ name: 'bitrate', value: search.streams[0].bitrate, inline: true })
                 embed.setThumbnail(`https://img.youtube.com/vi/${search.id}/maxresdefault.jpg`)
                 embed.setDescription(
-                    `**${client.language.PLAY[3]}\n[${search.title}](https://www.youtube.com/watch?v=${search.id})**`,
+                    `**${interaction.language.PLAY[3]}\n[${search.title}](https://www.youtube.com/watch?v=${search.id})**`,
                 )
                 // embed.addField(
                 //     "Bitrate",
@@ -178,7 +173,7 @@ export default class play extends Command {
             } else if (source === 'Spotify') {
                 if (search.thumbnails[0])
                     embed.setDescription(
-                        `**${client.language.PLAY[3]}\n[${search.title}](https://open.spotify.com/track/${search.id})**`,
+                        `**${interaction.language.PLAY[3]}\n[${search.title}](https://open.spotify.com/track/${search.id})**`,
                     )
                 embed.setThumbnail(search.thumbnails[0].url)
             }

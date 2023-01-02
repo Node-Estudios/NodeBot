@@ -5,23 +5,19 @@ import Usermodel from "../../models/user.js";
 import logger from '../../utils/logger.js';
 
 //TODO: Change this to use Cache instead of ready the file every time
-export default async function retrieveUserLang(member: GuildMember | User | string | Guild): Promise<string> {
-    if (member instanceof (GuildMember || User)) {
-        //go to db and also get user by id
-        return await Usermodel.findOne({ id: member.id }, async (err: any, user: { LANG: string; }) => {
-            logger.debug(user)
-            return user.LANG.toLocaleLowerCase()
+export default async function retrieveUserLang(input: GuildMember | User | string | Guild): Promise<string> {
+    logger.debug('retrieveUserLang exeuted with input: ' + input)
+    if (input instanceof (GuildMember || User)) {
+        return await Usermodel.findOne({ USERID: input.id }).then((user: any) => {
+            return user.LANG
         }) ?? await import('../lang/' + langFile.find(l => l.default)?.nombre)
-    } else if (typeof member === "string") {
-        //go to db and get user by id
-        return await Usermodel.findOne({ id: member }, async (_err: any, user: { LANG: string; }) => {
-            logger.debug(user)
-            return user.LANG.toLocaleLowerCase()
+    } else if (typeof input === "string") {
+        return await Usermodel.findOne({ USERID: input }).then((user: any) => {
+            return user.LANG
         }) ?? await import('../lang/' + langFile.find(l => l.default)?.nombre)
-    } else if (member instanceof Guild) {
-        return await GuildModel.findOne({ id: member }, async (_err: any, guild: { LANG: string; }) => {
-            logger.debug(guild)
-            return guild.LANG.toLocaleLowerCase()
+    } else if (input instanceof Guild) {
+        return await GuildModel.findOne({ ID: input }).then((guild: any) => {
+            return guild.LANG
         }) ?? await import('../lang/' + langFile.find(l => l.default)?.nombre)
     } else return await import('../lang/' + langFile.find(l => l.default)?.nombre)
 }
