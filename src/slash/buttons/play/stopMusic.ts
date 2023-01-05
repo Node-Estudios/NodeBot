@@ -1,26 +1,39 @@
-import { EmbedBuilder as MessageEmbed } from 'discord.js'
-import { interactionCommandExtend } from '../../../events/client/interactionCreate.js'
+import { EmbedBuilder, GuildMember, EmbedBuilder as MessageEmbed } from 'discord.js'
+import { interactionButtonExtend } from '../../../events/client/interactionCreate.js'
+import { messageHelper } from '../../../handlers/messageHandler.js'
 import Client from '../../../structures/Client.js'
 import logger from '../../../utils/logger.js'
 
 export default {
     name: 'stopMusic',
-    async run(interaction: interactionCommandExtend) {
-        const client = interaction.client as Client
+    async run(client: Client, interaction: interactionButtonExtend) {
+
+        if (!interaction.inGuild()) return;
+        const message = new messageHelper(interaction)
+        const player = client.music.players.get(interaction.guild!.id)
+        if (!player) return message.sendEphemeralMessage({
+            embeds: new EmbedBuilder().setColor(15548997).setFooter({
+                text: interaction.language.QUEUE[1],
+                iconURL: interaction.user.displayAvatarURL()
+            })
+        }, false)
         try {
-            if (interaction.member?.voice.channelId != interaction.guild.me?.voice.channelId) {
+            interaction.member = interaction.member as GuildMember
+            const errorEmbed = new EmbedBuilder().setColor(15548997)
+                .setFooter({ text: interaction.language.QUEUE[10], iconURL: interaction.user.displayAvatarURL() });
+            if (!interaction.member.voice) return message.sendEphemeralMessage({ embeds: errorEmbed }, false)
+            let vc = player?.voiceChannel
+            if (interaction.member?.voice.channelId != vc?.id) {
                 const errorembed = new MessageEmbed().setColor(client.settings.color).setFooter({
                     text: interaction.language.QUEUE[10],
-                    iconURL: interaction.user.displayAvatarURL({
-                        dynamic: true,
-                    }),
+                    iconURL: interaction.user.displayAvatarURL(),
                 })
-                return interaction.reply({
+                return message.sendMessage({
                     embeds: [errorembed],
-                })
+                }, false)
             }
 
-            const player = client.music.players.get(interaction.guild.id)
+            // const player = client.music.players.get(interaction.guild!.id)
             if (!player?.queue.current) return
 
             // if (player.trackRepeat) player.setTrackRepeat(false)
@@ -28,7 +41,7 @@ export default {
 
             // const { title } = player.queue.current;
             // logger.debug(player)
-            player.stop()
+            return player.stop()
         } catch (e) {
             logger.error(e)
         }

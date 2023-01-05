@@ -1,8 +1,8 @@
-import { Guild, Message, TextChannel, VoiceChannel } from 'discord.js'
+import { EmbedBuilder, Guild, Message, TextChannel, VoiceChannel } from 'discord.js'
 // TODO: When the types are resolved, change this to  { TrackPlayer, VoiceConnection } from 'yasha'
 import yasha from 'yasha'
 import logger from '../utils/logger.js'
-import MusicManager from './MusicManager.js'
+import MusicManager, { formatDuration } from './MusicManager.js'
 import Queue from './Queue.js'
 
 export default class Player extends yasha.TrackPlayer {
@@ -67,6 +67,7 @@ export default class Player extends yasha.TrackPlayer {
     }
 
     disconnect() {
+        this.connection.disconnect()
         if (this.connection) this.connection.destroy()
     }
 
@@ -77,15 +78,24 @@ export default class Player extends yasha.TrackPlayer {
         this.leaveTimeout = undefined
         this.start()
     }
-    stop() {
-        logger.debug('stopping player')
-        this.manager.trackEnd(this, true)
-    }
+    // stop() {
+    //     logger.debug('stopping player')
+    //     super.stop()
+    //     this.manager.trackEnd(this, true)
+    // }
     async softDestroy(force: boolean) {
         try {
             if (this.stayInVoice && !force) return
-
-            if (this.message) await this.message.edit({ components: [] }).catch(() => null)
+            const embed = new EmbedBuilder()
+                .setColor(this.client.settings.color)
+                .setDescription(
+                    `Ha terminado ` +
+                    `**[${this.queue.current?.title}](https://music.youtube.com/watch?v=${this.queue.current?.id
+                    })** [${formatDuration(this.queue.current?.duration ?? 0)}] • <@${this.queue.current?.requester.user.id
+                    }>`,
+                )
+                .setThumbnail(`https://img.youtube.com/vi/${this.queue.current!.id}/maxresdefault.jpg`)
+            if (this.message) await this.message.edit({ components: [], embeds: [embed] }).catch(() => null)
 
             if (this.connection) this.disconnect()
             if (this.player) super.destroy()
@@ -96,10 +106,10 @@ export default class Player extends yasha.TrackPlayer {
         }
     }
 
-    async destroy(force: boolean) {
+    async destroy(force?: boolean) {
         super.destroy()
+        await this.softDestroy(force ? force : false).catch((e) => logger.error(e))
 
-        await this.softDestroy(force).catch(logger.error)
     }
 
     skip() {

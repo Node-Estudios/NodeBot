@@ -1,4 +1,5 @@
 import { EmbedBuilder as MessageEmbed, TextChannel, VoiceChannel } from 'discord.js'
+import performanceMeters from '../../../cache/performanceMeters.js'
 import { interactionCommandExtend } from '../../../events/client/interactionCreate.js'
 import Client from '../../../structures/Client.js'
 import Command from '../../../structures/Command.js'
@@ -39,6 +40,7 @@ export default class play extends Command {
     }
     async run(client: Client, interaction: interactionCommandExtend) {
         let player = client.music.players.get(interaction.guildId)
+        // console.log(interaction.language)
         if (!player) {
             player = await client.music.createNewPlayer(
                 interaction.member.voice.channel as VoiceChannel,
@@ -158,6 +160,13 @@ export default class play extends Command {
                     inline: true,
                 },
             )
+            if (client.settings.mode == 'development') {
+                let executionTime = await performanceMeters.get('interaction_' + interaction.id)
+                executionTime = executionTime.stop()
+                let finaltext = 'Internal execution time: ' + executionTime + 'ms'
+                console.log(search)
+                embed.setFooter({ text: finaltext })
+            }
             if (source === 'Youtube') {
                 logger.info(search)
                 if (search.streams) embed.addFields({ name: 'bitrate', value: search.streams[0].bitrate, inline: true })

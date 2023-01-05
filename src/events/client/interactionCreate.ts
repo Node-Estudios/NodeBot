@@ -62,24 +62,23 @@ export type interactionButtonExtend = ButtonInteraction<CacheType> & {
     language: any
 }
 export class interactionCreate extends BaseEvent {
-    async run(client: Client, interaction: interactionExtend): Promise<void> {
-        console.log(interaction.id)
-        performanceMeters.set('ping_' + interaction.id, new performanceMeter())
-        const data = await performanceMeters.get('ping_' + interaction.id)
+    async run(client: Client, interaction2: interactionExtend): Promise<void> {
+        performanceMeters.set('interaction_' + interaction2.id, new performanceMeter())
+        const data = await performanceMeters.get('interaction_' + interaction2.id)
         data.start()
-        console.log('ping_' + interaction.id)
 
         // return false if something went wrong, true if everything was okey
-        logger.debug(`Interaction ${interaction.id} created`)
+        logger.debug(`Interaction ${interaction2.id} created`)
         if (!client.user) return; // <-- return statement here
         //TODO: Change lang from any to string inside .then((lang: any) => {}))
-        return await this.getLang(interaction).then(async () => {
-            const msg = new messageHelper(interaction)
+        return await this.getLang(interaction2).then(async () => {
+            const msg = new messageHelper(interaction2)
 
             // if (!interaction.guild) return // <-- return statement needed here
             // console.log(client.commands);
             // console.log(interaction.language)
-            if (interaction.isCommand()) {
+            if (interaction2.isCommand()) {
+                let interaction = interaction2 as interactionCommandExtended
                 let language = interaction.language
                 const cmd = commands.find((cmd2: any) => cmd2.name === interaction.commandName)
                 if (!interaction.guild && cmd?.only?.guilds) return; // <-- return statement here
@@ -295,8 +294,10 @@ export class interactionCreate extends BaseEvent {
                         if (process.env.NODE_ENV == 'production')
                             Statcord.ShardingClient.postCommand(cmd.name, (interaction.member as GuildMember).id, client)
                         try {
-                            return cmd._run(async () => await cmd.run(client, interaction, args)).then(() => {
-                                // performanceMeters.delete('ping_' + interaction.id)
+                            return cmd._run(async () => await cmd.run(client, interaction, args)).then(async () => {
+                                let timer = await performanceMeters.get('interaction_' + interaction.id)
+                                timer.stop()
+                                performanceMeters.delete('interaction_' + interaction.id)
                                 //TODO: remove from cache
                                 return;
 
@@ -318,17 +319,18 @@ export class interactionCreate extends BaseEvent {
                         return data ? true : false
                     })
                 } else return;
-            } else if (interaction.isButton()) {
-                interaction as interactionButtonExtend
+            } else if (interaction2.isButton()) {
+                let interaction = interaction2 as interactionButtonExtend
                 logger.debug(`Button ${interaction.customId} pressed`)
                 const button = buttons.get(interaction.customId)
                 // // console.log(button)
                 // //TODO: Change this
-                if (button) return (button as any).run(client, interaction)
+                console.log(button)
+                if (button) return button(client, interaction)
             } else return
         }).catch((err) => {
             console.log(err)
-            return (interaction as unknown as interactionCommandExtend).reply({
+            return (interaction2 as unknown as interactionCommandExtend).reply({
                 content: 'Ha ocurrido un error al ejecutar el comando, contacta con los desarrolladores. Status: 500 (db error && internal error)',
                 embeds: [],
                 components: [],
@@ -342,7 +344,8 @@ export class interactionCreate extends BaseEvent {
         return await retrieveUserLang(user.id).then(async (lang: any) => {
             // Cast the "interaction" object as the "interactionCommandExtend" interface, and assign the "lang" value to the "language" field
             //Refactorizar el codigo para que no sea any, sino una collection que tenga el valor de el json de idiomas
-            (interaction as interactionExtend).language = contenidoIdiomas.get(lang)
+            (interaction as interactionExtend).language = await contenidoIdiomas.get(lang).default
+            // console.log((interaction as interactionExtend).language)
         })
     }
 }

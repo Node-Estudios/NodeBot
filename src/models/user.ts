@@ -169,15 +169,34 @@ export default model(
     'Users',
     new Schema(
         {
-            USERID: { type: String, required: true },
+            id: { type: String, required: true },
             //LANG SHOULD BE A STRING, FOR EXAMPLE "ES" OR "EN"
-            LANG: { type: String },
-            COMMANDS_EXECUTED: { type: Number },
-            BANNED: { type: Boolean },
-            OLDMODE: { type: Boolean },
-            Roles: Roles,
+            lang: { type: String },
+            executedCommands: { type: Number },
+            banned: { type: Boolean },
+            roles: Roles,
             // Interacciones: Interacciones,
         },
         { collection: 'Users' },
     ),
 )
+interface Developer {
+    enabled: boolean
+    date?: string
+}
+interface Tester {
+    enabled: boolean
+    date?: string
+}
+interface Roles {
+    Developer: Developer
+    Tester: Tester
+}
+export interface User {
+    id: string,
+    lang: string,
+    executedCommands: number,
+    banned?: boolean
+    roles: Roles
+
+}

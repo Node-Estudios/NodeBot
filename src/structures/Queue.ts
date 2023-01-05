@@ -1,7 +1,16 @@
 import { GuildMember } from 'discord.js'
+import { formatDuration } from './MusicManager.js'
 
 interface YoutubeStreams {
     url: string
+    video: boolean
+    audio: boolean
+    durantion: number
+    bitrate: number
+    container: string
+    codecs: any
+    itag: number
+    default_audio_track?: any
 }
 interface TrackImage {
     url: string
@@ -30,6 +39,7 @@ export default class Queue extends Array {
         this.previous = null
     }
     add(track: any, index?: number) {
+        // console.log('trackeddd', track)
         if (!this.current) this.current = track
         else if (!index || typeof index !== 'number') this.push(track)
         else this.splice(index, 0, track)
@@ -42,11 +52,19 @@ export default class Queue extends Array {
     clear() {
         this.splice(0)
     }
+    retrieve(page: number) {
+        const songStrings = [];
+        for (let i = 0; i < this.length; i++) {
+            const song = this[i];
+            songStrings.push(`**${i + 1}.** [${song.title}](${song.url}) \`[${formatDuration(song.duration)}]\` • <@${song.requester.id}>\n`);
+        }
+        return songStrings
+    }
 
     shuffle() {
         for (let i = this.length - 1; i > 0; i--) {
             const n = Math.floor(Math.random() * (i + 1))
-            ;[this[i], this[n]] = [this[n], this[i]]
+                ;[this[i], this[n]] = [this[n], this[i]]
         }
     }
 

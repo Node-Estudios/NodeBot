@@ -3,6 +3,7 @@ import performanceMeters from '../../../cache/performanceMeters.js'
 import { interactionCommandExtended } from '../../../events/client/interactionCreate.js'
 import Client from '../../../structures/Client.js'
 import Command from '../../../structures/Command.js'
+import logger from '../../../utils/logger.js'
 export default class ping extends Command {
     constructor() {
         super({
@@ -13,7 +14,7 @@ export default class ping extends Command {
     }
     async run(client: Client, interaction: interactionCommandExtended, args: any[]) {
         const ping = Math.abs((interaction.createdAt.getTime() - Date.now()) / 1000)
-        client.cluster
+        return client.cluster
             .broadcastEval(
                 (c: any) => ({
                     ping: c.ws.ping,
@@ -21,9 +22,9 @@ export default class ping extends Command {
                 { cluster: client.cluster.id },
             )
             .then(async (results: any) => {
-                let performance = await performanceMeters.get('ping_' + interaction.id)
-                if (performance) { performance = await performance.stop(); performanceMeters.delete('ping_' + interaction.id) }
-                interaction.reply({
+                let performance = await performanceMeters.get('interaction_' + interaction.id)
+                if (performance) { performance = await performance.stop(); performanceMeters.delete('interaction_' + interaction.id) }
+                return interaction.reply({
                     embeds: [
                         new MessageEmbed()
                             .setColor('Green')
@@ -35,6 +36,8 @@ export default class ping extends Command {
                             .setTitle('Ping')
                             .setTimestamp(),
                     ],
+                }).then(() => {
+                    logger.debug('ping execution finished')
                 })
             })
     }

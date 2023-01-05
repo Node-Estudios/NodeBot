@@ -9,7 +9,7 @@ import MusicManager from './MusicManager.js'
 export default class Client extends ClientBase<true> {
     devs: string[]
     cluster: HybridClient;
-    settings: { color: ColorResolvable }
+    settings: { color: ColorResolvable, mode: ('production' | 'development' | string | undefined) }
     music = new MusicManager()
     officialServerURL: string
     services: { sentry: { loggedIn: boolean } }
@@ -26,6 +26,7 @@ export default class Client extends ClientBase<true> {
         this.officialServerURL = 'https://discord.gg/xhAWYggKKh'
         this.settings = {
             color: 'Green',
+            mode: process.env.NODE_ENV,
         }
         this.cluster = new HybridClient(this);
         // console.log(this.cluster)
