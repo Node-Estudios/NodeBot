@@ -38,6 +38,7 @@ export default class Player extends yasha.TrackPlayer {
 
         this.manager = options.musicManager
         this.trackRepeat = false
+
         this.queueRepeat = false
         this.language = options.lang
 
@@ -71,7 +72,21 @@ export default class Player extends yasha.TrackPlayer {
         if (this.connection) this.connection.destroy()
     }
 
-    play(track?: any) {
+    async play(track?: any) {
+        //TODO: Check if this code works
+        // if (this.manager.youtubei_user?.id !== this.queue.current?.requester.id) {
+        //     (await this.manager.youtubei).session.signOut();
+        //     UserModel.findOne({ id: this.queue.current?.requester.id }).then(async (user2: any) => {
+        //         console.log('user2: ', user2)
+        //         if (user2) {
+        //             console.log('user finded: ', user2)
+        //             if (user2.credentials) {
+        //                 console.log(user2.credentials);
+        //                 (await this.youtubei).session.signIn(user2.credentials)
+        //             } else return
+        //         } else return
+        //     });
+        // }
         if (!track) super.play(this.queue.current)
         else super.play(track)
         clearTimeout(this.leaveTimeout)

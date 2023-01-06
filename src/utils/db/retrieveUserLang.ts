@@ -55,7 +55,7 @@ export async function getGuildFromDB(input: DiscordGuild | string): Promise<Guil
 
 }
 
-export async function getUserFromDB(input: GuildMember | DiscordUser | string): Promise<User | undefined | null> {
+export async function getUserFromDB(input: GuildMember | DiscordUser | string): Promise<User | null> {
     logger.debug('getUserFromDB exeuted with input: ' + input)
     switch (true) {
         case input instanceof GuildMember:
@@ -80,6 +80,6 @@ export async function getUserFromDB(input: GuildMember | DiscordUser | string): 
                 return error ? undefined : user;
             });
         default:
-            return;
+            return null;
     }
 }

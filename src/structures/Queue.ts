@@ -1,5 +1,6 @@
-import { GuildMember } from 'discord.js'
-import { formatDuration } from './MusicManager.js'
+import { GuildMember } from 'discord.js';
+import { formatDuration } from './MusicManager.js';
+// const { Innertube, UniversalCache } = youtubei
 
 interface YoutubeStreams {
     url: string

@@ -1,5 +1,5 @@
-import { model, Schema } from 'mongoose'
-
+import mongoose, { Schema, model } from 'mongoose';
+import encrypt from 'mongoose-encryption';
 // const Premium = new Schema({
 //   Enabled: { type: Boolean, required: true },
 //   Date: { type: String },
@@ -16,8 +16,8 @@ import { model, Schema } from 'mongoose'
 // });
 
 const Tester = new Schema({
-    Enabled: { type: Boolean, required: true },
-    Date: { type: String },
+    enabled: { type: Boolean, required: true },
+    date: { type: String },
 })
 
 // const Booster = new Schema({
@@ -31,8 +31,8 @@ const Tester = new Schema({
 // });
 
 const Developer = new Schema({
-    Enabled: { type: Boolean, required: true },
-    Date: { type: String },
+    enabled: { type: Boolean, required: true },
+    date: { type: String },
 })
 
 // const Event25k = new Schema({
@@ -164,10 +164,16 @@ const Roles = new Schema({
 // const Eventos = new Schema({
 //   Event25k: Event25k
 // })
-
+const Credentials = new Schema({
+    access_token: String,
+    refresh_token: String,
+    expires: String
+})
+var encKey = process.env.SOME_32BYTE_BASE64_STRING!;
+var sigKey = process.env.SOME_64BYTE_BASE64_STRING!;
 export default model(
     'Users',
-    new Schema(
+    new mongoose.Schema(
         {
             id: { type: String, required: true },
             //LANG SHOULD BE A STRING, FOR EXAMPLE "ES" OR "EN"
@@ -175,11 +181,13 @@ export default model(
             executedCommands: { type: Number },
             banned: { type: Boolean },
             roles: Roles,
+            credentials: { type: Credentials, required: false }
             // Interacciones: Interacciones,
         },
-        { collection: 'Users' },
-    ),
+        { collection: 'Users' }
+    ).plugin(encrypt, { encryptionKey: encKey, signingKey: sigKey, excludeFromEncryption: ['id'] })
 )
+
 interface Developer {
     enabled: boolean
     date?: string
@@ -192,11 +200,16 @@ interface Roles {
     Developer: Developer
     Tester: Tester
 }
+interface Credentials2 {
+    access_token: String,
+    refresh_token: String,
+    expires: String
+}
 export interface User {
     id: string,
     lang: string,
     executedCommands: number,
     banned?: boolean
     roles: Roles
-
+    credentials?: Credentials2
 }

@@ -2,6 +2,7 @@ const { Innertube, UniversalCache } = require('youtubei.js');
 
 (async () => {
   const yt = await Innertube.create({
+    client_type: ''
     // required if you wish to use OAuth#cacheCredentials
     // cache: new UniversalCache()
   });
@@ -37,9 +38,9 @@ const { Innertube, UniversalCache } = require('youtubei.js');
 
   // You may cache the session for later use
   // If you use this, the next call to signIn won't fire 'auth-pending' instead just 'auth'.
-  // await yt.session.oauth.cacheCredentials();
-  console.log(await yt.search('pepo'))
-  // console.log(await (await yt.music.getHomeFeed()).sections[0].contents)
+  // console.log(yt.session.oauth.credentials)
+  // console.log(await yt.search('pepo'))
+  console.log(await (await yt.music.getHomeFeed()).sections[0].contents)
 
   // const stream = await yt.download('Q0cGM7C28a4', {type: 'audio', quality: 'best', format: 'mp3' | 'ogg' | 'webp'})
   // stream

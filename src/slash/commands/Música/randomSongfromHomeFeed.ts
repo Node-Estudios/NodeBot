@@ -6,13 +6,13 @@ import Command from '../../../structures/Command.js'
 import formatTime from '../../../utils/formatTime.js'
 import logger from '../../../utils/logger.js'
 
-export default class play extends Command {
+export default class randomSong extends Command {
     constructor() {
         super({
-            name: 'play',
-            description: 'Reproduce música en el canal de voz que te encuentres',
+            name: 'randomSong',
+            description: 'Reproduce una o varias canciones aleatoria de tu feed',
             name_localizations: {
-                'es-ES': 'reproducir',
+                'es-ES': 'randomSong',
             },
             description_localizations: {
                 'es-ES': 'Reproduce la canción que desees con su nombre o un link de youtube/spotify',
@@ -24,9 +24,9 @@ export default class play extends Command {
             },
             options: [
                 {
-                    type: 3,
-                    name: 'song',
-                    description: 'Name of the song that u want to listen.',
+                    type: 2,
+                    name: '',
+                    description: 'How many random song you want to load from your home feed',
                     name_localizations: {
                         'es-ES': 'canción',
                     },

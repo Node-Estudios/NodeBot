@@ -1,23 +1,33 @@
-import { ButtonBuilder, ButtonStyle, Collection, Guild as DiscordGuild, Guild, ActionRowBuilder as MessageActionRow, ButtonBuilder as MessageButton, EmbedBuilder as MessageEmbed, TextChannel, VoiceChannel } from 'discord.js';
+import { ButtonBuilder, ButtonStyle, Collection, Guild as DiscordGuild, EmbedBuilder, Guild, GuildMember, ActionRowBuilder as MessageActionRow, ButtonBuilder as MessageButton, EmbedBuilder as MessageEmbed, TextChannel, VoiceChannel } from 'discord.js';
 import EventEmitter from 'events';
 // TODO: When types are finished, change the yasha import to { Source, VoiceConnection } from 'yasha'
 import yasha from 'yasha';
+import client from '../bot.js';
+import languageCache from '../cache/idioms.js';
+import retrieveUserLang from '../utils/db/retrieveUserLang.js';
 import formatTime from '../utils/formatTime.js';
 import logger from '../utils/logger.js';
 import Player from './Player.js';
 // ? use client for lang
-import client from '../bot.js';
-import languageCache from '../cache/idioms.js';
-import retrieveUserLang from '../utils/db/retrieveUserLang.js';
+import Innertube2 from 'youtubei.js';
+import UserModel from '../models/user.js';
+import { spamIntervalDB } from './spamInterval.js';
+const { Innertube } = Innertube2
+let spamIntervald = new spamIntervalDB()
+type UserExtended = GuildMember & {
+
+}
 
 export default class MusicManager extends EventEmitter {
     players = new Collection<string, Player>()
-
+    youtubei = Innertube.create()
+    youtubei_user: UserExtended | undefined
+    spamInterval = spamIntervald
     constructor() {
         super()
     }
 
-    async createNewPlayer(vc: VoiceChannel, textChannel: TextChannel, guild: Guild, volume: number) {
+    async createNewPlayer(vc: VoiceChannel, textChannel: TextChannel, guild: Guild, volume: number, user: GuildMember) {
         const player = new Player({
             musicManager: this,
             guild,
@@ -26,7 +36,58 @@ export default class MusicManager extends EventEmitter {
             volume,
             language: await retrieveUserLang(guild),
         })
+            ; (await this.youtubei).session.on('auth-pending', (data: { user_code: any; verification_url: any; }) => {
+                logger.debug('auth pending')
+                if (!this.spamInterval.checkUser(user.id)) {
+                    const embed = new EmbedBuilder().setDescription(`It seems like you dont sign in using Youtube, would you like to?`).addFields([{ name: `Sign in with youtube in the next link; Use code: ${data.user_code}`, value: data.verification_url }])
+                    this.spamInterval.addUser(user.id, 30 * 60 * 1000);
+                    user.send({ embeds: [embed] }).catch((e) => {
+                        textChannel.send('Hey! Hay un problema, parece que no puedo enviarte un mensaje privado, por lo que si deseas disfrutas de las funciones exclusivas deberás permitirme los mensajes privados.')
+                    })
+                }
+            });
+        (await this.youtubei).session.on('update-credentials', ({ credentials }: any) => {
+            UserModel.findOne({ id: user.id }).then(async (user2: any) => {
+                if (user2) {
+                    user2.credentials = credentials
+                    return await user2.save()
+                } else {
+                    return await UserModel.create({ id: user.id, executedCommands: 0, roles: { Developer: { enabled: false }, Tester: { enabled: false }, credentials: credentials } })
+                }
+            })
+        })
+            ; (await this.youtubei).session.on('auth', ({ credentials }: any) => {
+                UserModel.findOne({ id: user.id }).then(async (user2: any) => {
+                    this.youtubei_user = user
+                    if (user2) {
+                        user2.credentials = credentials
+                        // console.log(user2)
+                        return await user2.save()
+                    } else {
+                        return await UserModel.create({ id: user.id, executedCommands: 0, roles: { Developer: { enabled: false }, Tester: { enabled: false }, credentials: credentials } })
+                    }
+                })
+                logger.debug('Sign in successful:');
+                const embed = new EmbedBuilder().setDescription('Has iniciado sesión correctamente. Node ya tiene acceso para ver tus canciones favoritas! Si deseas revocar este acceso, puedes hacerlo desde (este link de google)[https://myaccount.google.com/permissions]')
+                user.send({ embeds: [embed] }).catch((e) => {
+                    textChannel.send('Hey! Hay un problema, parece que no puedo enviarte un mensaje privado, por lo que si deseas disfrutas de las funciones exclusivas deberás permitirme los mensajes privados.')
+                })
+            });
+        (await this.youtubei).session.on('auth-error', ({ credentials }: any) => {
+            console.log('auth failed: ', credentials)
+        });
+        UserModel.findOne({ id: user.id }).then(async (user2: any) => {
+            console.log('user2: ', user2)
+            if (user2) {
+                console.log('user finded: ', user2)
+                if (user2.credentials) {
+                    console.log(user2.credentials);
+                    (await this.youtubei).session.signIn(user2.credentials)
+                } else return (await this.youtubei).session.signIn()
+            } else return (await this.youtubei).session.signIn()
+        });
         this.players.set(guild.id, player)
+        console.log(this.youtubei)
         player.on('ready', () => this.trackStart(player))
 
         player.on('finish', () => this.trackEnd(player, true))
