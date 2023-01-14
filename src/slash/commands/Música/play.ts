@@ -33,7 +33,7 @@ export default class play extends Command {
                     description_localizations: {
                         'es-ES': 'Nombre de la canción que deseas escuchas.',
                     },
-                    required: true,
+                    required: false,
                 },
             ],
         })

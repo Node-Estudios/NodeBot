@@ -1,8 +1,8 @@
 import { Cluster, ClusterManager, HeartbeatManager, ReClusterManager } from 'discord-hybrid-sharding';
 import pkg from 'figlet';
 import { ShardingClient } from 'statcord.js';
+import restApiBase from '../restAPI/index.js';
 import logger from '../utils/logger.js';
-import RESTAPI from './restAPIHandler.js';
 const { textSync } = pkg;
 
 export default class NodeManager extends ClusterManager {
@@ -116,9 +116,11 @@ export default class NodeManager extends ClusterManager {
                 maxMissedHeartbeats: 5, // Maximum amount of missed Heartbeats until Cluster will get respawned
             }),
         )
-        this.on('debug', logger.debug)
+        this.on('debug', logger.debug);
         // if (numClustersReady == this.totalClusters)
-        RESTAPI(this)
+        // (async () => {
+        new restApiBase(this).start()
+        // })
         this.on('clusterReady', (cluster: Cluster) => logger.startUp(`Cluster ${cluster.id} is ready!`))
         this.on('clusterCreate', (cluster: Cluster) => {
             // cluster.on('message', (message: any) => {

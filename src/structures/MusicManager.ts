@@ -26,10 +26,11 @@ export default class MusicManager extends EventEmitter {
         super()
     }
     private async sendSpamMSG(user: UserExtended, player: Player) {
-        if (!this.spamInterval.checkUser(user.id)) {
-            await (await player.youtubei).session.signIn(undefined)
-            this.spamInterval.addUser(user.id, 30 * 60 * 1000);
-        } else return
+        await (await player.youtubei).session.signIn(undefined)
+        // if (!this.spamInterval.checkUser(user.id)) {
+
+        //     this.spamInterval.addUser(user.id, 30 * 60 * 1000);
+        // } else return
     }
 
     async createNewPlayer(vc: VoiceChannel, textChannel: TextChannel, guild: Guild, volume: number, user: GuildMember) {

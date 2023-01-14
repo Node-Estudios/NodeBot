@@ -294,7 +294,13 @@ export class interactionCreate extends BaseEvent {
                         if (process.env.NODE_ENV == 'production')
                             Statcord.ShardingClient.postCommand(cmd.name, (interaction.member as GuildMember).id, client)
                         try {
-                            return cmd._run(async () => await cmd.run(client, interaction, args)).then(async () => {
+                            return cmd._run(async () => {
+                                try {
+                                    await cmd.run(client, interaction, args)
+                                } catch (e) {
+                                    logger.debug(e)
+                                }
+                            }).then(async () => {
                                 let timer = await performanceMeters.get('interaction_' + interaction.id)
                                 timer.stop()
                                 performanceMeters.delete('interaction_' + interaction.id)

@@ -25,7 +25,7 @@ export default class Ready extends BaseEvent {
         // cluster
         client.cluster.triggerReady()
         let arr: any[] = []
-        let commands2 = commands.map((command) => {
+        commands.map((command) => {
             arr.push(command)
         })
         // console.log(arr)
