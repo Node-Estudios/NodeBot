@@ -24,6 +24,7 @@ export default class ping extends Command {
             .then(async (results: any) => {
                 let performance = await performanceMeters.get('interaction_' + interaction.id)
                 if (performance) { performance = await performance.stop(); performanceMeters.delete('interaction_' + interaction.id) }
+                //Todo: process.env.mode === 'development'
                 return interaction.reply({
                     embeds: [
                         new MessageEmbed()

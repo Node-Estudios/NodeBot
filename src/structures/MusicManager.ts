@@ -20,11 +20,16 @@ type UserExtended = GuildMember & {
 
 export default class MusicManager extends EventEmitter {
     players = new Collection<string, Player>()
-    youtubei = Innertube.create()
-    youtubei_user: UserExtended | undefined
     spamInterval = spamIntervald
+    youtubeCodes = new Collection<string, UserExtended>()
     constructor() {
         super()
+    }
+    private async sendSpamMSG(user: UserExtended, player: Player) {
+        if (!this.spamInterval.checkUser(user.id)) {
+            await (await player.youtubei).session.signIn(undefined)
+            this.spamInterval.addUser(user.id, 30 * 60 * 1000);
+        } else return
     }
 
     async createNewPlayer(vc: VoiceChannel, textChannel: TextChannel, guild: Guild, volume: number, user: GuildMember) {
@@ -35,59 +40,86 @@ export default class MusicManager extends EventEmitter {
             textChannel,
             volume,
             language: await retrieveUserLang(guild),
-        })
-            ; (await this.youtubei).session.on('auth-pending', (data: { user_code: any; verification_url: any; }) => {
-                logger.debug('auth pending')
-                if (!this.spamInterval.checkUser(user.id)) {
-                    const embed = new EmbedBuilder().setDescription(`It seems like you dont sign in using Youtube, would you like to?`).addFields([{ name: `Sign in with youtube in the next link; Use code: ${data.user_code}`, value: data.verification_url }])
-                    this.spamInterval.addUser(user.id, 30 * 60 * 1000);
-                    user.send({ embeds: [embed] }).catch((e) => {
-                        textChannel.send('Hey! Hay un problema, parece que no puedo enviarte un mensaje privado, por lo que si deseas disfrutas de las funciones exclusivas deberás permitirme los mensajes privados.')
-                    })
-                }
-            });
-        (await this.youtubei).session.on('update-credentials', ({ credentials }: any) => {
+        });
+        // * Execute Youtubei.js events to keep a track of every user that has signed in
+        // Espera a que el objeto "player" esté disponible y luego accede a la propiedad "youtubei"
+        (await player.youtubei).session.on('auth-pending', (data: { user_code: any; verification_url: any; }) => {
+            // Imprime un mensaje de depuración
+            logger.debug('auth pending')
+            // Verifica si el usuario ha superado el límite de tiempo para enviar mensajes
+            if (!this.spamInterval.checkUser(user.id)) {
+                this.youtubeCodes.set(data.user_code, user)
+                // Crea un objeto "EmbedBuilder" y establece la descripción y los campos del mensaje
+                const embed = new EmbedBuilder().setDescription(`It seems like you dont sign in using Youtube, would you like to?`).addFields([{ name: `Sign in with youtube in the next link; Use code: ${data.user_code}`, value: data.verification_url }])
+                // Añade el usuario al registro de spamInterval y establece el intervalo de tiempo en 30 minutos
+                this.spamInterval.addUser(user.id, 30 * 60 * 1000);
+                // Envía el mensaje al usuario a través de un mensaje privado
+                user.send({ embeds: [embed] }).catch((e) => {
+                    // Si hay un problema al enviar el mensaje privado, envía un mensaje en el canal de texto especificado
+                    textChannel.send('Hey! Hay un problema, parece que no puedo enviarte un mensaje privado, por lo que si deseas disfrutas de las funciones exclusivas deberás permitirme los mensajes privados.')
+                })
+            }
+        });
+
+        // Espera a que el objeto "player" esté disponible y luego accede a la propiedad "youtubei"
+        // Define un manejador de evento para el evento "update-credentials" en la sesión de YouTubeI
+        (await player.youtubei).session.on('update-credentials', ({ credentials }: any) => {
+            // Busca un documento en la base de datos que coincida con el ID del usuario
             UserModel.findOne({ id: user.id }).then(async (user2: any) => {
+                // Establece la propiedad "youtubei_user" del objeto "player" como el solicitante actual de la cola
+                player.youtubei_user = player.queue.current?.requester
+                // Si se encuentra un documento, actualiza las credenciales y lo guarda
                 if (user2) {
                     user2.credentials = credentials
                     return await user2.save()
+                    // Si no se encuentra un documento, crea uno nuevo con el ID del usuario, las credenciales y algunas propiedades predeterminadas
                 } else {
                     return await UserModel.create({ id: user.id, executedCommands: 0, roles: { Developer: { enabled: false }, Tester: { enabled: false }, credentials: credentials } })
                 }
             })
-        })
-            ; (await this.youtubei).session.on('auth', ({ credentials }: any) => {
-                UserModel.findOne({ id: user.id }).then(async (user2: any) => {
-                    this.youtubei_user = user
-                    if (user2) {
-                        user2.credentials = credentials
-                        // console.log(user2)
-                        return await user2.save()
-                    } else {
-                        return await UserModel.create({ id: user.id, executedCommands: 0, roles: { Developer: { enabled: false }, Tester: { enabled: false }, credentials: credentials } })
-                    }
-                })
-                logger.debug('Sign in successful:');
-                const embed = new EmbedBuilder().setDescription('Has iniciado sesión correctamente. Node ya tiene acceso para ver tus canciones favoritas! Si deseas revocar este acceso, puedes hacerlo desde (este link de google)[https://myaccount.google.com/permissions]')
-                user.send({ embeds: [embed] }).catch((e) => {
-                    textChannel.send('Hey! Hay un problema, parece que no puedo enviarte un mensaje privado, por lo que si deseas disfrutas de las funciones exclusivas deberás permitirme los mensajes privados.')
-                })
-            });
-        (await this.youtubei).session.on('auth-error', ({ credentials }: any) => {
+        });
+        // Define un manejador de evento para el evento "auth" en la sesión de YouTubeI
+        (await player.youtubei).session.on('auth', ({ credentials }: any) => {
+            // Busca un documento en la base de datos que coincida con el ID del usuario
+            UserModel.findOne({ id: user.id }).then(async (user2: any) => {
+                credentials.expires_at = Date.now() + credentials.expires_in * 1000
+                // Establece la propiedad "youtubei_user" del objeto "player" como el solicitante actual de la cola
+                player.youtubei_user = player.queue.current?.requester
+                // Si se encuentra un documento, actualiza las credenciales y lo guarda
+                if (user2) {
+                    user2.credentials = credentials
+                    return await user2.save()
+                    // Si no se encuentra un documento, crea uno nuevo con el ID del usuario, las credenciales y algunas propiedades predeterminadas
+                } else {
+                    return await UserModel.create({ id: user.id, executedCommands: 0, roles: { Developer: { enabled: false }, Tester: { enabled: false }, credentials: credentials } })
+                }
+            })
+            // Imprime un mensaje de depuración
+            logger.debug('Sign in successful: ', credentials);
+            // Crea un objeto "EmbedBuilder" y establece la descripción del mensaje
+            const embed = new EmbedBuilder().setDescription('Has iniciado sesión correctamente. Node ya tiene acceso para ver tus canciones favoritas! Si deseas revocar este acceso, puedes hacerlo desde [este link de google](https://myaccount.google.com/permissions)')
+            return user.send({ embeds: [embed] }).catch((e) => {
+                textChannel.send('Hey! Hay un problema, parece que no puedo enviarte un mensaje privado, por lo que si deseas disfrutas de las funciones exclusivas deberás permitirme los mensajes privados.')
+            })
+        });
+        // Todo: add auth-error event
+        (await player.youtubei).session.on('auth-error', ({ credentials }: any) => {
             console.log('auth failed: ', credentials)
         });
         UserModel.findOne({ id: user.id }).then(async (user2: any) => {
-            console.log('user2: ', user2)
+            // console.log('user2: ', user2)
             if (user2) {
-                console.log('user finded: ', user2)
+                // console.log('user finded: ', user2)
                 if (user2.credentials) {
-                    console.log(user2.credentials);
-                    (await this.youtubei).session.signIn(user2.credentials)
-                } else return (await this.youtubei).session.signIn()
-            } else return (await this.youtubei).session.signIn()
+                    // console.log(user2.credentials);
+                    (await player.youtubei).session.signIn(user2.credentials).then(() => player.youtubei_user = player.queue.current?.requester).catch((e) => {
+                        logger.debug(e)
+                    })
+                } else return await this.sendSpamMSG(user, player)
+            } else return await this.sendSpamMSG(user, player)
         });
         this.players.set(guild.id, player)
-        console.log(this.youtubei)
+        // console.log(player.youtubei)
         player.on('ready', () => this.trackStart(player))
 
         player.on('finish', () => this.trackEnd(player, true))
@@ -95,7 +127,7 @@ export default class MusicManager extends EventEmitter {
         //     console.log(`Packet: ${frame_size} samples`);
         // });
 
-        player.on(yasha.VoiceConnection.Status.Destroyed, () => player.destroy(true))
+        player.on(yasha.VoiceConnection.Status.Destroyed, () => player.destroy())
 
         player.on('error', (err: any) => {
             logger.error(err)
@@ -105,9 +137,14 @@ export default class MusicManager extends EventEmitter {
         return player
     }
     async trackStart(player: Player) {
+
+        // todo: Check if the song limit is the saçme as stablished for the admins
+        // if(player.queue.current?.duration > player.guild.)
         player.playing = true
         player.paused = false
         let song = player.queue.current!
+        if (!song) return
+        if (song.requester.id !== player.youtubei_user?.id && (await player.youtubei).session.logged_in) await (await player.youtubei).session.signOut() && player.youtubei_user === undefined
         player.language = await retrieveUserLang(player.queue.current!.requester.user.id) // es_ES // en_US
         let language = await languageCache.get(player.language).default
 
@@ -178,7 +215,6 @@ export default class MusicManager extends EventEmitter {
                     .setLabel(language.PLAYER['queueMusic'])
                     .setCustomId('queueMusic'),
             )
-
             const embed = new MessageEmbed().setColor(client.settings.color)
             if (song.platform === 'Youtube') {
                 embed
@@ -261,16 +297,15 @@ export default class MusicManager extends EventEmitter {
             components: [],
             embeds: [embed],
         })
-        return this.destroy(player.guild)
+        return (await player.youtubei).session.logged_in ? await (await player.youtubei).session.signOut() && await this.destroy(player.guild) : await this.destroy(player.guild)
     }
 
     get(guild: any) {
         return this.players.get(guild.id)
     }
 
-    destroy(guild: DiscordGuild) {
-        this.players.delete(guild.id)
-        return this
+    async destroy(guild: DiscordGuild) {
+        return await this.players.get(guild.id)?.destroy()
     }
 
     async search(query: any, requester: any, source: 'Spotify' | 'Youtube' | 'Soundcloud') {

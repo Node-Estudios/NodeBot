@@ -188,7 +188,7 @@ export default class play extends Command {
                 embed.setThumbnail(search.thumbnails[0].url)
             }
             // console.log(embed)
-            console.log(await (await client.music.youtubei).music.getHomeFeed())
+            // console.log(await (await client.music.youtubei).music.getHomeFeed())
             interaction.reply({ embeds: [embed] })
         } catch (e) {
             logger.error(e)

@@ -185,7 +185,7 @@ export default model(
             // Interacciones: Interacciones,
         },
         { collection: 'Users' }
-    ).plugin(encrypt, { encryptionKey: encKey, signingKey: sigKey, excludeFromEncryption: ['id'] })
+    ).plugin(encrypt, { encryptionKey: encKey, signingKey: sigKey, encryptedFields: ['credentials'] })
 )
 
 interface Developer {

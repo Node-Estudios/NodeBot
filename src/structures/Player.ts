@@ -1,10 +1,17 @@
-import { EmbedBuilder, Guild, Message, TextChannel, VoiceChannel } from 'discord.js'
+import { Guild, GuildMember, Message, TextChannel, VoiceChannel } from 'discord.js';
 // TODO: When the types are resolved, change this to  { TrackPlayer, VoiceConnection } from 'yasha'
-import yasha from 'yasha'
-import logger from '../utils/logger.js'
-import MusicManager, { formatDuration } from './MusicManager.js'
-import Queue from './Queue.js'
+import yasha from 'yasha';
+import Innertube2 from 'youtubei.js';
+import UserModel from '../models/user.js';
+import logger from '../utils/logger.js';
+import MusicManager from './MusicManager.js';
+import Queue from './Queue.js';
+import { spamIntervalDB } from './spamInterval.js';
+const { Innertube } = Innertube2
+let spamIntervald = new spamIntervalDB()
+type UserExtended = GuildMember & {
 
+}
 export default class Player extends yasha.TrackPlayer {
     trackRepeat: boolean
     queueRepeat: boolean
@@ -28,6 +35,8 @@ export default class Player extends yasha.TrackPlayer {
     subscription: any
     connection: any
     stayInVc: any
+    youtubei = Innertube.create()
+    youtubei_user: UserExtended | undefined
     previouslyPaused: any
     constructor(options: any) {
         super({
@@ -74,19 +83,19 @@ export default class Player extends yasha.TrackPlayer {
 
     async play(track?: any) {
         //TODO: Check if this code works
-        // if (this.manager.youtubei_user?.id !== this.queue.current?.requester.id) {
-        //     (await this.manager.youtubei).session.signOut();
-        //     UserModel.findOne({ id: this.queue.current?.requester.id }).then(async (user2: any) => {
-        //         console.log('user2: ', user2)
-        //         if (user2) {
-        //             console.log('user finded: ', user2)
-        //             if (user2.credentials) {
-        //                 console.log(user2.credentials);
-        //                 (await this.youtubei).session.signIn(user2.credentials)
-        //             } else return
-        //         } else return
-        //     });
-        // }
+        if (this.youtubei_user?.id !== this.queue.current?.requester.id) {
+            if (await (await this.youtubei).session.logged_in) (await this.youtubei).session.signOut();
+            UserModel.findOne({ id: this.queue.current?.requester.id }).then(async (user2: any) => {
+                console.log('user2: ', user2)
+                if (user2) {
+                    console.log('user finded: ', user2)
+                    if (user2.credentials) {
+                        console.log(user2.credentials);
+                        return (await this.youtubei).session.signIn(user2.credentials)
+                    }
+                }
+            });
+        }
         if (!track) super.play(this.queue.current)
         else super.play(track)
         clearTimeout(this.leaveTimeout)
@@ -98,32 +107,16 @@ export default class Player extends yasha.TrackPlayer {
     //     super.stop()
     //     this.manager.trackEnd(this, true)
     // }
-    async softDestroy(force: boolean) {
-        try {
-            if (this.stayInVoice && !force) return
-            const embed = new EmbedBuilder()
-                .setColor(this.client.settings.color)
-                .setDescription(
-                    `Ha terminado ` +
-                    `**[${this.queue.current?.title}](https://music.youtube.com/watch?v=${this.queue.current?.id
-                    })** [${formatDuration(this.queue.current?.duration ?? 0)}] • <@${this.queue.current?.requester.user.id
-                    }>`,
-                )
-                .setThumbnail(`https://img.youtube.com/vi/${this.queue.current!.id}/maxresdefault.jpg`)
-            if (this.message) await this.message.edit({ components: [], embeds: [embed] }).catch(() => null)
 
+    async destroy() {
+        try {
             if (this.connection) this.disconnect()
             if (this.player) super.destroy()
 
-            this.manager.players.delete(this.guild.id)
+            return this.manager.players.delete(this.guild.id)
         } catch (e) {
-            logger.error(e)
+            return logger.error(e)
         }
-    }
-
-    async destroy(force?: boolean) {
-        super.destroy()
-        await this.softDestroy(force ? force : false).catch((e) => logger.error(e))
 
     }
 

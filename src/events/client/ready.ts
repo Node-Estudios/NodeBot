@@ -7,6 +7,7 @@ import Client from '../../structures/Client.js'
 
 // TODO: Remove (variable: any) in the code
 // Interfaz de eventos
+import commands from '../../cache/commands.js'
 import { BaseEvent } from '../../structures/Events.js'
 
 export default class Ready extends BaseEvent {
@@ -23,6 +24,21 @@ export default class Ready extends BaseEvent {
             }).then(() => logger.db('Se ha conectado la base de datos correctamente.'))
         // cluster
         client.cluster.triggerReady()
+        let arr: any[] = []
+        let commands2 = commands.map((command) => {
+            arr.push(command)
+        })
+        // console.log(arr)
+        const guild = client.guilds.cache.get('862635336165097483')
+        guild?.commands.set(arr)
+        // fetch('https://discord.com/api/v9/applications/834164602694139985/guilds/862635336165097483/commands', {
+        //     method: 'PUT',
+        //     headers: {
+        //         'Content-Type': 'application/json',
+        //         Authorization: `Bot ${process.env.DISCORD_TOKEN}`,
+        //     },
+        //     body: arr,
+        // }).then(() => console.log('Successfully registered application commands.'))
         client.cluster.on('message', async (message2: any) => {
             let message = (message2 as IPCMessage).raw
             if (message.content == 'statistics') {
