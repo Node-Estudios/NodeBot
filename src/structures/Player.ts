@@ -83,7 +83,7 @@ export default class Player extends yasha.TrackPlayer {
 
     async play(track?: any) {
         //TODO: Check if this code works
-        if (this.youtubei_user?.id !== this.queue.current?.requester.id) {
+        if (this.youtubei_user?.id !== this.queue.current?.requester?.id) {
             if (await (await this.youtubei).session.logged_in) (await this.youtubei).session.signOut();
             UserModel.findOne({ id: this.queue.current?.requester.id }).then(async (user2: any) => {
                 console.log('user2: ', user2)

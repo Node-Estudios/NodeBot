@@ -64,19 +64,34 @@ export default class play extends Command {
         try {
             let search
             const source = 'Youtube'
-            const song = interaction.options.getString('song', true)
-            try {
-                search = await client.music.search(song, interaction.member, source)
-            } catch (e) {
-                logger.error(e)
-                interaction.reply({
-                    embeds: [
-                        new MessageEmbed().setColor(15548997).setFooter({
-                            text: interaction.language.PLAY[9],
-                            iconURL: client.user?.displayAvatarURL(),
-                        }),
-                    ],
-                })
+            let song = interaction.options.getString('song', false)
+            if (!song) {
+                const songs = (await (await player.youtubei).music.getHomeFeed()).sections![0].contents;
+                const songs2 = songs.filter((song: any) => song.item_type === 'song');
+                const randomIndex = Math.floor(Math.random() * songs2.length);
+                const song3 = songs2[randomIndex];
+                // console.log(await song3)
+                //@ts-ignore
+                search = await client.music.search(song3.id, interaction.member, source)
+                // search = await client.music.search(song3.id, interaction.member, source)
+                // const playlist = await (await player.youtubei).getPlaylist()
+                // if(playlist) {
+                //     search = playlist
+                // }
+            } else {
+                try {
+                    search = await client.music.search(song, interaction.member, source)
+                } catch (e) {
+                    logger.error(e)
+                    interaction.reply({
+                        embeds: [
+                            new MessageEmbed().setColor(15548997).setFooter({
+                                text: interaction.language.PLAY[9],
+                                iconURL: client.user?.displayAvatarURL(),
+                            }),
+                        ],
+                    })
+                }
             }
             // console.log(typeof search)
 
@@ -142,6 +157,7 @@ export default class play extends Command {
             //     interaction.reply({ embeds: [e], content: '' })
             // }
 
+            // console.log(search)
             player.queue.add(search)
             if (!player.playing && !player.paused) player.play()
             const embed = new MessageEmbed().setColor(client.settings.color).setFields(

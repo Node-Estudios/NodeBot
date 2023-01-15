@@ -16,8 +16,8 @@ export default class Ready extends BaseEvent {
         // ...
 
         //* ADD DATABASE CONNECTION
-        if (process.env.mongoURL)
-            connect(process.env.mongoURL.toString(), {
+        if (process.env.MONGOURL)
+            connect(process.env.MONGOURL.toString(), {
                 // @ts-ignore
                 useUnifiedTopology: true,
                 useNewUrlParser: true,
@@ -28,7 +28,7 @@ export default class Ready extends BaseEvent {
         commands.map((command) => {
             arr.push(command)
         })
-        // console.log(arr)
+        // console.log(JSON.stringify(arr))
         const guild = client.guilds.cache.get('862635336165097483')
         guild?.commands.set(arr)
         // fetch('https://discord.com/api/v9/applications/834164602694139985/guilds/862635336165097483/commands', {

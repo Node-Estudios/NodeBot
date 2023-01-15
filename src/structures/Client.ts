@@ -39,9 +39,9 @@ export default class Client extends ClientBase<true> {
             this.services.sentry.loggedIn = true
             logger.log('Connected to Sentry')
         } else logger.warn('Sentry dsn missing.')
-        if (!process.env.devs)
+        if (!process.env.DEVS)
             throw new Error('Add developers to the .env file, expected input (example): devs=123456789,987654321 ')
-        this.devs = process.env.devs.split(',')
+        this.devs = process.env.DEVS.split(',')
     }
     async init() {
         try {
