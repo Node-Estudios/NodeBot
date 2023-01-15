@@ -96,12 +96,16 @@ export default class MusicManager extends EventEmitter {
                 }
             })
             // Imprime un mensaje de depuración
-            logger.debug('Sign in successful: ', credentials);
+            // logger.debug('Sign in successful: ', credentials);
             // Crea un objeto "EmbedBuilder" y establece la descripción del mensaje
-            const embed = new EmbedBuilder().setDescription('Has iniciado sesión correctamente. Node ya tiene acceso para ver tus canciones favoritas! Si deseas revocar este acceso, puedes hacerlo desde [este link de google](https://myaccount.google.com/permissions)')
-            return user.send({ embeds: [embed] }).catch((e) => {
-                textChannel.send('Hey! Hay un problema, parece que no puedo enviarte un mensaje privado, por lo que si deseas disfrutas de las funciones exclusivas deberás permitirme los mensajes privados.')
-            })
+            if (!this.spamInterval.checkUser(user.id)) {
+                const embed = new EmbedBuilder().setDescription('Has iniciado sesión correctamente. Node ya tiene acceso para ver tus canciones favoritas! Si deseas revocar este acceso, puedes hacerlo desde [este link de google](https://myaccount.google.com/permissions)')
+                this.spamInterval.addUser(user.id, 7 * 24 * 60 * 60 * 1000);
+                return user.send({ embeds: [embed] }).catch((e) => {
+                    textChannel.send('Hey! Hay un problema, parece que no puedo enviarte un mensaje privado, por lo que si deseas disfrutas de las funciones exclusivas deberás permitirme los mensajes privados.')
+                })
+
+            } else return
         });
         // Todo: add auth-error event
         (await player.youtubei).session.on('auth-error', ({ credentials }: any) => {

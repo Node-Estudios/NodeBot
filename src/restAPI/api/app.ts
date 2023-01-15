@@ -3,6 +3,7 @@ import { Router } from 'express';
 // const discord = require("./discord");
 import NodeManager from '../../structures/NodeManager.js';
 import { statistics } from '../statistics/index.js';
+import { stripe } from '../stripe/index.js';
 
 export default class restApiBase {
     manager: NodeManager
@@ -19,7 +20,7 @@ export default class restApiBase {
         // router.use("/discord", discord);
         // this.router.use("/", (req: any, res: any) => res.status(200).json({ message: "Hello World" }));
         this.router.use("/statistics", await new statistics(this.manager).load());
-        // this.router.use("/stripe", new stripe(this.manager).load());
+        this.router.use("/stripe", new stripe(this.manager).load());
         return this.router
     }
 }

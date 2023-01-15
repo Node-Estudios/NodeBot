@@ -1223,7 +1223,7 @@
     "PLAYER": {
         "stopMusic": "Detener",
         "pauseMusic": "Pausar",
-        "resumeMusic": "Resumida",
+        "resumeMusic": "Resumir",
         "skipMusic": "Saltar",
         "queueMusic": "Cola"
     },

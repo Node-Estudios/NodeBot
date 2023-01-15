@@ -102,11 +102,11 @@ export default class Player extends yasha.TrackPlayer {
         this.leaveTimeout = undefined
         this.start()
     }
-    // stop() {
-    //     logger.debug('stopping player')
-    //     super.stop()
-    //     this.manager.trackEnd(this, true)
-    // }
+    stop() {
+        // logger.debug('stopping player')
+        super.stop()
+        // this.manager.trackEnd(this, true)
+    }
 
     async destroy() {
         try {

@@ -177,6 +177,7 @@ export default class play extends Command {
                     inline: true,
                 },
             )
+            if (!(await player.youtubei).session.logged_in) embed.addFields([{ name: 'Warning', value: 'Youtube Music no ha conseguido iniciar sesión, por lo que es posible que no se adapte a ti la canción', inline: true }])
             if (client.settings.mode == 'development') {
                 let executionTime = await performanceMeters.get('interaction_' + interaction.id)
                 executionTime = executionTime.stop()

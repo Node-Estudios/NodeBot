@@ -35,21 +35,67 @@ export default {
             // const player = client.music.players.get(interaction.guild!.id)
             const {
                 title,
-                requester
+                requester,
+                id
             } = player.queue.current!;
 
             const {
                 queue
             } = player;
-            return player.queue.retrieve(1)
+            player.queue.retrieve(1)
             // return console.log(player.queue.current)
-            // if (player.queue.current) {
-            //     return new EmbedBuilder()
-            //         .setTitle(interaction.language.QUEUE[9])
-            //         .setDescription(`🎧 ${interaction.language.QUEUE[3]}\n[${title}](${uri}) [<@${requester.userId}>]`)
-            //         .setAuthor(`${interaction.language.QUEUE[6]} ${player.queue.current.author} ${client.language.QUEUE[7]}`, "https://i.imgur.com/CCqeomm.gif")
-            //         .setColor(client.settings.color)
-            // }
+            if (!player.queue[0] && player.queue.current) {
+                return interaction.reply({
+                    embeds: [new EmbedBuilder()
+                        .setTitle(interaction.language.QUEUE[9])
+                        .setDescription(`🎧 ${interaction.language.QUEUE[3]}\n[${title}](https://www.music.youtube.com/watch?v=${id}) [<@${requester.id}>]`)
+                        .setAuthor({ name: `${interaction.language.QUEUE[6]} ${player.queue.current?.author} ${interaction.language.QUEUE[7]}`, iconURL: "https://i.imgur.com/CCqeomm.gif" })
+                        .setColor(client.settings.color)]
+                })
+            }
+            let x = Math.floor(10);
+            let i: any;
+            let j: any;
+            i = -1;
+            j = 0;
+
+            let queuelist = player.queue
+                .slice(x - 10, x)
+                .map(
+                    () =>
+                        `**${++j}.** [${queue[++i].title}](https://www.music.youtube.com/watch?v=${id}) [<@${queue[i].requester.id
+                        }>]`
+                )
+                .join("\n");
+
+            if (!queuelist) {
+                const errorembed = new EmbedBuilder()
+                    .setColor(15548997)
+                    .setFooter({
+                        text: interaction.language.QUEUE[4],
+                        iconURL: interaction.user.displayAvatarURL(),
+                    })
+                return errorembed
+            }
+            const embed = new EmbedBuilder();
+            embed.setDescription(
+                `🎧 ${interaction.language.QUEUE[3]}\n [${title}](https://www.youtube.com/watch?v=${id}) [<@${requester.id}>]\n__${interaction.language.QUEUE[8]}__:\n${queuelist}`
+            );
+            embed.setThumbnail(client.user.displayAvatarURL());
+            embed.setAuthor({
+                name: `${interaction.language.QUEUE[6]} ${interaction.user.username} ${interaction.language.QUEUE[7]} (${Math.floor(x / 10)} / ${Math.floor(
+                    (player.queue.slice(1).length + 10) / 10
+                )})`,
+                iconURL: "https://i.imgur.com/CCqeomm.gif"
+            });
+            embed.setFooter({
+                text: `${interaction.language.QUEUE[5]} ${player.queue.length}`,
+                iconURL: interaction.user.displayAvatarURL(),
+            })
+            embed.setColor(client.settings.color)
+            return interaction.reply({
+                embeds: [embed]
+            })
 
         } catch (e) {
             return logger.error(e)
