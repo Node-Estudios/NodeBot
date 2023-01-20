@@ -15,7 +15,7 @@ export default {
             })
         }, false)
         // const player = client.music.players.get(interaction.guild.id)
-        if (!player?.queue.current) return message.sendEphemeralMessage({
+        if (!player.queue.current) return message.sendEphemeralMessage({
             embeds: new EmbedBuilder().setColor(15548997).setFooter(interaction.language.QUEUE[1])
         }, true)
         // const message = await interaction.message.fetch()
