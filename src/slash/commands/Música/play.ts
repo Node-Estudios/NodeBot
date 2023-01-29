@@ -9,6 +9,14 @@ import Youtubei from '../../../structures/Youtubei.js'
 import formatTime from '../../../utils/formatTime.js'
 import logger from '../../../utils/logger.js'
 
+function shuffleArray(array: any[]) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+}
+
 type UserExtended = GuildMember & {
     youtubei: Youtubei
 }
@@ -108,7 +116,7 @@ export default class play extends Command {
             try {
                 const songsData = await interaction.user.youtubei.music.getHomeFeed();
                 for (const section of songsData.sections) {
-                    songs = songs.concat(section.contents.filter((song: { item_type: string }) => song.item_type === "song"));
+                    songs = shuffleArray(songs.concat(section.contents.filter((song: { item_type: string }) => song.item_type === "song")))
                     if (songs.length > 10) break;
                 }
             } catch (e) {
@@ -123,6 +131,7 @@ export default class play extends Command {
             }
 
             const number = interaction.options.getNumber("amount", false);
+            // console.log('songs: ', songs)
             if (number) {
                 const amount = number > 10 ? 10 : number;
                 search = (await Promise.all(
@@ -159,20 +168,21 @@ export default class play extends Command {
                 })
             }
         }
-        console.log('search: ', search)
+        // console.log('search: ', search)
+
         if (Array.isArray(search)) {
             for (const item of search) {
-                player.queue.add(item);
+                if (!player.queue.some((song) => song.id === item.id)) player.queue.add(item);
             }
-            player.queue.shuffle()
         } else {
             player.queue.add(search);
         }
+        player.queue.shuffle()
         if (!player.playing && !player.paused) player.play()
         const embed = new MessageEmbed().setColor(client.settings.color).setFields(
             {
                 name: interaction.language.PLAY[4],
-                value: search.author,
+                value: player.queue.current!.author,
                 inline: true,
             },
             {
@@ -182,7 +192,7 @@ export default class play extends Command {
             },
             {
                 name: interaction.language.PLAY[6],
-                value: formatTime(Math.trunc(search.duration), false),
+                value: formatTime(Math.trunc(player.queue.current!.duration), false),
                 inline: true,
             },
         )
@@ -194,6 +204,7 @@ export default class play extends Command {
             // console.log(search)
             embed.setFooter({ text: finaltext })
         }
+        console.log('current: ', player.queue.current)
         if (source === 'Youtube') {
             // logger.info(search)
             // if (player.queue.current!.bitrate!) embed.addFields({ name: 'bitrate', value: search.streams[0].bitrate, inline: true })
