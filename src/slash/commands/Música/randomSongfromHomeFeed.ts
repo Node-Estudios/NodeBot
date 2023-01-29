@@ -215,7 +215,7 @@ export default class randomSong extends Command {
                 let executionTime = await performanceMeters.get('interaction_' + interaction.id)
                 executionTime = executionTime.stop()
                 let finaltext = 'Internal execution time: ' + executionTime + 'ms'
-                console.log(search)
+                // console.log(search)
                 embed.setFooter({ text: finaltext })
             }
             if (!(await player.youtubei).session.logged_in) embed.addFields([{ name: 'Warning', value: 'Youtube Music no ha conseguido iniciar sesión, por lo que es posible que no se adapte a ti la canción', inline: true }])

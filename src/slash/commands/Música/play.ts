@@ -172,7 +172,11 @@ export default class play extends Command {
 
         if (Array.isArray(search)) {
             for (const item of search) {
-                if (!player.queue.some((song) => song.id === item.id)) player.queue.add(item);
+                if (!player.queue.some((song) => song.id === item.id)) {
+                    player.queue.add(item)
+                } else {
+
+                }
             }
         } else {
             player.queue.add(search);
@@ -204,13 +208,13 @@ export default class play extends Command {
             // console.log(search)
             embed.setFooter({ text: finaltext })
         }
-        console.log('current: ', player.queue.current)
+        // console.log('current: ', player.queue.current)
         if (source === 'Youtube') {
             // logger.info(search)
             // if (player.queue.current!.bitrate!) embed.addFields({ name: 'bitrate', value: search.streams[0].bitrate, inline: true })
             embed.setThumbnail(`https://img.youtube.com/vi/${player.queue.current!.id}/maxresdefault.jpg`)
             embed.setDescription(
-                `**${interaction.language.PLAY[3]}\n[${search.title}](https://www.youtube.com/watch?v=${player.queue.current!.id})**`,
+                `**${interaction.language.PLAY[3]}\n[${player.queue.current!.title}](https://www.youtube.com/watch?v=${player.queue.current!.id})**`,
             )
             // embed.addField(
             //     "Bitrate",
@@ -220,7 +224,7 @@ export default class play extends Command {
         } else if (source === 'Spotify') {
             if (search.thumbnails[0])
                 embed.setDescription(
-                    `**${interaction.language.PLAY[3]}\n[${search.title}](https://open.spotify.com/track/${player.queue.current!.id})**`,
+                    `**${interaction.language.PLAY[3]}\n[${player.queue.current!.title}](https://open.spotify.com/track/${player.queue.current!.id})**`,
                 )
             embed.setThumbnail(search.thumbnails[0].url)
         }
