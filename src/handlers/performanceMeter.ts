@@ -1,4 +1,3 @@
-import logger from "../utils/logger.js";
 
 export class Timer {
     private startTime!: number;
@@ -11,7 +10,7 @@ export class Timer {
 
     stop(): number {
         const elapsedTime = Date.now() - this.startTime;
-        logger.debug(elapsedTime)
+        // logger.debug(elapsedTime)
         return elapsedTime;
     }
 }

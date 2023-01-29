@@ -2,16 +2,16 @@ import { Guild, GuildMember, Message, TextChannel, VoiceChannel } from 'discord.
 // TODO: When the types are resolved, change this to  { TrackPlayer, VoiceConnection } from 'yasha'
 import yasha from 'yasha';
 import Innertube2 from 'youtubei.js';
-import UserModel from '../models/user.js';
 import logger from '../utils/logger.js';
 import MusicManager from './MusicManager.js';
 import Queue from './Queue.js';
 import { spamIntervalDB } from './spamInterval.js';
-const { Innertube } = Innertube2
+const { Innertube } = Innertube2 as any
 let spamIntervald = new spamIntervalDB()
 type UserExtended = GuildMember & {
 
 }
+
 export default class Player extends yasha.TrackPlayer {
     trackRepeat: boolean
     queueRepeat: boolean
@@ -35,8 +35,6 @@ export default class Player extends yasha.TrackPlayer {
     subscription: any
     connection: any
     stayInVc: any
-    youtubei = Innertube.create()
-    youtubei_user: UserExtended | undefined
     previouslyPaused: any
     constructor(options: any) {
         super({
@@ -83,19 +81,6 @@ export default class Player extends yasha.TrackPlayer {
 
     async play(track?: any) {
         //TODO: Check if this code works
-        if (this.youtubei_user?.id !== this.queue.current?.requester?.id) {
-            if (await (await this.youtubei).session.logged_in) (await this.youtubei).session.signOut();
-            UserModel.findOne({ id: this.queue.current?.requester.id }).then(async (user2: any) => {
-                console.log('user2: ', user2)
-                if (user2) {
-                    console.log('user finded: ', user2)
-                    if (user2.credentials) {
-                        console.log(user2.credentials);
-                        return (await this.youtubei).session.signIn(user2.credentials)
-                    }
-                }
-            });
-        }
         if (!track) super.play(this.queue.current)
         else super.play(track)
         clearTimeout(this.leaveTimeout)

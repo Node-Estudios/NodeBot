@@ -34,7 +34,9 @@ export default class Command {
     }
     async _run(run: (...args: any[]) => Promise<any>): Promise<any> {
         try {
-            await run();
+            return await run().then((data) => {
+                return data
+            })
         } catch (err) {
             // TODO: Add error handler
             logger.error(err);
