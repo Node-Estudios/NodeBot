@@ -27,7 +27,7 @@ export default {
         if (player.paused) {
             player.pause(false)
             player.resumedUser = interaction.user.id
-            buttonName = interaction.language.PLAYER['resumeMusic']
+            buttonName = interaction.language.PLAYER['pauseMusic']
 
             let desc = interaction.language.STOP[5] + player.resumedUser + interaction.language.STOP[6]
             embed.setDescription(prevDesc + '\n\n' + desc)
@@ -37,7 +37,7 @@ export default {
             let desc = interaction.language.STOP[4] + player.pausedUser + interaction.language.STOP[6]
             embed.setDescription(prevDesc + '\n\n' + desc)
 
-            buttonName = interaction.language.PLAYER['pauseMusic']
+            buttonName = interaction.language.PLAYER['resumeMusic']
         }
         const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
             new ButtonBuilder()
