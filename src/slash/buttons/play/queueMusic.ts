@@ -49,7 +49,7 @@ export default {
                 return interaction.reply({
                     embeds: [new EmbedBuilder()
                         .setTitle(interaction.language.QUEUE[9])
-                        .setDescription(`🎧 ${interaction.language.QUEUE[3]}\n[${title}](https://www.music.youtube.com/watch?v=${id}) [<@${player.queue.current.requester.id}> - ${formatTime(Math.trunc(player.queue.current.duration), false)} - ${player.queue.current.streams![0].bitrate.toString().slice(0, 3)}Kbps]`)
+                        .setDescription(`🎧 ${interaction.language.QUEUE[3]}\n[${title}](https://www.music.youtube.com/watch?v=${player.queue.current.id}) [<@${player.queue.current.requester.id}> - ${formatTime(Math.trunc(player.queue.current.duration), false)} - ${player.queue.current.streams![0].bitrate.toString().slice(0, 3)}Kbps]`)
                         .setAuthor({ name: `${interaction.language.QUEUE[6]} ${player.queue.current?.author} ${interaction.language.QUEUE[7]}`, iconURL: "https://i.imgur.com/CCqeomm.gif" })
                         .setColor(client.settings.color)]
                 })
@@ -64,7 +64,7 @@ export default {
                 .slice(x - 10, x)
                 .map(
                     () =>
-                        `**${++j}.** [${queue[++i].title}](https://www.music.youtube.com/watch?v=${id}) [<@${queue[i].requester.id}> - ${formatTime(Math.trunc(queue[i].duration), false)} - ${queue[i].streams[0].bitrate.toString().slice(0, 3)}Kbps]`
+                        `**${++j}.** [${queue[++i].title}](https://www.music.youtube.com/watch?v=${queue[i].id}) [<@${queue[i].requester.id}> - ${formatTime(Math.trunc(queue[i].duration), false)} - ${queue[i].streams[0].bitrate.toString().slice(0, 3)}Kbps]`
                 )
                 .join("\n");
 
@@ -79,7 +79,7 @@ export default {
             }
             const embed = new EmbedBuilder();
             embed.setDescription(
-                `🎧 ${interaction.language.QUEUE[3]}\n [${title}](https://www.music.youtube.com/watch?v=${id}) [<@${player.queue.current!.requester.id}> - ${formatTime(Math.trunc(player.queue.current!.duration), false)} - ${player.queue.current!.streams![0].bitrate.toString().slice(0, 3)}Kbps]\n__${interaction.language.QUEUE[8]}__:\n${queuelist}`
+                `🎧 ${interaction.language.QUEUE[3]}\n [${title}](https://www.music.youtube.com/watch?v=${player.queue.current!.id}) [<@${player.queue.current!.requester.id}> - ${formatTime(Math.trunc(player.queue.current!.duration), false)} - ${player.queue.current!.streams![0].bitrate.toString().slice(0, 3)}Kbps]\n__${interaction.language.QUEUE[8]}__:\n${queuelist}`
             );
             embed.setThumbnail(client.user.displayAvatarURL());
             embed.setAuthor({
