@@ -115,9 +115,6 @@ export default class MusicManager extends EventEmitter {
                     embed.setThumbnail(song.thumbnails[0].url)
                 }
             }
-            let stream = player.queue.current?.streams![0].bitrate
-            // console.log('streams', player.queue.current?.streams)
-            if (player.queue.current?.streams) embed.addFields({ name: 'Bitrate', value: stream! + 'kbps', inline: true })
             const msg = await (client.channels.cache.get(player.textChannel.id) as TextChannel)?.send({
                 embeds: [embed],
                 components: [row],
@@ -164,9 +161,6 @@ export default class MusicManager extends EventEmitter {
                     embed.setThumbnail(song.thumbnails[0].url)
                 }
             }
-            let stream = player.queue.current?.streams![0].bitrate
-            // console.log('streams', player.queue.current?.streams)
-            if (player.queue.current?.streams) embed.addFields({ name: 'Bitrate', value: stream! + 'kbps', inline: true })
             player.message.delete()
             const msg = await player.textChannel.send({
                 embeds: [embed],
