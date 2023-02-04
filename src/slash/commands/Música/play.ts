@@ -137,13 +137,13 @@ export default class play extends Command {
                 search = (await Promise.all(
                     Array.from({ length: amount }, async (_, i) => {
                         const song = songs[i % songs.length];
-                        return await client.music.search(song.id, interaction.member, source);
+                        return await client.music.search(song.id, interaction.user, source);
                     })
                 ));
             } else {
                 const randomIndex = Math.floor(Math.random() * songs.length);
                 const randomSong = songs[randomIndex];
-                search = await client.music.search(randomSong.id, interaction.member, source);
+                search = await client.music.search(randomSong.id, interaction.user, source);
             }
 
 
@@ -198,9 +198,10 @@ export default class play extends Command {
                 name: interaction.language.PLAY[6],
                 value: formatTime(Math.trunc(player.queue.current!.duration), false),
                 inline: true,
-            },
+            }
         )
-        if (!(await interaction.user.youtubei).session.logged_in) embed.addFields([{ name: 'Warning', value: 'Youtube Music no ha conseguido iniciar sesión, por lo que es posible que no se adapte a ti la canción', inline: true }])
+        // logger.debug(player.queue.current);
+        if (interaction.user.youtubei && !(await interaction.user.youtubei).session.logged_in) embed.addFields([{ name: 'Warning', value: 'Youtube Music no ha conseguido iniciar sesión, por lo que es posible que no se adapte a ti la canción', inline: true }])
         if (client.settings.mode == 'development') {
             let executionTime = await performanceMeters.get('interaction_' + interaction.id)
             executionTime = executionTime.stop()
@@ -214,7 +215,7 @@ export default class play extends Command {
             // if (player.queue.current!.bitrate!) embed.addFields({ name: 'bitrate', value: search.streams[0].bitrate, inline: true })
             embed.setThumbnail(`https://img.youtube.com/vi/${player.queue.current!.id}/maxresdefault.jpg`)
             embed.setDescription(
-                `**${interaction.language.PLAY[3]}\n[${player.queue.current!.title}](https://www.youtube.com/watch?v=${player.queue.current!.id})**`,
+                `**${interaction.language.PLAY[3]}\n[${player.queue.current!.title}](https://www.music.youtube.com/watch?v=${player.queue.current!.id})**`,
             )
             // embed.addField(
             //     "Bitrate",

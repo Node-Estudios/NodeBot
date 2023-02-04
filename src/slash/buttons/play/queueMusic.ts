@@ -79,7 +79,7 @@ export default {
             }
             const embed = new EmbedBuilder();
             embed.setDescription(
-                `🎧 ${interaction.language.QUEUE[3]}\n [${title}](https://www.youtube.com/watch?v=${id}) [<@${requester.id}>]\n__${interaction.language.QUEUE[8]}__:\n${queuelist}`
+                `🎧 ${interaction.language.QUEUE[3]}\n [${title}](https://www.music.youtube.com/watch?v=${id}) [<@${requester.id}>]\n__${interaction.language.QUEUE[8]}__:\n${queuelist}`
             );
             embed.setThumbnail(client.user.displayAvatarURL());
             embed.setAuthor({

@@ -68,8 +68,8 @@ export default class MusicManager extends EventEmitter {
         player.paused = false
         let song = player.queue.current!
         if (!song) return
-        console.log(song.requester)
-        player.language = await retrieveUserLang(player.queue.current!.requester.user.id) // es_ES // en_US
+        // console.log(song.requester)
+        player.language = await retrieveUserLang(player.queue.current!.requester.id) // es_ES // en_US
         let language = await languageCache.get(player.language).default
 
         // ^ Si no tenemos un mensaje ya enviado, lo enviamos, y si lo tenemos, borramos el anterior y enviamos uno nuevo <3
@@ -100,7 +100,7 @@ export default class MusicManager extends EventEmitter {
                     .setThumbnail(`https://img.youtube.com/vi/${song.id}/maxresdefault.jpg`)
                     .setDescription(
                         `${language.PLAYING} **[${song.title}](https://music.youtube.com/watch?v=${song.id
-                        })** [${formatDuration(song.duration)}] • <@${song.requester.user.id}>`,
+                        })** [${formatDuration(song.duration)}] • <@${song.requester.id}>`,
                     )
                 // embed.addField(
                 //     "Bitrate",
@@ -115,6 +115,9 @@ export default class MusicManager extends EventEmitter {
                     embed.setThumbnail(song.thumbnails[0].url)
                 }
             }
+            let stream = player.queue.current?.streams![0].bitrate
+            // console.log('streams', player.queue.current?.streams)
+            if (player.queue.current?.streams) embed.addFields({ name: 'Bitrate', value: stream! + 'kbps', inline: true })
             const msg = await (client.channels.cache.get(player.textChannel.id) as TextChannel)?.send({
                 embeds: [embed],
                 components: [row],
@@ -146,7 +149,7 @@ export default class MusicManager extends EventEmitter {
                     .setThumbnail(`https://img.youtube.com/vi/${song.id}/maxresdefault.jpg`)
                     .setDescription(
                         `${language.PLAYING} **[${song.title}](https://music.youtube.com/watch?v=${song.id
-                        })** [${formatDuration(song.duration)}] • <@${song.requester.user.id}>`,
+                        })** [${formatDuration(song.duration)}] • <@${song.requester.id}>`,
                     )
                 // embed.addField(
                 //     "Bitrate",
@@ -161,6 +164,9 @@ export default class MusicManager extends EventEmitter {
                     embed.setThumbnail(song.thumbnails[0].url)
                 }
             }
+            let stream = player.queue.current?.streams![0].bitrate
+            // console.log('streams', player.queue.current?.streams)
+            if (player.queue.current?.streams) embed.addFields({ name: 'Bitrate', value: stream! + 'kbps', inline: true })
             player.message.delete()
             const msg = await player.textChannel.send({
                 embeds: [embed],
@@ -213,7 +219,7 @@ export default class MusicManager extends EventEmitter {
             .setDescription(
                 `Ha terminado ` +
                 `**[${player.queue.current?.title}](https://music.youtube.com/watch?v=${player.queue.current?.id
-                })** [${formatDuration(player.queue.current?.duration ?? 0)}] • <@${player.queue.current?.requester.user.id
+                })** [${formatDuration(player.queue.current?.duration ?? 0)}] • <@${player.queue.current?.requester.id
                 }>`,
             )
             .setThumbnail(`https://img.youtube.com/vi/${player.queue.current!.id}/maxresdefault.jpg`)
@@ -232,18 +238,29 @@ export default class MusicManager extends EventEmitter {
     async destroy(guild: DiscordGuild) {
         return await this.players.get(guild.id)?.destroy()
     }
+    shuffleArray(array: any[]) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    }
 
     async search(query: any, requester: any, source: 'Spotify' | 'Youtube' | 'Soundcloud') {
         // logger.debug('debugging search', await yasha.Source.resolve(await yasha.Source.Youtube.search(query)[0]))
-        let track =
-            source === 'Spotify'
-                ? (await yasha.Source.Spotify.search(query))[0]
-                : source === 'Youtube'
-                    ? (await yasha.Source.Youtube.search(query))[0]
-                    : source === 'Soundcloud'
-                        ? (await yasha.Source.Soundcloud.search(query))[0]
-                        : await yasha.Source.resolve(query);
+        let track
+        // console.log('requester: ', requester.youtubei)
+        if (requester.youtubei) {
+            if (requester.youtubei.session.logged_in) {
+                let rawData = await (await requester.youtubei.music.search(query, { limit: 1 })).sections[0]
+                // console.log('logged in ', rawData)
+                track = rawData.contents[0].id
+            } else { track = await (await yasha.Source.Youtube.search(query))[0]; console.log('not logged in') }
+        } else track = await (await yasha.Source.Youtube.search(query))[0];
+        console.log('track: ', await track);
+        track = await yasha.Source.resolve(`https://www.youtube.com/watch?v=${track.id ? track.id : track}`)
 
+        // console.log('track: ', track)
         // console.log('resolved: ', await yasha.Source.resolve('https://www.youtube.com/watch?v=' + await yasha.Source.Youtube.search(query)[0].id))
         try {
             if (!track) logger.debug('No track found')
@@ -282,7 +299,9 @@ function getMax(arr: any, prop: any) {
     for (var i = 0; i < arr.length; i++)
         if (arr[i].audio && !arr[i].video && (max == null || parseInt(arr[i][prop]) > parseInt(max[prop]))) max = arr[i]
 
-    return arr.findIndex((o: any) => o.url === max.url)
+    let best = arr.findIndex((o: any) => o.url === max.url)
+    logger.debug('formatting better qualitty for audio: ', best)
+    return best
 }
 export function formatDuration(duration: number) {
     if (isNaN(duration) || typeof duration === 'undefined') return '00:00'
