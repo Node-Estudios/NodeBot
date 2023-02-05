@@ -29,10 +29,12 @@ export default class Ready extends BaseEvent {
             arr.push(command)
         })
         // console.log(JSON.stringify(arr))
-        const guild = client.guilds.cache.get('862635336165097483')
-        guild?.commands.set(arr)
+        if (process.env.TESTINGGUILD) {
+            const guild = client.guilds.cache.get(process.env.TESTINGGUILD)
+            guild?.commands.set(arr)
+        }
         // fetch('https://discord.com/api/v9/applications/834164602694139985/guilds/862635336165097483/commands', {
-        //     method: 'PUT',
+        //     method: 'PUT,
         //     headers: {
         //         'Content-Type': 'application/json',
         //         Authorization: `Bot ${process.env.DISCORD_TOKEN}`,
