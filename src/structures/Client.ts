@@ -1,6 +1,6 @@
 import { init } from '@sentry/node'
 import { ClusterClient as HybridClient, getInfo } from 'discord-hybrid-sharding'
-import { Client as ClientBase, ColorResolvable, GatewayIntentBits, Partials } from 'discord.js'
+import { Client as ClientBase, Collection, ColorResolvable, GatewayIntentBits, Message, Partials } from 'discord.js'
 import events from '../events/index.js'
 import '../handlers/commands.js'
 import { EventHandler } from '../handlers/events.js'
@@ -13,15 +13,17 @@ export default class Client extends ClientBase<true> {
     music = new MusicManager()
     officialServerURL: string
     services: { sentry: { loggedIn: boolean } }
+    snipes: Collection<string, Message<true>>
     constructor() {
         super({
-            partials: [/*Partials.Message,*/ Partials.Channel, Partials.Reaction],
-            intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers, GatewayIntentBits.GuildVoiceStates, GatewayIntentBits.GuildMessageReactions],
+            partials: [Partials.Channel, Partials.Reaction],
+            intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildVoiceStates, GatewayIntentBits.GuildMembers, GatewayIntentBits.GuildVoiceStates, GatewayIntentBits.GuildMessageReactions],
             allowedMentions: { parse: ['users', 'roles'], repliedUser: true },
             shards: getInfo().SHARD_LIST,
             shardCount: getInfo().TOTAL_SHARDS,
         })
 
+        this.snipes = new Collection();
         this.services = { sentry: { loggedIn: false } }
         this.officialServerURL = 'https://discord.gg/xhAWYggKKh'
         this.settings = {

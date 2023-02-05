@@ -72,8 +72,7 @@ export default class play extends Command {
                 interaction.member.voice.channel as VoiceChannel,
                 interaction.channel as TextChannel,
                 interaction.guild,
-                100,
-                interaction.user
+                100
             );
             await player.connect();
         }

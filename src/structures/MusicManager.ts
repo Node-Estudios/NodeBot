@@ -30,7 +30,7 @@ export default class MusicManager extends EventEmitter {
         // } else return
     }
 
-    async createNewPlayer(vc: VoiceChannel, textChannel: TextChannel, guild: Guild, volume: number, user: GuildMember) {
+    async createNewPlayer(vc: VoiceChannel, textChannel: TextChannel, guild: Guild, volume: number) {
         const player = new Player({
             musicManager: this,
             guild,

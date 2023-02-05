@@ -54,7 +54,7 @@ export interface interactionCommandExtend extends BaseEvent {
 type interactionExtend = Interaction<CacheType> & {
     language: any
 }
-export type interactionCommandExtended = CommandInteraction<CacheType> & {
+export type interactionCommandExtended = CommandInteraction & {
     language: any
 }
 export type interactionButtonExtend = ButtonInteraction<CacheType> & {
