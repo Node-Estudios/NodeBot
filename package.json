@@ -17,7 +17,7 @@
         "uppercaseLabel": true
     },
     "scripts": {
-        "start": "doppler run -- node --inspect build/index.js",
+        "start": "doppler run -- node build/index.js",
         "run": "node build/index.js",
         "build": "tsc && doppler run --",
         "dev": "concurrently \"tsc -w\" \"nodemon build/index.js\""

@@ -62,6 +62,7 @@ export type interactionButtonExtend = ButtonInteraction<CacheType> & {
 }
 export class interactionCreate extends BaseEvent {
     async run(client: Client, interaction2: interactionExtend): Promise<void> {
+        if (interaction2.member?.user.bot) return;
         performanceMeters.set('interaction_' + interaction2.id, new performanceMeter())
         performanceMeters.get('interaction_' + interaction2.id).start()
 
@@ -69,49 +70,49 @@ export class interactionCreate extends BaseEvent {
         logger.debug(`Interaction ${interaction2.id} created`)
         if (!client.user) return; // <-- return statement here
         //TODO: Change lang from any to string inside .then((lang: any) => {}))
-        this.getLang(interaction2).then(async () => {
-            const msg = new messageHelper(interaction2);
-            if (interaction2.isCommand()) {
-                let desc =
-                    interaction2.language.NODETHINKING[
-                    Math.floor(Math.random() * (Object.keys(interaction2.language.NODETHINKING).length + 1) + 1)
-                    ];
-                if (!desc) desc = interaction2.language.NODETHINKING[1];
+        // this.getLang(interaction2).then(async () => {
+        //     const msg = new messageHelper(interaction2);
+        //     if (interaction2.isCommand()) {
+        //         let desc =
+        //             interaction2.language.NODETHINKING[
+        //             Math.floor(Math.random() * (Object.keys(interaction2.language.NODETHINKING).length + 1) + 1)
+        //             ];
+        //         if (!desc) desc = interaction2.language.NODETHINKING[1];
 
-                const loadingEmbed = new EmbedBuilder().setColor(client.settings.color).setTitle(desc).setDescription('Estamos trabajando para tener lo antes posible tu respuesta')
+        //         const loadingEmbed = new EmbedBuilder().setColor(client.settings.color).setTitle(desc).setDescription('Estamos trabajando para tener lo antes posible tu respuesta')
 
-                interaction2
-                    .reply({
-                        embeds: [loadingEmbed],
-                    })
-                    .catch(e => {
-                        logger.error(e);
-                    });
-                let interaction = interaction2 as interactionCommandExtended
-                const cmd = commands.getCache().find((cmd2: any) => cmd2.name === interaction.commandName)
-                if (!interaction.guild && cmd?.only?.guilds) return; // <-- return statement here
-                if (interaction.guild && cmd?.only?.dm) return; // <-- return statement here
-                if (cmd) {
-                    // command found
-                    logger.info(`Comando ${cmd.name} ejecutado`)
+        //         interaction2
+        //             .reply({
+        //                 embeds: [loadingEmbed],
+        //             })
+        //             .catch(e => {
+        //                 logger.error(e);
+        //             });
+        //         let interaction = interaction2 as interactionCommandExtended
+        //         const cmd = commands.getCache().find((cmd2: any) => cmd2.name === interaction.commandName)
+        //         if (!interaction.guild && cmd?.only?.guilds) return; // <-- return statement here
+        //         if (interaction.guild && cmd?.only?.dm) return; // <-- return statement here
+        //         if (cmd) {
+        //             // command found
+        //             logger.info(`Comando ${cmd.name} ejecutado`)
 
-                    // TODO: Change this to a better way (remove any)
-                    const args: any[] = []
-                    for (let option of interaction.options.data) {
-                        if (option.type === ApplicationCommandOptionType.Subcommand) {
-                            option.name ? args.push(option.name) : null
-                            option.options?.forEach(s => {
-                                return s.value ? args.push(s.value) : null
-                            })
-                        } else if (option.value) args.push(option.value)
-                    }
-                } else {
-                    // return command not found
-                }
-            } else if (interaction2.isButton()) {
+        //             // TODO: Change this to a better way (remove any)
+        //             const args: any[] = []
+        //             for (let option of interaction.options.data) {
+        //                 if (option.type === ApplicationCommandOptionType.Subcommand) {
+        //                     option.name ? args.push(option.name) : null
+        //                     option.options?.forEach(s => {
+        //                         return s.value ? args.push(s.value) : null
+        //                     })
+        //                 } else if (option.value) args.push(option.value)
+        //             }
+        //         } else {
+        //             // return command not found
+        //         }
+        //     } else if (interaction2.isButton()) {
 
-            }
-        })
+        //     }
+        // })
         return await this.getLang(interaction2).then(async () => {
             const msg = new messageHelper(interaction2)
 
@@ -119,11 +120,27 @@ export class interactionCreate extends BaseEvent {
             // console.log(client.commands);
             // console.log(interaction.language)
             if (interaction2.isCommand()) {
+                let desc =
+                    interaction2.language.NODETHINKING[
+                    Math.floor(Math.random() * (Object.keys(interaction2.language.NODETHINKING).length + 1) + 1)
+                    ];
+                if (!desc) desc = interaction2.language.NODETHINKING[1];
+
+                const loadingEmbed = new EmbedBuilder().setColor(client.settings.color).setTitle(desc).setDescription(desc)
+
+                await interaction2
+                    .reply({
+                        embeds: [loadingEmbed],
+                    })
+                    .catch(e => {
+                        logger.error(e);
+                    });
+                //         let interaction = interaction2 as interactionCommandExtended
                 let interaction = interaction2 as interactionCommandExtended
                 const cmd = commands.getCache().find((cmd2: any) => cmd2.name === interaction.commandName)
                 if (!interaction.guild && cmd?.only?.guilds) return; // <-- return statement here
                 if (interaction.guild && cmd?.only?.dm) return; // <-- return statement here
-                let commandName = interaction.commandName
+                // let commandName = interaction.commandName
                 // console.log(language.NODETHINKING && language)
                 // let desc =
                 //     language.NODETHINKING[
