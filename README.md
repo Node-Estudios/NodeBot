@@ -1,9 +1,7 @@
-
- > **⚠ AVISO ⚠**  
+> **⚠ AVISO ⚠**  
 > No damos ningñun tipo de soporte para su uso comercial o personal, puedes visitar su antigua versión [aqui](https://github.com/lyricalstring/Node-Discord-Bot)
 
-
-<img width="150" height="150" align="left" style="float: left; margin: 0 10px 0 0;" alt="🤖 Node" src="https://i.goopics.net/52j27r.jpg">  
+<img width="150" height="150" align="left" style="float: left; margin: 0 10px 0 0;" alt="🤖 Node" src="https://i.goopics.net/52j27r.jpg">
 
 # Node
 
@@ -22,51 +20,55 @@ Node es un bot multifunción, multilenguaje, programado en [Discord.js](https://
 
 1. Token de Discord Developers **[Guía](https://discordjs.guide/preparations/setting-up-a-bot-application.html#creating-your-bot)**
 2. Java (para ejecutar Lavalink, el módulo de música)
-3. Node.js v16.0.0 o una más reciente.
+3. Node.js v18.12.0 o una más reciente.
 4. Servidor de Redis y MongoDB
+5. libsodium
+    - `apt install libsodium-dev` en Debian
+    - `yay -S libsodium-git` en Arch
+6. protoc-gen-js ( `npm i -g protoc-gen-js` )
+7. doppler ( `yay -S doppler-cli` )
 
 ## 🛠️ Características
 
 ### Bot completo
 
 Lista de funciones:
-* ✉️ Hemos rotado de prefijo a [Slash commands](https://discord.com/developers/docs/interactions/application-commands)
-* 🇪🇸 Multilenguaje (Español e Inglés)
-* ⚙️ Configuración única en cada seridor, brinda la máxima experiencia a tus usuarios
-* 😀 Comandos únicos en embeds
-* 🎵 Lleva la música al siguiente nivel en tu servidor, da igual que tan grande sea.
 
-
+-   ✉️ Hemos rotado de prefijo a [Slash commands](https://discord.com/developers/docs/interactions/application-commands)
+-   🇪🇸 Multilenguaje (Español e Inglés)
+-   ⚙️ Configuración única en cada seridor, brinda la máxima experiencia a tus usuarios
+-   😀 Comandos únicos en embeds
+-   🎵 Lleva la música al siguiente nivel en tu servidor, da igual que tan grande sea.
 
 ### Categorías de comandos
 
-Node tiene más de 100 comandos repartidos en  **7 categorías**:
+Node tiene más de 100 comandos repartidos en **7 categorías**:
 
-*   👩‍💼 **Administración**
-*   🛡 **Moderación**
-*   🎵 **Música**
-*   😂 **Diversión**
-*   🚩 **Información y Utilidades**
-*   🫂 **Interacción**
-*   💻 **Desarrollo** (Comandos que estaban en desarrollo, sin acabar)
+-   👩‍💼 **Administración**
+-   🛡 **Moderación**
+-   🎵 **Música**
+-   😂 **Diversión**
+-   🚩 **Información y Utilidades**
+-   🫂 **Interacción**
+-   💻 **Desarrollo** (Comandos que estaban en desarrollo, sin acabar)
 
 ## 📎 Links
 
-*   [Discord](https://discord.gg/xhAWYggKKh)
-*   [Github](https://github.com/AmadeusGray/NodeBot)
+-   [Discord](https://discord.gg/xhAWYggKKh)
+-   [Github](https://github.com/AmadeusGray/NodeBot)
 
 ## 🤝 Contribuciones
 
-Antes de **reportar un error**, por favor asegúrate de que no ha sido reportado/sugerido anteriormente.   
+Antes de **reportar un error**, por favor asegúrate de que no ha sido reportado/sugerido anteriormente.  
 Si tienes cualquier duda, pregúntanosla en el [servidor de Discord](https://discord.gg/xhAWYggKKh) en vez de crear un reporte.
 Si quieres contribuir, siéntete libre de bifurcar el repositorio y solicitar una pull request.
 
 ## 📝 Créditos
 
-* [@lyricalstring](https://github.com/lyricalstring) Por ser mi mano derecha en el proyecto, gran compañero y mejor persona.
-* [@soyultro](https://github.com/SoyUltro) Por la ayuda creando comandos y el multilenguaje.
-* [@didacus12](https://github.com/Didacus12) Por tu ayuda en el desarrollo del bot.
-* [@usarral](https://github.com/usarral) Por tus aportes en Node.
+-   [@lyricalstring](https://github.com/lyricalstring) Por ser mi mano derecha en el proyecto, gran compañero y mejor persona.
+-   [@soyultro](https://github.com/SoyUltro) Por la ayuda creando comandos y el multilenguaje.
+-   [@didacus12](https://github.com/Didacus12) Por tu ayuda en el desarrollo del bot.
+-   [@usarral](https://github.com/usarral) Por tus aportes en Node.
 
 ## 📜 Licencia
 
