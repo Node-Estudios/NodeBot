@@ -1,18 +1,15 @@
-import { Guild, GuildMember, Message, TextChannel, VoiceChannel } from 'discord.js';
-// TODO: When the types are resolved, change this to  { TrackPlayer, VoiceConnection } from 'yasha'
-import yasha from 'yasha';
-import Innertube2 from 'youtubei.js';
-import logger from '../utils/logger.js';
-import MusicManager from './MusicManager.js';
-import Queue from './Queue.js';
-import { spamIntervalDB } from './spamInterval.js';
+import { Guild, GuildMember, Message, TextChannel, VoiceChannel } from 'discord.js'
+import { TrackPlayer, VoiceConnection } from 'yasha'
+import Innertube2 from 'youtubei.js'
+import logger from '../utils/logger.js'
+import MusicManager from './MusicManager.js'
+import Queue from './Queue.js'
+import { spamIntervalDB } from './spamInterval.js'
 const { Innertube } = Innertube2 as any
 let spamIntervald = new spamIntervalDB()
-type UserExtended = GuildMember & {
+type UserExtended = GuildMember & {}
 
-}
-
-export default class Player extends yasha.TrackPlayer {
+export default class Player extends TrackPlayer {
     trackRepeat: boolean
     queueRepeat: boolean
     stayInVoice: boolean
@@ -29,13 +26,13 @@ export default class Player extends yasha.TrackPlayer {
     guild: Guild
     leaveTimeout?: NodeJS.Timeout
     bitrate?: number
-    // TODO: remove this when the types are resolved
-    //yasha
-    player: any
     subscription: any
     connection: any
     stayInVc: any
     previouslyPaused: any
+    pausedUser: any
+    resumedUser: any
+    youtubei: any
     constructor(options: any) {
         super({
             external_packet_send: true,
@@ -67,7 +64,7 @@ export default class Player extends yasha.TrackPlayer {
         this.leaveTimeout = undefined
     }
     async connect() {
-        this.connection = await yasha.VoiceConnection.connect(this.voiceChannel, {
+        this.connection = await VoiceConnection.connect(this.voiceChannel, {
             selfDeaf: true,
         })
         this.subscription = this.connection.subscribe(this)
@@ -79,7 +76,7 @@ export default class Player extends yasha.TrackPlayer {
         if (this.connection) this.connection.destroy()
     }
 
-    async play(track?: any) {
+    override async play(track?: any) {
         //TODO: Check if this code works
         if (!track) super.play(this.queue.current)
         else super.play(track)
@@ -87,13 +84,8 @@ export default class Player extends yasha.TrackPlayer {
         this.leaveTimeout = undefined
         this.start()
     }
-    stop() {
-        // logger.debug('stopping player')
-        super.stop()
-        // this.manager.trackEnd(this, true)
-    }
 
-    async destroy() {
+    override async destroy() {
         try {
             if (this.connection) this.disconnect()
             if (this.player) super.destroy()
@@ -102,44 +94,33 @@ export default class Player extends yasha.TrackPlayer {
         } catch (e) {
             return logger.error(e)
         }
-
     }
 
     skip() {
         this.manager.trackEnd(this, false)
     }
 
-    get(key: any) {
-        return this[key]
+    get(key: any): any {
+        // @ts-ignore
+        return this[key] as any
     }
 
     set(key: any, value: any) {
+        // @ts-ignore
         this[key] = value
     }
-    setEqualizer(equalizer: any) {
+    override setEqualizer(equalizer: any) {
         super.setEqualizer(equalizer)
     }
 
-    setVolume(volume: any) {
+    override setVolume(volume: any) {
         if (volume > 100000) volume = 100000
         super.setVolume(volume / 100)
     }
 
-    setBitrate(bitrate: number) {
-        super.setBitrate(bitrate)
-    }
-
-    setRate(rate: any) {
-        super.setRate(rate)
-    }
-
-    getTime() {
+    override getTime() {
         if (!this.player) return null
         return super.getTime()
-    }
-
-    getDuration() {
-        return super.getDuration()
     }
 
     setTrackRepeat(repeat: boolean) {
@@ -171,7 +152,7 @@ export default class Player extends yasha.TrackPlayer {
         return this
     }
 
-    seek(time: number) {
+    override seek(time: number) {
         if (!this.queue.current) return
 
         //set timer in the player too

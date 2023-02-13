@@ -1,19 +1,28 @@
-import { ButtonBuilder, ButtonStyle, Collection, Guild as DiscordGuild, Guild, GuildMember, ActionRowBuilder as MessageActionRow, ButtonBuilder as MessageButton, EmbedBuilder as MessageEmbed, TextChannel, VoiceChannel } from 'discord.js';
-import EventEmitter from 'events';
-// TODO: When types are finished, change the yasha import to { Source, VoiceConnection } from 'yasha'
-import yasha from 'yasha';
-import client from '../bot.js';
-import languageCache from '../cache/idioms.js';
-import retrieveUserLang from '../utils/db/retrieveUserLang.js';
-import formatTime from '../utils/formatTime.js';
-import logger from '../utils/logger.js';
-import Player from './Player.js';
+import {
+    ButtonBuilder,
+    ButtonStyle,
+    Collection,
+    Guild as DiscordGuild,
+    Guild,
+    GuildMember,
+    ActionRowBuilder as MessageActionRow,
+    ButtonBuilder as MessageButton,
+    EmbedBuilder as MessageEmbed,
+    TextChannel,
+    VoiceChannel,
+} from 'discord.js'
+import EventEmitter from 'events'
+import { VoiceConnection, Source } from 'yasha'
+import client from '../bot.js'
+import languageCache from '../cache/idioms.js'
+import retrieveUserLang from '../utils/db/retrieveUserLang.js'
+import formatTime from '../utils/formatTime.js'
+import logger from '../utils/logger.js'
+import Player from './Player.js'
 // ? use client for lang
-import { spamIntervalDB } from './spamInterval.js';
+import { spamIntervalDB } from './spamInterval.js'
 let spamIntervald = new spamIntervalDB()
-type UserExtended = GuildMember & {
-
-}
+type UserExtended = GuildMember & {}
 
 export default class MusicManager extends EventEmitter {
     players = new Collection<string, Player>()
@@ -38,7 +47,7 @@ export default class MusicManager extends EventEmitter {
             textChannel,
             volume,
             language: await retrieveUserLang(guild),
-        });
+        })
         // Imprime un mensaje de depuración
         // logger.debug('Sign in successful: ', credentials);
         // Crea un objeto "EmbedBuilder" y establece la descripción del mensaje
@@ -51,7 +60,7 @@ export default class MusicManager extends EventEmitter {
         //     console.log(`Packet: ${frame_size} samples`);
         // });
 
-        player.on(yasha.VoiceConnection.Status.Destroyed, () => player.destroy())
+        player.on(VoiceConnection.Status.Destroyed, () => player.destroy())
 
         player.on('error', (err: any) => {
             logger.error(err)
@@ -61,7 +70,6 @@ export default class MusicManager extends EventEmitter {
         return player
     }
     async trackStart(player: Player) {
-
         // todo: Check if the song limit is the saçme as stablished for the admins
         // if(player.queue.current?.duration > player.guild.)
         player.playing = true
@@ -99,7 +107,8 @@ export default class MusicManager extends EventEmitter {
                 embed
                     .setThumbnail(`https://img.youtube.com/vi/${song.id}/maxresdefault.jpg`)
                     .setDescription(
-                        `${language.PLAYING} **[${song.title}](https://music.youtube.com/watch?v=${song.id
+                        `${language.PLAYING} **[${song.title}](https://music.youtube.com/watch?v=${
+                            song.id
                         })** [${formatDuration(song.duration)}] • <@${song.requester.id}>`,
                     )
                 // embed.addField(
@@ -145,7 +154,8 @@ export default class MusicManager extends EventEmitter {
                 embed
                     .setThumbnail(`https://img.youtube.com/vi/${song.id}/maxresdefault.jpg`)
                     .setDescription(
-                        `${language.PLAYING} **[${song.title}](https://music.youtube.com/watch?v=${song.id
+                        `${language.PLAYING} **[${song.title}](https://music.youtube.com/watch?v=${
+                            song.id
                         })** [${formatDuration(song.duration)}] • <@${song.requester.id}>`,
                     )
                 // embed.addField(
@@ -212,9 +222,11 @@ export default class MusicManager extends EventEmitter {
             .setColor(client.settings.color)
             .setDescription(
                 `Ha terminado ` +
-                `**[${player.queue.current?.title}](https://music.youtube.com/watch?v=${player.queue.current?.id
-                })** [${formatDuration(player.queue.current?.duration ?? 0)}] • <@${player.queue.current?.requester.id
-                }>`,
+                    `**[${player.queue.current?.title}](https://music.youtube.com/watch?v=${
+                        player.queue.current?.id
+                    })** [${formatDuration(player.queue.current?.duration ?? 0)}] • <@${
+                        player.queue.current?.requester.id
+                    }>`,
             )
             .setThumbnail(`https://img.youtube.com/vi/${player.queue.current!.id}/maxresdefault.jpg`)
         player.queue.current = null
@@ -234,14 +246,13 @@ export default class MusicManager extends EventEmitter {
     }
     shuffleArray(array: any[]) {
         for (let i = array.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [array[i], array[j]] = [array[j], array[i]];
+            const j = Math.floor(Math.random() * (i + 1))
+            ;[array[i], array[j]] = [array[j], array[i]]
         }
-        return array;
+        return array
     }
 
     async search(query: any, requester: any, source: 'Spotify' | 'Youtube' | 'Soundcloud') {
-        // logger.debug('debugging search', await yasha.Source.resolve(await yasha.Source.Youtube.search(query)[0]))
         let track
         // console.log('requester: ', requester.youtubei)
         if (requester.youtubei) {
@@ -249,13 +260,15 @@ export default class MusicManager extends EventEmitter {
                 let rawData = await (await requester.youtubei.music.search(query, { limit: 1 })).sections[0]
                 // console.log('logged in ', rawData)
                 track = rawData.contents[0].id
-            } else { track = await (await yasha.Source.Youtube.search(query))[0]; console.log('not logged in') }
-        } else track = await (await yasha.Source.Youtube.search(query))[0];
-        console.log('track: ', await track);
-        track = await yasha.Source.resolve(`https://www.youtube.com/watch?v=${track.id ? track.id : track}`)
+            } else {
+                track = await (await Source.Youtube.search(query))[0]
+                console.log('not logged in')
+            }
+        } else track = await (await Source.Youtube.search(query))[0]
+        console.log('track: ', await track)
+        track = await Source.resolve(`https://www.youtube.com/watch?v=${track.id ? track.id : track}`)
 
         // console.log('track: ', track)
-        // console.log('resolved: ', await yasha.Source.resolve('https://www.youtube.com/watch?v=' + await yasha.Source.Youtube.search(query)[0].id))
         try {
             if (!track) logger.debug('No track found')
             else {

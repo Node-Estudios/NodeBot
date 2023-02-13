@@ -8,8 +8,8 @@ import logger from '../utils/logger.js'
 import MusicManager from './MusicManager.js'
 export default class Client extends ClientBase<true> {
     devs: string[]
-    cluster: HybridClient;
-    settings: { color: ColorResolvable, mode: ('production' | 'development' | string | undefined) }
+    cluster: HybridClient<Client>
+    settings: { color: ColorResolvable; mode: 'production' | 'development' | string | undefined }
     music = new MusicManager()
     officialServerURL: string
     services: { sentry: { loggedIn: boolean } }
@@ -17,20 +17,28 @@ export default class Client extends ClientBase<true> {
     constructor() {
         super({
             partials: [Partials.Channel, Partials.Reaction],
-            intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildVoiceStates, GatewayIntentBits.GuildMembers, GatewayIntentBits.GuildVoiceStates, GatewayIntentBits.GuildMessageReactions],
+            intents: [
+                GatewayIntentBits.Guilds,
+                GatewayIntentBits.GuildVoiceStates,
+                GatewayIntentBits.GuildMembers,
+                GatewayIntentBits.GuildVoiceStates,
+                GatewayIntentBits.GuildMessageReactions,
+            ],
             allowedMentions: { parse: ['users', 'roles'], repliedUser: true },
             shards: getInfo().SHARD_LIST,
             shardCount: getInfo().TOTAL_SHARDS,
         })
 
-        this.snipes = new Collection();
+        this.snipes = new Collection()
         this.services = { sentry: { loggedIn: false } }
         this.officialServerURL = 'https://discord.gg/xhAWYggKKh'
         this.settings = {
             color: 'Green',
             mode: process.env.NODE_ENV,
         }
-        this.cluster = new HybridClient(this);
+        // TODO check type
+        // @ts-ignore
+        this.cluster = new HybridClient(this)
         // console.log(this.cluster)
         if (process.env.SENTRY_DSN && process.env.NODE_ENV == 'production') {
             init({
@@ -48,8 +56,8 @@ export default class Client extends ClientBase<true> {
     async init() {
         try {
             // * Load Events (./handlers/events.js) ==> ./events/*/* ==> ./cache/events.ts (Collection)
-            const eventLoader = new EventHandler(this);
-            eventLoader.load(events);
+            const eventLoader = new EventHandler(this)
+            eventLoader.load(events)
             return super.login(process.env.TOKEN).then(() => logger.startUp(`${this.user!.username} logged in`))
         } catch (e) {
             if ((e as any).code == 'TOKEN_INVALID') logger.error('Invalid token')
