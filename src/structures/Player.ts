@@ -1,5 +1,5 @@
 import { Guild, GuildMember, Message, TextChannel, VoiceChannel } from 'discord.js'
-import { TrackPlayer, VoiceConnection } from 'yasha'
+import yasha from 'yasha'
 import Innertube2 from 'youtubei.js'
 import logger from '../utils/logger.js'
 import MusicManager from './MusicManager.js'
@@ -9,7 +9,7 @@ const { Innertube } = Innertube2 as any
 let spamIntervald = new spamIntervalDB()
 type UserExtended = GuildMember & {}
 
-export default class Player extends TrackPlayer {
+export default class Player extends yasha.TrackPlayer {
     trackRepeat: boolean
     queueRepeat: boolean
     stayInVoice: boolean
@@ -64,7 +64,7 @@ export default class Player extends TrackPlayer {
         this.leaveTimeout = undefined
     }
     async connect() {
-        this.connection = await VoiceConnection.connect(this.voiceChannel, {
+        this.connection = await yasha.VoiceConnection.connect(this.voiceChannel, {
             selfDeaf: true,
         })
         this.subscription = this.connection.subscribe(this)

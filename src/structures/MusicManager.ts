@@ -12,7 +12,7 @@ import {
     VoiceChannel,
 } from 'discord.js'
 import EventEmitter from 'events'
-import { VoiceConnection, Source } from 'yasha'
+import yasha from 'yasha'
 import client from '../bot.js'
 import languageCache from '../cache/idioms.js'
 import retrieveUserLang from '../utils/db/retrieveUserLang.js'
@@ -60,7 +60,7 @@ export default class MusicManager extends EventEmitter {
         //     console.log(`Packet: ${frame_size} samples`);
         // });
 
-        player.on(VoiceConnection.Status.Destroyed, () => player.destroy())
+        player.on(yasha.VoiceConnection.Status.Destroyed, () => player.destroy())
 
         player.on('error', (err: any) => {
             logger.error(err)
@@ -261,12 +261,12 @@ export default class MusicManager extends EventEmitter {
                 // console.log('logged in ', rawData)
                 track = rawData.contents[0].id
             } else {
-                track = await (await Source.Youtube.search(query))[0]
+                track = await (await yasha.Source.Youtube.search(query))[0]
                 console.log('not logged in')
             }
-        } else track = await (await Source.Youtube.search(query))[0]
+        } else track = await (await yasha.Source.Youtube.search(query))[0]
         console.log('track: ', await track)
-        track = await Source.resolve(`https://www.youtube.com/watch?v=${track.id ? track.id : track}`)
+        track = await yasha.Source.resolve(`https://www.youtube.com/watch?v=${track.id ? track.id : track}`)
 
         // console.log('track: ', track)
         try {
