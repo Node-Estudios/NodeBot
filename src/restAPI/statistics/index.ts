@@ -6,12 +6,18 @@ import { Router as router } from 'express'
 export class statistics {
     manager: NodeManager
     // app: Express.Application
-    result: any[]
-    router = router()
+    result: any[] = []
+    #router = router()
+
     constructor(manager: NodeManager) {
         this.manager = manager
-        this.result = []
+        this.#load()
     }
+
+    get router() {
+        return this.#router
+    }
+
     async getData(manager: NodeManager, result: any[]): Promise<any[] | undefined> {
         /*
         & My function for get data from clusters, it only took me 4 hours ._.
@@ -181,7 +187,7 @@ export class statistics {
             return result
         }
     }
-    async load() {
+    async #load() {
         //ejecutar funcion de estadisticas
         let getData = await this.getData(this.manager, this.result)
         if (getData) this.result = getData
