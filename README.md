@@ -24,9 +24,11 @@ Node es un bot multifunción, multilenguaje, programado en [Discord.js](https://
 4. Servidor de Redis y MongoDB
 5. libsodium
     - `apt install libsodium-dev` en Debian
-    - `yay -S libsodium-git` en Arch
-6. protoc-gen-js ( `npm i -g protoc-gen-js` )
-7. doppler ( `yay -S doppler-cli` )
+    - `yay -Sy libsodium-git` en Arch
+6. protoc-gen-js ( `npm i -g protoc-gen-js` en Arch)
+7. doppler ( `yay -Sy doppler-cli` en Arch)
+8. cmake ( `yay -Sy cmake` en Arch)
+9. protobuf ( `yay -Sy protobuf` en Arch)
 
 ## 🛠️ Características
 
