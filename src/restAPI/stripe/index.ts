@@ -15,30 +15,45 @@ export class stripe {
     }
     #load() {
         this.router.use(express.json())
-        this.router.get('/webhook', (req, res) => {
-            res.send('Hello World!')
+        this.router.post('/pay', async (req, res) => {
+            const session = await stripeAcces.checkout.sessions.create({
+                success_url: `/success?session_id={CHECKOUT_SESSION_ID}`, // TODO: front payment success
+                cancel_url: '/cancel', // front payment cancel
+                payment_method_types: ['card'],
+                mode: 'subscription',
+                line_items: [
+                    {
+                        price_data: {
+                            currency: 'usd',
+                            product_data: {
+                                name: 'NodeBot Premium',
+                            },
+                            unit_amount: 5_000, // 5 usd
+                        },
+                    },
+                ],
+            })
+
+            return res.json({ url: session.url })
         })
+
         this.router.post('/webhook', express.raw({ type: 'application/json' }), (request, response): any => {
-            let event = request.body
-            // Only verify the event if you have an endpoint secret defined.
-            // Otherwise use the basic event deserialized with JSON.parse
-            if (endpointSecret) {
-                // Get the signature sent by Stripe
-                console.log(request.headers)
-                const signature = request.headers['stripe-signature']
-                // console.log(signature)
-                try {
-                    event = stripeAcces.webhooks.constructEvent(request.body, signature as any, endpointSecret)
-                } catch (err: any) {
-                    console.log(`⚠️  Webhook signature verification failed.`, err.message)
-                    return response.sendStatus(400)
-                }
+            let event: Stripe.Event
+            try {
+                event = stripeAcces.webhooks.constructEvent(
+                    request.body,
+                    request.headers['stripe-signature'] ?? '',
+                    endpointSecret,
+                )
+            } catch (err: any) {
+                console.log(`⚠️  Webhook signature verification failed.`, err.message)
+                return response.sendStatus(400)
             }
 
             // Handle the event
             switch (event.type) {
                 case 'payment_intent.succeeded':
-                    const paymentIntent = event.data.object
+                    const paymentIntent = event.data.object as any
                     console.log(`PaymentIntent for ${paymentIntent.amount} was successful!`)
                     // Then define and call a method to handle the successful payment intent.
                     // handlePaymentIntentSucceeded(paymentIntent);
