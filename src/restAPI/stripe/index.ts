@@ -1,7 +1,8 @@
-import express, { Router as router } from 'express'
+import express, { Router as router, Request } from 'express'
 import NodeManager from '../../structures/NodeManager.js'
 
 import { Stripe } from 'stripe'
+
 const stripeAcces = new Stripe(process.env.STRIPE!, { apiVersion: '2022-11-15', typescript: true })
 const endpointSecret = 'whsec_49455f433220997b19b1470c119bfa10304a72f4638e02eca17d06636bea7ab3'
 // export default router
@@ -15,26 +16,25 @@ export class stripe {
     }
     #load() {
         this.router.use(express.json())
-        this.router.post('/pay', async (req, res) => {
+        this.router.post('/pay', async (req: Request<{}, {}, payBody>, res) => {
+            const product = await stripeAcces.products.retrieve(req.body.product_id)
+            const price = await stripeAcces.prices.retrieve(product.default_price as string)
             const session = await stripeAcces.checkout.sessions.create({
-                success_url: `/success?session_id={CHECKOUT_SESSION_ID}`, // TODO: front payment success
-                cancel_url: '/cancel', // front payment cancel
-                payment_method_types: ['card'],
-                mode: 'subscription',
                 line_items: [
                     {
-                        price_data: {
-                            currency: 'usd',
-                            product_data: {
-                                name: 'NodeBot Premium',
-                            },
-                            unit_amount: 5_000, // 5 usd
-                        },
+                        price: price.id,
+                        quantity: 1,
                     },
                 ],
+                mode: price.type === 'recurring' ? 'subscription' : 'payment',
+                success_url: req.body.success_url,
+                cancel_url: req.body.cancel_url,
+                metadata: {
+                    user_id: req.body.user_id,
+                },
             })
 
-            return res.json({ url: session.url })
+            res.status(303).redirect(session.url ?? '')
         })
 
         this.router.post('/webhook', express.raw({ type: 'application/json' }), (request, response): any => {
@@ -73,4 +73,13 @@ export class stripe {
         })
         return this.router
     }
+}
+
+// '/pay' body
+type payBody = {
+    success_url: string // like a 'https://myweb.com/pay_sucess'
+    cancel_url?: string // like a 'https://myweb.com/cancel'
+    payment_method_types?: Stripe.Checkout.SessionCreateParams.PaymentMethodType[]
+    product_id: string
+    user_id: string
 }
