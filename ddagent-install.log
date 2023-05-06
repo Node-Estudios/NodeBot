@@ -1,7 +1,0 @@
-[34m
-* Datadog Agent 7 install script v1.13.0
-[0m
-[31mYour OS or distribution are not supported by this install script.
-Please follow the instructions on the Agent setup page:
-
-    https://app.datadoghq.com/account/settings#agent[0m

@@ -45,7 +45,7 @@
         "simplest-discord-webhook": "1.2.0",
         "statcord.js": "3.4.3",
         "stripe": "12.4.0",
-        "yasha": "github:eliyya/yasha",
+        "yasha": "github:eliyya/yasha#esm",
         "youtubei.js": "2.9.0"
     },
     "devDependencies": {
