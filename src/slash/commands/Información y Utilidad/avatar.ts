@@ -33,7 +33,7 @@ export default class avatar extends Command {
             ],
         })
     }
-    async run(interaction: interactionCommandExtend, args: any[]) {
+    override async run(interaction: interactionCommandExtend) {
         const language = interaction.language
         const client = interaction.client as Client
         const member = interaction.options.getUser('user') ?? interaction.user

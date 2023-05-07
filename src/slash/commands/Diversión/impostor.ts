@@ -27,7 +27,7 @@ export default class impostor extends Command {
             ],
         })
     }
-    async run(interaction: interactionCommandExtend, args: any[]) {
+    override async run(interaction: interactionCommandExtend) {
         const language = interaction.language
         const client = interaction.client as Client
         interaction.reply(`. 　　　。　　　　•　 　ﾟ　　。 　　.
@@ -36,8 +36,9 @@ export default class impostor extends Command {
 
         .　　 。　　　　　 ඞ 。 . 　　 • 　　　　•
 
-        　　ﾟ　　 ${(interaction.options.getUser('user') ?? interaction.user).tag} ${Math.random() < 0.7 ? language.IMPOSTOR[1] : language.IMPOSTOR[2]
-            } 　 。　.
+        　　ﾟ　　 ${(interaction.options.getUser('user') ?? interaction.user).tag} ${
+            Math.random() < 0.7 ? language.IMPOSTOR[1] : language.IMPOSTOR[2]
+        } 　 。　.
 
         　　'　　　  　 　　。     ,         ﾟ             ,   ﾟ      .       ,        .             ,
 

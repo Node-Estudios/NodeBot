@@ -42,8 +42,8 @@ export default class reboot extends Command {
             ],
         })
     }
-    async run(interaction: interactionCommandExtend) {
-        //TODO: Change reboot system 
+    override async run(interaction: interactionCommandExtend) {
+        //TODO: Change reboot system
         const client = interaction.client as Client
         const choice = interaction.options.getString('choice', true)
         if (choice === 'all') {

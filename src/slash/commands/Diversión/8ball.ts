@@ -31,7 +31,7 @@ export default class ball extends Command {
             ],
         })
     }
-    async run(interaction: interactionCommandExtend, args: any[]) {
+    override async run(interaction: interactionCommandExtend) {
         const language = interaction.language
         const client = interaction.client as Client
         let respuesta = language.QUESTIONBALL[4]

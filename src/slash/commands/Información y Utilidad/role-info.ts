@@ -15,7 +15,7 @@ export default class roleinfo extends Command {
                 'es-ES': 'Obtener información sobre un rol.',
             },
             cooldown: 5,
-            only: { guilds: true },
+            dm_permission: false,
             options: [
                 {
                     type: 8,
@@ -32,7 +32,7 @@ export default class roleinfo extends Command {
             ],
         })
     }
-    async run(interaction: interactionCommandExtend, args: any[]) {
+    override async run(interaction: interactionCommandExtend) {
         const language = interaction.language
         const client = interaction.client as Client
         let role = interaction.options.getRole('role', true)
@@ -74,16 +74,12 @@ export default class roleinfo extends Command {
                 },
                 {
                     name: `<:share:893553167894216744> ${language.ROLEINFO[7]}: `,
-                    value: role.hoist
-                        ? '```' + language.ROLEINFO[10] + '```'
-                        : '```' + language.ROLEINFO[11] + '```',
+                    value: role.hoist ? '```' + language.ROLEINFO[10] + '```' : '```' + language.ROLEINFO[11] + '```',
                     inline: true,
                 },
                 {
                     name: `<:cmd:894171593431994388> ${language.ROLEINFO[8]}: `,
-                    value: role.managed
-                        ? '```' + language.ROLEINFO[10] + '```'
-                        : '```' + language.ROLEINFO[11] + '```',
+                    value: role.managed ? '```' + language.ROLEINFO[10] + '```' : '```' + language.ROLEINFO[11] + '```',
                     inline: true,
                 },
             )

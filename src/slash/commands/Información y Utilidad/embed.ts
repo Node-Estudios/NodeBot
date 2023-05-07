@@ -1,4 +1,10 @@
-import { ColorResolvable, EmbedBuilder as MessageEmbed, PermissionsBitField, TextChannel } from 'discord.js'
+import {
+    ChannelType,
+    ColorResolvable,
+    EmbedBuilder as MessageEmbed,
+    PermissionsBitField,
+    TextChannel,
+} from 'discord.js'
 import { interactionCommandExtend } from '../../../events/client/interactionCreate.js'
 import langFile from '../../../lang/index.json' assert { type: 'json' }
 import Client from '../../../structures/Client.js'
@@ -17,7 +23,7 @@ export default class embed extends Command {
                 {
                     type: 7,
                     name: 'channel',
-                    channel_types: ['0'],
+                    channel_types: [ChannelType.GuildText],
                     name_localizations: {
                         'es-ES': 'canal',
                     },
@@ -67,10 +73,11 @@ export default class embed extends Command {
             ],
         })
     }
-    async run(interaction: interactionCommandExtend, args: any[]) {
-
+    override async run(interaction: interactionCommandExtend) {
         //TODO: Add more colors && make it work with hex colors && Add language support
-        const language = await import('../lang/' + langFile.find(l => l.nombre == interaction.language)?.archivo, { assert: { type: "json" } })
+        const language = await import('../lang/' + langFile.find(l => l.nombre == interaction.language)?.archivo, {
+            assert: { type: 'json' },
+        })
         const client = interaction.client as Client
         const canal = interaction.options.getChannel('channel', true) as TextChannel,
             descripcion = interaction.options.getString('description', true),
@@ -78,7 +85,15 @@ export default class embed extends Command {
             titulo = interaction.options.getString('title', true)
         var embed = new MessageEmbed().setDescription(`${descripcion}`).setColor(color).setTitle(titulo)
 
-        if (!canal.permissionsFor(client.user.id)?.has([PermissionsBitField.Flags.SendMessages, PermissionsBitField.Flags.EmbedLinks, PermissionsBitField.Flags.ViewChannel]))
+        if (
+            !canal
+                .permissionsFor(client.user.id)
+                ?.has([
+                    PermissionsBitField.Flags.SendMessages,
+                    PermissionsBitField.Flags.EmbedLinks,
+                    PermissionsBitField.Flags.ViewChannel,
+                ])
+        )
             return interaction.reply({
                 content:
                     'No tengo los permisos `SEND_MESSAGES`, `EMBED_LINKS` ni `VIEW_CHANNEL`, que son necesarios para enviar el embed.',

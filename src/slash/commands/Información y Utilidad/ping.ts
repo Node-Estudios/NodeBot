@@ -12,7 +12,8 @@ export default class ping extends Command {
             cooldown: 5,
         })
     }
-    async run(client: Client, interaction: interactionCommandExtended, args: any[]) {
+    override async run(interaction: interactionCommandExtended) {
+        const client = interaction.client as Client
         const ping = Math.abs((interaction.createdAt.getTime() - Date.now()) / 1000)
         return client.cluster
             .broadcastEval(
@@ -23,23 +24,28 @@ export default class ping extends Command {
             )
             .then(async (results: any) => {
                 let performance = await performanceMeters.get('interaction_' + interaction.id)
-                if (performance) { performance = await performance.stop(); performanceMeters.delete('interaction_' + interaction.id) }
+                if (performance) {
+                    performance = await performance.stop()
+                    performanceMeters.delete('interaction_' + interaction.id)
+                }
                 //Todo: process.env.mode === 'development'
-                return interaction.reply({
-                    embeds: [
-                        new MessageEmbed()
-                            .setColor('Green')
-                            .setFields(
-                                { name: `API`, value: `${results[0].ping}ms`, inline: true },
-                                { name: 'Internal Processing (database + processing)', value: performance + 'ms' },
-                                { name: 'Global Ping', value: `${ping}ms`, inline: true },
-                            )
-                            .setTitle('Ping')
-                            .setTimestamp(),
-                    ],
-                }).then(() => {
-                    logger.debug('ping execution finished')
-                })
+                return interaction
+                    .reply({
+                        embeds: [
+                            new MessageEmbed()
+                                .setColor('Green')
+                                .setFields(
+                                    { name: `API`, value: `${results[0].ping}ms`, inline: true },
+                                    { name: 'Internal Processing (database + processing)', value: performance + 'ms' },
+                                    { name: 'Global Ping', value: `${ping}ms`, inline: true },
+                                )
+                                .setTitle('Ping')
+                                .setTimestamp(),
+                        ],
+                    })
+                    .then(() => {
+                        logger.debug('ping execution finished')
+                    })
             })
     }
 }

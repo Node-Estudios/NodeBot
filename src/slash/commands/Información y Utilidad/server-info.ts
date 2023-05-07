@@ -18,7 +18,7 @@ export default class serverinfo extends Command {
         })
     }
 
-    async run(interaction: interactionCommandExtend) {
+    override async run(interaction: interactionCommandExtend) {
         const client = interaction.client as Client
         // try {
         // let region = {
@@ -59,7 +59,9 @@ export default class serverinfo extends Command {
         //   .sort((a, b) => b.position - a.position)
         //   .map((role) => role.toString())
         //   .slice(0, -1);
-        const role = interaction.guild.roles.cache.sort((a: { position: number }, b: { position: number }) => b.position - a.position).map((role: any) => role.toString())
+        const role = interaction.guild.roles.cache
+            .sort((a: { position: number }, b: { position: number }) => b.position - a.position)
+            .map((role: any) => role.toString())
         const boost = interaction.guild.premiumTier
         const emojis = interaction.guild.emojis.cache
         const boostcount = interaction.guild.premiumSubscriptionCount
@@ -92,9 +94,11 @@ export default class serverinfo extends Command {
                 },
                 {
                     name: `😀 ${interaction.language.SERVERINFO[12]} [${emojis.size}]`,
-                    value: `<:pepeblink:967941236029788160> ${interaction.language.SERVERINFO[13]}: ${emojis.filter((emoji: any) => !emoji.animated).size
-                        }\n<a:DJPeepo:969757766744944700> ${interaction.language.SERVERINFO[14]}: ${emojis.filter((emoji: any) => (emoji.animated ? true : false)).size
-                        }`,
+                    value: `<:pepeblink:967941236029788160> ${interaction.language.SERVERINFO[13]}: ${
+                        emojis.filter((emoji: any) => !emoji.animated).size
+                    }\n<a:DJPeepo:969757766744944700> ${interaction.language.SERVERINFO[14]}: ${
+                        emojis.filter((emoji: any) => (emoji.animated ? true : false)).size
+                    }`,
                     inline: true,
                 },
                 {

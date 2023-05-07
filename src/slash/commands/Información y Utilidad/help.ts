@@ -31,16 +31,14 @@ export default class help extends Command {
             ],
         })
     }
-    async run(interaction: interactionCommandExtend, args: any[]) {
+    override async run(interaction: interactionCommandExtend) {
         const language = interaction.language
         const client = interaction.client as Client
         return interaction.reply({
             embeds: [
                 new MessageEmbed()
                     .setColor(process.env.bot1Embed_Color as ColorResolvable)
-                    .setDescription(
-                        `<a:pin:893553168259121172> ${language.HELP[5]} \`Node\`, ${language.HELP[6]}`,
-                    )
+                    .setDescription(`<a:pin:893553168259121172> ${language.HELP[5]} \`Node\`, ${language.HELP[6]}`)
                     .addFields({
                         name: language.HELP[7],
                         value: `${language.HELP[8]} \`/${interaction.commandName}\`.`,

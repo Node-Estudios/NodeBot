@@ -11,10 +11,10 @@ import logger from '../../../utils/logger.js'
 
 function shuffleArray(array: any[]) {
     for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
+        const j = Math.floor(Math.random() * (i + 1))
+        ;[array[i], array[j]] = [array[j], array[i]]
     }
-    return array;
+    return array
 }
 
 type UserExtended = GuildMember & {
@@ -32,10 +32,10 @@ export default class play extends Command {
                 'es-ES': 'Reproduce la canción que desees con su nombre o un link de youtube/spotify',
             },
             cooldown: 5,
-            requierements: {
-                inVoiceChannel: true,
-                sameVoiceChannel: false,
-            },
+            // requierements: {
+            //     inVoiceChannel: true,
+            //     sameVoiceChannel: false,
+            // },
             options: [
                 {
                     type: 3,
@@ -54,97 +54,101 @@ export default class play extends Command {
                     name: 'amount',
                     description: 'Amount of songs to load. Only works if you dont put a song string',
                     name_localizations: {
-                        'es-ES': 'cantidad'
+                        'es-ES': 'cantidad',
                     },
                     description_localizations: {
-                        'es-ES': 'Cantidad de canciones a reproducir. Solo funciona si nos dejas elegir.'
+                        'es-ES': 'Cantidad de canciones a reproducir. Solo funciona si nos dejas elegir.',
                     },
-                    requiered: false
-                }
+                    required: false,
+                },
             ],
         })
     }
-    async run(client: Client, interaction: interactionCommandExtend) {
-        let player = client.music.players.get(interaction.guildId);
+    override async run(interaction: interactionCommandExtend) {
+        const client = interaction.client as Client
+        let player = client.music.players.get(interaction.guildId)
 
         if (!player) {
             player = await client.music.createNewPlayer(
                 interaction.member.voice.channel as VoiceChannel,
                 interaction.channel as TextChannel,
                 interaction.guild,
-                100
-            );
-            await player.connect();
+                100,
+            )
+            await player.connect()
         }
 
         if (player.voiceChannel.id !== interaction.member.voice.channel?.id) {
             return interaction.reply({
                 embeds: [
-                    new MessageEmbed()
-                        .setColor(15548997)
-                        .setFooter({
-                            text: interaction.language.PLAY[2],
-                            iconURL: client.user?.displayAvatarURL(),
-                        }),
+                    new MessageEmbed().setColor(15548997).setFooter({
+                        text: interaction.language.PLAY[2],
+                        iconURL: client.user?.displayAvatarURL(),
+                    }),
                 ],
-            });
+            })
         }
 
-        const source = "Youtube";
-        let search;
+        const source = 'Youtube'
+        let search
 
-        const song = interaction.options.getString("song", false);
+        const song = interaction.options.getString('song', false)
         if (!song) {
-            interaction.user = interaction.user as UserExtended;
+            interaction.user = interaction.user as UserExtended
             if (!interaction.user.youtubei) {
-                interaction.user.youtubei = await new Youtubei(interaction.user).createSession();
-                await UserModel.findOne({ id: interaction.user.id }).then(async (user) => {
+                interaction.user.youtubei = await new Youtubei(interaction.user).createSession()
+                await UserModel.findOne({ id: interaction.user.id }).then(async user => {
                     if (user) {
                         if (user.credentials) {
-                            await interaction.user.youtubei.session.signIn(user.credentials);
+                            await interaction.user.youtubei.session.signIn(user.credentials)
                         } else {
-                            interaction.user.youtubei.session.signIn();
+                            interaction.user.youtubei.session.signIn()
                         }
                     } else {
-                        interaction.user.youtubei.session.signIn();
+                        interaction.user.youtubei.session.signIn()
                     }
-                });
+                })
             }
 
-            let songs: any[] = [];
+            let songs: any[] = []
             try {
-                const songsData = await interaction.user.youtubei.music.getHomeFeed();
+                const songsData = await interaction.user.youtubei.music.getHomeFeed()
                 for (const section of songsData.sections) {
-                    songs = shuffleArray(songs.concat(section.contents.filter((song: { item_type: string }) => song.item_type === "song")))
-                    if (songs.length > 10) break;
+                    songs = shuffleArray(
+                        songs.concat(
+                            section.contents.filter((song: { item_type: string }) => song.item_type === 'song'),
+                        ),
+                    )
+                    if (songs.length > 10) break
                 }
             } catch (e) {
-                logger.debug("error while searching");
-                UserModel.findOneAndUpdate({ id: interaction.user.id }, { credentials: null });
-                await interaction.user.youtubei.session.signOut();
-                const songsData = await interaction.user.youtubei.music.getHomeFeed();
+                logger.debug('error while searching')
+                UserModel.findOneAndUpdate({ id: interaction.user.id }, { credentials: null })
+                await interaction.user.youtubei.session.signOut()
+                const songsData = await interaction.user.youtubei.music.getHomeFeed()
                 for (const section of songsData.sections) {
-                    songs = songs.concat(section.contents.filter((song: { item_type: string }) => song.item_type === "song"));
-                    if (songs.length > 10) break;
+                    songs = songs.concat(
+                        section.contents.filter((song: { item_type: string }) => song.item_type === 'song'),
+                    )
+                    if (songs.length > 10) break
                 }
             }
 
-            const number = interaction.options.getNumber("amount", false);
+            const number = interaction.options.getNumber('amount', false)
             // console.log('songs: ', songs)
             if (number) {
-                const amount = number > 10 ? 10 : number;
-                search = (await Promise.all(
+                const amount = number > 10 ? 10 : number
+                search = await Promise.all(
                     Array.from({ length: amount }, async (_, i) => {
-                        const song = songs[i % songs.length];
-                        return await client.music.search(song.id, interaction.user, source);
-                    })
-                ));
+                        const song = songs[i % songs.length]
+                        return await client.music.search(song.id, interaction.user, source)
+                    }),
+                )
             } else {
-                const randomIndex = Math.floor(Math.random() * songs.length);
-                const randomSong = songs[randomIndex];
-                search = await client.music.search(randomSong.id, interaction.user, source);
+                const randomIndex = Math.floor(Math.random() * songs.length)
+                const randomSong = songs[randomIndex]
+                search = await client.music.search(randomSong.id, interaction.user, source)
             }
-
 
             // search = await client.music.search(song3.id, interaction.member, source)
             // const playlist = await (await player.youtubei).getPlaylist()
@@ -171,14 +175,13 @@ export default class play extends Command {
 
         if (Array.isArray(search)) {
             for (const item of search) {
-                if (!player.queue.some((song) => song.id === item.id)) {
+                if (!player.queue.some(song => song.id === item.id)) {
                     player.queue.add(item)
                 } else {
-
                 }
             }
         } else {
-            player.queue.add(search);
+            player.queue.add(search)
         }
         player.queue.shuffle()
         if (!player.playing && !player.paused) player.play()
@@ -197,10 +200,17 @@ export default class play extends Command {
                 name: interaction.language.PLAY[6],
                 value: formatTime(Math.trunc(player.queue.current!.duration), false),
                 inline: true,
-            }
+            },
         )
         // logger.debug(player.queue.current);
-        if (interaction.user.youtubei && !(await interaction.user.youtubei).session.logged_in) embed.addFields([{ name: 'Warning', value: 'Youtube Music no ha conseguido iniciar sesión, por lo que es posible que no se adapte a ti la canción', inline: true }])
+        if (interaction.user.youtubei && !(await interaction.user.youtubei).session.logged_in)
+            embed.addFields([
+                {
+                    name: 'Warning',
+                    value: 'Youtube Music no ha conseguido iniciar sesión, por lo que es posible que no se adapte a ti la canción',
+                    inline: true,
+                },
+            ])
         if (client.settings.mode == 'development') {
             let executionTime = await performanceMeters.get('interaction_' + interaction.id)
             executionTime = executionTime.stop()
@@ -214,7 +224,9 @@ export default class play extends Command {
             // if (player.queue.current!.bitrate!) embed.addFields({ name: 'bitrate', value: search.streams[0].bitrate, inline: true })
             embed.setThumbnail(`https://img.youtube.com/vi/${player.queue.current!.id}/maxresdefault.jpg`)
             embed.setDescription(
-                `**${interaction.language.PLAY[3]}\n[${player.queue.current!.title}](https://www.music.youtube.com/watch?v=${player.queue.current!.id})**`,
+                `**${interaction.language.PLAY[3]}\n[${
+                    player.queue.current!.title
+                }](https://www.music.youtube.com/watch?v=${player.queue.current!.id})**`,
             )
             // embed.addField(
             //     "Bitrate",
@@ -224,14 +236,18 @@ export default class play extends Command {
         } else if (source === 'Spotify') {
             if (search.thumbnails[0])
                 embed.setDescription(
-                    `**${interaction.language.PLAY[3]}\n[${player.queue.current!.title}](https://open.spotify.com/track/${player.queue.current!.id})**`,
+                    `**${interaction.language.PLAY[3]}\n[${
+                        player.queue.current!.title
+                    }](https://open.spotify.com/track/${player.queue.current!.id})**`,
                 )
             embed.setThumbnail(search.thumbnails[0].url)
         }
         // console.log(embed)
         // console.log(await (await client.music.youtubei).music.getHomeFeed())
-        let msg = new messageHelper(interaction);
-        msg.sendMessage({ embeds: [embed] }, false).catch((e: any) => { logger.debug(e) })
+        let msg = new messageHelper(interaction)
+        msg.sendMessage({ embeds: [embed] }, false).catch((e: any) => {
+            logger.debug(e)
+        })
         //CÓDIGO NORMAL DEL PLAY
     }
 }

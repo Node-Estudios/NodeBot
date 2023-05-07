@@ -27,12 +27,14 @@ export default class mcserver extends Command {
         })
     }
 
-    async run(interaction: interactionCommandExtend, args: any[]) {
+    override async run(interaction: interactionCommandExtend) {
         const server = interaction.options.getString('server', true)
         const [ip, port] = server.split(':')
         interaction.reply({
             files: [
-                new AttachmentBuilder(`http://status.mclive.eu/${server}/${ip}/${port}/banner.png`, { name: server + '.png' }),
+                new AttachmentBuilder(`http://status.mclive.eu/${server}/${ip}/${port}/banner.png`, {
+                    name: server + '.png',
+                }),
             ],
         })
     }

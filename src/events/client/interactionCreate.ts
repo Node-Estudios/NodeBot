@@ -4,9 +4,7 @@ import {
     CacheType,
     CommandInteraction,
     EmbedBuilder,
-    GuildMember,
     Interaction,
-    PermissionsBitField,
 } from 'discord.js'
 
 import Client from '../../structures/Client.js'
@@ -63,7 +61,7 @@ export interface interactionCommandExtend extends BaseEvent {
 type interactionExtend = Interaction<CacheType> & {
     language: any
 }
-export type interactionCommandExtended = CommandInteraction & {
+export type interactionCommandExtended = CommandInteraction<'cached'> & {
     language: any
 }
 export type interactionButtonExtend = ButtonInteraction<CacheType> & {
@@ -124,252 +122,8 @@ export class interactionCreate extends BaseEvent {
         // })
         return await this.getLang(interaction2)
             .then(async () => {
-                const msg = new messageHelper(interaction2)
-
-                // if (!interaction.guild) return // <-- return statement needed here
-                // console.log(client.commands);
-                // console.log(interaction.language)
-                if (interaction2.isCommand()) {
-                    let desc =
-                        interaction2.language.NODETHINKING[
-                            Math.floor(Math.random() * (Object.keys(interaction2.language.NODETHINKING).length + 1) + 1)
-                        ]
-                    if (!desc) desc = interaction2.language.NODETHINKING[1]
-
-                    const loadingEmbed = new EmbedBuilder()
-                        .setColor(client.settings.color)
-                        .setTitle(desc)
-                        .setDescription(desc)
-
-                    await interaction2
-                        .reply({
-                            embeds: [loadingEmbed],
-                        })
-                        .catch(e => {
-                            logger.error(e)
-                        })
-                    //         let interaction = interaction2 as interactionCommandExtended
-                    let interaction = interaction2 as interactionCommandExtended
-                    const cmd = commands.getCache().find((cmd2: any) => cmd2.name === interaction.commandName)
-                    if (!interaction.guild && cmd?.only?.guilds) return // <-- return statement here
-                    if (interaction.guild && cmd?.only?.dm) return // <-- return statement here
-                    // let commandName = interaction.commandName
-                    // console.log(language.NODETHINKING && language)
-                    // let desc =
-                    //     language.NODETHINKING[
-                    //     Math.floor(Math.random() * (Object.keys(language.NODETHINKING).length + 1) + 1)
-                    //     ]
-                    // if (!desc) desc = language.NODETHINKING[1]
-
-                    // const loadingEmbed = new MessageEmbed().setColor(client.settings.color).setDescription(desc)
-
-                    // await interaction
-                    //     .reply({
-                    //         embeds: [loadingEmbed],
-                    //     })
-                    //     .catch(e => {
-                    //         logger.error(e)
-                    //     })
-
-                    if (cmd) {
-                        logger.info(`Comando ${cmd.name} ejecutado`)
-
-                        // TODO: Change this to a better way (remove any)
-                        const args: any[] = []
-                        for (let option of interaction.options.data) {
-                            if (option.type === ApplicationCommandOptionType.Subcommand) {
-                                option.name ? args.push(option.name) : null
-                                option.options?.forEach(s => {
-                                    return s.value ? args.push(s.value) : null
-                                })
-                            } else if (option.value) args.push(option.value)
-                        }
-                        //CHECK PERMISSIONS
-                        if (cmd.permissions) {
-                            cmd.permissions.botPermissions?.concat([
-                                PermissionsBitField.Flags.SendMessages.toString(),
-                                PermissionsBitField.Flags.EmbedLinks.toString(),
-                            ])
-                            if (cmd.permissions.botPermissions.length > 0) {
-                                let missingPermissions: String[] = []
-                                let mySelfPermissions = await interaction.guild?.members.fetchMe()
-                                missingPermissions = cmd.permissions.botPermissions.filter((perm: any) =>
-                                    // TODO: Check this ?
-                                    mySelfPermissions?.permissions.has(perm, true),
-                                )
-
-                                if (missingPermissions.length > 0) {
-                                    if (
-                                        missingPermissions.includes(PermissionsBitField.Flags.SendMessages.toString())
-                                    ) {
-                                        const user = interaction.user
-                                        if (!user) return
-                                        else if (!user.dmChannel) await user.createDM()
-                                        await user
-                                            .dmChannel!.send(
-                                                `No tengo los permisos necesarios para ejecutar este comando, Permisos necesarios: **${missingPermissions.join(
-                                                    ', ',
-                                                )}**\n${permissionHelpMessage}`,
-                                            )
-                                            .catch(() => {
-                                                logger.debug(
-                                                    `Permissions leak: Guild<${interaction.guildId}>, failed to send message to User<${interaction.user.id}>`,
-                                                )
-                                            })
-                                    }
-                                    const promises = [
-                                        msg.sendMessage(
-                                            {
-                                                content: `Permissions leak; Requiered permissions: **${missingPermissions.join(
-                                                    ', ',
-                                                )}**\n${permissionHelpMessage}`,
-                                                embeds: [],
-                                            },
-                                            false,
-                                        ),
-                                    ]
-                                    return Promise.all(promises).then(() => {
-                                        throw new Error(
-                                            `Permissions leak; Guild<${interaction.guildId}>, User<${interaction.user.id}>`,
-                                        )
-                                    })
-                                }
-
-                                if (cmd.permissions.userPermissions.length > 0) {
-                                    const missingPermissions = cmd.permissions.userPermissions.filter(
-                                        (perm: any) => !(interaction.member as GuildMember).permissions.has(perm),
-                                    )
-                                    if (missingPermissions.length > 0) {
-                                        const promises = [
-                                            msg.sendMessage(
-                                                {
-                                                    content: `No tienes los permisos necesarios para ejecutar este comando, Permisos necesarios: **${missingPermissions.join(
-                                                        ', ',
-                                                    )}**`,
-                                                    embeds: [],
-                                                },
-                                                false,
-                                            ),
-                                        ]
-                                        return Promise.all(promises).then(() => {
-                                            throw new Error(
-                                                `Permissions leak; Guild<${interaction.guildId}>, User<${interaction.user.id}>`,
-                                            )
-                                        })
-                                    }
-                                }
-                                if (
-                                    cmd.permissions.botPermissions.includes(
-                                        PermissionsBitField.Flags.Connect.toString(),
-                                    ) &&
-                                    !(interaction.member as GuildMember).voice.channel
-                                        ?.permissionsFor(client.user.id)
-                                        ?.has(PermissionsBitField.Flags.Connect)
-                                ) {
-                                    const promises = [
-                                        msg.sendMessage(
-                                            {
-                                                content: `Permissions leak; I dont have enoguh permissions to join in your voice channel.`,
-                                                embeds: [],
-                                            },
-                                            false,
-                                        ),
-                                    ]
-                                    return Promise.all(promises).then(() => {
-                                        throw new Error(
-                                            `Permissions leak; Guild<${interaction.guildId}>, User<${interaction.user.id}>`,
-                                        )
-                                    })
-                                }
-                                if (
-                                    cmd.permissions.botPermissions.includes(
-                                        PermissionsBitField.Flags.Speak.toString(),
-                                    ) &&
-                                    !(interaction.member as GuildMember).voice.channel
-                                        ?.permissionsFor(client.user.id)
-                                        ?.has(PermissionsBitField.Flags.Speak)
-                                ) {
-                                    const promises = [
-                                        msg.sendMessage(
-                                            {
-                                                content: `Permissions leak; I dont have enoguh permissions to speak in your voice channel.`,
-                                                embeds: [],
-                                            },
-                                            false,
-                                        ),
-                                    ]
-                                    return Promise.all(promises).then(() => {
-                                        throw new Error(
-                                            `Permissions leak; Guild<${interaction.guildId}>, User<${interaction.user.id}>`,
-                                        )
-                                    })
-                                }
-                                //CHECK PERMISSION
-                                if (cmd.permissions.dev === true && !client.devs.includes(interaction.user.id)) {
-                                    const promises = [
-                                        msg.sendMessage(
-                                            {
-                                                content: 'Comando exclusivo para devs',
-                                                embeds: [],
-                                            },
-                                            false,
-                                        ),
-                                    ]
-                                    return Promise.all(promises).then(() => {
-                                        throw new Error(
-                                            `Permissions leak (exclusive for devs); Guild<${interaction.guildId}>, User<${interaction.user.id}>`,
-                                        )
-                                    })
-                                }
-                            }
-
-                            //TODO: Add COOLDOWN functionality
-                            // if (!client.devs.includes(interaction.user.id)) {
-                            //     if (!cooldowns.has(commandName)) {
-                            //         cooldowns.set(commandName, new Discord.Collection())
-                            //     }
-                            //     const now = Date.now()
-                            //     const timestamps = cooldowns.get(commandName)
-                            //     const cooldownAmount = Math.floor(cmd.cooldown || 5) * 1000
-                            //     if (!timestamps.has(interaction.user.id)) {
-                            //         timestamps.set(interaction.user.id, now)
-                            //         setTimeout(() => timestamps.delete(interaction.user.id), cooldownAmount)
-                            //     } else {
-                            //         const expirationTime = timestamps.get(interaction.user.id) + cooldownAmount
-                            //         const timeLeft = (expirationTime - now) / 1000
-                            //         if (now < expirationTime && timeLeft > 0.9) {
-                            //             return msg.sendMessage({
-                            //                 content: `Heyy! Ejecutas los coamndos demasiado rápido! Espera ${timeLeft.toFixed(
-                            //                     1,
-                            //                 )} segundos para ejecutar \`${commandName}\``,
-                            //                 embeds: [],
-                            //             })
-                            //         }
-                            //         timestamps.set(interaction.user.id, now)
-                            //         setTimeout(() => timestamps.delete(interaction.user.id), cooldownAmount)
-                            //     }
-                            // }
-                        }
-                        try {
-                            cmd._run(async () => {
-                                try {
-                                    return await cmd.run(client, interaction, args).then((data: any) => {
-                                        return data
-                                    })
-                                } catch (e) {
-                                    logger.debug(e)
-                                }
-                            }).then(async () => {
-                                await performanceMeters.get('interaction_' + interaction.id).stop()
-                                performanceMeters.delete('interaction_' + interaction.id)
-                                //TODO: remove from cache
-                                return
-                            })
-                        } catch (e) {
-                            logger.debug(e)
-                        }
-                    }
-                } else if (interaction2.isButton()) {
+                if (interaction2.isCommand()) this.processCommand(interaction2 as interactionCommandExtended)
+                else if (interaction2.isButton()) {
                     let interaction = interaction2 as interactionButtonExtend
                     logger.debug(`Button ${interaction.customId} pressed`)
                     const button = buttons.getCache().get(interaction.customId)
@@ -399,5 +153,63 @@ export class interactionCreate extends BaseEvent {
             ;(interaction as interactionExtend).language = await contenidoIdiomas.get(lang).default
             // console.log((interaction as interactionExtend).language)
         })
+    }
+
+    async processCommand(interaction: interactionCommandExtended): Promise<any> {
+        try {
+            const client = interaction.client as Client
+            // const client = interaction.client as Client
+            // let desc =
+            //     interaction.language.NODETHINKING[
+            //         Math.floor(Math.random() * (Object.keys(interaction.language.NODETHINKING).length + 1) + 1)
+            //     ]
+            // if (!desc) desc = interaction.language.NODETHINKING[1]
+
+            // const loadingEmbed = new EmbedBuilder().setColor(client.settings.color).setTitle(desc).setDescription(desc)
+
+            // await interaction
+            //     .reply({
+            //         embeds: [loadingEmbed],
+            //     })
+            //     .catch(e => {
+            //         logger.error(e)
+            //     })
+            const cmd = commands.getCache().find(c => c.name === interaction.commandName)
+            if (!cmd) return
+            if (interaction.guild && cmd?.only_dm) return // <-- return statement here
+
+            logger.info(`Comando ${cmd.name} ejecutado`)
+            //CHECK PERMISSIONS
+            if (cmd.permissions) {
+                // Check if the command is only for devs
+                if (cmd.permissions.dev && !client.devs.includes(interaction.user.id))
+                    return interaction.reply({
+                        content: 'Comando exclusivo para devs',
+                        ephemeral: true,
+                    })
+                // Check if the bot has the needed permissions to run the command
+                if (cmd.permissions.botPermissions) {
+                    const botMember = await interaction.guild?.members.fetchMe()
+                    const missingPermissions = botMember?.permissions.missing(cmd.permissions.botPermissions)
+
+                    // If there are missing permissions, return an error message
+                    if (missingPermissions?.length)
+                        return interaction.reply({
+                            content: `No tengo los permisos necesarios para ejecutar este comando, Permisos necesarios: **${missingPermissions.join(
+                                ', ',
+                            )}**`,
+                            ephemeral: true,
+                        })
+                }
+
+                //TODO: Add COOLDOWN functionality
+            }
+            await cmd.run(interaction)
+            await performanceMeters.get('interaction_' + interaction.id).stop()
+            performanceMeters.delete('interaction_' + interaction.id)
+            //TODO: remove from cache
+        } catch (e) {
+            logger.debug(e)
+        }
     }
 }
