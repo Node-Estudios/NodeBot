@@ -1,8 +1,8 @@
 // commandCache.ts
 import { Collection } from 'discord.js'
-import { interactionButtonExtend } from '../events/client/interactionCreate'
+import { ButtonInteractionExtend } from '../events/client/interactionCreate'
 import Client from '../structures/Client'
-type Button = (client: Client, interaction: interactionButtonExtend) => Promise<any>
+type Button = (client: Client, interaction: ButtonInteractionExtend<'cached'>) => Promise<any>
 
 class buttonCache {
     private static instance: buttonCache

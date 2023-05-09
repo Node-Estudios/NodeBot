@@ -1,4 +1,4 @@
-import { interactionCommandExtend } from '../../../events/client/interactionCreate.js'
+import { ChatInputCommandInteractionExtended } from '../../../events/client/interactionCreate.js'
 import Client from '../../../structures/Client.js'
 import Command from '../../../structures/Command.js'
 
@@ -42,7 +42,7 @@ export default class reboot extends Command {
             ],
         })
     }
-    override async run(interaction: interactionCommandExtend) {
+    override async run(interaction: ChatInputCommandInteractionExtended<'cached'>) {
         //TODO: Change reboot system
         const client = interaction.client as Client
         const choice = interaction.options.getString('choice', true)

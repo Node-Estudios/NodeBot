@@ -1,5 +1,5 @@
 import { ColorResolvable, EmbedBuilder as MessageEmbed } from 'discord.js'
-import { interactionCommandExtend } from '../../../events/client/interactionCreate.js'
+import { ChatInputCommandInteractionExtended } from '../../../events/client/interactionCreate.js'
 import Client from '../../../structures/Client.js'
 import Command from '../../../structures/Command.js'
 
@@ -31,7 +31,7 @@ export default class help extends Command {
             ],
         })
     }
-    override async run(interaction: interactionCommandExtend) {
+    override async run(interaction: ChatInputCommandInteractionExtended<'cached'>) {
         const language = interaction.language
         const client = interaction.client as Client
         return interaction.reply({
@@ -50,11 +50,7 @@ export default class help extends Command {
                             language.HELP[12] +
                             `<a:arrowright:970388686816550912> \`/vote\` <a:arrowleft:893553168108093560> ${language.HELP[14]}(https://vote.nodebot.xyz 'Estamos esperando tu voto :)')`,
                     })
-                    .setThumbnail(
-                        interaction.user.displayAvatarURL({
-                            dynamic: true,
-                        }),
-                    )
+                    .setThumbnail(interaction.user.displayAvatarURL())
                     .setTitle('✨' + language.HELP[13]),
             ],
         })

@@ -1,5 +1,5 @@
 import { ColorResolvable, EmbedBuilder as MessageEmbed } from 'discord.js'
-import { interactionCommandExtend } from '../../../events/client/interactionCreate.js'
+import { ChatInputCommandInteractionExtended } from '../../../events/client/interactionCreate.js'
 import Client from '../../../structures/Client.js'
 import Command from '../../../structures/Command.js'
 
@@ -28,7 +28,7 @@ export default class github extends Command {
             ],
         })
     }
-    override async run(interaction: interactionCommandExtend) {
+    override async run(interaction: ChatInputCommandInteractionExtended<'cached'>) {
         const language = interaction.language
         const client = interaction.client as Client
         const args2 = interaction.options.getString('account', true)
@@ -77,7 +77,7 @@ export default class github extends Command {
         if (account.followers)
             embed.addFields({ name: language.GITHUB[11].toString(), value: account.followers.toString() })
 
-        interaction.reply({
+        return interaction.reply({
             embeds: [embed],
         })
     }

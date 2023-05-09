@@ -1,4 +1,4 @@
-import { interactionCommandExtended } from '../../../events/client/interactionCreate.js'
+import { ChatInputCommandInteractionExtended } from '../../../events/client/interactionCreate.js'
 import { messageHelper } from '../../../handlers/messageHandler.js'
 import Client from '../../../structures/Client.js'
 
@@ -34,7 +34,7 @@ export default class skip extends Command {
             // ]
         })
     }
-    override async run(interaction: interactionCommandExtended) {
+    override async run(interaction: ChatInputCommandInteractionExtended<'cached'>) {
         const client = interaction.client as Client
         if (!interaction.inGuild()) return
         const message = new messageHelper(interaction)

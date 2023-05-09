@@ -1,5 +1,5 @@
 import { EmbedBuilder as MessageEmbed } from 'discord.js'
-import { interactionCommandExtend } from '../../../events/client/interactionCreate.js'
+import { ChatInputCommandInteractionExtended } from '../../../events/client/interactionCreate.js'
 import Client from '../../../structures/Client.js'
 import Command from '../../../structures/Command.js'
 
@@ -31,7 +31,7 @@ export default class ball extends Command {
             ],
         })
     }
-    override async run(interaction: interactionCommandExtend) {
+    override async run(interaction: ChatInputCommandInteractionExtended<'cached'>) {
         const language = interaction.language
         const client = interaction.client as Client
         let respuesta = language.QUESTIONBALL[4]
@@ -45,12 +45,12 @@ export default class ball extends Command {
                         .setDescription(language.QUESTIONBALL[3])
                         .setFooter({
                             text: interaction.user.tag,
-                            iconURL: interaction.user.displayAvatarURL({ format: 'png', dynamic: true }),
+                            iconURL: interaction.user.displayAvatarURL({ extension: 'png' }),
                         }),
                 ],
             })
 
-        interaction.reply({
+        return interaction.reply({
             embeds: [
                 new MessageEmbed()
                     .setFields(

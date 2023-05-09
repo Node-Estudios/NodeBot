@@ -1,5 +1,5 @@
 import { EmbedBuilder as MessageEmbed } from 'discord.js'
-import { interactionCommandExtend } from '../../../events/client/interactionCreate.js'
+import { ChatInputCommandInteractionExtended } from '../../../events/client/interactionCreate.js'
 import Client from '../../../structures/Client.js'
 import Command from '../../../structures/Command.js'
 
@@ -18,7 +18,7 @@ export default class serverinfo extends Command {
         })
     }
 
-    override async run(interaction: interactionCommandExtend) {
+    override async run(interaction: ChatInputCommandInteractionExtended<'cached'>) {
         const client = interaction.client as Client
         // try {
         // let region = {
@@ -70,7 +70,7 @@ export default class serverinfo extends Command {
         // const [bots, humans] = interaction.guild.members.cache.partition(m => m.user.bot)
         // const banner = interaction.guild.banner
 
-        const iconURL = interaction.guild.iconURL({ dynamic: true }) ?? ''
+        const iconURL = interaction.guild.iconURL() ?? ''
         const embed = new MessageEmbed()
             .setColor(client.settings.color)
             .setThumbnail(iconURL)

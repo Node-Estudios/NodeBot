@@ -1,5 +1,5 @@
 import { ColorResolvable, EmbedBuilder as MessageEmbed } from 'discord.js'
-import { interactionCommandExtend } from '../../../events/client/interactionCreate.js'
+import { ChatInputCommandInteractionExtended } from '../../../events/client/interactionCreate.js'
 import Client from '../../../structures/Client.js'
 import Command from '../../../structures/Command.js'
 
@@ -32,17 +32,17 @@ export default class roleinfo extends Command {
             ],
         })
     }
-    override async run(interaction: interactionCommandExtend) {
+    override async run(interaction: ChatInputCommandInteractionExtended<'cached'>) {
         const language = interaction.language
         const client = interaction.client as Client
         let role = interaction.options.getRole('role', true)
         const rol = new MessageEmbed()
-            .setThumbnail(interaction.user.displayAvatarURL({ dynamic: true }))
+            .setThumbnail(interaction.user.displayAvatarURL())
             .setTimestamp()
             .setColor((role.color as ColorResolvable) || ('#1DC44F' as ColorResolvable))
             .setAuthor({
                 name: interaction.guild!.name,
-                iconURL: interaction.guild!.iconURL({ dynamic: true }) ?? '',
+                iconURL: interaction.guild!.iconURL() ?? '',
             })
             .setFields(
                 {
@@ -83,7 +83,7 @@ export default class roleinfo extends Command {
                     inline: true,
                 },
             )
-            .setImage(interaction.guild!.iconURL({ dynamic: true }) ?? '')
+            .setImage(interaction.guild!.iconURL() ?? '')
 
         return interaction.reply({ embeds: [rol] })
     }

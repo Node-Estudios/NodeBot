@@ -5,7 +5,7 @@ import {
     PermissionsBitField,
     TextChannel,
 } from 'discord.js'
-import { interactionCommandExtend } from '../../../events/client/interactionCreate.js'
+import { ChatInputCommandInteractionExtended } from '../../../events/client/interactionCreate.js'
 import langFile from '../../../lang/index.json' assert { type: 'json' }
 import Client from '../../../structures/Client.js'
 import Command from '../../../structures/Command.js'
@@ -73,7 +73,7 @@ export default class embed extends Command {
             ],
         })
     }
-    override async run(interaction: interactionCommandExtend) {
+    override async run(interaction: ChatInputCommandInteractionExtended<'cached'>) {
         //TODO: Add more colors && make it work with hex colors && Add language support
         const language = await import('../lang/' + langFile.find(l => l.nombre == interaction.language)?.archivo, {
             assert: { type: 'json' },
@@ -100,7 +100,7 @@ export default class embed extends Command {
             })
 
         canal.send({ embeds: [embed] })
-        interaction.reply({ content: 'Embed creado y enviado con éxito.' })
+        return interaction.reply({ content: 'Embed creado y enviado con éxito.' })
         // } catch (e) {
         //     console.error(e);
         //     message.channel.send({

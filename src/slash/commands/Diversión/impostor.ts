@@ -1,4 +1,4 @@
-import { interactionCommandExtend } from '../../../events/client/interactionCreate.js'
+import { ChatInputCommandInteractionExtended } from '../../../events/client/interactionCreate.js'
 import Client from '../../../structures/Client.js'
 import Command from '../../../structures/Command.js'
 
@@ -27,7 +27,7 @@ export default class impostor extends Command {
             ],
         })
     }
-    override async run(interaction: interactionCommandExtend) {
+    override async run(interaction: ChatInputCommandInteractionExtended<'cached'>) {
         const language = interaction.language
         const client = interaction.client as Client
         interaction.reply(`. 　　　。　　　　•　 　ﾟ　　。 　　.

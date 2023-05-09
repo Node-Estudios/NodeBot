@@ -1,5 +1,5 @@
 import { EmbedBuilder as MessageEmbed } from 'discord.js'
-import { interactionCommandExtend } from '../../../events/client/interactionCreate.js'
+import { ChatInputCommandInteractionExtended } from '../../../events/client/interactionCreate.js'
 import Client from '../../../structures/Client.js'
 import Command from '../../../structures/Command.js'
 export default class avatar extends Command {
@@ -33,7 +33,7 @@ export default class avatar extends Command {
             ],
         })
     }
-    override async run(interaction: interactionCommandExtend) {
+    override async run(interaction: ChatInputCommandInteractionExtended<'cached'>) {
         const language = interaction.language
         const client = interaction.client as Client
         const member = interaction.options.getUser('user') ?? interaction.user
@@ -41,7 +41,7 @@ export default class avatar extends Command {
             embeds: [
                 new MessageEmbed()
                     .setColor(client.settings.color)
-                    .setImage(member.displayAvatarURL({ dynamic: true, size: 4096 }))
+                    .setImage(member.displayAvatarURL({ size: 4096 }))
                     .setFooter({ text: `Aqui tienes el avatar de <@${member.id}>!` }),
             ],
         })

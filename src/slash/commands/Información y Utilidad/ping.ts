@@ -1,6 +1,6 @@
 import { EmbedBuilder as MessageEmbed } from 'discord.js'
 import performanceMeters from '../../../cache/performanceMeters.js'
-import { interactionCommandExtended } from '../../../events/client/interactionCreate.js'
+import { ChatInputCommandInteractionExtended } from '../../../events/client/interactionCreate.js'
 import Client from '../../../structures/Client.js'
 import Command from '../../../structures/Command.js'
 import logger from '../../../utils/logger.js'
@@ -12,7 +12,7 @@ export default class ping extends Command {
             cooldown: 5,
         })
     }
-    override async run(interaction: interactionCommandExtended) {
+    override async run(interaction: ChatInputCommandInteractionExtended<'cached'>) {
         const client = interaction.client as Client
         const ping = Math.abs((interaction.createdAt.getTime() - Date.now()) / 1000)
         return client.cluster

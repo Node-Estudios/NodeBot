@@ -1,6 +1,6 @@
 import { GuildMember, EmbedBuilder as MessageEmbed, TextChannel, VoiceChannel } from 'discord.js'
 import performanceMeters from '../../../cache/performanceMeters.js'
-import { interactionCommandExtend } from '../../../events/client/interactionCreate.js'
+import { ChatInputCommandInteractionExtended } from '../../../events/client/interactionCreate.js'
 import { messageHelper } from '../../../handlers/messageHandler.js'
 import UserModel from '../../../models/user.js'
 import Client from '../../../structures/Client.js'
@@ -64,7 +64,7 @@ export default class play extends Command {
             ],
         })
     }
-    override async run(interaction: interactionCommandExtend) {
+    override async run(interaction: ChatInputCommandInteractionExtended<'cached'>) {
         const client = interaction.client as Client
         let player = client.music.players.get(interaction.guildId)
 
@@ -93,27 +93,27 @@ export default class play extends Command {
         let search
 
         const song = interaction.options.getString('song', false)
+        const userInteraction = interaction.user as unknown as UserExtended
         if (!song) {
-            interaction.user = interaction.user as UserExtended
-            if (!interaction.user.youtubei) {
-                interaction.user.youtubei = await new Youtubei(interaction.user).createSession()
-                await UserModel.findOne({ id: interaction.user.id }).then(async user => {
+            if (!userInteraction.youtubei) {
+                userInteraction.youtubei = await new Youtubei(userInteraction).createSession()
+                await UserModel.findOne({ id: userInteraction.id }).then(async user => {
                     if (user) {
                         if (user.credentials) {
-                            await interaction.user.youtubei.session.signIn(user.credentials)
+                            await userInteraction.youtubei.session.signIn(user.credentials)
                         } else {
-                            interaction.user.youtubei.session.signIn()
+                            userInteraction.youtubei.session.signIn()
                         }
                     } else {
-                        interaction.user.youtubei.session.signIn()
+                        userInteraction.youtubei.session.signIn()
                     }
                 })
             }
 
             let songs: any[] = []
             try {
-                const songsData = await interaction.user.youtubei.music.getHomeFeed()
-                for (const section of songsData.sections) {
+                const songsData = await userInteraction.youtubei.music.getHomeFeed()
+                for (const section of songsData.sections ?? []) {
                     songs = shuffleArray(
                         songs.concat(
                             section.contents.filter((song: { item_type: string }) => song.item_type === 'song'),
@@ -123,10 +123,10 @@ export default class play extends Command {
                 }
             } catch (e) {
                 logger.debug('error while searching')
-                UserModel.findOneAndUpdate({ id: interaction.user.id }, { credentials: null })
-                await interaction.user.youtubei.session.signOut()
-                const songsData = await interaction.user.youtubei.music.getHomeFeed()
-                for (const section of songsData.sections) {
+                UserModel.findOneAndUpdate({ id: userInteraction.id }, { credentials: null })
+                await userInteraction.youtubei.session.signOut()
+                const songsData = await userInteraction.youtubei.music.getHomeFeed()
+                for (const section of songsData.sections ?? []) {
                     songs = songs.concat(
                         section.contents.filter((song: { item_type: string }) => song.item_type === 'song'),
                     )
@@ -203,7 +203,7 @@ export default class play extends Command {
             },
         )
         // logger.debug(player.queue.current);
-        if (interaction.user.youtubei && !(await interaction.user.youtubei).session.logged_in)
+        if (userInteraction.youtubei && !(await userInteraction.youtubei).session.logged_in)
             embed.addFields([
                 {
                     name: 'Warning',
@@ -249,5 +249,6 @@ export default class play extends Command {
             logger.debug(e)
         })
         //CÓDIGO NORMAL DEL PLAY
+        return
     }
 }

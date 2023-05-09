@@ -1,4 +1,4 @@
-import { interactionCommandExtend } from '../events/client/interactionCreate.js'
+import { ChatInputCommandInteractionExtended } from '../events/client/interactionCreate.js'
 import logger from '../utils/logger.js'
 
 import {
@@ -96,7 +96,7 @@ export default class Command {
         this.cooldown = cooldown ?? 0
     }
 
-    run(interaction: interactionCommandExtend): Promise<any> {
+    run(interaction: ChatInputCommandInteractionExtended<'cached'>): Promise<any> {
         return interaction.reply({
             content: 'This command is not ready yet.',
             ephemeral: true,

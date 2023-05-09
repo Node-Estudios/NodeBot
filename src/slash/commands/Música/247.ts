@@ -1,4 +1,4 @@
-import { interactionCommandExtended } from '../../../events/client/interactionCreate.js'
+import { ChatInputCommandInteractionExtended } from '../../../events/client/interactionCreate.js'
 import { messageHelper } from '../../../handlers/messageHandler.js'
 import Client from '../../../structures/Client.js'
 
@@ -34,7 +34,7 @@ export default class stayinvoice extends Command {
             // ]
         })
     }
-    override async run(interaction: interactionCommandExtended) {
+    override async run(interaction: ChatInputCommandInteractionExtended<'cached'>) {
         const client = interaction.client as Client
         const message = new messageHelper(interaction)
         const player = client.music.players.get(interaction.guild!.id)
@@ -55,13 +55,13 @@ export default class stayinvoice extends Command {
             const embed = new EmbedBuilder()
                 .setColor(client.settings.color)
                 .setFooter({ text: interaction.language['247DISABLED'], iconURL: interaction.user.displayAvatarURL() })
-            message.sendMessage({ embeds: [embed] }, false)
+            return message.sendMessage({ embeds: [embed] }, false)
         } else {
             player.stayInVc = true
             const embed = new EmbedBuilder()
                 .setColor(client.settings.color)
                 .setFooter({ text: interaction.language['247ENABLED'], iconURL: interaction.user.displayAvatarURL() })
-            message.sendMessage({ embeds: [embed] }, false)
+            return message.sendMessage({ embeds: [embed] }, false)
         }
     }
 }

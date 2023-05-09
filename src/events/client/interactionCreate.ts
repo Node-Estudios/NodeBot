@@ -1,11 +1,4 @@
-import {
-    ApplicationCommandOptionType,
-    ButtonInteraction,
-    CacheType,
-    CommandInteraction,
-    EmbedBuilder,
-    Interaction,
-} from 'discord.js'
+import { ButtonInteraction, CacheType, ChatInputCommandInteraction, Interaction } from 'discord.js'
 
 import Client from '../../structures/Client.js'
 import logger from '../../utils/logger.js'
@@ -55,26 +48,23 @@ const languagesType: Languages = getLanguages(languages)
 
 // Define an interface that extends the "CommandInteraction" interface, adding a "language" field of type "Languages"
 //TODO: Remove any and add types from the O¡Collection.set() function
-export interface interactionCommandExtend extends BaseEvent {
+export type ChatInputCommandInteractionExtended<T extends CacheType> = ChatInputCommandInteraction<T> & {
     language: any
 }
-type interactionExtend = Interaction<CacheType> & {
+export type InteractionExtend<T extends CacheType> = Interaction<T> & {
     language: any
 }
-export type interactionCommandExtended = CommandInteraction<'cached'> & {
-    language: any
-}
-export type interactionButtonExtend = ButtonInteraction<CacheType> & {
+export type ButtonInteractionExtend<T extends CacheType> = ButtonInteraction<T> & {
     language: any
 }
 export class interactionCreate extends BaseEvent {
-    async run(client: Client, interaction2: interactionExtend): Promise<void> {
-        if (interaction2.member?.user.bot) return
-        performanceMeters.set('interaction_' + interaction2.id, new performanceMeter())
-        performanceMeters.get('interaction_' + interaction2.id).start()
+    async run(client: Client, interaction: InteractionExtend<'cached'>): Promise<void> {
+        if (interaction.member?.user.bot) return
+        performanceMeters.set('interaction_' + interaction.id, new performanceMeter())
+        performanceMeters.get('interaction_' + interaction.id).start()
 
         // return false if something went wrong, true if everything was okey
-        logger.debug(`Interaction ${interaction2.id} created`)
+        logger.debug(`Interaction ${interaction.id} created`)
         if (!client.user) return // <-- return statement here
         //TODO: Change lang from any to string inside .then((lang: any) => {}))
         // this.getLang(interaction2).then(async () => {
@@ -120,60 +110,39 @@ export class interactionCreate extends BaseEvent {
 
         //     }
         // })
-        return await this.getLang(interaction2)
+        return this.getLang(interaction)
             .then(async () => {
-                if (interaction2.isCommand()) this.processCommand(interaction2 as interactionCommandExtended)
-                else if (interaction2.isButton()) {
-                    let interaction = interaction2 as interactionButtonExtend
-                    logger.debug(`Button ${interaction.customId} pressed`)
-                    const button = buttons.getCache().get(interaction.customId)
-                    // // console.log(button)
-                    // //TODO: Change this
-                    console.log(button)
-                    if (button) return button(client, interaction)
-                } else return
+                if (interaction.isChatInputCommand()) return this.processChatImputCommand(interaction)
+                else if (interaction.isButton()) return this.processButton(interaction)
             })
             .catch(err => {
                 console.log(err)
-                return (interaction2 as unknown as interactionCommandExtend).reply({
-                    content:
-                        'Ha ocurrido un error al ejecutar el comando, contacta con los desarrolladores. Status: 500 (db error && internal error)',
-                    embeds: [],
-                    components: [],
-                    files: [],
-                })
+                if (!interaction.isAutocomplete())
+                    return interaction.reply({
+                        content:
+                            'Ha ocurrido un error al ejecutar el comando, contacta con los desarrolladores. Status: 500 (db error && internal error)',
+                        embeds: [],
+                        components: [],
+                        files: [],
+                    })
+                return
             })
     }
 
-    async getLang(interaction: Interaction<CacheType>) {
+    async getLang(interaction: InteractionExtend<'cached'>) {
         const user = interaction.member?.user ? interaction.member.user : interaction.user
         return await retrieveUserLang(user.id).then(async (lang: any) => {
             // Cast the "interaction" object as the "interactionCommandExtend" interface, and assign the "lang" value to the "language" field
             //Refactorizar el codigo para que no sea any, sino una collection que tenga el valor de el json de idiomas
-            ;(interaction as interactionExtend).language = await contenidoIdiomas.get(lang).default
+            interaction.language = await contenidoIdiomas.get(lang).default
             // console.log((interaction as interactionExtend).language)
         })
     }
 
-    async processCommand(interaction: interactionCommandExtended): Promise<any> {
+    async processChatImputCommand(interaction: ChatInputCommandInteractionExtended<'cached'>) {
         try {
             const client = interaction.client as Client
-            // const client = interaction.client as Client
-            // let desc =
-            //     interaction.language.NODETHINKING[
-            //         Math.floor(Math.random() * (Object.keys(interaction.language.NODETHINKING).length + 1) + 1)
-            //     ]
-            // if (!desc) desc = interaction.language.NODETHINKING[1]
 
-            // const loadingEmbed = new EmbedBuilder().setColor(client.settings.color).setTitle(desc).setDescription(desc)
-
-            // await interaction
-            //     .reply({
-            //         embeds: [loadingEmbed],
-            //     })
-            //     .catch(e => {
-            //         logger.error(e)
-            //     })
             const cmd = commands.getCache().find(c => c.name === interaction.commandName)
             if (!cmd) return
             if (interaction.guild && cmd?.only_dm) return // <-- return statement here
@@ -211,5 +180,14 @@ export class interactionCreate extends BaseEvent {
         } catch (e) {
             logger.debug(e)
         }
+        return
+    }
+
+    async processButtonInteraction(interaction: ButtonInteractionExtend<'cached'>) {
+        logger.debug(`Button ${interaction.customId} pressed`)
+        const button = buttons.getCache().get(interaction.customId)
+        // //TODO: Change this
+        console.log(button)
+        if (button) return button(interaction.client as Client, interaction)
     }
 }
