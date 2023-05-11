@@ -43,7 +43,7 @@
         "mongoose": "6.8.1",
         "mongoose-encryption": "2.1.2",
         "signale": "1.4.0",
-        "simplest-discord-webhook": "1.2.0",
+        "simplest-discord-webhook": "github:eliyya/simplest-discord-webhook#ts",
         "statcord.js": "3.4.3",
         "stripe": "12.4.0",
         "yasha": "github:eliyya/yasha#esm",
