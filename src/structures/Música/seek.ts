@@ -4,7 +4,7 @@ import simplestDiscordWebhook from 'simplest-discord-webhook'
 import Command from '../../structures/command'
 import getRandomPhrase from '../../utils/getRandomPhrase'
 import getUsedBot from '../../utils/getUsedBot'
-let webhookClient = new simplestDiscordWebhook(process.env.errorWebhookURL)
+const webhookClient = new simplestDiscordWebhook(process.env.errorWebhookURL)
 module.exports = class seek extends Command {
     constructor(client) {
         super(client, {

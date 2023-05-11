@@ -1,11 +1,11 @@
 import { Client, CommandInteraction, EmbedBuilder } from 'discord.js'
 
-import Command from '../../structures/command.js'
+import Command from '../../structures/Command.js'
 
 import simplestDiscordWebhook from 'simplest-discord-webhook'
 import getRandomPhrase from '../../utils/getRandomPhrase'
 import getUsedBot from '../../utils/getUsedBot'
-let webhookClient = new simplestDiscordWebhook(process.env.errorWebhookURL)
+const webhookClient = new simplestDiscordWebhook(process.env.errorWebhookURL)
 module.exports = class resume extends Command {
     constructor(client) {
         super(client, {

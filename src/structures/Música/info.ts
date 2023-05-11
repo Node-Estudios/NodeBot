@@ -1,5 +1,5 @@
 import { Client, CommandInteraction, EmbedBuilder, ColorResolvable } from 'discord.js'
-import Command from '../../structures/command.js'
+import Command from '../../structures/Command.js'
 module.exports = class info extends Command {
     constructor(client) {
         super(client, {

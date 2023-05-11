@@ -8,7 +8,7 @@ import bot2missing from './functions/bot2missing.js'
 import bot3missing from './functions/bot3missing.js'
 import bot4missing from './functions/bot4missing.js'
 
-let webhookClient = new simplestDiscordWebhook(process.env.errorWebhookURL)
+const webhookClient = new simplestDiscordWebhook(process.env.errorWebhookURL)
 module.exports = class automix extends Command {
     constructor() {
         super({

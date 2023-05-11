@@ -1,5 +1,5 @@
 import { Client, CommandInteraction, EmbedBuilder } from 'discord.js'
-import Command from '../../structures/command.js'
+import Command from '../../structures/Command.js'
 import TwitchModel from '../../models/twitch.js'
 import axios from 'axios'
 const headers = {

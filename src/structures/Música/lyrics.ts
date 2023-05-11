@@ -5,7 +5,7 @@
 //   Discord,
 // } = require("discord.js");
 // const axios = require("axios");
-// const Command = require("../../../structures/command.js");
+// const Command = require("../../../structures/Command.js");
 // module.exports = class lyrics extends Command {
 //   constructor(client) {
 //     super(client, {

@@ -1,9 +1,9 @@
 import { EmbedBuilder } from 'discord.js'
 import simplestDiscordWebhook from 'simplest-discord-webhook'
-import Command from '../../structures/command.js'
+import Command from '../../structures/Command.js'
 import getRandomPhrase from '../../utils/getRandomPhrase'
 import getUsedBot from '../../utils/getUsedBot'
-let webhookClient = new simplestDiscordWebhook(process.env.errorWebhookURL)
+const webhookClient = new simplestDiscordWebhook(process.env.errorWebhookURL)
 export default class queue extends Command {
     constructor(client) {
         super(client, {

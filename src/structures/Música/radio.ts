@@ -1,12 +1,12 @@
 import { Client, CommandInteraction, EmbedBuilder } from 'discord.js'
 
 import simplestDiscordWebhook from 'simplest-discord-webhook'
-import Command from '../../structures/command.js'
+import Command from '../../structures/Command.js'
 import bot1missing from './functions/bot1missing.js'
 import bot2missing from './functions/bot2missing.js'
 import bot3missing from './functions/bot3missing.js'
 import bot4missing from './functions/bot4missing.js'
-let webhookClient = new simplestDiscordWebhook(process.env.errorWebhookURL)
+const webhookClient = new simplestDiscordWebhook(process.env.errorWebhookURL)
 module.exports = class radio extends Command {
     constructor(client) {
         super(client, {

@@ -1,9 +1,9 @@
 import { CommandInteraction, EmbedBuilder } from 'discord.js'
 import simplestDiscordWebhook from 'simplest-discord-webhook'
-import Command from '../../structures/command.js'
+import Command from '../../structures/Command.js'
 import getRandomPhrase from '../../utils/getRandomPhrase.js'
 import getUsedBot from '../../utils/getUsedBot'
-let webhookClient = new simplestDiscordWebhook(process.env.errorWebhookURL)
+const webhookClient = new simplestDiscordWebhook(process.env.errorWebhookURL)
 
 module.exports = class stayinvoice extends Command {
     constructor(client) {
