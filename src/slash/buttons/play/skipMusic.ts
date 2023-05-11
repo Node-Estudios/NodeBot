@@ -1,4 +1,4 @@
-import { GuildMember, EmbedBuilder as MessageEmbed } from 'discord.js'
+import { GuildMember, EmbedBuilder as EmbedBuilder } from 'discord.js'
 import { ButtonInteractionExtend } from '../../../events/client/interactionCreate.js'
 import { messageHelper } from '../../../handlers/messageHandler.js'
 import Client from '../../../structures/Client.js'
@@ -13,7 +13,7 @@ export default {
         if (!player)
             return message.sendEphemeralMessage(
                 {
-                    embeds: new MessageEmbed().setColor(15548997).setFooter({
+                    embeds: new EmbedBuilder().setColor(15548997).setFooter({
                         text: interaction.language.QUEUE[1],
                         iconURL: interaction.user.displayAvatarURL(),
                     }),
@@ -22,13 +22,13 @@ export default {
             )
         try {
             interaction.member = interaction.member as GuildMember
-            const errorEmbed = new MessageEmbed()
+            const errorEmbed = new EmbedBuilder()
                 .setColor(15548997)
                 .setFooter({ text: interaction.language.QUEUE[10], iconURL: interaction.user.displayAvatarURL() })
             if (!interaction.member.voice) return message.sendEphemeralMessage({ embeds: errorEmbed }, false)
             let vc = player?.voiceChannel
             if (interaction.member?.voice.channelId != vc?.id) {
-                const errorembed = new MessageEmbed().setColor(client.settings.color).setFooter({
+                const errorembed = new EmbedBuilder().setColor(client.settings.color).setFooter({
                     text: interaction.language.QUEUE[10],
                     iconURL: interaction.user.displayAvatarURL(),
                 })

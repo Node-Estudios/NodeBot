@@ -1,5 +1,5 @@
 import { DiscordTogether } from 'discord-together'
-import { ColorResolvable, MessageEmbed } from 'discord.js'
+import { ColorResolvable, EmbedBuilder } from 'discord.js'
 import Command from '../../structures/Command.js'
 module.exports = class sesions extends Command {
     constructor(client) {
@@ -67,7 +67,7 @@ module.exports = class sesions extends Command {
             if (!Guild) return
             if (!Member) return
             if (!channel) {
-                const errorembed = new MessageEmbed()
+                const errorembed = new EmbedBuilder()
                     .setColor('RED')
                     .setTitle(interaction.language.ERROREMBED)
                     .setDescription(interaction.language.BETRAYAL[2])
@@ -85,7 +85,7 @@ module.exports = class sesions extends Command {
                     case 'youtube':
                         client.discordTogether.createTogetherCode(channel.id, 'youtube', 0).then(async invite => {
                             if (invite.code === 50013) {
-                                const errorembed = new MessageEmbed()
+                                const errorembed = new EmbedBuilder()
                                     .setColor('RED')
                                     .setTitle(interaction.language.ERROREMBED)
                                     .setDescription(interaction.language.CREATEINVITEPERMS)
@@ -98,9 +98,9 @@ module.exports = class sesions extends Command {
                                     ephemeral: true,
                                 })
                             }
-                            const embed = new MessageEmbed()
+                            const embed = new EmbedBuilder()
                             if (!invite.code) {
-                                const errorembed = new MessageEmbed()
+                                const errorembed = new EmbedBuilder()
                                     .setColor('RED')
                                     .setTitle(interaction.language.ERROREMBED)
                                     .setDescription(interaction.language.BETRAYAL[2])
@@ -124,7 +124,7 @@ module.exports = class sesions extends Command {
                     case 'betrayal':
                         client.discordTogether.createTogetherCode(channel.id, 'betrayal', 0).then(async invite => {
                             if (invite.code === 50013) {
-                                const errorembed = new MessageEmbed()
+                                const errorembed = new EmbedBuilder()
                                     .setColor('RED')
                                     .setTitle(interaction.language.ERROREMBED)
                                     .setDescription(interaction.language.CREATEINVITEPERMS)
@@ -137,9 +137,9 @@ module.exports = class sesions extends Command {
                                     ephemeral: true,
                                 })
                             }
-                            const embed = new MessageEmbed()
+                            const embed = new EmbedBuilder()
                             if (!invite.code) {
-                                const errorembed = new MessageEmbed()
+                                const errorembed = new EmbedBuilder()
                                     .setColor('RED')
                                     .setTitle(interaction.language.ERROREMBED)
                                     .setDescription(interaction.language.BETRAYAL[2])
@@ -163,7 +163,7 @@ module.exports = class sesions extends Command {
                     case 'poker':
                         client.discordTogether.createTogetherCode(channel.id, 'poker', 0).then(async invite => {
                             if (invite.code === 50013) {
-                                const errorembed = new MessageEmbed()
+                                const errorembed = new EmbedBuilder()
                                     .setColor('RED')
                                     .setTitle(interaction.language.ERROREMBED)
                                     .setDescription(interaction.language.CREATEINVITEPERMS)
@@ -176,9 +176,9 @@ module.exports = class sesions extends Command {
                                     ephemeral: true,
                                 })
                             }
-                            const embed = new MessageEmbed()
+                            const embed = new EmbedBuilder()
                             if (!invite.code) {
-                                const errorembed = new MessageEmbed()
+                                const errorembed = new EmbedBuilder()
                                     .setColor('RED')
                                     .setTitle(interaction.language.ERROREMBED)
                                     .setDescription(interaction.language.BETRAYAL[2])
@@ -202,7 +202,7 @@ module.exports = class sesions extends Command {
                     case 'fishing':
                         client.discordTogether.createTogetherCode(channel.id, 'fishing', 0).then(async invite => {
                             if (invite.code === 50013) {
-                                const errorembed = new MessageEmbed()
+                                const errorembed = new EmbedBuilder()
                                     .setColor('RED')
                                     .setTitle(interaction.language.ERROREMBED)
                                     .setDescription(interaction.language.CREATEINVITEPERMS)
@@ -215,9 +215,9 @@ module.exports = class sesions extends Command {
                                     ephemeral: true,
                                 })
                             }
-                            const embed = new MessageEmbed()
+                            const embed = new EmbedBuilder()
                             if (!invite.code) {
-                                const errorembed = new MessageEmbed()
+                                const errorembed = new EmbedBuilder()
                                     .setColor('RED')
                                     .setTitle(interaction.language.ERROREMBED)
                                     .setDescription(interaction.language.BETRAYAL[2])
@@ -241,7 +241,7 @@ module.exports = class sesions extends Command {
                     case 'chess':
                         client.discordTogether.createTogetherCode(channel.id, 'chess', 0).then(async invite => {
                             if (invite.code === 50013) {
-                                const errorembed = new MessageEmbed()
+                                const errorembed = new EmbedBuilder()
                                     .setColor('RED')
                                     .setTitle(interaction.language.ERROREMBED)
                                     .setDescription(interaction.language.CREATEINVITEPERMS)
@@ -254,9 +254,9 @@ module.exports = class sesions extends Command {
                                     ephemeral: true,
                                 })
                             }
-                            const embed = new MessageEmbed()
+                            const embed = new EmbedBuilder()
                             if (!invite.code) {
-                                const errorembed = new MessageEmbed()
+                                const errorembed = new EmbedBuilder()
                                     .setColor('RED')
                                     .setTitle(interaction.language.ERROREMBED)
                                     .setDescription(interaction.language.BETRAYAL[2])
@@ -284,7 +284,7 @@ module.exports = class sesions extends Command {
             //   console.error(e);
             //   message.channel.send({
             //     embeds: [
-            //       new Discord.MessageEmbed()
+            //       new Discord.EmbedBuilder()
             //         .setColor("RED")
             //         .setTitle(interaction.language.ERROREMBED)
             //         .setDescription(interaction.language.fatal_error)

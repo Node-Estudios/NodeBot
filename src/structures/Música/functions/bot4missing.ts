@@ -1,11 +1,11 @@
-import { ColorResolvable, MessageActionRow, MessageButton, MessageEmbed } from 'discord.js';
+import { ColorResolvable, MessageActionRow, MessageButton, EmbedBuilder } from 'discord.js'
 export default async function bot4missing(client, interaction, data, reqEndpoint) {
-    const embed = new MessageEmbed().setColor(process.env.bot1Embed_Color as ColorResolvable);
+    const embed = new EmbedBuilder().setColor(process.env.bot1Embed_Color as ColorResolvable)
 
-    const desc = interaction.language.NOMUSICBOTS;
+    const desc = interaction.language.NOMUSICBOTS
     const row = new MessageActionRow().addComponents(
         new MessageButton().setStyle('PRIMARY').setLabel(`Leer más`).setCustomId('readMore'),
-    );
+    )
 
     new Promise((resolve, reject) => {
         interaction.guild.members
@@ -17,16 +17,16 @@ export default async function bot4missing(client, interaction, data, reqEndpoint
                         interaction.guild.members
                             .fetch(process.env.bot4id)
                             .then(() => {
-                                embed.setDescription(desc);
-                                resolve(embed);
+                                embed.setDescription(desc)
+                                resolve(embed)
                             })
                             .catch(() => {
                                 embed.setDescription(
                                     desc +
-                                    '[Node4 <:logonodeazul:968094477866659850>](https://discord.com/api/oauth2/authorize?client_id=853888393917497384&permissions=137475966272&scope=bot)',
-                                );
-                                resolve(embed);
-                            });
+                                        '[Node4 <:logonodeazul:968094477866659850>](https://discord.com/api/oauth2/authorize?client_id=853888393917497384&permissions=137475966272&scope=bot)',
+                                )
+                                resolve(embed)
+                            })
                     })
                     .catch(() => {
                         interaction.guild.members
@@ -34,18 +34,18 @@ export default async function bot4missing(client, interaction, data, reqEndpoint
                             .then(() => {
                                 embed.setDescription(
                                     desc +
-                                    '[Node3 <:logonodenaranja:968094477019402292>](https://discord.com/api/oauth2/authorize?client_id=963954741837201540&permissions=137475966272&scope=bot)',
-                                );
-                                resolve(embed);
+                                        '[Node3 <:logonodenaranja:968094477019402292>](https://discord.com/api/oauth2/authorize?client_id=963954741837201540&permissions=137475966272&scope=bot)',
+                                )
+                                resolve(embed)
                             })
                             .catch(() => {
                                 embed.setDescription(
                                     desc +
-                                    '[Node3 <:logonodenaranja:968094477019402292>](https://discord.com/api/oauth2/authorize?client_id=963954741837201540&permissions=137475966272&scope=bot)\n\n[Node4 <:logonodeazul:968094477866659850>](https://discord.com/api/oauth2/authorize?client_id=853888393917497384&permissions=137475966272&scope=bot)',
-                                );
-                                resolve(embed);
-                            });
-                    });
+                                        '[Node3 <:logonodenaranja:968094477019402292>](https://discord.com/api/oauth2/authorize?client_id=963954741837201540&permissions=137475966272&scope=bot)\n\n[Node4 <:logonodeazul:968094477866659850>](https://discord.com/api/oauth2/authorize?client_id=853888393917497384&permissions=137475966272&scope=bot)',
+                                )
+                                resolve(embed)
+                            })
+                    })
             })
             .catch(() => {
                 interaction.guild.members
@@ -56,17 +56,17 @@ export default async function bot4missing(client, interaction, data, reqEndpoint
                             .then(() => {
                                 embed.setDescription(
                                     desc +
-                                    '[Node2 <:logonodemorado:968094477480771584>](https://discord.com/api/oauth2/authorize?client_id=963496530818506802&permissions=137475966272&scope=bot)',
-                                );
-                                resolve(embed);
+                                        '[Node2 <:logonodemorado:968094477480771584>](https://discord.com/api/oauth2/authorize?client_id=963496530818506802&permissions=137475966272&scope=bot)',
+                                )
+                                resolve(embed)
                             })
                             .catch(() => {
                                 embed.setDescription(
                                     desc +
-                                    '[Node2 <:logonodemorado:968094477480771584>](https://discord.com/api/oauth2/authorize?client_id=963496530818506802&permissions=137475966272&scope=bot)\n\n[Node4 <:logonodeazul:968094477866659850>](https://discord.com/api/oauth2/authorize?client_id=853888393917497384&permissions=137475966272&scope=bot)',
-                                );
-                                resolve(embed);
-                            });
+                                        '[Node2 <:logonodemorado:968094477480771584>](https://discord.com/api/oauth2/authorize?client_id=963496530818506802&permissions=137475966272&scope=bot)\n\n[Node4 <:logonodeazul:968094477866659850>](https://discord.com/api/oauth2/authorize?client_id=853888393917497384&permissions=137475966272&scope=bot)',
+                                )
+                                resolve(embed)
+                            })
                     })
                     .catch(() => {
                         interaction.guild.members
@@ -74,23 +74,23 @@ export default async function bot4missing(client, interaction, data, reqEndpoint
                             .then(() => {
                                 embed.setDescription(
                                     desc +
-                                    '[Node2 <:logonodemorado:968094477480771584>](https://discord.com/api/oauth2/authorize?client_id=963496530818506802&permissions=137475966272&scope=bot)\n\n[Node3 <:logonodenaranja:968094477019402292>](https://discord.com/api/oauth2/authorize?client_id=963954741837201540&permissions=137475966272&scope=bot)',
-                                );
-                                resolve(embed);
+                                        '[Node2 <:logonodemorado:968094477480771584>](https://discord.com/api/oauth2/authorize?client_id=963496530818506802&permissions=137475966272&scope=bot)\n\n[Node3 <:logonodenaranja:968094477019402292>](https://discord.com/api/oauth2/authorize?client_id=963954741837201540&permissions=137475966272&scope=bot)',
+                                )
+                                resolve(embed)
                             })
                             .catch(() => {
                                 embed.setDescription(
                                     desc +
-                                    '[Node2 <:logonodemorado:968094477480771584>](https://discord.com/api/oauth2/authorize?client_id=963496530818506802&permissions=137475966272&scope=bot)\n\n[Node3 <:logonodenaranja:968094477019402292>](https://discord.com/api/oauth2/authorize?client_id=963954741837201540&permissions=137475966272&scope=bot)\n\n[Node4 <:logonodeazul:968094477866659850>](https://discord.com/api/oauth2/authorize?client_id=853888393917497384&permissions=137475966272&scope=bot)',
-                                );
-                                resolve(embed);
-                            });
-                    });
-            });
+                                        '[Node2 <:logonodemorado:968094477480771584>](https://discord.com/api/oauth2/authorize?client_id=963496530818506802&permissions=137475966272&scope=bot)\n\n[Node3 <:logonodenaranja:968094477019402292>](https://discord.com/api/oauth2/authorize?client_id=963954741837201540&permissions=137475966272&scope=bot)\n\n[Node4 <:logonodeazul:968094477866659850>](https://discord.com/api/oauth2/authorize?client_id=853888393917497384&permissions=137475966272&scope=bot)',
+                                )
+                                resolve(embed)
+                            })
+                    })
+            })
     }).then(resEmbed => {
         interaction.editReply({
             embeds: [resEmbed],
             components: [row],
-        });
-    });
+        })
+    })
 }

@@ -1,4 +1,4 @@
-import { ColorResolvable, EmbedBuilder as MessageEmbed } from 'discord.js'
+import { ColorResolvable, EmbedBuilder as EmbedBuilder } from 'discord.js'
 import { ChatInputCommandInteractionExtended } from '../../../events/client/interactionCreate.js'
 import Client from '../../../structures/Client.js'
 import Command from '../../../structures/Command.js'
@@ -36,7 +36,7 @@ export default class roleinfo extends Command {
         const language = interaction.language
         const client = interaction.client as Client
         let role = interaction.options.getRole('role', true)
-        const rol = new MessageEmbed()
+        const rol = new EmbedBuilder()
             .setThumbnail(interaction.user.displayAvatarURL())
             .setTimestamp()
             .setColor((role.color as ColorResolvable) || ('#1DC44F' as ColorResolvable))

@@ -1,7 +1,7 @@
 import {
     ChannelType,
     ColorResolvable,
-    EmbedBuilder as MessageEmbed,
+    EmbedBuilder as EmbedBuilder,
     PermissionsBitField,
     TextChannel,
 } from 'discord.js'
@@ -83,7 +83,7 @@ export default class embed extends Command {
             descripcion = interaction.options.getString('description', true),
             color = interaction.options.getString('color', true) as ColorResolvable,
             titulo = interaction.options.getString('title', true)
-        var embed = new MessageEmbed().setDescription(`${descripcion}`).setColor(color).setTitle(titulo)
+        var embed = new EmbedBuilder().setDescription(`${descripcion}`).setColor(color).setTitle(titulo)
 
         if (
             !canal
@@ -105,7 +105,7 @@ export default class embed extends Command {
         //     console.error(e);
         //     message.channel.send({
         //         embeds: [
-        //             new Discord.MessageEmbed()
+        //             new Discord.EmbedBuilder()
         //                 .setColor("RED")
         //                 .setTitle(interaction.language.ERROREMBED)
         //                 .setDescription(interaction.language.fatal_error)

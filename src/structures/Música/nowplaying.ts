@@ -1,4 +1,4 @@
-import { MessageEmbed } from 'discord.js'
+import { EmbedBuilder } from 'discord.js'
 
 import Command from '../../structures/Command.js'
 
@@ -62,7 +62,7 @@ module.exports = class nowplaying extends Command {
             usedBotID = await getUsedBot(interaction)
         }
         if (!usedBotID) {
-            const errorembed = new MessageEmbed().setColor(15548997).setFooter(
+            const errorembed = new EmbedBuilder().setColor(15548997).setFooter(
                 interaction.language.NOWPLAYING[2],
                 interaction.member.displayAvatarURL({
                     dynamic: true,
@@ -124,13 +124,13 @@ module.exports = class nowplaying extends Command {
                                 })
                             })
                             .catch(() => {
-                                const errorembed = new MessageEmbed().setColor(15548997).setFooter(
+                                const errorembed = new EmbedBuilder().setColor(15548997).setFooter(
                                     getRandomPhrase(interaction.language.INTERNALERROR),
                                     interaction.member.displayAvatarURL({
                                         dynamic: true,
                                     }),
                                 )
-                                const errorembed2 = new MessageEmbed().setColor(15548997).setFooter(
+                                const errorembed2 = new EmbedBuilder().setColor(15548997).setFooter(
                                     'Error en el comando nowplaying (1)',
                                     client.user.displayAvatarURL({
                                         dynamic: true,
@@ -158,13 +158,13 @@ module.exports = class nowplaying extends Command {
                                 })
                             })
                             .catch(() => {
-                                const errorembed = new MessageEmbed().setColor(15548997).setFooter(
+                                const errorembed = new EmbedBuilder().setColor(15548997).setFooter(
                                     getRandomPhrase(interaction.language.INTERNALERROR),
                                     interaction.member.displayAvatarURL({
                                         dynamic: true,
                                     }),
                                 )
-                                const errorembed2 = new MessageEmbed().setColor(15548997).setFooter(
+                                const errorembed2 = new EmbedBuilder().setColor(15548997).setFooter(
                                     'Error en el comando nowplaying (2)',
                                     client.user.displayAvatarURL({
                                         dynamic: true,
@@ -192,13 +192,13 @@ module.exports = class nowplaying extends Command {
                                 })
                             })
                             .catch(() => {
-                                const errorembed = new MessageEmbed().setColor(15548997).setFooter(
+                                const errorembed = new EmbedBuilder().setColor(15548997).setFooter(
                                     getRandomPhrase(interaction.language.INTERNALERROR),
                                     interaction.member.displayAvatarURL({
                                         dynamic: true,
                                     }),
                                 )
-                                const errorembed2 = new MessageEmbed().setColor(15548997).setFooter(
+                                const errorembed2 = new EmbedBuilder().setColor(15548997).setFooter(
                                     'Error en el comando nowplaying (3)',
                                     client.user.displayAvatarURL({
                                         dynamic: true,
@@ -213,7 +213,7 @@ module.exports = class nowplaying extends Command {
                 }
             })
             .catch(e => {
-                const errorembed = new MessageEmbed().setColor(15548997).setFooter(
+                const errorembed = new EmbedBuilder().setColor(15548997).setFooter(
                     interaction.member.user.username + '#' + interaction.member.user.discriminator,
                     interaction.member.displayAvatarURL({
                         dynamic: true,

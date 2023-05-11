@@ -1,4 +1,4 @@
-import { EmbedBuilder as MessageEmbed } from 'discord.js'
+import { EmbedBuilder as EmbedBuilder } from 'discord.js'
 import { ChatInputCommandInteractionExtended } from '../../../events/client/interactionCreate.js'
 import Client from '../../../structures/Client.js'
 import Command from '../../../structures/Command.js'
@@ -39,7 +39,7 @@ export default class ball extends Command {
         if (!question.endsWith('?'))
             return interaction.reply({
                 embeds: [
-                    new MessageEmbed()
+                    new EmbedBuilder()
                         .setColor('Red')
                         .setTitle(language.ERROREMBED)
                         .setDescription(language.QUESTIONBALL[3])
@@ -52,7 +52,7 @@ export default class ball extends Command {
 
         return interaction.reply({
             embeds: [
-                new MessageEmbed()
+                new EmbedBuilder()
                     .setFields(
                         {
                             name: language.QUESTIONBALL[1],

@@ -1,4 +1,4 @@
-import { EmbedBuilder as MessageEmbed } from 'discord.js'
+import { EmbedBuilder as EmbedBuilder } from 'discord.js'
 import { ChatInputCommandInteractionExtended } from '../../../events/client/interactionCreate.js'
 import Client from '../../../structures/Client.js'
 import Command from '../../../structures/Command.js'
@@ -39,7 +39,7 @@ export default class avatar extends Command {
         const member = interaction.options.getUser('user') ?? interaction.user
         interaction.reply({
             embeds: [
-                new MessageEmbed()
+                new EmbedBuilder()
                     .setColor(client.settings.color)
                     .setImage(member.displayAvatarURL({ size: 4096 }))
                     .setFooter({ text: `Aqui tienes el avatar de <@${member.id}>!` }),

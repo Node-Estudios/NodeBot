@@ -1,4 +1,4 @@
-import { GuildMember, EmbedBuilder as MessageEmbed, TextChannel, VoiceChannel } from 'discord.js'
+import { GuildMember, EmbedBuilder as EmbedBuilder, TextChannel, VoiceChannel } from 'discord.js'
 import performanceMeters from '../../../cache/performanceMeters.js'
 import { ChatInputCommandInteractionExtended } from '../../../events/client/interactionCreate.js'
 import { messageHelper } from '../../../handlers/messageHandler.js'
@@ -81,7 +81,7 @@ export default class play extends Command {
         if (player.voiceChannel.id !== interaction.member.voice.channel?.id) {
             return interaction.reply({
                 embeds: [
-                    new MessageEmbed().setColor(15548997).setFooter({
+                    new EmbedBuilder().setColor(15548997).setFooter({
                         text: interaction.language.PLAY[2],
                         iconURL: client.user?.displayAvatarURL(),
                     }),
@@ -163,7 +163,7 @@ export default class play extends Command {
                 logger.error(e)
                 interaction.reply({
                     embeds: [
-                        new MessageEmbed().setColor(15548997).setFooter({
+                        new EmbedBuilder().setColor(15548997).setFooter({
                             text: interaction.language.PLAY[9],
                             iconURL: client.user?.displayAvatarURL(),
                         }),
@@ -185,7 +185,7 @@ export default class play extends Command {
         }
         player.queue.shuffle()
         if (!player.playing && !player.paused) player.play()
-        const embed = new MessageEmbed().setColor(client.settings.color).setFields(
+        const embed = new EmbedBuilder().setColor(client.settings.color).setFields(
             {
                 name: interaction.language.PLAY[4],
                 value: player.queue.current!.author,

@@ -1,4 +1,4 @@
-import { ColorResolvable, CommandInteraction, MessageEmbed } from 'discord.js'
+import { ColorResolvable, CommandInteraction, EmbedBuilder } from 'discord.js'
 import simplestDiscordWebhook from 'simplest-discord-webhook'
 import Command from '../../structures/Command.js'
 import getRandomPhrase from '../../utils/getRandomPhrase.js'
@@ -39,7 +39,7 @@ module.exports = class automix extends Command {
     }
     override async run(interaction: CommandInteraction<'cached'>) {
         const client = interaction.client as Client
-        const embed = new MessageEmbed()
+        const embed = new EmbedBuilder()
             .setDescription(interaction.language.AUTOMIX[2])
             .setColor(process.env.bot1Embed_Color as ColorResolvable)
             .setFooter(
@@ -52,7 +52,7 @@ module.exports = class automix extends Command {
             embeds: [embed],
         })
         if (!interaction.member.voice.channel) {
-            const errorembed = new MessageEmbed().setColor(15548997).setFooter(
+            const errorembed = new EmbedBuilder().setColor(15548997).setFooter(
                 getRandomPhrase(interaction.language.AUTOMIX[1]),
                 interaction.member.displayAvatarURL({
                     dynamic: true,
@@ -106,7 +106,7 @@ module.exports = class automix extends Command {
                                         })
                                     })
                                     .catch(() => {
-                                        const errorembed = new MessageEmbed().setColor(15548997).setFooter(
+                                        const errorembed = new EmbedBuilder().setColor(15548997).setFooter(
                                             'El bot2 ha dado error en el automix',
                                             client.user.displayAvatarURL({
                                                 dynamic: true,
@@ -133,7 +133,7 @@ module.exports = class automix extends Command {
                                         })
                                     })
                                     .catch(() => {
-                                        const errorembed = new MessageEmbed().setColor(15548997).setFooter(
+                                        const errorembed = new EmbedBuilder().setColor(15548997).setFooter(
                                             'El bot3 ha dado error en el automix',
                                             client.user.displayAvatarURL({
                                                 dynamic: true,
@@ -159,7 +159,7 @@ module.exports = class automix extends Command {
                                         })
                                     })
                                     .catch(() => {
-                                        const errorembed = new MessageEmbed().setColor(15548997).setFooter(
+                                        const errorembed = new EmbedBuilder().setColor(15548997).setFooter(
                                             'El bot4 ha dado error en el automix',
                                             client.user.displayAvatarURL({
                                                 dynamic: true,
@@ -175,7 +175,7 @@ module.exports = class automix extends Command {
                     bot1Availability = true
                 }
             })
-            .catch(e => { })
+            .catch(e => {})
         if (bot1Availability || addToQueue) {
             fetch(`http://${process.env.IP}:${process.env.bot1Port}/api/v1/automix`, {
                 method: 'POST',
@@ -193,7 +193,7 @@ module.exports = class automix extends Command {
                     })
                 })
                 .catch(() => {
-                    const errorembed = new MessageEmbed().setColor(15548997).setFooter(
+                    const errorembed = new EmbedBuilder().setColor(15548997).setFooter(
                         'El bot1 ha dado error en el automix',
                         client.user.displayAvatarURL({
                             dynamic: true,
@@ -235,7 +235,7 @@ module.exports = class automix extends Command {
                         })
                     })
                     .catch(() => {
-                        const errorembed = new MessageEmbed().setColor(15548997).setFooter(
+                        const errorembed = new EmbedBuilder().setColor(15548997).setFooter(
                             'El bot2 ha dado error en el automix',
                             client.user.displayAvatarURL({
                                 dynamic: true,
@@ -277,7 +277,7 @@ module.exports = class automix extends Command {
                             })
                         })
                         .catch(() => {
-                            const errorembed = new MessageEmbed().setColor(15548997).setFooter(
+                            const errorembed = new EmbedBuilder().setColor(15548997).setFooter(
                                 'El bot3 ha dado error en el automix',
                                 client.user.displayAvatarURL({
                                     dynamic: true,
@@ -318,7 +318,7 @@ module.exports = class automix extends Command {
                                 })
                             })
                             .catch(() => {
-                                const errorembed = new MessageEmbed().setColor(15548997).setFooter(
+                                const errorembed = new EmbedBuilder().setColor(15548997).setFooter(
                                     'El bot4 ha dado error en el automix',
                                     client.user.displayAvatarURL({
                                         dynamic: true,
@@ -328,7 +328,7 @@ module.exports = class automix extends Command {
                                 bot4missing(client, interaction, data, 'automix')
                             })
                     } else {
-                        const errorembed = new MessageEmbed().setColor(15548997).setFooter(
+                        const errorembed = new EmbedBuilder().setColor(15548997).setFooter(
                             'El bot4 ha dado error en el automix',
                             client.user.displayAvatarURL({
                                 dynamic: true,

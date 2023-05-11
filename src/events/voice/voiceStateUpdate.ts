@@ -1,4 +1,4 @@
-// import { ColorResolvable, MessageEmbed, VoiceState } from 'discord.js'
+// import { ColorResolvable, EmbedBuilder, VoiceState } from 'discord.js'
 // import Client from '../../structures/Client.js'
 
 // export default async function (oldState: VoiceState, newState: VoiceState) {
@@ -22,7 +22,7 @@
 
 //     const msg = await player.textChannel.send({
 //         embeds: [
-//             new MessageEmbed()
+//             new EmbedBuilder()
 //                 .setDescription(
 //                     `${interaction.language.VOICESTATEUPDATE[1]}${oldState.guild.me.voice.channel.id}${interaction.language.VOICESTATEUPDATE[2]
 //                     }${300000 / 60 / 1000}${interaction.language.VOICESTATEUPDATE[3]}`,
@@ -46,7 +46,7 @@
 
 //     return msg.edit({
 //         embeds: [
-//             new MessageEmbed()
+//             new EmbedBuilder()
 //                 .setDescription(
 //                     `${interaction.language.VOICESTATEUPDATE[4]}${oldState.guild.me.voice.channel.id}${interaction.language.VOICESTATEUPDATE[5]}`,
 //                 )

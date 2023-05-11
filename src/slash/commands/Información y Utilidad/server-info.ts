@@ -1,4 +1,4 @@
-import { EmbedBuilder as MessageEmbed } from 'discord.js'
+import { EmbedBuilder as EmbedBuilder } from 'discord.js'
 import { ChatInputCommandInteractionExtended } from '../../../events/client/interactionCreate.js'
 import Client from '../../../structures/Client.js'
 import Command from '../../../structures/Command.js'
@@ -71,7 +71,7 @@ export default class serverinfo extends Command {
         // const banner = interaction.guild.banner
 
         const iconURL = interaction.guild.iconURL() ?? ''
-        const embed = new MessageEmbed()
+        const embed = new EmbedBuilder()
             .setColor(client.settings.color)
             .setThumbnail(iconURL)
             .setTimestamp()

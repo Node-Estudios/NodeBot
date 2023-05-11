@@ -1,4 +1,4 @@
-import { Client, CommandInteraction, MessageEmbed } from 'discord.js'
+import { Client, CommandInteraction, EmbedBuilder } from 'discord.js'
 import Command from '../../structures/command.js'
 import TwitchModel from '../../models/twitch.js'
 import axios from 'axios'
@@ -471,7 +471,7 @@ module.exports = class twitch extends Command {
                                                             '{link}',
                                                             `https://twitch.tv/${res.data.data[0].display_name}`,
                                                         )
-                                                    const embed = new MessageEmbed()
+                                                    const embed = new EmbedBuilder()
                                                         .setTitle(tituloEmbed)
                                                         .setColor(color)
                                                         .setDescription(descripcionEmbed)
@@ -614,7 +614,7 @@ module.exports = class twitch extends Command {
                                                 .toString()
                                                 .replace('{streamer}', s.display_name)
                                                 .replace('{link}', `https://twitch.tv/${s.display_name}`)
-                                            const embed = new MessageEmbed()
+                                            const embed = new EmbedBuilder()
                                                 .setTitle(tituloEmbed)
                                                 .setColor(color)
                                                 .setDescription(descripcionEmbed)

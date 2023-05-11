@@ -1,4 +1,4 @@
-import { ColorResolvable, EmbedBuilder as MessageEmbed } from 'discord.js'
+import { ColorResolvable, EmbedBuilder as EmbedBuilder } from 'discord.js'
 import { ChatInputCommandInteractionExtended } from '../../../events/client/interactionCreate.js'
 import Client from '../../../structures/Client.js'
 import Command from '../../../structures/Command.js'
@@ -47,7 +47,7 @@ export default class github extends Command {
         if (!account?.id)
             return interaction.reply({
                 embeds: [
-                    new MessageEmbed()
+                    new EmbedBuilder()
                         .setColor('Red')
                         .setTitle(language.ERROREMBED)
                         .setDescription(language.INSTAGRAM[13])
@@ -58,7 +58,7 @@ export default class github extends Command {
                 ],
             })
 
-        const embed = new MessageEmbed()
+        const embed = new EmbedBuilder()
             .setDescription('')
             .setColor(process.env.bot1Embed_Color as ColorResolvable)
             .setThumbnail(account.avatar_url)

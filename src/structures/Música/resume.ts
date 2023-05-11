@@ -1,11 +1,11 @@
-import { Client, CommandInteraction, MessageEmbed } from 'discord.js';
+import { Client, CommandInteraction, EmbedBuilder } from 'discord.js'
 
-import Command from '../../structures/command.js';
+import Command from '../../structures/command.js'
 
-import simplestDiscordWebhook from 'simplest-discord-webhook';
-import getRandomPhrase from '../../utils/getRandomPhrase';
-import getUsedBot from '../../utils/getUsedBot';
-let webhookClient = new simplestDiscordWebhook(process.env.errorWebhookURL);
+import simplestDiscordWebhook from 'simplest-discord-webhook'
+import getRandomPhrase from '../../utils/getRandomPhrase'
+import getUsedBot from '../../utils/getUsedBot'
+let webhookClient = new simplestDiscordWebhook(process.env.errorWebhookURL)
 module.exports = class resume extends Command {
     constructor(client) {
         super(client, {
@@ -18,7 +18,7 @@ module.exports = class resume extends Command {
                 'es-ES': 'Reanuda el reproductor actual.',
             },
             cooldown: 5,
-        });
+        })
     }
     /**,
      * @param {Client} client
@@ -26,38 +26,38 @@ module.exports = class resume extends Command {
      * @param {String[]} args
      */
     async run(client, interaction, args) {
-        let usedBotID;
-        let option = interaction.options.getString('bot');
+        let usedBotID
+        let option = interaction.options.getString('bot')
         if (option) {
-            usedBotID = option;
+            usedBotID = option
         } else {
-            usedBotID = await getUsedBot(interaction);
+            usedBotID = await getUsedBot(interaction)
         }
 
         if (!usedBotID) {
-            const errorembed = new MessageEmbed().setColor(15548997).setFooter(
+            const errorembed = new EmbedBuilder().setColor(15548997).setFooter(
                 interaction.language.NOWPLAYING[2],
                 interaction.member.displayAvatarURL({
                     dynamic: true,
                 }),
-            );
+            )
             return interaction.editReply({
                 embeds: [errorembed],
-            });
+            })
         }
 
-        const data: any[] = [];
+        const data: any[] = []
 
-        data.push(interaction.member.voice);
-        data.push(interaction.guild.id);
-        data.push(interaction.member.user.username);
-        data.push(interaction.member.user.discriminator);
+        data.push(interaction.member.voice)
+        data.push(interaction.guild.id)
+        data.push(interaction.member.user.username)
+        data.push(interaction.member.user.discriminator)
         data.push(
             interaction.member.displayAvatarURL({
                 dynamic: true,
             }),
-        );
-        data.push(interaction.guild.shardId);
+        )
+        data.push(interaction.guild.shardId)
 
         switch (usedBotID) {
             case process.env.bot1id:
@@ -73,27 +73,27 @@ module.exports = class resume extends Command {
                     .then(embed => {
                         interaction.editReply({
                             embeds: [embed],
-                        });
+                        })
                     })
                     .catch(() => {
-                        const errorembed = new MessageEmbed().setColor(15548997).setFooter(
+                        const errorembed = new EmbedBuilder().setColor(15548997).setFooter(
                             getRandomPhrase(interaction.language.INTERNALERROR),
                             interaction.member.displayAvatarURL({
                                 dynamic: true,
                             }),
-                        );
-                        const errorembed2 = new MessageEmbed().setColor(15548997).setFooter(
+                        )
+                        const errorembed2 = new EmbedBuilder().setColor(15548997).setFooter(
                             'Error en el comando resume (1)',
                             client.user.displayAvatarURL({
                                 dynamic: true,
                             }),
-                        );
-                        webhookClient.send(errorembed2);
+                        )
+                        webhookClient.send(errorembed2)
                         interaction.editReply({
                             embeds: [errorembed],
-                        });
-                    });
-                break;
+                        })
+                    })
+                break
             case process.env.bot2id:
                 fetch(`http://${process.env.IP}:${process.env.bot2Port}/api/v1/resume`, {
                     method: 'POST',
@@ -107,27 +107,27 @@ module.exports = class resume extends Command {
                     .then(embed => {
                         interaction.editReply({
                             embeds: [embed],
-                        });
+                        })
                     })
                     .catch(() => {
-                        const errorembed = new MessageEmbed().setColor(15548997).setFooter(
+                        const errorembed = new EmbedBuilder().setColor(15548997).setFooter(
                             getRandomPhrase(interaction.language.INTERNALERROR),
                             interaction.member.displayAvatarURL({
                                 dynamic: true,
                             }),
-                        );
-                        const errorembed2 = new MessageEmbed().setColor(15548997).setFooter(
+                        )
+                        const errorembed2 = new EmbedBuilder().setColor(15548997).setFooter(
                             'Error en el comando resume (2)',
                             client.user.displayAvatarURL({
                                 dynamic: true,
                             }),
-                        );
-                        webhookClient.send(errorembed2);
+                        )
+                        webhookClient.send(errorembed2)
                         interaction.editReply({
                             embeds: [errorembed],
-                        });
-                    });
-                break;
+                        })
+                    })
+                break
             case process.env.bot3id:
                 fetch(`http://${process.env.IP}:${process.env.bot3Port}/api/v1/resume`, {
                     method: 'POST',
@@ -141,27 +141,27 @@ module.exports = class resume extends Command {
                     .then(embed => {
                         interaction.editReply({
                             embeds: [embed],
-                        });
+                        })
                     })
                     .catch(() => {
-                        const errorembed = new MessageEmbed().setColor(15548997).setFooter(
+                        const errorembed = new EmbedBuilder().setColor(15548997).setFooter(
                             getRandomPhrase(interaction.language.INTERNALERROR),
                             interaction.member.displayAvatarURL({
                                 dynamic: true,
                             }),
-                        );
-                        const errorembed2 = new MessageEmbed().setColor(15548997).setFooter(
+                        )
+                        const errorembed2 = new EmbedBuilder().setColor(15548997).setFooter(
                             'Error en el comando resume (4)',
                             client.user.displayAvatarURL({
                                 dynamic: true,
                             }),
-                        );
-                        webhookClient.send(errorembed2);
+                        )
+                        webhookClient.send(errorembed2)
                         interaction.editReply({
                             embeds: [errorembed],
-                        });
-                    });
-                break;
+                        })
+                    })
+                break
             case process.env.bot4id:
                 fetch(`http://${process.env.IP}:${process.env.bot4Port}/api/v1/resume`, {
                     method: 'POST',
@@ -175,27 +175,27 @@ module.exports = class resume extends Command {
                     .then(embed => {
                         interaction.editReply({
                             embeds: [embed],
-                        });
+                        })
                     })
                     .catch(() => {
-                        const errorembed = new MessageEmbed().setColor(15548997).setFooter(
+                        const errorembed = new EmbedBuilder().setColor(15548997).setFooter(
                             getRandomPhrase(interaction.language.INTERNALERROR),
                             interaction.member.displayAvatarURL({
                                 dynamic: true,
                             }),
-                        );
-                        const errorembed2 = new MessageEmbed().setColor(15548997).setFooter(
+                        )
+                        const errorembed2 = new EmbedBuilder().setColor(15548997).setFooter(
                             'Error en el comando resume (4)',
                             client.user.displayAvatarURL({
                                 dynamic: true,
                             }),
-                        );
-                        webhookClient.send(errorembed2);
+                        )
+                        webhookClient.send(errorembed2)
                         interaction.editReply({
                             embeds: [errorembed],
-                        });
-                    });
-                break;
+                        })
+                    })
+                break
         }
     }
-};
+}

@@ -1,4 +1,4 @@
-import { EmbedBuilder as MessageEmbed } from 'discord.js'
+import { EmbedBuilder as EmbedBuilder } from 'discord.js'
 import performanceMeters from '../../../cache/performanceMeters.js'
 import { ChatInputCommandInteractionExtended } from '../../../events/client/interactionCreate.js'
 import Client from '../../../structures/Client.js'
@@ -32,7 +32,7 @@ export default class ping extends Command {
                 return interaction
                     .reply({
                         embeds: [
-                            new MessageEmbed()
+                            new EmbedBuilder()
                                 .setColor('Green')
                                 .setFields(
                                     { name: `API`, value: `${results[0].ping}ms`, inline: true },

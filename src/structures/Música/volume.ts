@@ -1,4 +1,4 @@
-import { Client, CommandInteraction, MessageEmbed } from 'discord.js'
+import { Client, CommandInteraction, EmbedBuilder } from 'discord.js'
 
 import simplestDiscordWebhook from 'simplest-discord-webhook'
 import Command from '../../structures/command'
@@ -42,7 +42,7 @@ module.exports = class volume extends Command {
         let usedBotID = await getUsedBot(interaction)
 
         if (!usedBotID) {
-            const errorembed = new MessageEmbed().setColor(15548997).setFooter(
+            const errorembed = new EmbedBuilder().setColor(15548997).setFooter(
                 getRandomPhrase(interaction.language.SKIP[1]),
                 interaction.member.displayAvatarURL({
                     dynamic: true,
@@ -85,13 +85,13 @@ module.exports = class volume extends Command {
                         })
                     })
                     .catch(() => {
-                        const errorembed = new MessageEmbed().setColor(15548997).setFooter(
+                        const errorembed = new EmbedBuilder().setColor(15548997).setFooter(
                             getRandomPhrase(interaction.language.INTERNALERROR),
                             interaction.member.displayAvatarURL({
                                 dynamic: true,
                             }),
                         )
-                        const errorembed2 = new MessageEmbed().setColor(15548997).setFooter(
+                        const errorembed2 = new EmbedBuilder().setColor(15548997).setFooter(
                             'Error en el comando volume (1)',
                             client.user.displayAvatarURL({
                                 dynamic: true,
@@ -119,13 +119,13 @@ module.exports = class volume extends Command {
                         })
                     })
                     .catch(() => {
-                        const errorembed = new MessageEmbed().setColor(15548997).setFooter(
+                        const errorembed = new EmbedBuilder().setColor(15548997).setFooter(
                             getRandomPhrase(interaction.language.INTERNALERROR),
                             interaction.member.displayAvatarURL({
                                 dynamic: true,
                             }),
                         )
-                        const errorembed2 = new MessageEmbed().setColor(15548997).setFooter(
+                        const errorembed2 = new EmbedBuilder().setColor(15548997).setFooter(
                             'Error en el comando volume (2)',
                             client.user.displayAvatarURL({
                                 dynamic: true,
@@ -153,13 +153,13 @@ module.exports = class volume extends Command {
                         })
                     })
                     .catch(() => {
-                        const errorembed = new MessageEmbed().setColor(15548997).setFooter(
+                        const errorembed = new EmbedBuilder().setColor(15548997).setFooter(
                             getRandomPhrase(interaction.language.INTERNALERROR),
                             interaction.member.displayAvatarURL({
                                 dynamic: true,
                             }),
                         )
-                        const errorembed2 = new MessageEmbed().setColor(15548997).setFooter(
+                        const errorembed2 = new EmbedBuilder().setColor(15548997).setFooter(
                             'Error en el comando volume (3)',
                             client.user.displayAvatarURL({
                                 dynamic: true,
@@ -187,13 +187,13 @@ module.exports = class volume extends Command {
                         })
                     })
                     .catch(() => {
-                        const errorembed = new MessageEmbed().setColor(15548997).setFooter(
+                        const errorembed = new EmbedBuilder().setColor(15548997).setFooter(
                             getRandomPhrase(interaction.language.INTERNALERROR),
                             interaction.member.displayAvatarURL({
                                 dynamic: true,
                             }),
                         )
-                        const errorembed2 = new MessageEmbed().setColor(15548997).setFooter(
+                        const errorembed2 = new EmbedBuilder().setColor(15548997).setFooter(
                             'Error en el comando volume (4)',
                             client.user.displayAvatarURL({
                                 dynamic: true,

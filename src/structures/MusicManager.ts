@@ -7,7 +7,7 @@ import {
     GuildMember,
     ActionRowBuilder as MessageActionRow,
     ButtonBuilder as MessageButton,
-    EmbedBuilder as MessageEmbed,
+    EmbedBuilder as EmbedBuilder,
     TextChannel,
     VoiceChannel,
 } from 'discord.js'
@@ -101,7 +101,7 @@ export default class MusicManager extends EventEmitter {
                     .setCustomId('queueMusic'),
             )
 
-            const embed = new MessageEmbed().setColor(client.settings.color)
+            const embed = new EmbedBuilder().setColor(client.settings.color)
             // console.log(song)
             if (song.platform === 'Youtube') {
                 embed
@@ -149,7 +149,7 @@ export default class MusicManager extends EventEmitter {
                     .setLabel(language.PLAYER['queueMusic'])
                     .setCustomId('queueMusic'),
             )
-            const embed = new MessageEmbed().setColor(client.settings.color)
+            const embed = new EmbedBuilder().setColor(client.settings.color)
             if (song.platform === 'Youtube') {
                 embed
                     .setThumbnail(`https://img.youtube.com/vi/${song.id}/maxresdefault.jpg`)
@@ -218,7 +218,7 @@ export default class MusicManager extends EventEmitter {
     }
     async queueEnd(player: Player) {
         // let language = await languageCache.get(player.language)
-        const embed = new MessageEmbed()
+        const embed = new EmbedBuilder()
             .setColor(client.settings.color)
             .setDescription(
                 `Ha terminado ` +

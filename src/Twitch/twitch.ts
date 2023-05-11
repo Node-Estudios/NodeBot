@@ -7,7 +7,7 @@ import logger from '../utils/logger.js'
 import TwitchModel from '../models/twitch'
 // TODO? use global client?
 import client from '../bot.js'
-import { MessageEmbed, TextChannel } from 'discord.js'
+import { EmbedBuilder, TextChannel } from 'discord.js'
 
 logger.debug('Twitch Iniciado Correctamente')
 app.get('/', (req, res) => {
@@ -87,7 +87,7 @@ app.post('/webhooks/callback/', async (req, res) => {
                                 .toString()
                                 .replace('{streamer}', context.s.display_name)
                                 .replace('{link}', `https://twitch.tv/${context.s.display_name}`)
-                            const embed = new MessageEmbed()
+                            const embed = new EmbedBuilder()
                                 .setTitle(tituloEmbed)
                                 .setColor(context.guild.customMessage.embed.color)
                                 .setDescription(descripcionEmbed)

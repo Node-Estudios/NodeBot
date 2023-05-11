@@ -1,5 +1,5 @@
-import { Client, CommandInteraction, MessageEmbed, ColorResolvable } from 'discord.js';
-import Command from '../../structures/command.js';
+import { Client, CommandInteraction, EmbedBuilder, ColorResolvable } from 'discord.js'
+import Command from '../../structures/command.js'
 module.exports = class info extends Command {
     constructor(client) {
         super(client, {
@@ -12,7 +12,7 @@ module.exports = class info extends Command {
                 'es-ES': 'Información sobre el sistema multibot.',
             },
             cooldown: 5,
-        });
+        })
     }
     /**,
      * @param {Client} client
@@ -20,7 +20,7 @@ module.exports = class info extends Command {
      * @param {String[]} args
      */
     async run(client, interaction, args) {
-        const embed = new MessageEmbed()
+        const embed = new EmbedBuilder()
             .setColor(process.env.bot1Embed_Color as ColorResolvable)
             .setDescription(
                 `**¡Hola! ¿Buscabas una explicación verdad? Has llegado al sitio correcto <a:dankiespepe:967933614471909417>**`,
@@ -41,10 +41,10 @@ module.exports = class info extends Command {
                 interaction.member.displayAvatarURL({
                     dynamic: true,
                 }),
-            );
+            )
         await interaction.editReply({
             embeds: [embed],
             components: [],
-        });
+        })
     }
-};
+}

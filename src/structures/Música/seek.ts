@@ -1,4 +1,4 @@
-import { Client, CommandInteraction, MessageEmbed } from 'discord.js'
+import { Client, CommandInteraction, EmbedBuilder } from 'discord.js'
 
 import simplestDiscordWebhook from 'simplest-discord-webhook'
 import Command from '../../structures/command'
@@ -42,7 +42,7 @@ module.exports = class seek extends Command {
         let usedBotID = await getUsedBot(interaction)
 
         if (!usedBotID) {
-            const errorembed = new MessageEmbed().setColor(15548997).setFooter(
+            const errorembed = new EmbedBuilder().setColor(15548997).setFooter(
                 interaction.language.SKP[1],
                 interaction.member.displayAvatarURL({
                     dynamic: true,
@@ -85,13 +85,13 @@ module.exports = class seek extends Command {
                         })
                     })
                     .catch(() => {
-                        const errorembed = new MessageEmbed().setColor(15548997).setFooter(
+                        const errorembed = new EmbedBuilder().setColor(15548997).setFooter(
                             getRandomPhrase(interaction.language.INTERNALERROR),
                             interaction.member.displayAvatarURL({
                                 dynamic: true,
                             }),
                         )
-                        const errorembed2 = new MessageEmbed().setColor(15548997).setFooter(
+                        const errorembed2 = new EmbedBuilder().setColor(15548997).setFooter(
                             'Error en el comando seek (1)',
                             client.user.displayAvatarURL({
                                 dynamic: true,
@@ -119,13 +119,13 @@ module.exports = class seek extends Command {
                         })
                     })
                     .catch(() => {
-                        const errorembed = new MessageEmbed().setColor(15548997).setFooter(
+                        const errorembed = new EmbedBuilder().setColor(15548997).setFooter(
                             getRandomPhrase(interaction.language.INTERNALERROR),
                             interaction.member.displayAvatarURL({
                                 dynamic: true,
                             }),
                         )
-                        const errorembed2 = new MessageEmbed().setColor(15548997).setFooter(
+                        const errorembed2 = new EmbedBuilder().setColor(15548997).setFooter(
                             'Error en el comando seek (2)',
                             client.user.displayAvatarURL({
                                 dynamic: true,
@@ -153,13 +153,13 @@ module.exports = class seek extends Command {
                         })
                     })
                     .catch(() => {
-                        const errorembed = new MessageEmbed().setColor(15548997).setFooter(
+                        const errorembed = new EmbedBuilder().setColor(15548997).setFooter(
                             getRandomPhrase(interaction.language.INTERNALERROR),
                             interaction.member.displayAvatarURL({
                                 dynamic: true,
                             }),
                         )
-                        const errorembed2 = new MessageEmbed().setColor(15548997).setFooter(
+                        const errorembed2 = new EmbedBuilder().setColor(15548997).setFooter(
                             'Error en el comando seek (3)',
                             client.user.displayAvatarURL({
                                 dynamic: true,
@@ -187,13 +187,13 @@ module.exports = class seek extends Command {
                         })
                     })
                     .catch(() => {
-                        const errorembed = new MessageEmbed().setColor(15548997).setFooter(
+                        const errorembed = new EmbedBuilder().setColor(15548997).setFooter(
                             getRandomPhrase(interaction.language.INTERNALERROR),
                             interaction.member.displayAvatarURL({
                                 dynamic: true,
                             }),
                         )
-                        const errorembed2 = new MessageEmbed().setColor(15548997).setFooter(
+                        const errorembed2 = new EmbedBuilder().setColor(15548997).setFooter(
                             'Error en el comando seek (4)',
                             client.user.displayAvatarURL({
                                 dynamic: true,

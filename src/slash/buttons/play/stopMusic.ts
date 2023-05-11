@@ -1,4 +1,4 @@
-import { EmbedBuilder, GuildMember, EmbedBuilder as MessageEmbed } from 'discord.js'
+import { EmbedBuilder, GuildMember, EmbedBuilder as EmbedBuilder } from 'discord.js'
 import { ButtonInteractionExtend } from '../../../events/client/interactionCreate.js'
 import { messageHelper } from '../../../handlers/messageHandler.js'
 import Client from '../../../structures/Client.js'
@@ -36,7 +36,7 @@ export default {
                 )
             let vc = player?.voiceChannel
             if (interaction.member?.voice.channelId != vc?.id) {
-                const errorembed = new MessageEmbed().setColor(client.settings.color).setFooter({
+                const errorembed = new EmbedBuilder().setColor(client.settings.color).setFooter({
                     text: interaction.language.QUEUE[10],
                     iconURL: interaction.user.displayAvatarURL(),
                 })

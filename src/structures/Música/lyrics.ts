@@ -1,7 +1,7 @@
 // const {
 //   Client,
 //   CommandInteraction,
-//   MessageEmbed,
+//   EmbedBuilder,
 //   Discord,
 // } = require("discord.js");
 // const axios = require("axios");
@@ -44,7 +44,7 @@
 //     axios
 //       .get(`https://some-random-api.ml/lyrics?title=${titulo}`)
 //       .then((res) => {
-//         const embed = new MessageEmbed()
+//         const embed = new EmbedBuilder()
 //           .setTitle(res.data.title)
 //           .setURL(res.data.links.genius)
 //           .setColor(process.env.bot1Embed_Color)

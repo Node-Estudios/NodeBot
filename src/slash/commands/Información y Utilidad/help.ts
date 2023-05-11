@@ -1,4 +1,4 @@
-import { ColorResolvable, EmbedBuilder as MessageEmbed } from 'discord.js'
+import { ColorResolvable, EmbedBuilder as EmbedBuilder } from 'discord.js'
 import { ChatInputCommandInteractionExtended } from '../../../events/client/interactionCreate.js'
 import Client from '../../../structures/Client.js'
 import Command from '../../../structures/Command.js'
@@ -36,7 +36,7 @@ export default class help extends Command {
         const client = interaction.client as Client
         return interaction.reply({
             embeds: [
-                new MessageEmbed()
+                new EmbedBuilder()
                     .setColor(process.env.bot1Embed_Color as ColorResolvable)
                     .setDescription(`<a:pin:893553168259121172> ${language.HELP[5]} \`Node\`, ${language.HELP[6]}`)
                     .addFields({
@@ -58,7 +58,7 @@ export default class help extends Command {
 
         //     if (!command) {
         //         return interaction.reply({
-        //             embeds: [new MessageEmbed()
+        //             embeds: [new EmbedBuilder()
         //             .setColor('RED')
         //             .setTitle(interaction.language.ERROREMBED)
         //             .setDescription(name + interaction.language.HELP[25])
@@ -83,7 +83,7 @@ export default class help extends Command {
         //         )
 
         //     data.push(`**${interaction.language.HELP[19]}:** ${command.cooldown || 3} ${interaction.language.HELP[30]}(s)`)
-        //     let embed2 = new MessageEmbed()
+        //     let embed2 = new EmbedBuilder()
         //         .setTitle(interaction.language.HELP[20] + command.name + interaction.language.HELP[24])
         //         .setColor(process.env.bot1Embed_Color as ColorResolvable)
         //         .addFields(
