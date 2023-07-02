@@ -20,7 +20,7 @@
         "start": "doppler run -- node build/index.js",
         "run": "node build/index.js",
         "build": "tsc && doppler run --",
-        "dev": "concurrently \"tsc -w\" \"nodemon build/index.js\"",
+        "dev": "concurrently \"tsc -w\" \"nodemon doppler run -- node build/index.js\"",
         "tsc": "tsc",
         "tsc:watch": "nodemon --watch src --exec tsc"
     },
@@ -31,6 +31,7 @@
         "@sentry/node": "6.19.7",
         "axios": "0.26.1",
         "canvas": "2.11.2",
+        "concurrently": "^8.2.0",
         "cors": "2.8.5",
         "dd-trace": "3.20.0",
         "discord-hybrid-sharding": "github:meister03/discord-hybrid-sharding",
@@ -46,7 +47,7 @@
         "simplest-discord-webhook": "github:eliyya/simplest-discord-webhook#ts",
         "statcord.js": "3.4.3",
         "stripe": "12.4.0",
-        "yasha": "github:eliyya/yasha",
+        "yasha": "github:davidzeng0/yasha",
         "youtubei.js": "2.9.0"
     },
     "devDependencies": {

@@ -8,7 +8,6 @@ RUN apt-get install -y git
 RUN apt-get install -y ninja-build
 # RUN npm i --global protobuf-compiler
 RUN apt-get install -y libsodium-dev libtool
-RUN npm install -g npm@9.2.0
 # RUN apt-get update && apt-get install -y vim
 # RUN npm install --global yarn
 # RUN apt-get install -y autoconf automake build-base libtool nasm

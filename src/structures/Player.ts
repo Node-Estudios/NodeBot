@@ -32,14 +32,15 @@ export default class Player extends yasha.TrackPlayer {
     previouslyPaused: any
     pausedUser: any
     resumedUser: any
-    youtubei: any
+    youtubei = Innertube.create()
+    waitingMessage: any
     constructor(options: any) {
         super({
-            external_packet_send: true,
+            external_packet_send: false,
             external_encrypt: true,
-            normalize_volume: false,
+            normalize_volume: true,
         })
-
+        // this.youtubei = Innertube2.create()
         this.manager = options.musicManager
         this.trackRepeat = false
 
@@ -55,7 +56,7 @@ export default class Player extends yasha.TrackPlayer {
         this.position = 0
         this.playing = false
         this.paused = false
-        this.volume = options.volume ? options.volume : 100
+        this.volume = options.volume
 
         this.voiceChannel = options.voiceChannel
         this.textChannel = options.textChannel
@@ -82,6 +83,11 @@ export default class Player extends yasha.TrackPlayer {
         else super.play(track)
         clearTimeout(this.leaveTimeout)
         this.leaveTimeout = undefined
+        // //NORMALIZE VOLUME
+        // console.log("stream: ", this.stream)
+        // if (this.stream.volume && !this.volume) this.volume = this.stream.volume;
+        if (!this.volume) this.volume = 100;
+        // console.log("volume: ", this.volume);
         this.start()
     }
 

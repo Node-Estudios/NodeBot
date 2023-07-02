@@ -1,25 +1,20 @@
-import { GuildMember, EmbedBuilder as EmbedBuilder, TextChannel, VoiceChannel } from 'discord.js'
-import performanceMeters from '../../../cache/performanceMeters.js'
-import { ChatInputCommandInteractionExtended } from '../../../events/client/interactionCreate.js'
-import { messageHelper } from '../../../handlers/messageHandler.js'
-import UserModel from '../../../models/user.js'
-import Client from '../../../structures/Client.js'
-import Command from '../../../structures/Command.js'
-import Youtubei from '../../../structures/Youtubei.js'
-import formatTime from '../../../utils/formatTime.js'
-import logger from '../../../utils/logger.js'
+import { EmbedBuilder, TextChannel, VoiceChannel } from 'discord.js';
+import { YoutubeTrack } from 'yasha/types/api/Youtube.js';
+import performanceMeters from '../../../cache/performanceMeters.js';
+import { ChatInputCommandInteractionExtended } from '../../../events/client/interactionCreate.js';
+import Client from '../../../structures/Client.js';
+import Command from '../../../structures/Command.js';
+import formatTime from '../../../utils/formatTime.js';
+import logger from '../../../utils/logger.js';
 
 function shuffleArray(array: any[]) {
     for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1))
-        ;[array[i], array[j]] = [array[j], array[i]]
+            ;[array[i], array[j]] = [array[j], array[i]]
     }
     return array
 }
 
-type UserExtended = GuildMember & {
-    youtubei: Youtubei
-}
 export default class play extends Command {
     constructor() {
         super({
@@ -67,18 +62,16 @@ export default class play extends Command {
     override async run(interaction: ChatInputCommandInteractionExtended<'cached'>) {
         const client = interaction.client as Client
         let player = client.music.players.get(interaction.guildId)
-
+        // console.log(interaction.language)
         if (!player) {
             player = await client.music.createNewPlayer(
                 interaction.member.voice.channel as VoiceChannel,
                 interaction.channel as TextChannel,
                 interaction.guild,
-                100,
             )
-            await player.connect()
+            player.connect()
         }
-
-        if (player.voiceChannel.id !== interaction.member.voice.channel?.id) {
+        if (player.voiceChannel.id !== interaction.member.voice.channel?.id)
             return interaction.reply({
                 embeds: [
                     new EmbedBuilder().setColor(15548997).setFooter({
@@ -87,167 +80,160 @@ export default class play extends Command {
                     }),
                 ],
             })
-        }
-
-        const source = 'Youtube'
-        let search
-
-        const song = interaction.options.getString('song', false)
-        const userInteraction = interaction.user as unknown as UserExtended
-        if (!song) {
-            if (!userInteraction.youtubei) {
-                userInteraction.youtubei = await new Youtubei(userInteraction).createSession()
-                await UserModel.findOne({ id: userInteraction.id }).then(async user => {
-                    if (user) {
-                        if (user.credentials) {
-                            await userInteraction.youtubei.session.signIn(user.credentials)
-                        } else {
-                            userInteraction.youtubei.session.signIn()
-                        }
-                    } else {
-                        userInteraction.youtubei.session.signIn()
-                    }
-                })
-            }
-
-            let songs: any[] = []
-            try {
-                const songsData = await userInteraction.youtubei.music.getHomeFeed()
-                for (const section of songsData.sections ?? []) {
-                    songs = shuffleArray(
-                        songs.concat(
-                            section.contents.filter((song: { item_type: string }) => song.item_type === 'song'),
-                        ),
-                    )
-                    if (songs.length > 10) break
-                }
-            } catch (e) {
-                logger.debug('error while searching')
-                UserModel.findOneAndUpdate({ id: userInteraction.id }, { credentials: null })
-                await userInteraction.youtubei.session.signOut()
-                const songsData = await userInteraction.youtubei.music.getHomeFeed()
-                for (const section of songsData.sections ?? []) {
-                    songs = songs.concat(
-                        section.contents.filter((song: { item_type: string }) => song.item_type === 'song'),
-                    )
-                    if (songs.length > 10) break
-                }
-            }
-
-            const number = interaction.options.getNumber('amount', false)
-            // console.log('songs: ', songs)
-            if (number) {
-                const amount = number > 10 ? 10 : number
-                search = await Promise.all(
-                    Array.from({ length: amount }, async (_, i) => {
-                        const song = songs[i % songs.length]
-                        return await client.music.search(song.id, interaction.user, source)
-                    }),
-                )
+        //Si el usuario está en el mismo canal de voz que el bot
+        try {
+            let search
+            const source = 'Youtube'
+            let song = interaction.options.getString('song', false)
+            if (!song) {
+                const songs = (await (await player.youtubei).music.getHomeFeed()).sections![0].contents;
+                const songs2 = songs.filter((song: any) => song.item_type === 'song');
+                const randomIndex = Math.floor(Math.random() * songs2.length);
+                const song3 = songs2[randomIndex];
+                // console.log(await song3)
+                //@ts-ignore
+                search = await client.music.search(song3.id, interaction.member, source) as YoutubeTrack
+                // search = await client.music.search(song3.id, interaction.member, source)
+                // const playlist = await (await player.youtubei).getPlaylist()
+                // if(playlist) {
+                //     search = playlist
+                // }
             } else {
-                const randomIndex = Math.floor(Math.random() * songs.length)
-                const randomSong = songs[randomIndex]
-                search = await client.music.search(randomSong.id, interaction.user, source)
-            }
-
-            // search = await client.music.search(song3.id, interaction.member, source)
-            // const playlist = await (await player.youtubei).getPlaylist()
-            // if(playlist) {
-            //     search = playlist
-            // }
-            // logger.debug(interaction.user.youtubei)
-        } else {
-            try {
-                search = await client.music.search(song, interaction.member, source)
-            } catch (e) {
-                logger.error(e)
-                interaction.reply({
-                    embeds: [
-                        new EmbedBuilder().setColor(15548997).setFooter({
-                            text: interaction.language.PLAY[9],
-                            iconURL: client.user?.displayAvatarURL(),
-                        }),
-                    ],
-                })
-            }
-        }
-        // console.log('search: ', search)
-
-        if (Array.isArray(search)) {
-            for (const item of search) {
-                if (!player.queue.some(song => song.id === item.id)) {
-                    player.queue.add(item)
-                } else {
+                try {
+                    search = await client.music.search(song, interaction.member, source) as YoutubeTrack
+                } catch (e) {
+                    logger.error(e)
+                    interaction.reply({
+                        embeds: [
+                            new EmbedBuilder().setColor(15548997).setFooter({
+                                text: interaction.language.PLAY[9],
+                                iconURL: client.user?.displayAvatarURL(),
+                            }),
+                        ],
+                    })
                 }
             }
-        } else {
+            // console.log(typeof search)
+
+            // if (search instanceof TrackPlaylist) {
+            //     const firstTrack = search.first_track;
+            //     let list = [];
+
+            //     if (firstTrack) list.push(firstTrack);
+
+            //     while (search && search.length) {
+            //         if (firstTrack) {
+            //             for (let i = 0; i < search.length; i++) {
+            //                 if (search[i].equals(firstTrack)) {
+            //                     search.splice(i, 1);
+            //                     break;
+            //                 }
+            //             }
+            //         }
+            //         list = list.concat(search);
+            //         try {
+            //             search = await search.next();
+            //         }
+            //         catch (e) {
+            //             logger.error(e);
+            //             throw e;
+            //         }
+            //     }
+
+            //     if (list.length) {
+            //         for (const track of list) {
+            //             if (!track.requester) track.requester = interaction.member;
+            //             player.queue.add(track);
+            //         }
+            //     }
+
+            //     const totalDuration = list.reduce((acc, cur) => acc + cur.duration, 0);
+
+            //     if (!player.playing && !player.paused) player.play();
+
+            //     const e = new MessageEmbed()
+            //         .setTitle(interaction.language.PLAY[11])
+            //         .setColor("GREEN")
+            //         .addField(interaction.language.PLAY[12], `${search.title}`, true)
+            //         .addField(
+            //             interaction.language.PLAY[13],
+            //             `\`${list.length}\``,
+            //             true
+            //         )
+            //         .addField(
+            //             interaction.language.PLAY[5],
+            //             interaction.user.tag,
+            //             true
+            //         )
+            //         .addField(interaction.language.PLAY[6], `${totalDuration}`, true)
+            //     if (search.platform === 'Youtube') {
+            //         e.setThumbnail(
+            //             `https://img.youtube.com/vi/${search.id}/maxresdefault.jpg`
+            //         )
+            //     } else if (search.platform === 'Spotify') {
+            //         if (search.thumbnails[0])
+            //             e.setThumbnail(search.thumbnails[0])
+            //     }
+            //     interaction.reply({ embeds: [e], content: '' })
+            // }
+
+            // console.log(search)
             player.queue.add(search)
-        }
-        player.queue.shuffle()
-        if (!player.playing && !player.paused) player.play()
-        const embed = new EmbedBuilder().setColor(client.settings.color).setFields(
-            {
-                name: interaction.language.PLAY[4],
-                value: player.queue.current!.author,
-                inline: true,
-            },
-            {
-                name: interaction.language.PLAY[5],
-                value: '<@' + interaction.user.id + '>',
-                inline: true,
-            },
-            {
-                name: interaction.language.PLAY[6],
-                value: formatTime(Math.trunc(player.queue.current!.duration), false),
-                inline: true,
-            },
-        )
-        // logger.debug(player.queue.current);
-        if (userInteraction.youtubei && !(await userInteraction.youtubei).session.logged_in)
-            embed.addFields([
+            if (!player.playing && !player.paused) player.play()
+            const embed = new EmbedBuilder().setColor(client.settings.color).setFields(
                 {
-                    name: 'Warning',
-                    value: 'Youtube Music no ha conseguido iniciar sesión, por lo que es posible que no se adapte a ti la canción',
+                    name: interaction.language.PLAY[4],
+                    value: search!.author,
                     inline: true,
                 },
-            ])
-        if (client.settings.mode == 'development') {
-            let executionTime = await performanceMeters.get('interaction_' + interaction.id)
-            executionTime = executionTime.stop()
-            let finaltext = 'Internal execution time: ' + executionTime + 'ms'
-            // console.log(search)
-            embed.setFooter({ text: finaltext })
-        }
-        // console.log('current: ', player.queue.current)
-        if (source === 'Youtube') {
-            // logger.info(search)
-            // if (player.queue.current!.bitrate!) embed.addFields({ name: 'bitrate', value: search.streams[0].bitrate, inline: true })
-            embed.setThumbnail(`https://img.youtube.com/vi/${player.queue.current!.id}/maxresdefault.jpg`)
-            embed.setDescription(
-                `**${interaction.language.PLAY[3]}\n[${
-                    player.queue.current!.title
-                }](https://www.music.youtube.com/watch?v=${player.queue.current!.id})**`,
+                {
+                    name: interaction.language.PLAY[5],
+                    value: '<@' + interaction.user.id + '>',
+                    inline: true,
+                },
+                {
+                    name: interaction.language.PLAY[6],
+                    value: formatTime(Math.trunc(search!.duration), false),
+                    inline: true,
+                },
             )
-            // embed.addField(
-            //     "Bitrate",
-            //     player.track.bitrate,
-            //     true
-            // )
-        } else if (source === 'Spotify') {
-            if (search.thumbnails[0])
+            // if (!(await player.youtubei).session.logged_in) embed.addFields([{ name: 'Warning', value: 'Youtube Music no ha conseguido iniciar sesión, por lo que es posible que no se adapte a ti la canción', inline: true }])
+            if (client.settings.mode == 'development') {
+                let executionTime = await performanceMeters.get('interaction_' + interaction.id)
+                executionTime = executionTime.stop()
+                let finaltext = 'Internal execution time: ' + executionTime + 'ms'
+                // console.log(search)
+                embed.setFooter({ text: finaltext })
+            }
+            if (source === 'Youtube') {
+                // logger.info(search)
+                // if (search.streams[0].bitrate) embed.addFields({ name: 'bitrate', value: search.streams[0].bitrate, inline: true })
+                embed.setThumbnail(`https://img.youtube.com/vi/${search!.id}/maxresdefault.jpg`)
                 embed.setDescription(
-                    `**${interaction.language.PLAY[3]}\n[${
-                        player.queue.current!.title
-                    }](https://open.spotify.com/track/${player.queue.current!.id})**`,
+                    `**${interaction.language.PLAY[3]}\n[${search!.title}](https://www.youtube.com/watch?v=${search!.id})**`,
                 )
-            embed.setThumbnail(search.thumbnails[0].url)
+                // embed.addField(
+                //     "Bitrate",
+                //     player.track.bitrate,
+                //     true
+                // )
+            } else if (source === 'Spotify') {
+                if (search!.thumbnails[0])
+                    embed.setDescription(
+                        `**${interaction.language.PLAY[3]}\n[${search!.title}](https://open.spotify.com/track/${search!.id})**`,
+                    )
+                embed.setThumbnail(search!.thumbnails[0].url)
+            }
+            // console.log(embed)
+            // console.log(await (await client.music.youtubei).music.getHomeFeed())
+            interaction.reply({ embeds: [embed] })
+        } catch (e) {
+            logger.error(e)
+            interaction.reply({
+                content: `Ups! Parece que hubo un error. \nPuede contactar con el desarrollador para avisarle en [El Discord Oficial](${client.officialServerURL})`,
+                embeds: [],
+            })
         }
-        // console.log(embed)
-        // console.log(await (await client.music.youtubei).music.getHomeFeed())
-        let msg = new messageHelper(interaction)
-        msg.sendMessage({ embeds: [embed] }, false).catch((e: any) => {
-            logger.debug(e)
-        })
         //CÓDIGO NORMAL DEL PLAY
         return
     }

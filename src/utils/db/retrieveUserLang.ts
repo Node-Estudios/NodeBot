@@ -2,7 +2,6 @@ import { Guild as DiscordGuild, User as DiscordUser, GuildMember } from "discord
 import langFile from '../../lang/index.json' assert { type: 'json' };
 import GuildModel, { Guild } from '../../models/guild.js';
 import Usermodel, { User } from "../../models/user.js";
-import logger from '../../utils/logger.js';
 
 async function createUserInDB(input: User) {
     return await Usermodel.create(input)
@@ -10,7 +9,7 @@ async function createUserInDB(input: User) {
 
 //TODO: Change this to use Cache instead of ready the file every time
 export default async function retrieveLang(input: GuildMember | DiscordUser | string | DiscordGuild): Promise<User["lang"]> {
-    logger.debug('retrieveUserLang exeuted with input: ' + input)
+    // logger.debug('retrieveUserLang exeuted with input: ' + input)
     if (input instanceof (GuildMember || DiscordUser)) {
         return await Usermodel.findOne({ id: input.id }).then((user: any) => {
             return user ? user.lang : null
@@ -28,7 +27,7 @@ export default async function retrieveLang(input: GuildMember | DiscordUser | st
 }
 
 export async function getGuildFromDB(input: DiscordGuild | string): Promise<Guild | undefined | null> {
-    logger.debug('getGuildFromDB exeuted with input: ' + input)
+    // logger.debug('getGuildFromDB exeuted with input: ' + input)
     switch (true) {
         case input instanceof DiscordGuild:
             return GuildModel.findOne({ id: (input as DiscordGuild).id }, async (error: any, guild: Guild) => {
@@ -56,7 +55,7 @@ export async function getGuildFromDB(input: DiscordGuild | string): Promise<Guil
 }
 
 export async function getUserFromDB(input: GuildMember | DiscordUser | string): Promise<User | null> {
-    logger.debug('getUserFromDB exeuted with input: ' + input)
+    // logger.debug('getUserFromDB exeuted with input: ' + input)
     switch (true) {
         case input instanceof GuildMember:
             return Usermodel.findOneAndUpdate({ id: (input as GuildMember).id }, async (error: any, user: User) => {

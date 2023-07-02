@@ -12,7 +12,6 @@ import { BaseEvent } from '../../structures/Events.js'
 import retrieveUserLang from '../../utils/db/retrieveUserLang.js'
 //TODO: Finish cooldowns and move them to cache folder
 import buttons from '../../cache/buttons.js'
-import { messageHelper } from '../../handlers/messageHandler.js'
 const cooldowns = new Discord.Collection()
 const permissionHelpMessage = `Hey! Tienes problemas? Entra en nuestro servidor.`
 // Define an interface for the JSON objects inside the array
@@ -64,7 +63,8 @@ export class interactionCreate extends BaseEvent {
         performanceMeters.get('interaction_' + interaction.id).start()
 
         // return false if something went wrong, true if everything was okey
-        logger.debug(`Interaction ${interaction.id} created`)
+        // logger.debug(`Interaction ${interaction.id} created`)
+        if (client.settings.debug == "true") logger.debug("Interaction Executed | " + interaction.guild.name + " | " + interaction.user.username)
         if (!client.user) return // <-- return statement here
         //TODO: Change lang from any to string inside .then((lang: any) => {}))
         // this.getLang(interaction2).then(async () => {
@@ -113,10 +113,10 @@ export class interactionCreate extends BaseEvent {
         return this.getLang(interaction)
             .then(async () => {
                 if (interaction.isChatInputCommand()) return this.processChatImputCommand(interaction)
-                else if (interaction.isButton()) return this.processButton(interaction)
+                else if (interaction.isButton()) return this.processButtonInteraction(interaction)
             })
             .catch(err => {
-                console.log(err)
+                logger.error(err)
                 if (!interaction.isAutocomplete())
                     return interaction.reply({
                         content:
@@ -147,7 +147,7 @@ export class interactionCreate extends BaseEvent {
             if (!cmd) return
             if (interaction.guild && cmd?.only_dm) return // <-- return statement here
 
-            logger.info(`Comando ${cmd.name} ejecutado`)
+            logger.debug(`Comando ${cmd.name} ejecutado | ${interaction.user.username}`)
             //CHECK PERMISSIONS
             if (cmd.permissions) {
                 // Check if the command is only for devs
@@ -184,10 +184,10 @@ export class interactionCreate extends BaseEvent {
     }
 
     async processButtonInteraction(interaction: ButtonInteractionExtend<'cached'>) {
-        logger.debug(`Button ${interaction.customId} pressed`)
+        logger.debug(`Button ${interaction.customId} pressed | ${interaction.user.username}`)
         const button = buttons.getCache().get(interaction.customId)
         // //TODO: Change this
-        console.log(button)
+        // console.log(button)
         if (button) return button(interaction.client as Client, interaction)
     }
 }

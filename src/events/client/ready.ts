@@ -23,7 +23,7 @@ export default class Ready extends BaseEvent {
                 useNewUrlParser: true,
             }).then(() => logger.db('Se ha conectado la base de datos correctamente.'))
         // cluster
-        client.cluster.triggerReady()
+        // client.cluster.triggerReady()
         let arr: any[] = []
         commands.getCache().map((command) => {
             arr.push(command)
@@ -64,7 +64,7 @@ export default class Ready extends BaseEvent {
                         )
                         .then((results: any) => {
                             // console.log(results)
-                            ; (message2 as any).reply(results)
+                            (message2 as any).reply(results)
                         })
                 } catch (e) {
                     logger.error(e)

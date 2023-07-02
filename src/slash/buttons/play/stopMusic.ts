@@ -1,4 +1,4 @@
-import { EmbedBuilder, GuildMember, EmbedBuilder as EmbedBuilder } from 'discord.js'
+import { EmbedBuilder, GuildMember } from 'discord.js'
 import { ButtonInteractionExtend } from '../../../events/client/interactionCreate.js'
 import { messageHelper } from '../../../handlers/messageHandler.js'
 import Client from '../../../structures/Client.js'
@@ -56,7 +56,7 @@ export default {
 
             // const { title } = player.queue.current;
             // logger.debug(player)
-            return (await client.music.queueEnd(player)) && player.destroy()
+            return (await client.music.queueEnd(player))
         } catch (e) {
             logger.error(e)
         }
