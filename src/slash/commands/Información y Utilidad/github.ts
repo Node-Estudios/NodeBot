@@ -30,6 +30,7 @@ export default class github extends Command {
     }
     override async run(interaction: ChatInputCommandInteractionExtended<'cached'>) {
         const language = interaction.language
+        const client = interaction.client as Client
         const accountName = interaction.options.getString('account', true)
         const account = await fetch(`https://api.github.com/users/${accountName}`, {
             headers: {
@@ -58,7 +59,7 @@ export default class github extends Command {
                 ],
             })
 
-        const embed = new EmbedBuilder().setThumbnail(account.avatar_url)
+        const embed = new EmbedBuilder().setThumbnail(account.avatar_url).setColor(client.settings.color)
         if (account.name)
             embed.addFields({ name: `${language?.GITHUB[2]}`, value: account.name.toString(), inline: true })
         if (account.type)

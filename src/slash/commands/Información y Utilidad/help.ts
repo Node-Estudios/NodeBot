@@ -37,7 +37,7 @@ export default class help extends Command {
         return interaction.reply({
             embeds: [
                 new EmbedBuilder()
-                    // .setColor(process.env.bot1Embed_Color as ColorResolvable)
+                    .setColor(client.settings.color)
                     .setDescription(`<a:pin:893553168259121172> ${language.HELP[5]} \`Node\`, ${language.HELP[6]}`)
                     .addFields({
                         name: language.HELP[7],
