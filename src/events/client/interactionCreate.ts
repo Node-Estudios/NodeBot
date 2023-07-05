@@ -64,7 +64,8 @@ export class interactionCreate extends BaseEvent {
 
         // return false if something went wrong, true if everything was okey
         // logger.debug(`Interaction ${interaction.id} created`)
-        if (client.settings.debug == "true") logger.debug("Interaction Executed | " + interaction.guild.name + " | " + interaction.user.username)
+        if (client.settings.debug == 'true')
+            logger.debug('Interaction Executed | ' + interaction.guild.name + ' | ' + interaction.user.username)
         if (!client.isReady()) return // <-- return statement here
         //TODO: Change lang from any to string inside .then((lang: any) => {}))
         // this.getLang(interaction2).then(async () => {
@@ -131,7 +132,7 @@ export class interactionCreate extends BaseEvent {
 
     async getLang(interaction: InteractionExtend<'cached'>) {
         const user = interaction.member?.user ? interaction.member.user : interaction.user
-        return await retrieveUserLang(user.id).then(async (lang) => {
+        return await retrieveUserLang(user.id).then(async lang => {
             // Cast the "interaction" object as the "interactionCommandExtend" interface, and assign the "lang" value to the "language" field
             //Refactorizar el codigo para que no sea any, sino una collection que tenga el valor de el json de idiomas
             interaction.language = await contenidoIdiomas.get(lang).default
@@ -174,7 +175,7 @@ export class interactionCreate extends BaseEvent {
                 //TODO: Add COOLDOWN functionality
             }
             await cmd.run(interaction)
-            await performanceMeters.get('interaction_' + interaction.id).stop()
+            await performanceMeters.get('interaction_' + interaction.id)?.stop()
             performanceMeters.delete('interaction_' + interaction.id)
             //TODO: remove from cache
         } catch (e) {
