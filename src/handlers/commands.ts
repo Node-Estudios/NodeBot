@@ -6,12 +6,11 @@ import logger from '../utils/logger.js';
 for (const dir of readdirSync('./build/slash/commands')) {
     for (const file of readdirSync(`./build/slash/commands/${dir}`)) {
         if (file.endsWith('.js')) {
-            const commandFile = await import(`../../build/slash/commands/${dir}/${file}`)
-            // console.log(typeof commandFile)
-            if (typeof commandFile === 'object') {
+            const {default: commandFile} = await import(`../../build/slash/commands/${dir}/${file}`)
+            if (typeof commandFile === 'function') {
                 try {
-                    const command = new commandFile.default()
-                    if (!commands.getCache().get(command.name))
+                    const command = new commandFile()
+                    if (!commands.getCache().has(command.name))
                         commands.getCache().set(command.name, command)
                 } catch (e) {
                     logger.error(commandFile, e)
