@@ -1,12 +1,13 @@
 import {
-    ChannelType,
-    ColorResolvable,
-    EmbedBuilder as EmbedBuilder,
+    ApplicationCommandOptionType,
     PermissionsBitField,
-    TextChannel,
+    ColorResolvable,
+    EmbedBuilder,
+    ChannelType,
+    Colors,
 } from 'discord.js'
 import { ChatInputCommandInteractionExtended } from '../../../events/client/interactionCreate.js'
-import langFile from '../../../lang/index.json' assert { type: 'json' }
+// import langFile from '../../../lang/index.json' assert { type: 'json' }
 import Client from '../../../structures/Client.js'
 import Command from '../../../structures/Command.js'
 
@@ -34,7 +35,7 @@ export default class embed extends Command {
                     required: true,
                 },
                 {
-                    type: 3,
+                    type: ApplicationCommandOptionType.Number,
                     name: 'color',
                     name_localizations: {
                         'es-ES': 'color',
@@ -75,15 +76,12 @@ export default class embed extends Command {
     }
     override async run(interaction: ChatInputCommandInteractionExtended<'cached'>) {
         //TODO: Add more colors && make it work with hex colors && Add language support
-        const language = await import('../lang/' + langFile.find(l => l.nombre == interaction.language)?.archivo, {
-            assert: { type: 'json' },
-        })
         const client = interaction.client as Client
-        const canal = interaction.options.getChannel('channel', true) as TextChannel,
+        const canal = interaction.options.getChannel('channel', true, [ChannelType.GuildText]),
             descripcion = interaction.options.getString('description', true),
-            color = interaction.options.getString('color', true) as ColorResolvable,
+            color = interaction.options.getNumber('color', true),
             titulo = interaction.options.getString('title', true)
-        var embed = new EmbedBuilder().setDescription(`${descripcion}`).setColor(color).setTitle(titulo)
+        const embed = new EmbedBuilder().setDescription(`${descripcion}`).setColor(color).setTitle(titulo)
 
         if (
             !canal
@@ -101,28 +99,6 @@ export default class embed extends Command {
 
         canal.send({ embeds: [embed] })
         return interaction.reply({ content: 'Embed creado y enviado con éxito.' })
-        // } catch (e) {
-        //     console.error(e);
-        //     message.channel.send({
-        //         embeds: [
-        //             new Discord.EmbedBuilder()
-        //                 .setColor("RED")
-        //                 .setTitle(interaction.language.ERROREMBED)
-        //                 .setDescription(interaction.language.fatal_error)
-        //                 .setFooter(message.author.username, message.author.avatarURL())
-        //         ]
-        //     });
-        //     webhookClient.send(
-        //         `Ha habido un error en **${message.guild.name} [ID Server: ${message.guild.id}] [ID Usuario: ${message.author.id}] [Owner: ${message.guild.ownerId}]**. Numero de usuarios: **${message.guild.memberCount}**\nMensaje: ${message.content}\n\nError: ${e}\n\n**------------------------------------**`
-        //     );
-        //     try {
-        //         message.author
-        //             .send(
-        //                 "Oops... Ha ocurrido un eror con el comando ejecutado. Aunque ya he notificado a mis desarrolladores del problema, ¿te importaría ir a discord.gg/nodebot y dar más información?\n\nMuchísimas gracias rey <a:corazonmulticolor:836295982768586752>"
-        //             )
-        //             .catch(e);
-        //     } catch (e) { }
-        // }
     }
 }
 function getColorChoices() {
@@ -132,168 +108,168 @@ function getColorChoices() {
             name_localizations: {
                 'es-ES': 'Defecto',
             },
-            value: 'default',
+            value: Colors.Default,
         },
         {
             name: 'Aqua',
             name_localizations: {
                 'es-ES': 'Agua',
             },
-            value: 'AQUA',
+            value: Colors.Aqua,
         },
         {
             name: 'Dark Aqua',
             name_localizations: {
                 'es-ES': 'Agua Oscuro',
             },
-            value: 'DARK_AQUA',
+            value: Colors.DarkAqua,
         },
         {
             name: 'Green',
             name_localizations: {
                 'es-ES': 'Verde',
             },
-            value: 'GREEN',
+            value: Colors.Green,
         },
         {
             name: 'Dark Green',
             name_localizations: {
                 'es-ES': 'Verde Oscuro',
             },
-            value: 'DARK_GREEN',
+            value: Colors.DarkGreen,
         },
         {
             name: 'Blue',
             name_localizations: {
                 'es-ES': 'Azul',
             },
-            value: 'BLUE',
+            value: Colors.Blue,
         },
         {
             name: 'Dark Blue',
             name_localizations: {
                 'es-ES': 'Azul Oscuro',
             },
-            value: 'DARK_BLUE',
+            value: Colors.DarkBlue,
         },
         {
             name: 'Purple',
             name_localizations: {
                 'es-ES': 'Morado',
             },
-            value: 'PURPLE',
+            value: Colors.Purple,
         },
         {
             name: 'Dark Purple',
             name_localizations: {
                 'es-ES': 'Morado Oscuro',
             },
-            value: 'DARK_PURPLE',
+            value: Colors.DarkPurple,
         },
         {
             name: 'Lumious Vivid Pink',
             name_localizations: {
                 'es-ES': 'Rosa Brillante',
             },
-            value: 'LUMINOUS_VIVID_PINK',
+            value: Colors.LuminousVividPink,
         },
         {
             name: 'Dark Vivid Pink',
             name_localizations: {
                 'es-ES': 'Rosa Brillante Oscuro',
             },
-            value: 'DARK_VIVID_PINK',
+            value: Colors.DarkVividPink,
         },
         {
             name: 'Gold',
             name_localizations: {
                 'es-ES': 'Oro',
             },
-            value: 'GOLD',
+            value: Colors.Gold,
         },
         {
             name: 'Dark Gold',
             name_localizations: {
                 'es-ES': 'Oro Oscuro',
             },
-            value: 'DARK_GOLD',
+            value: Colors.DarkGold,
         },
         {
             name: 'Orange',
             name_localizations: {
                 'es-ES': 'Naranja',
             },
-            value: 'ORANGE',
+            value: Colors.Orange,
         },
         {
             name: 'Dark Orange',
             name_localizations: {
                 'es-ES': 'Naranja Oscuro',
             },
-            value: 'DARK_ORANGE',
+            value: Colors.DarkOrange,
         },
         {
             name: 'Red',
             name_localizations: {
                 'es-ES': 'Rojo',
             },
-            value: 'RED',
+            value: Colors.Red,
         },
         {
             name: 'Dark Red',
             name_localizations: {
                 'es-ES': 'Rojo Oscuro',
             },
-            value: 'DARK_RED',
+            value: Colors.DarkRed,
         },
         {
             name: 'Grey',
             name_localizations: {
                 'es-ES': 'Gris',
             },
-            value: 'GREY',
+            value: Colors.Grey,
         },
         {
             name: 'Dark Grey',
             name_localizations: {
                 'es-ES': 'Gris Oscuro',
             },
-            value: 'DARK_GREY',
+            value: Colors.DarkGrey,
         },
         {
             name: 'Darker Grey',
             name_localizations: {
                 'es-ES': 'Gris Oscuro',
             },
-            value: 'DARKER_GREY',
+            value: Colors.DarkerGrey,
         },
         {
             name: 'Light Grey',
             name_localizations: {
                 'es-ES': 'Gris Claro',
             },
-            value: 'LIGHT_GREY',
+            value: Colors.LightGrey,
         },
         {
             name: 'Navy',
             name_localizations: {
                 'es-ES': 'Azul Marino',
             },
-            value: 'NAVY',
+            value: Colors.Navy,
         },
         {
             name: 'Dark Navy',
             name_localizations: {
                 'es-ES': 'Azul Marino Oscuro',
             },
-            value: 'DARK_NAVY',
+            value: Colors.DarkNavy,
         },
         {
             name: 'Yellow',
             name_localizations: {
                 'es-ES': 'Amarillo',
             },
-            value: 'YELLOW',
+            value: Colors.Yellow,
         },
     ]
 }
