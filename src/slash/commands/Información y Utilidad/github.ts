@@ -30,9 +30,8 @@ export default class github extends Command {
     }
     override async run(interaction: ChatInputCommandInteractionExtended<'cached'>) {
         const language = interaction.language
-        const client = interaction.client as Client
-        const args2 = interaction.options.getString('account', true)
-        const account = await fetch(`https://api.github.com/users/${args2[0]}`, {
+        const accountName = interaction.options.getString('account', true)
+        const account = await fetch(`https://api.github.com/users/${accountName}`, {
             headers: {
                 Accept: 'application/vnd.github.v3+json',
                 scheme: 'https',
@@ -44,13 +43,14 @@ export default class github extends Command {
         })
             .then(r => r.json())
             .catch(() => null)
+
         if (!account?.id)
             return interaction.reply({
                 embeds: [
                     new EmbedBuilder()
                         .setColor('Red')
-                        .setTitle(language.ERROREMBED)
-                        .setDescription(language.INSTAGRAM[13])
+                        .setTitle(language?.ERROREMBED)
+                        .setDescription(language?.INSTAGRAM[13])
                         .setFooter({
                             text: interaction.user.username + '#' + interaction.user.discriminator,
                             iconURL: interaction.user.displayAvatarURL(),
@@ -58,24 +58,30 @@ export default class github extends Command {
                 ],
             })
 
-        const embed = new EmbedBuilder()
-            .setDescription('')
-            .setColor(process.env.bot1Embed_Color as ColorResolvable)
-            .setThumbnail(account.avatar_url)
-        if (account.name) embed.addFields({ name: language.GITHUB[2].toString(), value: account.name.toString() })
-        if (account.type) embed.addFields({ name: language.GITHUB[3].toString(), value: account.type.toString() })
-        if (account.company) embed.addFields({ name: language.GITHUB[4].toString(), value: account.company.toString() })
-        if (account.blog) embed.addFields({ name: language.GITHUB[5].toString(), value: account.blog.toString() })
+        const embed = new EmbedBuilder().setThumbnail(account.avatar_url)
+        if (account.name)
+            embed.addFields({ name: `${language?.GITHUB[2]}`, value: account.name.toString(), inline: true })
+        if (account.type)
+            embed.addFields({ name: `${language?.GITHUB[3]}`, value: account.type.toString(), inline: true })
+        if (account.company)
+            embed.addFields({ name: `${language?.GITHUB[4]}`, value: account.company.toString(), inline: true })
+        if (account.blog)
+            embed.addFields({ name: `${language?.GITHUB[5]}`, value: account.blog.toString(), inline: true })
         if (account.location)
-            embed.addFields({ name: language.GITHUB[6].toString(), value: account.location.toString() })
-        if (account.email) embed.addFields({ name: language.GITHUB[7].toString(), value: account.email.toString() })
-        if (account.bio) embed.addFields({ name: language.GITHUB[8].toString(), value: account.bio.toString() })
-        if (account.twitter_username)
-            embed.addFields({ name: language.GITHUB[9].toString(), value: account.twitter_username.toString() })
+            embed.addFields({ name: `${language?.GITHUB[6]}`, value: account.location.toString(), inline: true })
+        if (account.email)
+            embed.addFields({ name: `${language?.GITHUB[7]}`, value: account.email.toString(), inline: true })
         if (account.public_repos)
-            embed.addFields({ name: language.GITHUB[10].toString(), value: account.public_repos.toString() })
+            embed.addFields({ name: `${language?.GITHUB[10]}`, value: account.public_repos.toString(), inline: true })
         if (account.followers)
-            embed.addFields({ name: language.GITHUB[11].toString(), value: account.followers.toString() })
+            embed.addFields({ name: `${language?.GITHUB[11]}`, value: account.followers.toString(), inline: true })
+        if (account.twitter_username)
+            embed.addFields({
+                name: `${language?.GITHUB[9]}`,
+                value: account.twitter_username.toString(),
+                inline: true,
+            })
+        if (account.bio) embed.addFields({ name: `${language?.GITHUB[8]}`, value: account.bio.toString() })
 
         return interaction.reply({
             embeds: [embed],
