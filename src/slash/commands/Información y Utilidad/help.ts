@@ -15,20 +15,20 @@ export default class help extends Command {
                 'es-ES': 'Muestra información sobre mi.',
             },
             cooldown: 5,
-            options: [
-                {
-                    type: 3,
-                    name: 'command',
-                    description: 'The command you want to get help for.',
-                    name_localizations: {
-                        'es-ES': 'comando',
-                    },
-                    description_localizations: {
-                        'es-ES': 'El comando del que quieres obtener ayuda.',
-                    },
-                    required: false,
-                },
-            ],
+            // options: [
+            //     {
+            //         type: 3,
+            //         name: 'command',
+            //         description: 'The command you want to get help for.',
+            //         name_localizations: {
+            //             'es-ES': 'comando',
+            //         },
+            //         description_localizations: {
+            //             'es-ES': 'El comando del que quieres obtener ayuda.',
+            //         },
+            //         required: false,
+            //     },
+            // ],
         })
     }
     override async run(interaction: ChatInputCommandInteractionExtended<'cached'>) {
@@ -37,7 +37,7 @@ export default class help extends Command {
         return interaction.reply({
             embeds: [
                 new EmbedBuilder()
-                    .setColor(process.env.bot1Embed_Color as ColorResolvable)
+                    // .setColor(process.env.bot1Embed_Color as ColorResolvable)
                     .setDescription(`<a:pin:893553168259121172> ${language.HELP[5]} \`Node\`, ${language.HELP[6]}`)
                     .addFields({
                         name: language.HELP[7],
