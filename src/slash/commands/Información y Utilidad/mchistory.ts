@@ -36,6 +36,7 @@ export default class mchistory extends Command {
         )
             .then(r => r.json())
             .catch(() => null)
+        console.log(res)
         if (!res)
             return interaction.reply({
                 embeds: [
@@ -56,10 +57,15 @@ export default class mchistory extends Command {
                     .setTitle(language.MCHISTORY[4])
                     .setColor(client.settings.color)
                     .setFields(
-                        res['name_history'].map((i: any) => ({
+                        res['name_history']?.map((i: any) => ({
                             name: i['changedToAt'] ? parserTimeStamp(i['changedToAt']) : language.MCHISTORY[5],
                             value: i['name'],
-                        })),
+                        })) ?? [
+                            {
+                                name: language.MCHISTORY[5],
+                                value: res['name'],
+                            },
+                        ],
                     )
                     .setTimestamp(),
             ],
