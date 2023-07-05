@@ -29,10 +29,9 @@ export default class mcserver extends Command {
 
     override async run(interaction: ChatInputCommandInteractionExtended<'cached'>) {
         const server = interaction.options.getString('server', true)
-        const [ip, port] = server.split(':')
         interaction.reply({
             files: [
-                new AttachmentBuilder(`http://status.mclive.eu/${server}/${ip}/${port}/banner.png`, {
+                new AttachmentBuilder(`http://status.mclive.eu/${server}/${server}/banner.png`, {
                     name: server + '.png',
                 }),
             ],
