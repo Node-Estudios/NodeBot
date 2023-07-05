@@ -22,7 +22,8 @@ import Player from './Player.js'
 // ? use client for lang
 // import { Track, TrackPlaylist } from 'yasha/types/Track.js'
 // import { YoutubePlaylist, YoutubeTrack } from 'yasha/types/api/Youtube.js'
-import { YoutubePlaylist, YoutubeTrack } from 'yasha/types/api/Youtube.js'
+// import { YoutubePlaylist, YoutubeTrack } from 'yasha/types/api/Youtube.js'
+// import yasha from 'yasha'
 import { spamIntervalDB } from './spamInterval.js'
 let spamIntervald = new spamIntervalDB()
 type UserExtended = GuildMember & {}
@@ -362,7 +363,8 @@ export default class MusicManager extends EventEmitter {
         return array
     }
 
-    async search(query: any, requester: any, source: 'Spotify' | 'Youtube' | 'Soundcloud'): Promise<YoutubeTrack | YoutubePlaylist> {
+    async search(query: any, requester: any, source: 'Spotify' | 'Youtube' | 'Soundcloud') {
+    // async search(query: any, requester: any, source: 'Spotify' | 'Youtube' | 'Soundcloud'): Promise<YoutubeTrack | YoutubePlaylist> {
         let track
         // console.log('requester: ', requester.youtubei)
         if (requester.youtubei) {
@@ -371,10 +373,10 @@ export default class MusicManager extends EventEmitter {
                 // console.log('logged in ', rawData)
                 track = rawData.contents[0].id
             } else {
-                track = await (await yasha.Source.Youtube.search(query))[0]
+                track = await (await yasha.Source.Youtube.search(query, 0))[0]
                 // console.log('not logged in')
             }
-        } else track = await (await yasha.Source.Youtube.search(query))[0]
+        } else track = await (await yasha.Source.Youtube.search(query, 0))[0]
 
         track = await yasha.Source.resolve(track ? `https://www.youtube.com/watch?v=${track.id ? track.id : track}` : query)
         // console.log('track: ', await track, "query: ", query)

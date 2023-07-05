@@ -1,5 +1,6 @@
 import { EmbedBuilder, TextChannel, VoiceChannel } from 'discord.js';
-import { YoutubeTrack } from 'yasha/types/api/Youtube.js';
+// import { YoutubeTrack } from 'yasha/types/api/Youtube.js';
+import { Youtube } from 'yasha/types/src/Source.js';
 import performanceMeters from '../../../cache/performanceMeters.js';
 import { ChatInputCommandInteractionExtended } from '../../../events/client/interactionCreate.js';
 import Client from '../../../structures/Client.js';
@@ -92,7 +93,7 @@ export default class play extends Command {
                 const song3 = songs2[randomIndex];
                 // console.log(await song3)
                 //@ts-ignore
-                search = await client.music.search(song3.id, interaction.member, source) as YoutubeTrack
+                search = await client.music.search(song3.id, interaction.member, source)
                 // search = await client.music.search(song3.id, interaction.member, source)
                 // const playlist = await (await player.youtubei).getPlaylist()
                 // if(playlist) {
@@ -100,7 +101,7 @@ export default class play extends Command {
                 // }
             } else {
                 try {
-                    search = await client.music.search(song, interaction.member, source) as YoutubeTrack
+                    search = await client.music.search(song, interaction.member, source)
                 } catch (e) {
                     logger.error(e)
                     interaction.reply({
