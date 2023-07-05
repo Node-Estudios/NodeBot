@@ -36,7 +36,6 @@ export default class mchistory extends Command {
         )
             .then(r => r.json())
             .catch(() => null)
-        console.log(res)
         if (!res)
             return interaction.reply({
                 embeds: [
