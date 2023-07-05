@@ -135,6 +135,7 @@ export class interactionCreate extends BaseEvent {
         return await retrieveUserLang(user.id).then(async lang => {
             // Cast the "interaction" object as the "interactionCommandExtend" interface, and assign the "lang" value to the "language" field
             //Refactorizar el codigo para que no sea any, sino una collection que tenga el valor de el json de idiomas
+            // eliyya: puedo generar una herramienta facil para generar el type de los idiomas, pero recomiendo refactorizar los idiomas a i18n
             interaction.language = await contenidoIdiomas.get(lang).default
             // console.log((interaction as interactionExtend).language)
         })
@@ -175,7 +176,7 @@ export class interactionCreate extends BaseEvent {
                 //TODO: Add COOLDOWN functionality
             }
             await cmd.run(interaction)
-            await performanceMeters.get('interaction_' + interaction.id)?.stop()
+            await performanceMeters.get('interaction_' + interaction.id)?.stop() // the ping command stop the process
             performanceMeters.delete('interaction_' + interaction.id)
             //TODO: remove from cache
         } catch (e) {

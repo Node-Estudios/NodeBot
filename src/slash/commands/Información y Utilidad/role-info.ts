@@ -33,16 +33,16 @@ export default class roleinfo extends Command {
         })
     }
     override async run(interaction: ChatInputCommandInteractionExtended<'cached'>) {
+        if (!interaction.inCachedGuild()) return
         const language = interaction.language
-        const client = interaction.client as Client
         let role = interaction.options.getRole('role', true)
         const rol = new EmbedBuilder()
             .setThumbnail(interaction.user.displayAvatarURL())
             .setTimestamp()
             .setColor((role.color as ColorResolvable) || ('#1DC44F' as ColorResolvable))
             .setAuthor({
-                name: interaction.guild!.name,
-                iconURL: interaction.guild!.iconURL() ?? '',
+                name: interaction.guild.name,
+                iconURL: interaction.guild.iconURL() ?? '',
             })
             .setFields(
                 {
@@ -83,7 +83,7 @@ export default class roleinfo extends Command {
                     inline: true,
                 },
             )
-            .setImage(interaction.guild!.iconURL() ?? '')
+            .setImage(interaction.guild.iconURL() ?? '')
 
         return interaction.reply({ embeds: [rol] })
     }
