@@ -45,7 +45,7 @@
         "simplest-discord-webhook": "github:eliyya/simplest-discord-webhook#ts",
         "statcord.js": "3.4.3",
         "stripe": "12.11.0",
-        "yasha": "github:davidzeng0/yasha",
+        "yasha": "github:eliyya/yasha",
         "youtubei.js": "2.9.0"
     },
     "devDependencies": {
@@ -56,7 +56,6 @@
         "@types/jsonwebtoken": "9.0.2",
         "@types/node": "20.3.3",
         "@types/signale": "1.4.4",
-        "@types/yasha": "github:eliyya/yasha-types",
         "nodemon": "2.0.22",
         "standard": "17.1.0",
         "typescript": "5.1.6"
