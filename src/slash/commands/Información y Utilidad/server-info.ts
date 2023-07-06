@@ -43,25 +43,23 @@ export default class serverinfo extends Command {
         // }
 
         const verification = {
-            NONE: interaction.language.SERVERINFO[1],
-            LOW: interaction.language.SERVERINFO[2],
-            MEDIUM: interaction.language.SERVERINFO[3],
-            HIGH: interaction.language.SERVERINFO[4],
-            VERY_HIGH: interaction.language.SERVERINFO[5],
+            0: interaction.language.SERVERINFO[1],
+            1: interaction.language.SERVERINFO[2],
+            2: interaction.language.SERVERINFO[3],
+            3: interaction.language.SERVERINFO[4],
+            4: interaction.language.SERVERINFO[5],
         }
 
         const explicitContent = {
-            DISABLED: interaction.language.SERVERINFO[6],
-            MEMBERS_WITHOUT_ROLES: interaction.language.SERVERINFO[7],
-            ALL_MEMBERS: interaction.language.SERVERINFO[8],
+            0: interaction.language.SERVERINFO[6],
+            1: interaction.language.SERVERINFO[7],
+            2: interaction.language.SERVERINFO[8],
         }
         // const channel = interaction.guild.channels.cache
         //   .sort((a, b) => b.position - a.position)
         //   .map((role) => role.toString())
         //   .slice(0, -1);
-        const role = interaction.guild.roles.cache
-            .sort((a: { position: number }, b: { position: number }) => b.position - a.position)
-            .map((role: any) => role.toString())
+        const role = interaction.guild.roles.cache.sort((a, b) => b.position - a.position).map(role => role.toString())
         const boost = interaction.guild.premiumTier
         const emojis = interaction.guild.emojis.cache
         const boostcount = interaction.guild.premiumSubscriptionCount
@@ -69,13 +67,12 @@ export default class serverinfo extends Command {
         const [text, voice] = others.partition((c: any) => c.type === 'GUILD_TEXT')
         // const [bots, humans] = interaction.guild.members.cache.partition(m => m.user.bot)
         // const banner = interaction.guild.banner
-
-        const iconURL = interaction.guild.iconURL() ?? ''
+        const iconURL = interaction.guild.iconURL()
         const embed = new EmbedBuilder()
             .setColor(client.settings.color)
             .setThumbnail(iconURL)
             .setTimestamp()
-            .setFooter({ text: interaction.guild.name, iconURL })
+            .setFooter({ text: interaction.guild.name, iconURL: iconURL ?? undefined })
             .setTitle(interaction.guild.name)
             .setFields(
                 {
@@ -113,7 +110,7 @@ export default class serverinfo extends Command {
                 },
                 {
                     name: `📆 ${interaction.language.SERVERINFO[20]}`,
-                    value: '```' + `<t:${Math.floor(interaction.guild.createdTimestamp / 1000)}:d>` + '```',
+                    value: `<t:${Math.floor(interaction.guild.createdTimestamp / 1000)}:d>`,
                     inline: true,
                 },
                 {
@@ -128,12 +125,10 @@ export default class serverinfo extends Command {
                 },
                 {
                     name: `**${interaction.language.SERVERINFO[25]}**`,
-                    // @ts-ignore
                     value: `${verification[interaction.guild?.verificationLevel]}`,
                 },
                 {
                     name: `**${interaction.language.SERVERINFO[26]}**`,
-                    //@ts-ignore
                     value: '```' + explicitContent[interaction.guild?.explicitContentFilter] + '```',
                 },
             )
