@@ -39,10 +39,10 @@ export default class roleinfo extends Command {
         const rol = new EmbedBuilder()
             .setThumbnail(interaction.user.displayAvatarURL())
             .setTimestamp()
-            .setColor((role.color as ColorResolvable) || ('#1DC44F' as ColorResolvable))
+            .setColor(role.color || '#1DC44F')
             .setAuthor({
                 name: interaction.guild.name,
-                iconURL: interaction.guild.iconURL() ?? '',
+                iconURL: interaction.guild.iconURL() ?? undefined,
             })
             .setFields(
                 {
@@ -83,7 +83,7 @@ export default class roleinfo extends Command {
                     inline: true,
                 },
             )
-            .setImage(interaction.guild.iconURL() ?? '')
+            .setImage(interaction.guild.iconURL())
 
         return interaction.reply({ embeds: [rol] })
     }
