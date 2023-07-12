@@ -49,6 +49,7 @@ export const keys: {
     how_vote_answer: string
     title: string
   }
+  avatar: string
 } = {
   question_ball: {
     no_question: "question_ball.no_question",
@@ -100,4 +101,5 @@ export const keys: {
     how_vote_answer: "help.how_vote_answer",
     title: "help.title",
   },
+  avatar: "avatar",
 }
