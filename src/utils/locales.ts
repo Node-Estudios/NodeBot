@@ -106,6 +106,10 @@ export const keys: {
     not_reproducible: string
     added: string
   }
+  reboot: {
+    all: string
+    shard: string
+  }
   ERROREMBED: string
   SUCCESSEMBED: string
   MEMBERS: string
@@ -242,6 +246,10 @@ export const keys: {
     same: "play.same",
     not_reproducible: "play.not_reproducible",
     added: "play.added",
+  },
+  reboot: {
+    all: "reboot.all",
+    shard: "reboot.shard",
   },
   ERROREMBED: "ERROREMBED",
   SUCCESSEMBED: "SUCCESSEMBED",

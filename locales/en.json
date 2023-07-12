@@ -106,6 +106,10 @@
         "not_reproducible": "The attached link does not contain reproducible content.",
         "added": "{song} added to the list"
     },
+    "reboot": {
+        "all": "Rebooting all shards...",
+        "shard": "Rebooting shard {shard}..."
+    },
     "ERROREMBED": "Error <:error:897836005787308062>",
     "SUCCESSEMBED": "Success <a:tick:836295873091862568>",
     "MEMBERS": "Members",
