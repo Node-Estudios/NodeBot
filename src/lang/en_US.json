@@ -725,8 +725,6 @@
     "2": "The music has been stopped",
     "3": "You are not within my voice channel.",
     "4": "Music paused by <@",
-    "5": "Music resumed by <@",
-    "6": ">.",
     "7": "Music stopped by <@"
   },
   "VOLUME": {
@@ -1106,13 +1104,6 @@
     "2": "The user with ID",
     "3": "has been unbanned.",
     "4": "I couldn't find the user."
-  },
-  "PLAYER": {
-    "stopMusic": "Stop",
-    "pauseMusic": "Pause",
-    "resumeMusic": "Resume",
-    "skipMusic": "Skip",
-    "queueMusic": "Queue"
   },
   "PAUSE": {
     "1": "The music has been stopped.",

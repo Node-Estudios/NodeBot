@@ -110,8 +110,17 @@ export const keys: {
     all: string
     shard: string
   }
+  stop: {
+    resumed: string
+    paused: string
+  }
   ERROREMBED: string
   SUCCESSEMBED: string
+  PAUSE: string
+  RESUME: string
+  STOP: string
+  SKIP: string
+  QUEUE: string
   MEMBERS: string
   REGULAR: string
   ANIMATED: string
@@ -251,8 +260,17 @@ export const keys: {
     all: "reboot.all",
     shard: "reboot.shard",
   },
+  stop: {
+    resumed: "stop.resumed",
+    paused: "stop.paused",
+  },
   ERROREMBED: "ERROREMBED",
   SUCCESSEMBED: "SUCCESSEMBED",
+  PAUSE: "PAUSE",
+  RESUME: "RESUME",
+  STOP: "STOP",
+  SKIP: "SKIP",
+  QUEUE: "QUEUE",
   MEMBERS: "MEMBERS",
   REGULAR: "REGULAR",
   ANIMATED: "ANIMATED",

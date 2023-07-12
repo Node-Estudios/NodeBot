@@ -110,8 +110,17 @@
         "all": "Rebooting all shards...",
         "shard": "Rebooting shard {shard}..."
     },
+    "stop": {
+        "resumed": "Music resumed by {user}",
+        "paused": "Music paused by {user}"
+    },
     "ERROREMBED": "Error <:error:897836005787308062>",
     "SUCCESSEMBED": "Success <a:tick:836295873091862568>",
+    "PAUSE": "Pause",
+    "RESUME": "Resume",
+    "STOP": "Stop",
+    "SKIP": "Skip",
+    "QUEUE": "Queue",
     "MEMBERS": "Members",
     "REGULAR": "Regular",
     "ANIMATED": "Animated",

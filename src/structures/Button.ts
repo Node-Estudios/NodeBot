@@ -10,7 +10,7 @@ export default class Button {
         return this.#patron
     }
 
-    async run(interaction: ButtonInteraction) {
+    async run(interaction: ButtonInteraction): Promise<any> {
         return interaction.reply('This button is not yet implemented.')
     }
 
