@@ -120,6 +120,10 @@ export default {
     resumed: "stop.resumed",
     paused: "stop.paused",
   },
+  voice_update: {
+    leaving: "voice_update.leaving",
+    alone: "voice_update.alone",
+  },
   ERROREMBED: "ERROREMBED",
   SUCCESSEMBED: "SUCCESSEMBED",
   PAUSE: "PAUSE",
@@ -276,6 +280,10 @@ export default {
   stop: {
     resumed: string
     paused: string
+  }
+  voice_update: {
+    leaving: string
+    alone: string
   }
   ERROREMBED: string
   SUCCESSEMBED: string

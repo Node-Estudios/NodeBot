@@ -28,12 +28,12 @@ export default class Player extends yasha.TrackPlayer {
     bitrate?: number
     subscription: any
     connection: any
-    stayInVc: any
-    previouslyPaused: any
+    stayInVc = false
+    previouslyPaused = false
     pausedUser?: User
     resumedUser?: User
     youtubei = Innertube.create()
-    waitingMessage: any
+    waitingMessage: Message | null = null
     constructor(options: any) {
         super({
             external_packet_send: false,

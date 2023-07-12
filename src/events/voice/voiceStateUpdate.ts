@@ -56,8 +56,6 @@
 //     })
 // }
 
-//TODO? use global client?
-import cacheLang from '../../cache/idioms.js'
 import langFile from '../../lang/index.json' assert { type: 'json' }
 import Client from '../../structures/Client.js'
 
@@ -66,17 +64,14 @@ import Client from '../../structures/Client.js'
 import { EmbedBuilder, VoiceChannel, VoiceState } from 'discord.js'
 import { BaseEvent } from '../../structures/Events.js'
 import logger from '../../utils/logger.js'
+import Translator, { keys } from '../../utils/Translator'
 
 export default class voiceStateUpdate extends BaseEvent {
     async run(client: Client, oldState: VoiceState, newState: VoiceState): Promise<any> {
-        // console.log('voiceStateUpdate executed');
         if (!client.music) return
-
-        const defaultLanguage = langFile.find(l => l.default)!
-        const language = await cacheLang.get(defaultLanguage.nombre).default
+        const translate = Translator(newState.guild)
         const player = client.music.players.get(oldState.guild.id)
-        // console.log(language)
-        if (!player || player.stayInVoice) return
+        if (!player?.stayInVoice) return
 
         const newUserVoiceChannel = newState.guild.members.cache.get(client.user.id)?.voice.channel
         const oldUserVoiceChannel = oldState.guild.members.cache.get(client.user.id)?.voice.channel
@@ -94,12 +89,20 @@ export default class voiceStateUpdate extends BaseEvent {
             return
         }
         if (!player || player.waitingMessage) return
-        if (player.stayInVc == true) { player.pause(true); if (client.settings.debug == "true") logger.debug("AutoPaused (24/7) | " + player.guild.name + " | " + player.queue.current?.requester.displayName) }
+        if (player.stayInVc == true) {
+            player.pause(true)
+            if (client.settings.debug == 'true')
+                logger.debug(
+                    'AutoPaused (24/7) | ' + player.guild.name + ' | ' + player.queue.current?.requester.displayName,
+                )
+        }
         if (player.stayInVc == false || !player.stayInVc) {
             const embed = new EmbedBuilder()
                 .setDescription(
-                    `${language.VOICESTATEUPDATE[1]}${oldUserVoiceChannel.id}${language.VOICESTATEUPDATE[2]}${300000 / 60 / 1000
-                    }${language.VOICESTATEUPDATE[3]}`,
+                    translate(keys.voice_update.leaving, {
+                        channel: oldUserVoiceChannel.toString(),
+                        time: 300000 / 60 / 1000,
+                    }) + ' <:pepesad:967939851863343154>',
                 )
                 .setColor(client.settings.color)
             const msg = await player.textChannel.send({
@@ -108,8 +111,9 @@ export default class voiceStateUpdate extends BaseEvent {
             player.waitingMessage = msg
             player.previouslyPaused = player.paused
 
-            player.pause(true);
-            if (client.settings.debug == "true") logger.debug("AutoPaused | " + player.guild.name + " | " + player.queue.current?.requester.displayName)
+            player.pause(true)
+            if (client.settings.debug == 'true')
+                logger.debug('AutoPaused | ' + player.guild.name + ' | ' + player.queue.current?.requester.displayName)
         }
 
         //delay 5 minutos
@@ -126,7 +130,7 @@ export default class voiceStateUpdate extends BaseEvent {
             } else {
                 newPlayer = await client.music.createNewPlayer(
                     oldState.guild.members.cache.get(client.user.id)?.voice.channel! as VoiceChannel,
-                    (player as any).textChannel,
+                    (player as any).textChannel, // TODO: player don't exist in this scope
                     oldState.guild,
                     100,
                 )
@@ -138,15 +142,13 @@ export default class voiceStateUpdate extends BaseEvent {
                     embeds: [
                         new EmbedBuilder()
                             .setDescription(
-                                `${language.VOICESTATEUPDATE[4]} ${oldUserVoiceChannel.id} ${language.VOICESTATEUPDATE[5]}`,
+                                translate(keys.voice_update.alone, {
+                                    channel: oldUserVoiceChannel.toString(),
+                                }) + ' <:pepeupset:967939535050772500>',
                             )
                             .setColor(client.settings.color),
                     ],
-                    content: null,
                 })
         }
     }
-
-
 }
-
