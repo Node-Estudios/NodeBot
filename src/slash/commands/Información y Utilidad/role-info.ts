@@ -51,40 +51,38 @@ export default class roleinfo extends Command {
             })
             .setFields(
                 {
-                    name: translate(keys.roleinfo.name),
+                    name: `<:pepeblink:967941236029788160> ${translate(keys.NAME)}:`,
                     value: '```' + role.name + '```',
                     inline: true,
                 },
                 {
-                    name: translate(keys.roleinfo.id),
+                    name: `<:textchannelblurple:893490117451333632> ${translate(keys.ID)}:`,
                     value: '```' + role.id + '```',
                     inline: true,
                 },
                 {
-                    name: translate(keys.roleinfo.position),
+                    name: `🔢 ${translate(keys.POSITION)}:`,
                     value: '```' + Math.abs(role.position - interaction.guild!.roles.cache.size) + '```',
                     inline: true,
                 },
                 {
-                    name: translate(keys.roleinfo.color),
+                    name: `🎩 ${translate(keys.COLOR)}:`,
                     value: '```' + role.color + '```',
                     inline: true,
                 },
                 {
-                    name: translate(keys.roleinfo.mentionable),
-                    value: role.mentionable
-                        ? '```' + translate(keys.YES) + '```'
-                        : '```' + translate(keys.NO) + '```',
+                    name: `<:star:893553167915188275> ${translate(keys.MENTIONABLE)}:`,
+                    value:'```' + translate(keys[role.mentionable?'YES':'NO']) + '```',
                     inline: true,
                 },
                 {
-                    name: translate(keys.roleinfo.separated),
-                    value: role.hoist ? '```' + translate(keys.YES) + '```' : '```' + translate(keys.NO) + '```',
+                    name: `<:share:893553167894216744> ${translate(keys.SEPARATED)}:`,
+                    value:'```' + translate(keys[role.hoist?'YES':'NO']) + '```',
                     inline: true,
                 },
                 {
-                    name: translate(keys.roleinfo.managed),
-                    value: role.managed ? '```' + translate(keys.YES) + '```' : '```' + translate(keys.NO) + '```',
+                    name: `<:cmd:894171593431994388> ${translate(keys.roleinfo.managed)}:`,
+                    value:'```' + translate(keys[role.managed?'YES':'NO']) + '```',
                     inline: true,
                 },
             )

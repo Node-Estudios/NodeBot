@@ -61,17 +61,48 @@ export const keys: {
   }
   API: string
   PING: string
+  NAME: string
+  ID: string
+  POSITION: string
+  COLOR: string
+  MENTIONABLE: string
+  SEPARATED: string
   roleinfo: {
-    name: string
-    id: string
-    position: string
-    color: string
-    mentionable: string
-    separated: string
     managed: string
   }
   YES: string
   NO: string
+  serverinfo: {
+    verification: {
+      no: string
+      low: string
+      medium: string
+      high: string
+      extreme: string
+    }
+    explicit: {
+      disabled: string
+      members_without_role: string
+      all_members: string
+    }
+    emoji_count: string
+    tier_level: string
+    verification_level: string
+    explicit_filter: string
+  }
+  CREATED_AT: string
+  OWNER: string
+  MEMBERS: string
+  REGULAR: string
+  ANIMATED: string
+  CHANNELS: string
+  ROLES: string
+  CATEGORIES: string
+  TEXT: string
+  VOICE: string
+  BOOSTERS: string
+  REGION: string
+  TIER: string
 } = {
   question_ball: {
     no_question: "question_ball.no_question",
@@ -135,15 +166,46 @@ export const keys: {
   },
   API: "API",
   PING: "PING",
+  NAME: "NAME",
+  ID: "ID",
+  POSITION: "POSITION",
+  COLOR: "COLOR",
+  MENTIONABLE: "MENTIONABLE",
+  SEPARATED: "SEPARATED",
   roleinfo: {
-    name: "roleinfo.name",
-    id: "roleinfo.id",
-    position: "roleinfo.position",
-    color: "roleinfo.color",
-    mentionable: "roleinfo.mentionable",
-    separated: "roleinfo.separated",
     managed: "roleinfo.managed",
   },
   YES: "YES",
   NO: "NO",
+  serverinfo: {
+    verification: {
+      no: "serverinfo.verification.no",
+      low: "serverinfo.verification.low",
+      medium: "serverinfo.verification.medium",
+      high: "serverinfo.verification.high",
+      extreme: "serverinfo.verification.extreme",
+    },
+    explicit: {
+      disabled: "serverinfo.explicit.disabled",
+      members_without_role: "serverinfo.explicit.members_without_role",
+      all_members: "serverinfo.explicit.all_members",
+    },
+    emoji_count: "serverinfo.emoji_count",
+    tier_level: "serverinfo.tier_level",
+    verification_level: "serverinfo.verification_level",
+    explicit_filter: "serverinfo.explicit_filter",
+  },
+  CREATED_AT: "CREATED_AT",
+  OWNER: "OWNER",
+  MEMBERS: "MEMBERS",
+  REGULAR: "REGULAR",
+  ANIMATED: "ANIMATED",
+  CHANNELS: "CHANNELS",
+  ROLES: "ROLES",
+  CATEGORIES: "CATEGORIES",
+  TEXT: "TEXT",
+  VOICE: "VOICE",
+  BOOSTERS: "BOOSTERS",
+  REGION: "REGION",
+  TIER: "TIER",
 }

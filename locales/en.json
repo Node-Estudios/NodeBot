@@ -61,15 +61,46 @@
     },
     "API": "API",
     "PING": "Ping",
+    "NAME": "Name",
+    "ID": "ID",
+    "POSITION": "Position",
+    "COLOR": "Color",
+    "MENTIONABLE": "Mentionable",
+    "SEPARATED": "Separated",
     "roleinfo": {
-        "name": "<:pepeblink:967941236029788160> Name:",
-        "id": "<:textchannelblurple:893490117451333632> ID:",
-        "position": "🔢 Position:",
-        "color": "🎩 Color:",
-        "mentionable": "<:star:893553167915188275> Mentionable:",
-        "separated": "<:share:893553167894216744> Separated:",
-        "managed": "<:cmd:894171593431994388> Managed by Discord"
+        "managed": "Managed by Discord"
     },
     "YES": "Yes",
-    "NO": "No"
+    "NO": "No",
+    "serverinfo": {
+        "verification": {
+            "no": "No verification.",
+            "low": "Low (Verified account).",
+            "medium": "Medium (Verified account for +5 minutes).",
+            "high": "High (Verified account for +10 minutes).",
+            "extreme": "Extreme (Verified account y verified phone number linked)."
+        },
+        "explicit": {
+            "disabled": "No messages are scanned.",
+            "members_without_role": "Scan users without a role.",
+            "all_members": "Scan every message."
+        },
+        "emoji_count": "Emoji Count",
+        "tier_level": "Tier Level",
+        "verification_level": "Verification Level",
+        "explicit_filter": "Explicit Content Filter Level"
+    },
+    "CREATED_AT": "Created at",
+    "OWNER": "Owner",
+    "MEMBERS": "Members",
+    "REGULAR": "Regular",
+    "ANIMATED": "Animated",
+    "CHANNELS": "Channels",
+    "ROLES": "Roles",
+    "CATEGORIES": "Categories",
+    "TEXT": "Text",
+    "VOICE": "Voice",
+    "BOOSTERS": "Boosters",
+    "REGION": "Region",
+    "TIER": "Tier"
 }
