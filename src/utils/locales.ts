@@ -103,6 +103,14 @@ export const keys: {
   BOOSTERS: string
   REGION: string
   TIER: string
+  ban: {
+    not_found: string
+    self: string
+    owner: string
+    higher: string
+    ban: string
+    unbannable: string
+  }
 } = {
   question_ball: {
     no_question: "question_ball.no_question",
@@ -208,4 +216,12 @@ export const keys: {
   BOOSTERS: "BOOSTERS",
   REGION: "REGION",
   TIER: "TIER",
+  ban: {
+    not_found: "ban.not_found",
+    self: "ban.self",
+    owner: "ban.owner",
+    higher: "ban.higher",
+    ban: "ban.ban",
+    unbannable: "ban.unbannable",
+  },
 }

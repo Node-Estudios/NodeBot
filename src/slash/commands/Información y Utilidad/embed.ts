@@ -24,6 +24,7 @@ export default class embed extends Command {
                 'en-US': 'embed',
             },
             cooldown: 5,
+            dm_permission: false,
             permissions: {
                 botPermissions: new PermissionsBitField([
                     PermissionsBitField.Flags.SendMessages,

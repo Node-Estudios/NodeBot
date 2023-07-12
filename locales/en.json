@@ -102,5 +102,13 @@
     "VOICE": "Voice",
     "BOOSTERS": "Boosters",
     "REGION": "Region",
-    "TIER": "Tier"
+    "TIER": "Tier",
+    "ban": {
+        "not_found": "Member not found",
+        "self": "You can't ban yourself",
+        "owner": "You can't ban the owner",
+        "higher": "You can't ban a member with a higher role than you",
+        "ban": "Banned successfully",
+        "unbannable": "I can't ban this member"
+    }
 }

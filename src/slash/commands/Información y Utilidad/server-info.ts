@@ -19,6 +19,7 @@ export default class serverinfo extends Command {
                 'en-US': 'Get information about the server.',
             },
             cooldown: 5,
+            dm_permission: false,
         })
     }
 
