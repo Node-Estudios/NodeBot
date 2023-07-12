@@ -1,9 +1,9 @@
 import { ChatInputCommandInteractionExtended } from '../../../events/client/interactionCreate.js'
+import { ApplicationCommandOptionType, EmbedBuilder } from 'discord.js'
 import Translator from '../../../utils/Translator.js'
 import Command from '../../../structures/Command.js'
 import Client from '../../../structures/Client.js'
 import { keys } from '../../../utils/locales.js'
-import { EmbedBuilder } from 'discord.js'
 
 export default class ball extends Command {
     constructor() {
@@ -21,7 +21,7 @@ export default class ball extends Command {
             cooldown: 5,
             options: [
                 {
-                    type: 3,
+                    type: ApplicationCommandOptionType.String,
                     name: 'question',
                     description: 'The question to ask',
                     name_localizations: {

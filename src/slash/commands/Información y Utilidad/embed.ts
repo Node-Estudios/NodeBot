@@ -8,7 +8,6 @@ import {
 import { ChatInputCommandInteractionExtended } from '../../../events/client/interactionCreate.js'
 import Translator from '../../../utils/Translator.js'
 import Command from '../../../structures/Command.js'
-import Client from '../../../structures/Client.js'
 import { keys } from '../../../utils/locales.js'
 
 export default class embed extends Command {
@@ -34,7 +33,7 @@ export default class embed extends Command {
             },
             options: [
                 {
-                    type: 7,
+                    type: ApplicationCommandOptionType.Channel,
                     name: 'channel',
                     channel_types: [ChannelType.GuildText],
                     name_localizations: {
@@ -64,7 +63,7 @@ export default class embed extends Command {
                     required: true,
                 },
                 {
-                    type: 3,
+                    type: ApplicationCommandOptionType.String,
                     name: 'title',
                     name_localizations: {
                         'es-ES': 'titulo',
@@ -78,7 +77,7 @@ export default class embed extends Command {
                     required: true,
                 },
                 {
-                    type: 3,
+                    type: ApplicationCommandOptionType.String,
                     name: 'description',
                     name_localizations: {
                         'es-ES': 'descripcion',

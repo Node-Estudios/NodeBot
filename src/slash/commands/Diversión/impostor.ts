@@ -1,7 +1,8 @@
 import { ChatInputCommandInteractionExtended } from '../../../events/client/interactionCreate.js'
-import Client from '../../../structures/Client.js'
-import Command from '../../../structures/Command.js'
+import { ApplicationCommandOptionType } from 'discord.js'
 import Translator from '../../../utils/Translator.js'
+import Command from '../../../structures/Command.js'
+import Client from '../../../structures/Client.js'
 import { keys } from '../../../utils/locales.js'
 
 export default class impostor extends Command {
@@ -20,7 +21,7 @@ export default class impostor extends Command {
             cooldown: 5,
             options: [
                 {
-                    type: 6,
+                    type: ApplicationCommandOptionType.User,
                     name: 'user',
                     description: 'Are this user the impostor? SUS na na na na na na na',
                     name_localizations: {
