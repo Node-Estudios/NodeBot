@@ -18,7 +18,6 @@
             "11": "I don `t believe..."
         }
     },
-    "ERROREMBED": "Error <:error:897836005787308062>",
     "impostor": {
         "was": "Was the impostor",
         "was_not": "Was not the impostor"
@@ -59,19 +58,9 @@
         "global": "Global ping",
         "internal": "Internal Processing (database + processing)"
     },
-    "API": "API",
-    "PING": "Ping",
-    "NAME": "Name",
-    "ID": "ID",
-    "POSITION": "Position",
-    "COLOR": "Color",
-    "MENTIONABLE": "Mentionable",
-    "SEPARATED": "Separated",
     "roleinfo": {
         "managed": "Managed by Discord"
     },
-    "YES": "Yes",
-    "NO": "No",
     "serverinfo": {
         "verification": {
             "no": "No verification.",
@@ -90,19 +79,6 @@
         "verification_level": "Verification Level",
         "explicit_filter": "Explicit Content Filter Level"
     },
-    "CREATED_AT": "Created at",
-    "OWNER": "Owner",
-    "MEMBERS": "Members",
-    "REGULAR": "Regular",
-    "ANIMATED": "Animated",
-    "CHANNELS": "Channels",
-    "ROLES": "Roles",
-    "CATEGORIES": "Categories",
-    "TEXT": "Text",
-    "VOICE": "Voice",
-    "BOOSTERS": "Boosters",
-    "REGION": "Region",
-    "TIER": "Tier",
     "ban": {
         "not_found": "Member not found",
         "self": "You can't ban yourself",
@@ -116,7 +92,10 @@
             "0": "There are no songs playing on your voice channel. Why don't you add one? <:pepeblink:967941236029788160>",
             "1": "It sounds like you're not listening to music, how about we do it? <:pepeblink:967941236029788160>",
             "2": "What are you doing that you don't listen to music? Add a song now :)"
-        }
+        },
+        "no_queue": "There aren't songs being played on this server. Why don't you add one?",
+        "no_same": "You are not within my voice channel.",
+        "skiped": "{song} has been skipped"
     },
     "247": {
         "enabled": "24/7 mode is enabled <a:DJPeepo:969757766744944700>",
@@ -127,8 +106,33 @@
         "not_reproducible": "The attached link does not contain reproducible content.",
         "added": "{song} added to the list"
     },
+    "ERROREMBED": "Error <:error:897836005787308062>",
+    "SUCCESSEMBED": "Success <a:tick:836295873091862568>",
+    "MEMBERS": "Members",
+    "REGULAR": "Regular",
+    "ANIMATED": "Animated",
+    "CHANNELS": "Channels",
+    "ROLES": "Roles",
+    "CATEGORIES": "Categories",
+    "TEXT": "Text",
+    "VOICE": "Voice",
+    "BOOSTERS": "Boosters",
+    "REGION": "Region",
+    "TIER": "Tier",
+    "CREATED_AT": "Created at",
+    "OWNER": "Owner",
     "AUTHOR": "Author",
     "REQUESTER": "Requester",
     "DURATION": "Duration",
+    "NO": "No",
+    "API": "API",
+    "PING": "Ping",
+    "NAME": "Name",
+    "ID": "ID",
+    "POSITION": "Position",
+    "COLOR": "Color",
+    "MENTIONABLE": "Mentionable",
+    "SEPARATED": "Separated",
+    "YES": "Yes",
     "GENERICERROR": "Oops, there seems to have been an error.\nYou can contact the developer to let him know at [The Official Discord]({inviteURL})"
 }

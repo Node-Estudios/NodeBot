@@ -695,7 +695,6 @@
     "14": "The music module is off. I have notified the developers in case it is a bug."
   },
   "QUEUE": {
-    "1": "There aren't songs being played on this server. Why don't you add one?",
     "2": "Node's Player",
     "3": "Currently playing:",
     "4": "¡The page does not exist!",
@@ -720,11 +719,6 @@
     "11": "I can't add this radio.",
     "12": "__**Node's Radio**__",
     "13": "The voice channel where you are is not allowed to use the music features."
-  },
-  "SKIP": {
-    "2": "You are not on the same voice channel.",
-    "3": "There aren't songs being played.",
-    "4": "has been skipped."
   },
   "STOP": {
     "1": "There aren't any songs being played.",
@@ -776,8 +770,6 @@
     "5": "You must add an attached image as logo to use the transparent background's property.",
     "6": "The limit is on 500 characters."
   },
-  "ERROREMBED": "Error <a:no:854740402531991573>",
-  "SUCCESSEMBED": "Success <a:tick:836295873091862568>",
   "RESET": "There is no music being reproduced.",
   "NOQUEUE": "The queue has finished.",
   "CATEGORY": {

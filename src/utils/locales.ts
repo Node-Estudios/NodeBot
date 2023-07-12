@@ -22,7 +22,6 @@ export const keys: {
       11: string
     }
   }
-  ERROREMBED: string
   impostor: {
     was: string
     was_not: string
@@ -63,19 +62,9 @@ export const keys: {
     global: string
     internal: string
   }
-  API: string
-  PING: string
-  NAME: string
-  ID: string
-  POSITION: string
-  COLOR: string
-  MENTIONABLE: string
-  SEPARATED: string
   roleinfo: {
     managed: string
   }
-  YES: string
-  NO: string
   serverinfo: {
     verification: {
       no: string
@@ -94,19 +83,6 @@ export const keys: {
     verification_level: string
     explicit_filter: string
   }
-  CREATED_AT: string
-  OWNER: string
-  MEMBERS: string
-  REGULAR: string
-  ANIMATED: string
-  CHANNELS: string
-  ROLES: string
-  CATEGORIES: string
-  TEXT: string
-  VOICE: string
-  BOOSTERS: string
-  REGION: string
-  TIER: string
   ban: {
     not_found: string
     self: string
@@ -121,15 +97,43 @@ export const keys: {
       1: string
       2: string
     }
+    no_queue: string
+    no_same: string
+    skiped: string
   }
   play: {
     same: string
     not_reproducible: string
     added: string
   }
+  ERROREMBED: string
+  SUCCESSEMBED: string
+  MEMBERS: string
+  REGULAR: string
+  ANIMATED: string
+  CHANNELS: string
+  ROLES: string
+  CATEGORIES: string
+  TEXT: string
+  VOICE: string
+  BOOSTERS: string
+  REGION: string
+  TIER: string
+  CREATED_AT: string
+  OWNER: string
   AUTHOR: string
   REQUESTER: string
   DURATION: string
+  NO: string
+  API: string
+  PING: string
+  NAME: string
+  ID: string
+  POSITION: string
+  COLOR: string
+  MENTIONABLE: string
+  SEPARATED: string
+  YES: string
   GENERICERROR: string
 } = {
   247: {
@@ -155,7 +159,6 @@ export const keys: {
       11: "question_ball.possibles.11",
     },
   },
-  ERROREMBED: "ERROREMBED",
   impostor: {
     was: "impostor.was",
     was_not: "impostor.was_not",
@@ -196,19 +199,9 @@ export const keys: {
     global: "ping.global",
     internal: "ping.internal",
   },
-  API: "API",
-  PING: "PING",
-  NAME: "NAME",
-  ID: "ID",
-  POSITION: "POSITION",
-  COLOR: "COLOR",
-  MENTIONABLE: "MENTIONABLE",
-  SEPARATED: "SEPARATED",
   roleinfo: {
     managed: "roleinfo.managed",
   },
-  YES: "YES",
-  NO: "NO",
   serverinfo: {
     verification: {
       no: "serverinfo.verification.no",
@@ -227,19 +220,6 @@ export const keys: {
     verification_level: "serverinfo.verification_level",
     explicit_filter: "serverinfo.explicit_filter",
   },
-  CREATED_AT: "CREATED_AT",
-  OWNER: "OWNER",
-  MEMBERS: "MEMBERS",
-  REGULAR: "REGULAR",
-  ANIMATED: "ANIMATED",
-  CHANNELS: "CHANNELS",
-  ROLES: "ROLES",
-  CATEGORIES: "CATEGORIES",
-  TEXT: "TEXT",
-  VOICE: "VOICE",
-  BOOSTERS: "BOOSTERS",
-  REGION: "REGION",
-  TIER: "TIER",
   ban: {
     not_found: "ban.not_found",
     self: "ban.self",
@@ -254,14 +234,42 @@ export const keys: {
       1: "skip.messages.1",
       2: "skip.messages.2",
     },
+    no_queue: "skip.no_queue",
+    no_same: "skip.no_same",
+    skiped: "skip.skiped",
   },
   play: {
     same: "play.same",
     not_reproducible: "play.not_reproducible",
     added: "play.added",
   },
+  ERROREMBED: "ERROREMBED",
+  SUCCESSEMBED: "SUCCESSEMBED",
+  MEMBERS: "MEMBERS",
+  REGULAR: "REGULAR",
+  ANIMATED: "ANIMATED",
+  CHANNELS: "CHANNELS",
+  ROLES: "ROLES",
+  CATEGORIES: "CATEGORIES",
+  TEXT: "TEXT",
+  VOICE: "VOICE",
+  BOOSTERS: "BOOSTERS",
+  REGION: "REGION",
+  TIER: "TIER",
+  CREATED_AT: "CREATED_AT",
+  OWNER: "OWNER",
   AUTHOR: "AUTHOR",
   REQUESTER: "REQUESTER",
   DURATION: "DURATION",
+  NO: "NO",
+  API: "API",
+  PING: "PING",
+  NAME: "NAME",
+  ID: "ID",
+  POSITION: "POSITION",
+  COLOR: "COLOR",
+  MENTIONABLE: "MENTIONABLE",
+  SEPARATED: "SEPARATED",
+  YES: "YES",
   GENERICERROR: "GENERICERROR",
 }
