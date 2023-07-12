@@ -1,5 +1,4 @@
-import { ChatInputCommandInteractionExtended } from '../../../events/client/interactionCreate.js'
-import { ApplicationCommandOptionType } from 'discord.js'
+import { ApplicationCommandOptionType, ChatInputCommandInteraction } from 'discord.js'
 import Translator from '../../../utils/Translator.js'
 import Command from '../../../structures/Command.js'
 import { keys } from '../../../utils/locales.js'
@@ -66,7 +65,7 @@ export default class Ban extends Command {
         })
     }
 
-    override async run(interaction: ChatInputCommandInteractionExtended<'cached'>) {
+    override async run(interaction: ChatInputCommandInteraction<'cached'>) {
         const translate = Translator(interaction)
         const member = interaction.options.getMember('user')
         if (!member) return interaction.reply({

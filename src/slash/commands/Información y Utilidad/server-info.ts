@@ -1,8 +1,7 @@
-import { EmbedBuilder as EmbedBuilder } from 'discord.js'
-import { ChatInputCommandInteractionExtended } from '../../../events/client/interactionCreate.js'
-import Client from '../../../structures/Client.js'
-import Command from '../../../structures/Command.js'
+import { EmbedBuilder, ChatInputCommandInteraction } from 'discord.js'
 import Translator from '../../../utils/Translator.js'
+import Command from '../../../structures/Command.js'
+import Client from '../../../structures/Client.js'
 import { keys } from '../../../utils/locales.js'
 
 export default class serverinfo extends Command {
@@ -23,7 +22,7 @@ export default class serverinfo extends Command {
         })
     }
 
-    override async run(interaction: ChatInputCommandInteractionExtended<'cached'>) {
+    override async run(interaction: ChatInputCommandInteraction<'cached'>) {
         const client = interaction.client as Client
         const translate = Translator(interaction)
         // try {
@@ -109,9 +108,9 @@ export default class serverinfo extends Command {
                     }]`,
                     value: `<:List_Bottom_Large:970441521637769287> ${translate(keys.CATEGORIES)}: ${
                         category.size
-                    }\n<:textchannelblurple:893490117451333632> ${interaction.language.SERVERINFO[18]}: ${
+                    }\n<:textchannelblurple:893490117451333632> ${translate(keys.TEXT)}: ${
                         text.size
-                    }\n<:blurple_voicechannel:970441881144156190> ${interaction.language.SERVERINFO[19]}: ${
+                    }\n<:blurple_voicechannel:970441881144156190> ${translate(keys.VOICE)}: ${
                         voice.size
                     }`,
                     inline: true,

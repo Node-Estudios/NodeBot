@@ -1,8 +1,7 @@
-import { ApplicationCommandOptionType } from 'discord.js'
-import { ChatInputCommandInteractionExtended } from '../../../events/client/interactionCreate.js'
-import Client from '../../../structures/Client.js'
-import Command from '../../../structures/Command.js'
+import { ApplicationCommandOptionType, ChatInputCommandInteraction } from 'discord.js'
 import Translator from '../../../utils/Translator.js'
+import Command from '../../../structures/Command.js'
+import Client from '../../../structures/Client.js'
 import { keys } from '../../../utils/locales.js'
 
 export default class reboot extends Command {
@@ -71,7 +70,7 @@ export default class reboot extends Command {
             ],
         })
     }
-    override async run(interaction: ChatInputCommandInteractionExtended<'cached'>) {
+    override async run(interaction: ChatInputCommandInteraction) {
         //TODO: Change reboot system
         const translate = Translator(interaction)
         const client = interaction.client as Client

@@ -1,10 +1,9 @@
-import { ChatInputCommandInteractionExtended } from '../../../events/client/interactionCreate.js'
 import { messageHelper } from '../../../handlers/messageHandler.js'
 import Translator from '../../../utils/Translator.js'
 import Command from '../../../structures/Command.js'
 import Client from '../../../structures/Client.js'
 import { keys } from '../../../utils/locales.js'
-import { EmbedBuilder } from 'discord.js'
+import { EmbedBuilder, ChatInputCommandInteraction } from 'discord.js'
 
 export default class stayinvoice extends Command {
     constructor() {
@@ -23,7 +22,7 @@ export default class stayinvoice extends Command {
             dm_permission: false,
         })
     }
-    override async run(interaction: ChatInputCommandInteractionExtended<'cached'>) {
+    override async run(interaction: ChatInputCommandInteraction<'cached'>) {
         const client = interaction.client as Client
         const translate = Translator(interaction)
         const msgs = [translate(keys.skip.messages[0]), translate(keys.skip.messages[1]), translate(keys.skip.messages[2])]

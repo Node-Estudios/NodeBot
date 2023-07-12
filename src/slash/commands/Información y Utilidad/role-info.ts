@@ -1,5 +1,4 @@
-import { ChatInputCommandInteractionExtended } from '../../../events/client/interactionCreate.js'
-import { ApplicationCommandOptionType, EmbedBuilder } from 'discord.js'
+import { ApplicationCommandOptionType, EmbedBuilder, ChatInputCommandInteraction } from 'discord.js'
 import Translator from '../../../utils/Translator.js'
 import Command from '../../../structures/Command.js'
 import { keys } from '../../../utils/locales.js'
@@ -37,7 +36,7 @@ export default class roleinfo extends Command {
             ],
         })
     }
-    override async run(interaction: ChatInputCommandInteractionExtended<'cached'>) {
+    override async run(interaction: ChatInputCommandInteraction) {
         if (!interaction.inCachedGuild()) return
         const translate = Translator(interaction)
         let role = interaction.options.getRole('role', true)

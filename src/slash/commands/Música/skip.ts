@@ -1,9 +1,8 @@
-import { ChatInputCommandInteractionExtended } from '../../../events/client/interactionCreate.js'
+import { ChatInputCommandInteraction, Colors, EmbedBuilder } from 'discord.js'
 import { messageHelper } from '../../../handlers/messageHandler.js'
 import Translator from '../../../utils/Translator.js'
 import Command from '../../../structures/Command.js'
 import Client from '../../../structures/Client.js'
-import { Colors, EmbedBuilder } from 'discord.js'
 import { keys } from '../../../utils/locales.js'
 import logger from '../../../utils/logger.js'
 
@@ -38,7 +37,7 @@ export default class skip extends Command {
             // ]
         })
     }
-    override async run(interaction: ChatInputCommandInteractionExtended<'cached'>) {
+    override async run(interaction: ChatInputCommandInteraction<'cached'>) {
         const client = interaction.client as Client
         const translate = Translator(interaction)
         const message = new messageHelper(interaction)

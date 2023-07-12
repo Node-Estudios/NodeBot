@@ -1,5 +1,4 @@
-import { AttachmentBuilder } from 'discord.js'
-import { ChatInputCommandInteractionExtended } from '../../../events/client/interactionCreate.js'
+import { AttachmentBuilder, ChatInputCommandInteraction } from 'discord.js'
 import Command from '../../../structures/Command.js'
 export default class mcserver extends Command {
     constructor() {
@@ -30,7 +29,7 @@ export default class mcserver extends Command {
         })
     }
 
-    override async run(interaction: ChatInputCommandInteractionExtended<'cached'>) {
+    override async run(interaction: ChatInputCommandInteraction) {
         const server = interaction.options.getString('server', true)
         interaction.reply({
             files: [

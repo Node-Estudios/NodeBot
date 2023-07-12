@@ -1,5 +1,4 @@
-import { ChatInputCommandInteractionExtended } from '../../../events/client/interactionCreate.js'
-import { ApplicationCommandOptionType } from 'discord.js'
+import { ApplicationCommandOptionType, ChatInputCommandInteraction } from 'discord.js'
 import Translator from '../../../utils/Translator.js'
 import Command from '../../../structures/Command.js'
 import Client from '../../../structures/Client.js'
@@ -37,7 +36,7 @@ export default class impostor extends Command {
             ],
         })
     }
-    override async run(interaction: ChatInputCommandInteractionExtended<'cached'>) {
+    override async run(interaction: ChatInputCommandInteraction) {
         const trnaslate = Translator(interaction)
         const client = interaction.client as Client
         interaction.reply(`. 　　　。　　　　•　 　ﾟ　　。 　　.

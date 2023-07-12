@@ -1,5 +1,4 @@
-import { ChatInputCommandInteractionExtended } from '../../../events/client/interactionCreate.js';
-import { ApplicationCommandOptionType, EmbedBuilder, TextChannel, VoiceChannel } from 'discord.js';
+import { ApplicationCommandOptionType, EmbedBuilder, TextChannel, VoiceChannel, ChatInputCommandInteraction } from 'discord.js';
 import performanceMeters from '../../../cache/performanceMeters.js';
 import formatTime from '../../../utils/formatTime.js';
 import Translator from '../../../utils/Translator.js';
@@ -63,7 +62,7 @@ export default class play extends Command {
             ],
         })
     }
-    override async run(interaction: ChatInputCommandInteractionExtended<'cached'>) {
+    override async run(interaction: ChatInputCommandInteraction<'cached'>) {
         const client = interaction.client as Client
         const translate = Translator(interaction)
         let player = client.music.players.get(interaction.guildId)

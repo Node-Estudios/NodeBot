@@ -1,5 +1,4 @@
-import { ChatInputCommandInteractionExtended } from '../../../events/client/interactionCreate.js'
-import { ApplicationCommandOptionType, EmbedBuilder } from 'discord.js'
+import { ApplicationCommandOptionType, EmbedBuilder, ChatInputCommandInteraction } from 'discord.js'
 import Translator from '../../../utils/Translator.js'
 import Command from '../../../structures/Command.js'
 import Client from '../../../structures/Client.js'
@@ -36,7 +35,7 @@ export default class avatar extends Command {
             ],
         })
     }
-    override async run(interaction: ChatInputCommandInteractionExtended<'cached'>) {
+    override async run(interaction: ChatInputCommandInteraction) {
         const translate = Translator(interaction)
         const client = interaction.client as Client
         const member = interaction.options.getUser('user') ?? interaction.user

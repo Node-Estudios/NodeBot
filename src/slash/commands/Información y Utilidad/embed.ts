@@ -1,11 +1,11 @@
 import {
     ApplicationCommandOptionType,
+    ChatInputCommandInteraction,
     PermissionsBitField,
     EmbedBuilder,
     ChannelType,
     Colors,
 } from 'discord.js'
-import { ChatInputCommandInteractionExtended } from '../../../events/client/interactionCreate.js'
 import Translator from '../../../utils/Translator.js'
 import Command from '../../../structures/Command.js'
 import { keys } from '../../../utils/locales.js'
@@ -94,7 +94,7 @@ export default class embed extends Command {
             ],
         })
     }
-    override async run(interaction: ChatInputCommandInteractionExtended<'cached'>) {
+    override async run(interaction: ChatInputCommandInteraction) {
         //TODO: Add more colors && make it work with hex colors && Add language support
         const canal = interaction.options.getChannel('channel', true, [ChannelType.GuildText]),
             descripcion = interaction.options.getString('description', true),
@@ -106,6 +106,7 @@ export default class embed extends Command {
         return interaction.reply(Translator(interaction)(keys.embed_successfully))
     }
 }
+
 function getColorChoices() {
     return [
         {

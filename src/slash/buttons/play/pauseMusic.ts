@@ -1,22 +1,20 @@
-import { ActionRowBuilder, ButtonBuilder, EmbedBuilder } from 'discord.js'
-import { ButtonInteractionExtend } from '../../../events/client/interactionCreate.js'
+import { ActionRowBuilder, ButtonBuilder, ButtonInteraction, EmbedBuilder } from 'discord.js'
 import { messageHelper } from '../../../handlers/messageHandler.js'
 import Client from '../../../structures/Client.js'
 
 export default {
     name: 'pauseMusic',
-    async run(client: Client, interaction: ButtonInteractionExtend<'cached'>) {
-        const message = new messageHelper(interaction)
+    async run(interaction: ButtonInteraction) {
+        const client = interaction.client as Client
         const player = client.music.players.get(interaction.guild!.id)
         if (!player)
-            return message.sendEphemeralMessage(
+            return interaction.reply(
                 {
-                    embeds: new EmbedBuilder().setColor(15548997).setFooter({
+                    embeds: [new EmbedBuilder().setColor(15548997).setFooter({
                         text: interaction.language.QUEUE[1],
                         iconURL: interaction.user.displayAvatarURL(),
-                    }),
+                    })],
                 },
-                false,
             )
         // const player = client.music.players.get(interaction.guild.id)
         if (!player.queue.current)
