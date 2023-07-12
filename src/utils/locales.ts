@@ -1,4 +1,8 @@
 export const keys: {
+  247: {
+    enabled: string
+    disabled: string
+  }
   question_ball: {
     no_question: string
     question: string
@@ -111,7 +115,18 @@ export const keys: {
     ban: string
     unbannable: string
   }
+  skip: {
+    messages: {
+      0: string
+      1: string
+      2: string
+    }
+  }
 } = {
+  247: {
+    enabled: "247.enabled",
+    disabled: "247.disabled",
+  },
   question_ball: {
     no_question: "question_ball.no_question",
     question: "question_ball.question",
@@ -223,5 +238,12 @@ export const keys: {
     higher: "ban.higher",
     ban: "ban.ban",
     unbannable: "ban.unbannable",
+  },
+  skip: {
+    messages: {
+      0: "skip.messages.0",
+      1: "skip.messages.1",
+      2: "skip.messages.2",
+    },
   },
 }

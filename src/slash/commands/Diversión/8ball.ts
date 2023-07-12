@@ -1,5 +1,5 @@
 import { ChatInputCommandInteractionExtended } from '../../../events/client/interactionCreate.js'
-import { ApplicationCommandOptionType, EmbedBuilder } from 'discord.js'
+import { ApplicationCommandOptionType, Colors, EmbedBuilder } from 'discord.js'
 import Translator from '../../../utils/Translator.js'
 import Command from '../../../structures/Command.js'
 import Client from '../../../structures/Client.js'
@@ -45,7 +45,7 @@ export default class ball extends Command {
             return interaction.reply({
                 embeds: [
                     new EmbedBuilder()
-                        .setColor('Red')
+                        .setColor(Colors.Red)
                         .setTitle(translate(keys.ERROREMBED))
                         .setDescription(translate(keys.question_ball.no_question))
                         .setFooter({

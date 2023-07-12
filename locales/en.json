@@ -1,23 +1,23 @@
 {
-	"question_ball": {
-		"no_question": "No veo ninguna pregunta a la que responder...",
-		"question": "A su pregunta",
-		"response": "Mi respuesta es",
-		"possibles": {
-			"0": "Yes",
-			"1": "No",
-			"2": "Maybe",
-			"3": "Obviously",
-			"4": "I say yes",
-			"5": "I say no",
-			"6": "Probably",
-			"7": "I have my doubts...",
-			"8": "Do not even doubt it",
-			"9": "You didn't even need to ask ;)",
-			"10": "Not at all...",
-			"11": "I don `t believe..."
-		}
-	},
+    "question_ball": {
+        "no_question": "No veo ninguna pregunta a la que responder...",
+        "question": "A su pregunta",
+        "response": "Mi respuesta es",
+        "possibles": {
+            "0": "Yes",
+            "1": "No",
+            "2": "Maybe",
+            "3": "Obviously",
+            "4": "I say yes",
+            "5": "I say no",
+            "6": "Probably",
+            "7": "I have my doubts...",
+            "8": "Do not even doubt it",
+            "9": "You didn't even need to ask ;)",
+            "10": "Not at all...",
+            "11": "I don `t believe..."
+        }
+    },
     "ERROREMBED": "Error <:error:897836005787308062>",
     "impostor": {
         "was": "Was the impostor",
@@ -25,19 +25,19 @@
     },
     "embed_successfully": "Embed created and sent successfully.",
     "github": {
-      "write_username": "Please write an username.",
-      "name": "🧑 Name:",
-      "account": " Account Type:",
-      "organization": "🏢 Organization:",
-      "link": "☁️ Link",
-      "location": "🗺 Location:",
-      "email": "📩 Email",
-      "biography": "📃 Biography",
-      "twitter": "🐦 Twitter:",
-      "repositories": "📂 Public Repositories",
-      "followers": "🧍 Followers",
-      "analizing": "Analizando cuenta, por favor espera...",
-      "unknow": "El usuario no se encontró"
+        "write_username": "Please write an username.",
+        "name": "🧑 Name:",
+        "account": " Account Type:",
+        "organization": "🏢 Organization:",
+        "link": "☁️ Link",
+        "location": "🗺 Location:",
+        "email": "📩 Email",
+        "biography": "📃 Biography",
+        "twitter": "🐦 Twitter:",
+        "repositories": "📂 Public Repositories",
+        "followers": "🧍 Followers",
+        "analizing": "Analizando cuenta, por favor espera...",
+        "unknow": "El usuario no se encontró"
     },
     "help": {
         "presentation": "<a:pin:893553168259121172> Hello, I am Node an all-in-one, multifunctional bot with innovative commands.",
@@ -110,5 +110,16 @@
         "higher": "You can't ban a member with a higher role than you",
         "ban": "Banned successfully",
         "unbannable": "I can't ban this member"
+    },
+    "skip": {
+        "messages": {
+            "0": "There are no songs playing on your voice channel. Why don't you add one? <:pepeblink:967941236029788160>",
+            "1": "It sounds like you're not listening to music, how about we do it? <:pepeblink:967941236029788160>",
+            "2": "What are you doing that you don't listen to music? Add a song now :)"
+        }
+    },
+    "247": {
+        "enabled": "24/7 mode is enabled <a:DJPeepo:969757766744944700>",
+        "disabled": "24/7 mode is disabled"
     }
 }

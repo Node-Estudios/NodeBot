@@ -728,11 +728,6 @@
     "13": "The voice channel where you are is not allowed to use the music features."
   },
   "SKIP": {
-    "1": {
-      "1": "There are no songs playing on your voice channel. Why don't you add one? <:pepeblink:967941236029788160>",
-      "2": "It sounds like you're not listening to music, how about we do it? <:pepeblink:967941236029788160>",
-      "3": "What are you doing that you don't listen to music? Add a song now :)"
-    },
     "2": "You are not on the same voice channel.",
     "3": "There aren't songs being played.",
     "4": "has been skipped."
@@ -1175,8 +1170,6 @@
     "11": "✨ - Multibot Music System Node",
     "12": "(Already on the server)"
   },
-  "247DISABLED": "24/7 mode is disabled",
-  "247ENABLED": "24/7 mode is enabled <a:DJPeepo:969757766744944700>",
   "REBOOTMESSAGE": "Hey! We're applying some bug fixes to this server! We'll pause your music for a few seconds to apply the changes! Thanks for your patience.",
   "LIVE": "Live",
   "PLAYING": "Playing"
