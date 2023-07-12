@@ -1,8 +1,8 @@
 import { EmbedBuilder, ButtonInteraction } from 'discord.js'
-import Translator from '../../../utils/Translator.js'
+import Translator, { keys } from '../../../utils/Translator.js'
 import Client from '../../../structures/Client.js'
 import Button from '../../../structures/Button.js'
-import { keys } from '../../../utils/locales.js'
+
 import logger from '../../../utils/logger.js'
 
 export default class Skip extends Button {

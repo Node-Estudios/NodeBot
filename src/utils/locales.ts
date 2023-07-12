@@ -1,161 +1,4 @@
-export const keys: {
-  247: {
-    enabled: string
-    disabled: string
-  }
-  question_ball: {
-    no_question: string
-    question: string
-    response: string
-    possibles: {
-      0: string
-      1: string
-      2: string
-      3: string
-      4: string
-      5: string
-      6: string
-      7: string
-      8: string
-      9: string
-      10: string
-      11: string
-    }
-  }
-  impostor: {
-    was: string
-    was_not: string
-  }
-  embed_successfully: string
-  github: {
-    write_username: string
-    name: string
-    account: string
-    organization: string
-    link: string
-    location: string
-    email: string
-    biography: string
-    twitter: string
-    repositories: string
-    followers: string
-    analizing: string
-    unknow: string
-  }
-  help: {
-    presentation: string
-    how_use: string
-    how_use_answer: string
-    need_support: string
-    need_support_answer: string
-    how_vote: string
-    how_vote_answer: string
-    title: string
-  }
-  avatar: string
-  mchistory: {
-    dont: string
-    names: string
-    first: string
-  }
-  ping: {
-    global: string
-    internal: string
-  }
-  roleinfo: {
-    managed: string
-  }
-  serverinfo: {
-    verification: {
-      no: string
-      low: string
-      medium: string
-      high: string
-      extreme: string
-    }
-    explicit: {
-      disabled: string
-      members_without_role: string
-      all_members: string
-    }
-    emoji_count: string
-    tier_level: string
-    verification_level: string
-    explicit_filter: string
-  }
-  ban: {
-    not_found: string
-    self: string
-    owner: string
-    higher: string
-    ban: string
-    unbannable: string
-  }
-  skip: {
-    messages: {
-      0: string
-      1: string
-      2: string
-    }
-    no_same: string
-    skiped: string
-  }
-  queue: {
-    no_queue: string
-    current: string
-    queue: string
-    no_page: string
-    total: string
-  }
-  play: {
-    same: string
-    not_reproducible: string
-    added: string
-  }
-  reboot: {
-    all: string
-    shard: string
-  }
-  stop: {
-    resumed: string
-    paused: string
-  }
-  ERROREMBED: string
-  SUCCESSEMBED: string
-  PAUSE: string
-  RESUME: string
-  STOP: string
-  SKIP: string
-  NEXT: string
-  QUEUE: string
-  MEMBERS: string
-  REGULAR: string
-  ANIMATED: string
-  CHANNELS: string
-  ROLES: string
-  CATEGORIES: string
-  TEXT: string
-  VOICE: string
-  BOOSTERS: string
-  REGION: string
-  TIER: string
-  CREATED_AT: string
-  OWNER: string
-  AUTHOR: string
-  REQUESTER: string
-  DURATION: string
-  NO: string
-  API: string
-  PING: string
-  NAME: string
-  ID: string
-  POSITION: string
-  COLOR: string
-  MENTIONABLE: string
-  SEPARATED: string
-  YES: string
-  GENERICERROR: string
-} = {
+export default {
   247: {
     enabled: "247.enabled",
     disabled: "247.disabled",
@@ -312,4 +155,161 @@ export const keys: {
   SEPARATED: "SEPARATED",
   YES: "YES",
   GENERICERROR: "GENERICERROR",
+} as {
+  247: {
+    enabled: string
+    disabled: string
+  }
+  question_ball: {
+    no_question: string
+    question: string
+    response: string
+    possibles: {
+      0: string
+      1: string
+      2: string
+      3: string
+      4: string
+      5: string
+      6: string
+      7: string
+      8: string
+      9: string
+      10: string
+      11: string
+    }
+  }
+  impostor: {
+    was: string
+    was_not: string
+  }
+  embed_successfully: string
+  github: {
+    write_username: string
+    name: string
+    account: string
+    organization: string
+    link: string
+    location: string
+    email: string
+    biography: string
+    twitter: string
+    repositories: string
+    followers: string
+    analizing: string
+    unknow: string
+  }
+  help: {
+    presentation: string
+    how_use: string
+    how_use_answer: string
+    need_support: string
+    need_support_answer: string
+    how_vote: string
+    how_vote_answer: string
+    title: string
+  }
+  avatar: string
+  mchistory: {
+    dont: string
+    names: string
+    first: string
+  }
+  ping: {
+    global: string
+    internal: string
+  }
+  roleinfo: {
+    managed: string
+  }
+  serverinfo: {
+    verification: {
+      no: string
+      low: string
+      medium: string
+      high: string
+      extreme: string
+    }
+    explicit: {
+      disabled: string
+      members_without_role: string
+      all_members: string
+    }
+    emoji_count: string
+    tier_level: string
+    verification_level: string
+    explicit_filter: string
+  }
+  ban: {
+    not_found: string
+    self: string
+    owner: string
+    higher: string
+    ban: string
+    unbannable: string
+  }
+  skip: {
+    messages: {
+      0: string
+      1: string
+      2: string
+    }
+    no_same: string
+    skiped: string
+  }
+  queue: {
+    no_queue: string
+    current: string
+    queue: string
+    no_page: string
+    total: string
+  }
+  play: {
+    same: string
+    not_reproducible: string
+    added: string
+  }
+  reboot: {
+    all: string
+    shard: string
+  }
+  stop: {
+    resumed: string
+    paused: string
+  }
+  ERROREMBED: string
+  SUCCESSEMBED: string
+  PAUSE: string
+  RESUME: string
+  STOP: string
+  SKIP: string
+  NEXT: string
+  QUEUE: string
+  MEMBERS: string
+  REGULAR: string
+  ANIMATED: string
+  CHANNELS: string
+  ROLES: string
+  CATEGORIES: string
+  TEXT: string
+  VOICE: string
+  BOOSTERS: string
+  REGION: string
+  TIER: string
+  CREATED_AT: string
+  OWNER: string
+  AUTHOR: string
+  REQUESTER: string
+  DURATION: string
+  NO: string
+  API: string
+  PING: string
+  NAME: string
+  ID: string
+  POSITION: string
+  COLOR: string
+  MENTIONABLE: string
+  SEPARATED: string
+  YES: string
+  GENERICERROR: string
 }

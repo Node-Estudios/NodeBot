@@ -1,10 +1,10 @@
 import { ApplicationCommandOptionType, EmbedBuilder, TextChannel, VoiceChannel, ChatInputCommandInteraction } from 'discord.js';
 import performanceMeters from '../../../cache/performanceMeters.js';
 import formatTime from '../../../utils/formatTime.js';
-import Translator from '../../../utils/Translator.js';
+import Translator, { keys } from '../../../utils/Translator.js';
 import Command from '../../../structures/Command.js';
 import Client from '../../../structures/Client.js';
-import { keys } from '../../../utils/locales.js';
+;
 import logger from '../../../utils/logger.js';
 
 function shuffleArray(array: any[]) {

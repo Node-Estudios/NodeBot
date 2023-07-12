@@ -1,8 +1,8 @@
 import { messageHelper } from '../../../handlers/messageHandler.js'
-import Translator from '../../../utils/Translator.js'
+import Translator, { keys } from '../../../utils/Translator.js'
 import Command from '../../../structures/Command.js'
 import Client from '../../../structures/Client.js'
-import { keys } from '../../../utils/locales.js'
+
 import { EmbedBuilder, ChatInputCommandInteraction } from 'discord.js'
 
 export default class stayinvoice extends Command {

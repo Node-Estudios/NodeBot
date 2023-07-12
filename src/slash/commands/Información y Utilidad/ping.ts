@@ -1,9 +1,9 @@
 import performanceMeters from '../../../cache/performanceMeters.js'
-import Translator from '../../../utils/Translator.js'
+import Translator, { keys } from '../../../utils/Translator.js'
 import Command from '../../../structures/Command.js'
 import Client from '../../../structures/Client.js'
 import { Colors, EmbedBuilder, ChatInputCommandInteraction } from 'discord.js'
-import { keys } from '../../../utils/locales.js'
+
 import logger from '../../../utils/logger.js'
 export default class ping extends Command {
     constructor() {

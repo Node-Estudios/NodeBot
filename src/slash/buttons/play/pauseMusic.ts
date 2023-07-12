@@ -1,8 +1,8 @@
 import { ActionRowBuilder, ButtonBuilder, ButtonInteraction, EmbedBuilder } from 'discord.js'
-import Translator from '../../../utils/Translator.js'
+import Translator, { keys } from '../../../utils/Translator.js'
 import Client from '../../../structures/Client.js'
 import Button from '../../../structures/Button.js'
-import { keys } from '../../../utils/locales.js'
+
 
 export default class Pause extends Button {
     constructor() {

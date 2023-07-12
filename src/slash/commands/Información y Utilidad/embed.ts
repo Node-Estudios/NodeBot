@@ -6,9 +6,9 @@ import {
     ChannelType,
     Colors,
 } from 'discord.js'
-import Translator from '../../../utils/Translator.js'
+import Translator, { keys } from '../../../utils/Translator.js'
 import Command from '../../../structures/Command.js'
-import { keys } from '../../../utils/locales.js'
+
 
 export default class embed extends Command {
     constructor() {

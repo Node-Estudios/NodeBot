@@ -694,17 +694,6 @@
     "13": "Songs",
     "14": "The music module is off. I have notified the developers in case it is a bug."
   },
-  "QUEUE": {
-    "2": "Node's Player",
-    "3": "",
-    "4": "¡The page does not exist!",
-    "5": "Total songs on queue:",
-    "6": "",
-    "7": "'s queue",
-    "8": "Next",
-    "9": "There aren't songs on the queue. Why don't you add one?",
-    "10": "You are not within my voice channel."
-  },
   "RADIO": {
     "1": "You must be on a voice channel to play music.",
     "2": "I can't connect to your voice channel, ¡check that I have enough permissions!.",

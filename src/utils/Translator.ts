@@ -1,7 +1,8 @@
 import { Guild, Interaction, LocaleString } from 'discord.js'
 import logger from './logger.js'
-import i18n from 'i18n'
+import keys from './locales.js'
 import { join } from 'path'
+import i18n from 'i18n'
 
 i18n.configure({
     locales: ['en', 'es'],
@@ -40,3 +41,5 @@ export default function Translator(interaction: Interaction | Guild | LocaleStri
     
     return (phrase, replace) => i18n.__mf({ phrase, locale: lang }, replace)
 }
+
+export { keys }
