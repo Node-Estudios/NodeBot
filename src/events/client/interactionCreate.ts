@@ -1,46 +1,11 @@
-import { ButtonInteraction, CacheType, ChatInputCommandInteraction, Interaction } from 'discord.js'
-
-import Client from '../../structures/Client.js'
-import logger from '../../utils/logger.js'
-// const UserModel = require('../../models/user');
-import Discord from 'discord.js'
-import commands from '../../cache/commands.js'
-import performanceMeters from '../../cache/performanceMeters.js'
+import { ButtonInteraction, ChatInputCommandInteraction, Interaction } from 'discord.js'
 import { Timer as performanceMeter } from '../../handlers/performanceMeter.js'
-import languageImport from '../../lang/index.json' assert { type: 'json' }
+import performanceMeters from '../../cache/performanceMeters.js'
 import { BaseEvent } from '../../structures/Events.js'
-import retrieveUserLang from '../../utils/db/retrieveUserLang.js'
-//TODO: Finish cooldowns and move them to cache folder
+import Client from '../../structures/Client.js'
+import commands from '../../cache/commands.js'
 import buttons from '../../cache/buttons.js'
-const cooldowns = new Discord.Collection()
-const permissionHelpMessage = `Hey! Tienes problemas? Entra en nuestro servidor.`
-// Define an interface for the JSON objects inside the array
-interface Language {
-    nombre: string // The name of the language
-    nombreCompleto: string // The full name of the language
-    archivo: string // The name of the file containing translations for this language
-    default: boolean // Whether this language is the default language
-}
-// Define a type that includes all the values of the "name" field from the "Language" interface
-type Languages = Language['nombre']
-
-// Define a function that takes a list of "Language" objects and returns a type that includes all the values of the "name" field
-function getLanguages(languages: Language[]): Languages {
-    // Use the "map()" function to create a list of the "name" values, and use the "join()" function to combine them into a single string
-    return languages.map(language => language.nombre).join(' | ')
-}
-
-// Import the list of language objects from the "index.json" file
-const languages: Language[] = languageImport
-
-//Create an object for saving the contents of every language file
-import contenidoIdiomas from '../../cache/idioms.js'
-for (const archivo of languages) {
-    // Import the contents of the file and add it to the "contenidoIdiomas" array
-    const respuesta = await import(`../../lang/${archivo.archivo}`, { assert: { type: 'json' } })
-    contenidoIdiomas.set(archivo.nombre, respuesta) // {es_ES: {...}, en_US: {...}}
-    if (archivo.default) contenidoIdiomas.set('default', respuesta)
-}
+import logger from '../../utils/logger.js'
 
 export class interactionCreate extends BaseEvent {
     

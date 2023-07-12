@@ -1,13 +1,13 @@
 import { ButtonInteraction } from 'discord.js'
 
 export default class Button {
-    #patron: string | RegExp
-    constructor(patron: string | RegExp) {
-        this.#patron = patron
+    #pattern: string | RegExp
+    constructor(pattern: string | RegExp) {
+        this.#pattern = pattern
     }
 
-    get patron() {
-        return this.#patron
+    get pattern() {
+        return this.#pattern
     }
 
     async run(interaction: ButtonInteraction): Promise<any> {
@@ -15,7 +15,7 @@ export default class Button {
     }
 
     match(id: string) {
-        if (typeof this.patron === 'string') return this.patron === id
-        else return this.patron.test(id)
+        if (typeof this.pattern === 'string') return this.pattern === id
+        else return this.pattern.test(id)
     }
 }
