@@ -50,6 +50,11 @@ export const keys: {
     title: string
   }
   avatar: string
+  mchistory: {
+    dont: string
+    names: string
+    first: string
+  }
 } = {
   question_ball: {
     no_question: "question_ball.no_question",
@@ -102,4 +107,9 @@ export const keys: {
     title: "help.title",
   },
   avatar: "avatar",
+  mchistory: {
+    dont: "mchistory.dont",
+    names: "mchistory.names",
+    first: "mchistory.first",
+  },
 }

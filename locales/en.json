@@ -49,5 +49,10 @@
         "how_vote_answer": "u can do it using the command <a:arrowright:970388686816550912> `/vote` or [Clicking Here](https://vote.nodebot.xyz) 'We are waiting your vote :)'",
         "title": "✨ - Help menu"
     },
-    "avatar": "here you have the avatar of {user}"
+    "avatar": "here you have the avatar of {user}",
+    "mchistory": {
+        "dont": "The username doesn't exist",
+        "names": "Name's historical",
+        "first": "First Name"
+    }
 }

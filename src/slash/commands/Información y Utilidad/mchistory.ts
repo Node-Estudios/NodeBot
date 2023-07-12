@@ -1,7 +1,9 @@
-import { EmbedBuilder as EmbedBuilder } from 'discord.js'
 import { ChatInputCommandInteractionExtended } from '../../../events/client/interactionCreate.js'
-import Client from '../../../structures/Client.js'
+import Translator from '../../../utils/Translator.js'
 import Command from '../../../structures/Command.js'
+import Client from '../../../structures/Client.js'
+import { keys } from '../../../utils/locales.js'
+import { EmbedBuilder } from 'discord.js'
 
 export default class mchistory extends Command {
     constructor() {
@@ -10,6 +12,7 @@ export default class mchistory extends Command {
             description: 'Show the history of a Minecraft account.',
             description_localizations: {
                 'es-ES': 'Muesrta el historial de una cuenta de Minecraft.',
+                'en-US': 'Show the history of a Minecraft account.'
             },
             cooldown: 5,
             options: [
@@ -19,9 +22,11 @@ export default class mchistory extends Command {
                     description: 'The account to show the history of.',
                     name_localizations: {
                         'es-ES': 'cuenta',
+                        'en-US': 'account'
                     },
                     description_localizations: {
                         'es-ES': 'La cuenta para mostrar el historial.',
+                        'en-US': 'The account to show the history of.'
                     },
                     required: true,
                 },
@@ -29,7 +34,7 @@ export default class mchistory extends Command {
         })
     }
     override async run(interaction: ChatInputCommandInteractionExtended<'cached'>) {
-        const language = interaction.language
+        const translate = Translator(interaction)
         const client = interaction.client as Client
         const res = await fetch(
             `https://mc-heads.net/minecraft/profile/${interaction.options.getString('account', true)}`,
@@ -41,8 +46,8 @@ export default class mchistory extends Command {
                 embeds: [
                     new EmbedBuilder()
                         .setColor('Red')
-                        .setTitle(language.ERROREMBED)
-                        .setDescription(language.MCHISTORY[3])
+                        .setTitle(translate(keys.ERROREMBED))
+                        .setDescription(translate(keys.mchistory.dont))
                         .setFooter({
                             text: interaction.user.username + '#' + interaction.user.discriminator,
                             iconURL: interaction.user.displayAvatarURL(),
@@ -53,15 +58,15 @@ export default class mchistory extends Command {
         return interaction.reply({
             embeds: [
                 new EmbedBuilder()
-                    .setTitle(language.MCHISTORY[4])
+                    .setTitle(translate(keys.mchistory.names))
                     .setColor(client.settings.color)
                     .setFields(
                         res['name_history']?.map((i: any) => ({
-                            name: i['changedToAt'] ? parserTimeStamp(i['changedToAt']) : language.MCHISTORY[5],
+                            name: i['changedToAt'] ? parserTimeStamp(i['changedToAt']) : translate(keys.mchistory.first),
                             value: i['name'],
                         })) ?? [
                             {
-                                name: language.MCHISTORY[5],
+                                name: translate(keys.mchistory.first),
                                 value: res['name'],
                             },
                         ],
