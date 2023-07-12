@@ -55,6 +55,12 @@ export const keys: {
     names: string
     first: string
   }
+  ping: {
+    global: string
+    internal: string
+    api: string
+    ping: string
+  }
 } = {
   question_ball: {
     no_question: "question_ball.no_question",
@@ -111,5 +117,11 @@ export const keys: {
     dont: "mchistory.dont",
     names: "mchistory.names",
     first: "mchistory.first",
+  },
+  ping: {
+    global: "ping.global",
+    internal: "ping.internal",
+    api: "ping.api",
+    ping: "ping.ping",
   },
 }

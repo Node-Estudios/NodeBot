@@ -54,5 +54,12 @@
         "dont": "The username doesn't exist",
         "names": "Name's historical",
         "first": "First Name"
+    },
+    "ping": {
+        "global": "Global ping",
+        "internal": "Internal Processing (database + processing)",
+        "api": "API",
+        "ping": "Ping"
     }
+
 }
