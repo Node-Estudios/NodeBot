@@ -578,7 +578,7 @@
     "2": "Invite me",
     "3": "Support Server",
     "4": "I have sent you a private message with my help menu!",
-    "5": "Hello, I am ",
+    "5": " ",
     "6": "an all-in-one, multifunctional bot with innovative commands.",
     "7": "How do I see the commands?",
     "8": "Easy, you just have to write",
@@ -846,21 +846,6 @@
     "24": "Region",
     "25": "Verification Level",
     "26": "Explicit Content Filter Level"
-  },
-  "GITHUB": {
-    "1": "Please write an username.",
-    "2": "🧑 Name:",
-    "3": " Account Type:",
-    "4": "🏢 Organization:",
-    "5": "☁️ Link",
-    "6": "🗺 Location:",
-    "7": "📩 Email",
-    "8": "📃 Biography",
-    "9": "🐦 Twitter:",
-    "10": "📂 Public Repositories",
-    "11": "🧍 Followers",
-    "12": "Analizando cuenta, por favor espera...",
-    "13": "El usuario no se encontró"
   },
   "CATEGORY": {
     "1": "is not a valid category, you can find the categories' list typing ",

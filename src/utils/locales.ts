@@ -39,6 +39,16 @@ export const keys: {
     analizing: string
     unknow: string
   }
+  help: {
+    presentation: string
+    how_use: string
+    how_use_answer: string
+    need_support: string
+    need_support_answer: string
+    how_vote: string
+    how_vote_answer: string
+    title: string
+  }
 } = {
   question_ball: {
     no_question: "question_ball.no_question",
@@ -79,5 +89,15 @@ export const keys: {
     followers: "github.followers",
     analizing: "github.analizing",
     unknow: "github.unknow",
+  },
+  help: {
+    presentation: "help.presentation",
+    how_use: "help.how_use",
+    how_use_answer: "help.how_use_answer",
+    need_support: "help.need_support",
+    need_support_answer: "help.need_support_answer",
+    how_vote: "help.how_vote",
+    how_vote_answer: "help.how_vote_answer",
+    title: "help.title",
   },
 }

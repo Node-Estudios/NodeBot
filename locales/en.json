@@ -38,5 +38,15 @@
       "followers": "🧍 Followers",
       "analizing": "Analizando cuenta, por favor espera...",
       "unknow": "El usuario no se encontró"
+    },
+    "help": {
+        "presentation": "<a:pin:893553168259121172> Hello, I am Node an all-in-one, multifunctional bot with innovative commands.",
+        "how_use": "How do I see the commands?",
+        "how_use_answer": "Easy, you just have to write",
+        "need_support": "If I need support, how can I contact with the support team",
+        "need_support_answer": "You can ask in our support server!",
+        "how_vote": "How can I vote for the bot?",
+        "how_vote_answer": "u can do it using the command <a:arrowright:970388686816550912> `/vote` or [Clicking Here](https://vote.nodebot.xyz) 'We are waiting your vote :)'",
+        "title": "✨ - Help menu"
     }
 }

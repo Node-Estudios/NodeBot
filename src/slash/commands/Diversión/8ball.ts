@@ -1,9 +1,9 @@
-import { EmbedBuilder as EmbedBuilder } from 'discord.js'
 import { ChatInputCommandInteractionExtended } from '../../../events/client/interactionCreate.js'
-import Client from '../../../structures/Client.js'
-import Command from '../../../structures/Command.js'
 import Translator from '../../../utils/Translator.js'
+import Command from '../../../structures/Command.js'
+import Client from '../../../structures/Client.js'
 import { keys } from '../../../utils/locales.js'
+import { EmbedBuilder } from 'discord.js'
 
 export default class ball extends Command {
     constructor() {

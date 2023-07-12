@@ -1,7 +1,9 @@
-import { ColorResolvable, EmbedBuilder as EmbedBuilder } from 'discord.js'
 import { ChatInputCommandInteractionExtended } from '../../../events/client/interactionCreate.js'
-import Client from '../../../structures/Client.js'
+import Translator from '../../../utils/Translator.js'
 import Command from '../../../structures/Command.js'
+import Client from '../../../structures/Client.js'
+import { keys } from '../../../utils/locales.js'
+import { EmbedBuilder } from 'discord.js'
 
 export default class help extends Command {
     constructor() {
@@ -10,9 +12,11 @@ export default class help extends Command {
             description: 'Show information about me.',
             name_localizations: {
                 'es-ES': 'ayuda',
+                'en-US': 'help'
             },
             description_localizations: {
                 'es-ES': 'Muestra información sobre mi.',
+                'en-US': 'Show information about me.'
             },
             cooldown: 5,
             // options: [
@@ -32,26 +36,24 @@ export default class help extends Command {
         })
     }
     override async run(interaction: ChatInputCommandInteractionExtended<'cached'>) {
-        const language = interaction.language
+        const translate = Translator(interaction)
         const client = interaction.client as Client
         return interaction.reply({
             embeds: [
                 new EmbedBuilder()
                     .setColor(client.settings.color)
-                    .setDescription(`<a:pin:893553168259121172> ${language.HELP[5]} \`Node\`, ${language.HELP[6]}`)
+                    .setDescription(translate(keys.help.presentation))
                     .addFields({
-                        name: language.HELP[7],
-                        value: `${language.HELP[8]} \`/${interaction.commandName}\`.`,
+                        name: translate(keys.help.how_use),
+                        value: `${translate(keys.help.how_use_answer)} \`/${interaction.commandName}\`.`,
                     })
-                    .addFields({ name: language.HELP[9], value: language.HELP[10] })
+                    .addFields({ name: translate(keys.help.need_support), value: translate(keys.help.need_support_answer) })
                     .addFields({
-                        name: language.HELP[11],
-                        value:
-                            language.HELP[12] +
-                            `<a:arrowright:970388686816550912> \`/vote\` <a:arrowleft:893553168108093560> ${language.HELP[14]}(https://vote.nodebot.xyz 'Estamos esperando tu voto :)')`,
+                        name: translate(keys.help.how_vote),
+                        value: translate(keys.help.how_vote_answer)
                     })
                     .setThumbnail(interaction.user.displayAvatarURL())
-                    .setTitle('✨' + language.HELP[13]),
+                    .setTitle(translate(keys.help.title)),
             ],
         })
         // const command = commands.get(cmd)
