@@ -1,18 +1,28 @@
-import { EmbedBuilder as EmbedBuilder } from 'discord.js'
 import performanceMeters from '../../../cache/performanceMeters.js'
-import { ChatInputCommandInteractionExtended } from '../../../events/client/interactionCreate.js'
-import Client from '../../../structures/Client.js'
+import Translator, { keys } from '../../../utils/Translator.js'
 import Command from '../../../structures/Command.js'
+import Client from '../../../structures/Client.js'
+import { Colors, EmbedBuilder, ChatInputCommandInteraction } from 'discord.js'
+
 import logger from '../../../utils/logger.js'
 export default class ping extends Command {
     constructor() {
         super({
             name: 'ping',
-            description: 'Muestra la latencia del Bot.',
+            description: 'Shows the bot latency.',
+            name_localizations: {
+                'es-ES': 'ping',
+                'en-US': 'ping',
+            },
+            description_localizations: {
+                'es-ES': 'Muestra la latencia del Bot.',
+                'en-US': 'Shows the bot latency.',
+            },
             cooldown: 5,
         })
     }
-    override async run(interaction: ChatInputCommandInteractionExtended<'cached'>) {
+    override async run(interaction: ChatInputCommandInteraction) {
+        const translate = Translator(interaction)
         const client = interaction.client as Client
         const ping = Math.abs((interaction.createdAt.getTime() - Date.now()) / 1000)
         return client.cluster
@@ -33,13 +43,13 @@ export default class ping extends Command {
                     .reply({
                         embeds: [
                             new EmbedBuilder()
-                                .setColor('Green')
+                                .setColor(Colors.Green)
                                 .setFields(
-                                    { name: `API`, value: `${results[0].ping}ms`, inline: true },
-                                    { name: 'Internal Processing (database + processing)', value: performance + 'ms' },
-                                    { name: 'Global Ping', value: `${ping}ms`, inline: true },
+                                    { name: translate(keys.API), value: `${results[0].ping}ms`, inline: true },
+                                    { name: translate(keys.ping.internal), value: performance + 'ms' },
+                                    { name: translate(keys.ping.global), value: `${ping}ms`, inline: true },
                                 )
-                                .setTitle('Ping')
+                                .setTitle(translate(keys.PING))
                                 .setTimestamp(),
                         ],
                     })

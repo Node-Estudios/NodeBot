@@ -1,12 +1,9 @@
-// commandCache.ts
 import { Collection } from 'discord.js'
-import { ButtonInteractionExtend } from '../events/client/interactionCreate'
-import Client from '../structures/Client'
-type Button = (client: Client, interaction: ButtonInteractionExtend<'cached'>) => Promise<any>
+import Button from '../structures/Button'
 
 class buttonCache {
     private static instance: buttonCache
-    private cache: Collection<string, Button>
+    private cache: Collection<string|RegExp, Button>
 
     private constructor() {
         this.cache = new Collection<string, Button>()
@@ -19,7 +16,7 @@ class buttonCache {
         return buttonCache.instance
     }
 
-    public getCache(): Collection<string, Button> {
+    public getCache(): Collection<string|RegExp, Button> {
         return this.cache
     }
 }

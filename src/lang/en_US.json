@@ -257,25 +257,6 @@
     "9": "**Active invite links**",
     "10": "**Total invites**"
   },
-  "QUESTIONBALL": {
-    "1": "To your question",
-    "2": "My answer is",
-    "3": "I'm not able to see any question...",
-    "4": [
-      "Yes",
-      "Do not",
-      "Perhaps",
-      "Obviously",
-      "I say yes",
-      "I say no",
-      "Probably",
-      "I have my doubts...",
-      "Do not even doubt it",
-      "You didn't even need to ask ;)",
-      "Not at all...",
-      "I don `t believe..."
-    ]
-  },
   "RELOAD": "You don't have enough permissions to use this command.",
   "SEPARATOR_SET": {
     "1": "You have changed the separator to",
@@ -290,11 +271,6 @@
     "5": "<user ID/Mention>",
     "6": "I couldn't find the user.",
     "7": "You cannot feed yourself."
-  },
-  "IMPOSTOR": {
-    "1": "Wasn't the impostor",
-    "2": "Was the impostor",
-    "3": "Either the ID or the mention do not correspond to a user."
   },
   "KILL": {
     "1": "Please, mention someone ^^",
@@ -459,11 +435,6 @@
     "11": "Banned by: ",
     "12": "An error has occurred:"
   },
-  "AVATAR": {
-    "1": "I couldn't find the user :(",
-    "2": "This is the avatar of",
-    "3": "'s avatar"
-  },
   "EMOJI": {
     "1": "You must add one image to convert it to emote.",
     "2": "You forgot to add the emote's name: ",
@@ -602,16 +573,6 @@
     "2": "Invite me",
     "3": "Support Server",
     "4": "I have sent you a private message with my help menu!",
-    "5": "Hello, I am ",
-    "6": "an all-in-one, multifunctional bot with innovative commands.",
-    "7": "How do I see the commands?",
-    "8": "Easy, you just have to write",
-    "9": "If I need support, how can I contact with the support team",
-    "10": "You can ask in our support server!",
-    "11": "How can I vote for the bot?",
-    "12": "You can do it using the command",
-    "13": " - Help menu",
-    "14": "or [Clicking Here]",
     "15": "Name",
     "16": "Aliases",
     "17": "Description",
@@ -725,31 +686,13 @@
   },
   "PLAY": {
     "1": "You need to be on a voice channel to excecute this command.",
-    "2": "You need to be on the same voice channel as the bot to execute this command.",
-    "3": "Added to the queue  <:pepeblink:967941236029788160>",
-    "4": "Author",
-    "5": "Requester",
-    "6": "Duration",
     "7": "Playlist's name",
     "8": "Total songs",
-    "9": "The attached link does not contain reproducible content.",
     "10": "I couldn't find results.",
     "11": "Playlist added! <:check:897836005762166835>",
     "12": "Title",
     "13": "Songs",
     "14": "The music module is off. I have notified the developers in case it is a bug."
-  },
-  "QUEUE": {
-    "1": "There aren't songs being played on this server. Why don't you add one?",
-    "2": "Node's Player",
-    "3": "Currently playing:",
-    "4": "¡The page does not exist!",
-    "5": "Total songs on queue:",
-    "6": "",
-    "7": "'s queue",
-    "8": "Next",
-    "9": "There aren't songs on the queue. Why don't you add one?",
-    "10": "You are not within my voice channel."
   },
   "RADIO": {
     "1": "You must be on a voice channel to play music.",
@@ -766,23 +709,11 @@
     "12": "__**Node's Radio**__",
     "13": "The voice channel where you are is not allowed to use the music features."
   },
-  "SKIP": {
-    "1": {
-      "1": "There are no songs playing on your voice channel. Why don't you add one? <:pepeblink:967941236029788160>",
-      "2": "It sounds like you're not listening to music, how about we do it? <:pepeblink:967941236029788160>",
-      "3": "What are you doing that you don't listen to music? Add a song now :)"
-    },
-    "2": "You are not on the same voice channel.",
-    "3": "There aren't songs being played.",
-    "4": "has been skipped."
-  },
   "STOP": {
     "1": "There aren't any songs being played.",
     "2": "The music has been stopped",
     "3": "You are not within my voice channel.",
     "4": "Music paused by <@",
-    "5": "Music resumed by <@",
-    "6": ">.",
     "7": "Music stopped by <@"
   },
   "VOLUME": {
@@ -795,19 +726,6 @@
     "7": "The actual volume is already:",
     "8": "Volume has been adjusted",
     "9": "The volume must be a number between 0 and 10000."
-  },
-  "ROLEINFO": {
-    "1": "Name",
-    "2": "ID",
-    "3": "Users with the role",
-    "4": "Position",
-    "5": "Color",
-    "6": "Mentionable",
-    "7": "Separated",
-    "8": "Managed by Discord",
-    "9": "You must specify a role!",
-    "10": "Yes",
-    "11": "No"
   },
   "MESSAGE": {
     "1": "I don't have the permission ",
@@ -839,53 +757,8 @@
     "5": "You must add an attached image as logo to use the transparent background's property.",
     "6": "The limit is on 500 characters."
   },
-  "ERROREMBED": "Error <a:no:854740402531991573>",
-  "SUCCESSEMBED": "Success <a:tick:836295873091862568>",
   "RESET": "There is no music being reproduced.",
   "NOQUEUE": "The queue has finished.",
-  "SERVERINFO": {
-    "1": "No restrictions.",
-    "2": "Low (Verified account).",
-    "3": "Medium (Verified account for +5 minutes).",
-    "4": "High (Verified account and member for +10 minutes).",
-    "5": "Extreme (Verified account y verified phone number linked).",
-    "6": "No messages are scanned.",
-    "7": "Scan users without a role.",
-    "8": "Scan every message.",
-    "9": "Owner",
-    "10": "Guild ID",
-    "11": "Members",
-    "12": "Emoji Count",
-    "13": "Regular",
-    "14": "Animated",
-    "15": "Roles",
-    "16": "Channels",
-    "17": "Categories",
-    "18": "Text",
-    "19": "Voice",
-    "20": "Created At",
-    "21": "Boosters",
-    "22": "Tier Level",
-    "23": "Tier",
-    "24": "Region",
-    "25": "Verification Level",
-    "26": "Explicit Content Filter Level"
-  },
-  "GITHUB": {
-    "1": "Please write an username.",
-    "2": "🧑 Name:",
-    "3": " Account Type:",
-    "4": "🏢 Organization:",
-    "5": "☁️ Link",
-    "6": "🗺 Location:",
-    "7": "📩 Email",
-    "8": "📃 Biography",
-    "9": "🐦 Twitter:",
-    "10": "📂 Public Repositories",
-    "11": "🧍 Followers",
-    "12": "Analizando cuenta, por favor espera...",
-    "13": "El usuario no se encontró"
-  },
   "CATEGORY": {
     "1": "is not a valid category, you can find the categories' list typing ",
     "2": "You've disabled the category ",
@@ -1221,13 +1094,6 @@
     "3": "has been unbanned.",
     "4": "I couldn't find the user."
   },
-  "PLAYER": {
-    "stopMusic": "Stop",
-    "pauseMusic": "Pause",
-    "resumeMusic": "Resume",
-    "skipMusic": "Skip",
-    "queueMusic": "Queue"
-  },
   "PAUSE": {
     "1": "The music has been stopped.",
     "2": "The music has been resumed."
@@ -1270,8 +1136,6 @@
     "11": "✨ - Multibot Music System Node",
     "12": "(Already on the server)"
   },
-  "247DISABLED": "24/7 mode is disabled",
-  "247ENABLED": "24/7 mode is enabled <a:DJPeepo:969757766744944700>",
   "REBOOTMESSAGE": "Hey! We're applying some bug fixes to this server! We'll pause your music for a few seconds to apply the changes! Thanks for your patience.",
   "LIVE": "Live",
   "PLAYING": "Playing"

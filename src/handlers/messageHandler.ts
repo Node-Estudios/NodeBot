@@ -4,13 +4,14 @@ export class messageHelper {
     msg: Message | CommandInteraction;
     id: Snowflake;
     author: User;
-    constructor(msg: any) {
+
+    constructor(msg: Message | CommandInteraction) {
         this.msg = msg;
         this.id = msg.id;
         this.author = msg instanceof Message ? msg.author : msg.user;
-
     }
-    async sendMessage(content: any, followUp: boolean) {
+    
+    async sendMessage(content: any, followUp?: boolean) {
         if (this.msg instanceof CommandInteraction) {
             if (this.msg.replied || this.msg.deferred) {
                 followUp ? this.msg = await this.msg.followUp(content) : this.msg = await this.msg.editReply(content)
@@ -24,7 +25,7 @@ export class messageHelper {
         }
     }
 
-    async sendEphemeralMessage(content: any, followUp: boolean) {
+    async sendEphemeralMessage(content: any, followUp?: boolean) {
         if (this.msg instanceof CommandInteraction) {
             if (this.msg.replied || this.msg.deferred) {
                 followUp ? this.msg = await this.msg.followUp({ content, ephemeral: true }) : this.msg = await this.msg.editReply({ content })

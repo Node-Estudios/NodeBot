@@ -1,4 +1,4 @@
-import { Guild, GuildMember, Message, TextChannel, VoiceChannel } from 'discord.js'
+import { Guild, GuildMember, Message, TextChannel, User, VoiceChannel } from 'discord.js'
 import yasha from 'yasha'
 import Innertube2 from 'youtubei.js'
 import logger from '../utils/logger.js'
@@ -28,12 +28,12 @@ export default class Player extends yasha.TrackPlayer {
     bitrate?: number
     subscription: any
     connection: any
-    stayInVc: any
-    previouslyPaused: any
-    pausedUser: any
-    resumedUser: any
+    stayInVc = false
+    previouslyPaused = false
+    pausedUser?: User
+    resumedUser?: User
     youtubei = Innertube.create()
-    waitingMessage: any
+    waitingMessage: Message | null = null
     constructor(options: any) {
         super({
             external_packet_send: false,
