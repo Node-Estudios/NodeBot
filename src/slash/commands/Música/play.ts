@@ -1,12 +1,12 @@
-import { EmbedBuilder, TextChannel, VoiceChannel } from 'discord.js';
-// import { YoutubeTrack } from 'yasha/types/api/Youtube.js';
-// import { Youtube } from 'yasha/types/src/Source.js';
-import performanceMeters from '../../../cache/performanceMeters.js';
 import { ChatInputCommandInteractionExtended } from '../../../events/client/interactionCreate.js';
-import Client from '../../../structures/Client.js';
-import Command from '../../../structures/Command.js';
+import { ApplicationCommandOptionType, EmbedBuilder, TextChannel, VoiceChannel } from 'discord.js';
+import performanceMeters from '../../../cache/performanceMeters.js';
 import formatTime from '../../../utils/formatTime.js';
+import Command from '../../../structures/Command.js';
+import Client from '../../../structures/Client.js';
 import logger from '../../../utils/logger.js';
+import Translator from '../../../utils/Translator.js';
+import { keys } from '../../../utils/locales.js';
 
 function shuffleArray(array: any[]) {
     for (let i = array.length - 1; i > 0; i--) {
@@ -20,40 +20,43 @@ export default class play extends Command {
     constructor() {
         super({
             name: 'play',
-            description: 'Reproduce música en el canal de voz que te encuentres',
+            description: 'Play the song that you want with the name or a youtube/spotify link',
             name_localizations: {
                 'es-ES': 'reproducir',
+                'en-US': 'play'
             },
             description_localizations: {
+                'en-US': 'Play the song that you want with the name or a youtube/spotify link',
                 'es-ES': 'Reproduce la canción que desees con su nombre o un link de youtube/spotify',
             },
+            dm_permission: false,
             cooldown: 5,
-            // requierements: {
-            //     inVoiceChannel: true,
-            //     sameVoiceChannel: false,
-            // },
             options: [
                 {
-                    type: 3,
+                    type: ApplicationCommandOptionType.String,
                     name: 'song',
                     description: 'Name of the song that u want to listen.',
                     name_localizations: {
                         'es-ES': 'canción',
+                        'en-US': 'song'
                     },
                     description_localizations: {
                         'es-ES': 'Nombre de la canción que deseas escuchas.',
+                        'en-US': 'Name of the song that u want to listen.',
                     },
                     required: false,
                 },
                 {
-                    type: 10,
+                    type: ApplicationCommandOptionType.Integer,
                     name: 'amount',
                     description: 'Amount of songs to load. Only works if you dont put a song string',
                     name_localizations: {
                         'es-ES': 'cantidad',
+                        'en-US': 'amount'
                     },
                     description_localizations: {
                         'es-ES': 'Cantidad de canciones a reproducir. Solo funciona si nos dejas elegir.',
+                        'en-US': 'Amount of songs to load. Only works if you dont put a song string',
                     },
                     required: false,
                 },
@@ -62,21 +65,21 @@ export default class play extends Command {
     }
     override async run(interaction: ChatInputCommandInteractionExtended<'cached'>) {
         const client = interaction.client as Client
+        const translate = Translator(interaction)
         let player = client.music.players.get(interaction.guildId)
-        // console.log(interaction.language)
         if (!player) {
             player = await client.music.createNewPlayer(
                 interaction.member.voice.channel as VoiceChannel,
                 interaction.channel as TextChannel,
                 interaction.guild,
             )
-            player.connect()
+            await player.connect()
         }
         if (player.voiceChannel.id !== interaction.member.voice.channel?.id)
             return interaction.reply({
                 embeds: [
                     new EmbedBuilder().setColor(15548997).setFooter({
-                        text: interaction.language.PLAY[2],
+                        text: translate(keys.play.same),
                         iconURL: client.user?.displayAvatarURL(),
                     }),
                 ],
@@ -107,7 +110,7 @@ export default class play extends Command {
                     interaction.reply({
                         embeds: [
                             new EmbedBuilder().setColor(15548997).setFooter({
-                                text: interaction.language.PLAY[9],
+                                text: translate(keys.play.not_reproducible),
                                 iconURL: client.user?.displayAvatarURL(),
                             }),
                         ],
@@ -178,64 +181,56 @@ export default class play extends Command {
             //     interaction.reply({ embeds: [e], content: '' })
             // }
 
-            // console.log(search)
             player.queue.add(search)
             if (!player.playing && !player.paused) player.play()
             const embed = new EmbedBuilder().setColor(client.settings.color).setFields(
                 {
-                    name: interaction.language.PLAY[4],
+                    name: translate(keys.AUTHOR),
                     value: search!.author,
                     inline: true,
                 },
                 {
-                    name: interaction.language.PLAY[5],
-                    value: '<@' + interaction.user.id + '>',
+                    name: translate(keys.REQUESTER),
+                    value: interaction.user.toString(),
                     inline: true,
                 },
                 {
-                    name: interaction.language.PLAY[6],
+                    name: translate(keys.DURATION),
                     value: formatTime(Math.trunc(search!.duration), false),
                     inline: true,
                 },
             )
-            // if (!(await player.youtubei).session.logged_in) embed.addFields([{ name: 'Warning', value: 'Youtube Music no ha conseguido iniciar sesión, por lo que es posible que no se adapte a ti la canción', inline: true }])
             if (client.settings.mode == 'development') {
                 let executionTime = await performanceMeters.get('interaction_' + interaction.id)
                 executionTime = executionTime.stop()
                 let finaltext = 'Internal execution time: ' + executionTime + 'ms'
-                // console.log(search)
                 embed.setFooter({ text: finaltext })
             }
             if (source === 'Youtube') {
-                // logger.info(search)
-                // if (search.streams[0].bitrate) embed.addFields({ name: 'bitrate', value: search.streams[0].bitrate, inline: true })
                 embed.setThumbnail(`https://img.youtube.com/vi/${search!.id}/maxresdefault.jpg`)
                 embed.setDescription(
-                    `**${interaction.language.PLAY[3]}\n[${search!.title}](https://www.youtube.com/watch?v=${search!.id})**`,
+                    `**${translate(keys.play.added, {
+                        song: `[${search.title}](https://www.youtube.com/watch?v=${search.id})`,
+                    })}** <:pepeblink:967941236029788160>`,
                 )
-                // embed.addField(
-                //     "Bitrate",
-                //     player.track.bitrate,
-                //     true
-                // )
             } else if (source === 'Spotify') {
                 if (search!.thumbnails[0])
                     embed.setDescription(
-                        `**${interaction.language.PLAY[3]}\n[${search!.title}](https://open.spotify.com/track/${search!.id})**`,
+                        `**${translate(keys.play.added, {
+                            song: `[${search.title}](https://open.spotify.com/track/${search.id})`,
+                        })}** <:pepeblink:967941236029788160>`,
                     )
                 embed.setThumbnail(search!.thumbnails[0].url)
             }
-            // console.log(embed)
-            // console.log(await (await client.music.youtubei).music.getHomeFeed())
             interaction.reply({ embeds: [embed] })
         } catch (e) {
             logger.error(e)
             interaction.reply({
-                content: `Ups! Parece que hubo un error. \nPuede contactar con el desarrollador para avisarle en [El Discord Oficial](${client.officialServerURL})`,
-                embeds: [],
+                content: translate(keys.GENERICERROR, {
+                    inviteURL: client.officialServerURL
+                }),
             })
         }
-        //CÓDIGO NORMAL DEL PLAY
         return
     }
 }

@@ -1,11 +1,10 @@
 import { ChatInputCommandInteractionExtended } from '../../../events/client/interactionCreate.js'
 import { messageHelper } from '../../../handlers/messageHandler.js'
-import Client from '../../../structures/Client.js'
-
-import { EmbedBuilder } from 'discord.js'
-import Command from '../../../structures/Command.js'
 import Translator from '../../../utils/Translator.js'
+import Command from '../../../structures/Command.js'
+import Client from '../../../structures/Client.js'
 import { keys } from '../../../utils/locales.js'
+import { EmbedBuilder } from 'discord.js'
 
 export default class stayinvoice extends Command {
     constructor() {

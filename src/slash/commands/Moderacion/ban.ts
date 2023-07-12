@@ -1,7 +1,7 @@
-import { ApplicationCommandOptionType } from 'discord.js'
 import { ChatInputCommandInteractionExtended } from '../../../events/client/interactionCreate.js'
-import Command from '../../../structures/Command.js'
+import { ApplicationCommandOptionType } from 'discord.js'
 import Translator from '../../../utils/Translator.js'
+import Command from '../../../structures/Command.js'
 import { keys } from '../../../utils/locales.js'
 
 export default class Ban extends Command {

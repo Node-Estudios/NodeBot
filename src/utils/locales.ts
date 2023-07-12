@@ -122,6 +122,15 @@ export const keys: {
       2: string
     }
   }
+  play: {
+    same: string
+    not_reproducible: string
+    added: string
+  }
+  AUTHOR: string
+  REQUESTER: string
+  DURATION: string
+  GENERICERROR: string
 } = {
   247: {
     enabled: "247.enabled",
@@ -246,4 +255,13 @@ export const keys: {
       2: "skip.messages.2",
     },
   },
+  play: {
+    same: "play.same",
+    not_reproducible: "play.not_reproducible",
+    added: "play.added",
+  },
+  AUTHOR: "AUTHOR",
+  REQUESTER: "REQUESTER",
+  DURATION: "DURATION",
+  GENERICERROR: "GENERICERROR",
 }
