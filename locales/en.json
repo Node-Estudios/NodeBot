@@ -18,5 +18,9 @@
 			"11": "I don `t believe..."
 		},
 	},
-	"ERROREMBED": "Error <:error:897836005787308062>"
+    "ERROREMBED": "Error <:error:897836005787308062>",
+    "impostor": {
+        "was": "Was the impostor",
+        "was_not": "Was not the impostor"
+    }
 }

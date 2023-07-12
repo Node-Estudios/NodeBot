@@ -12,9 +12,11 @@ export default class ball extends Command {
             description: 'Ask the magic 8ball a question',
             name_localizations: {
                 'es-ES': 'ball',
+                'en-US': '8ball',
             },
             description_localizations: {
                 'es-ES': 'Pregunta al poderoso 8ball una pregunta',
+                'en-US': 'Ask the magic 8ball a question',
             },
             cooldown: 5,
             options: [
@@ -24,9 +26,11 @@ export default class ball extends Command {
                     description: 'The question to ask',
                     name_localizations: {
                         'es-ES': 'pregunta',
+                        'en-US': 'question',
                     },
                     description_localizations: {
                         'es-ES': 'La pregunta a preguntar',
+                        'en-US': 'The question to ask',
                     },
                     required: true,
                 },
@@ -61,7 +65,7 @@ export default class ball extends Command {
                         },
                         {
                             name: translate(keys.question_ball.response),
-                            value: translate('question_ball.possibles.'+Math.floor(Math.random() * 13)),
+                            value: translate('question_ball.possibles.' + Math.floor(Math.random() * 13)),
                         },
                     )
                     .setColor(client.settings.color),

@@ -257,25 +257,6 @@
     "9": "**Active invite links**",
     "10": "**Total invites**"
   },
-  "QUESTIONBALL": {
-    "1": "To your question",
-    "2": "My answer is",
-    "3": "I'm not able to see any question...",
-    "4": [
-      "Yes",
-      "Do not",
-      "Perhaps",
-      "Obviously",
-      "I say yes",
-      "I say no",
-      "Probably",
-      "I have my doubts...",
-      "Do not even doubt it",
-      "You didn't even need to ask ;)",
-      "Not at all...",
-      "I don `t believe..."
-    ]
-  },
   "RELOAD": "You don't have enough permissions to use this command.",
   "SEPARATOR_SET": {
     "1": "You have changed the separator to",
@@ -290,11 +271,6 @@
     "5": "<user ID/Mention>",
     "6": "I couldn't find the user.",
     "7": "You cannot feed yourself."
-  },
-  "IMPOSTOR": {
-    "1": "Wasn't the impostor",
-    "2": "Was the impostor",
-    "3": "Either the ID or the mention do not correspond to a user."
   },
   "KILL": {
     "1": "Please, mention someone ^^",
