@@ -46,11 +46,11 @@ export default class ping extends Command {
                             new EmbedBuilder()
                                 .setColor(Colors.Green)
                                 .setFields(
-                                    { name: translate(keys.ping.api), value: `${results[0].ping}ms`, inline: true },
+                                    { name: translate(keys.API), value: `${results[0].ping}ms`, inline: true },
                                     { name: translate(keys.ping.internal), value: performance + 'ms' },
                                     { name: translate(keys.ping.global), value: `${ping}ms`, inline: true },
                                 )
-                                .setTitle(translate(keys.ping.ping))
+                                .setTitle(translate(keys.PING))
                                 .setTimestamp(),
                         ],
                     })

@@ -1,7 +1,8 @@
-import { ColorResolvable, EmbedBuilder as EmbedBuilder } from 'discord.js'
 import { ChatInputCommandInteractionExtended } from '../../../events/client/interactionCreate.js'
-import Client from '../../../structures/Client.js'
+import { ApplicationCommandOptionType, EmbedBuilder } from 'discord.js'
+import Translator from '../../../utils/Translator.js'
 import Command from '../../../structures/Command.js'
+import { keys } from '../../../utils/locales.js'
 
 export default class roleinfo extends Command {
     constructor() {
@@ -10,22 +11,26 @@ export default class roleinfo extends Command {
             description: 'Get information about a role.',
             name_localizations: {
                 'es-ES': 'inforol',
+                'en-US': 'roleinfo'
             },
             description_localizations: {
                 'es-ES': 'Obtener información sobre un rol.',
+                'en-US': 'Get information about a role.'
             },
             cooldown: 5,
             dm_permission: false,
             options: [
                 {
-                    type: 8,
+                    type: ApplicationCommandOptionType.Role,
                     name: 'role',
                     description: 'Role to get information about.',
                     name_localizations: {
-                        'es-ES': 'role',
+                        'es-ES': 'rol',
+                        'en-US': 'role'
                     },
                     description_localizations: {
                         'es-ES': 'El rol a obtener información sobre.',
+                        'en-US': 'Role to get information about.'
                     },
                     required: true,
                 },
@@ -34,7 +39,7 @@ export default class roleinfo extends Command {
     }
     override async run(interaction: ChatInputCommandInteractionExtended<'cached'>) {
         if (!interaction.inCachedGuild()) return
-        const language = interaction.language
+        const translate = Translator(interaction)
         let role = interaction.options.getRole('role', true)
         const rol = new EmbedBuilder()
             .setThumbnail(interaction.user.displayAvatarURL())
@@ -46,40 +51,40 @@ export default class roleinfo extends Command {
             })
             .setFields(
                 {
-                    name: `<:pepeblink:967941236029788160> ${language.ROLEINFO[1]}: `,
+                    name: translate(keys.roleinfo.name),
                     value: '```' + role.name + '```',
                     inline: true,
                 },
                 {
-                    name: `<:textchannelblurple:893490117451333632> ${language.ROLEINFO[2]}: `,
+                    name: translate(keys.roleinfo.id),
                     value: '```' + role.id + '```',
                     inline: true,
                 },
                 {
-                    name: `🔢 ${language.ROLEINFO[4]}: `,
+                    name: translate(keys.roleinfo.position),
                     value: '```' + Math.abs(role.position - interaction.guild!.roles.cache.size) + '```',
                     inline: true,
                 },
                 {
-                    name: `🎩 ${language.ROLEINFO[5]}: `,
+                    name: translate(keys.roleinfo.color),
                     value: '```' + role.color + '```',
                     inline: true,
                 },
                 {
-                    name: `<:star:893553167915188275> ${language.ROLEINFO[6]}: `,
+                    name: translate(keys.roleinfo.mentionable),
                     value: role.mentionable
-                        ? '```' + language.ROLEINFO[10] + '```'
-                        : '```' + language.ROLEINFO[11] + '```',
+                        ? '```' + translate(keys.YES) + '```'
+                        : '```' + translate(keys.NO) + '```',
                     inline: true,
                 },
                 {
-                    name: `<:share:893553167894216744> ${language.ROLEINFO[7]}: `,
-                    value: role.hoist ? '```' + language.ROLEINFO[10] + '```' : '```' + language.ROLEINFO[11] + '```',
+                    name: translate(keys.roleinfo.separated),
+                    value: role.hoist ? '```' + translate(keys.YES) + '```' : '```' + translate(keys.NO) + '```',
                     inline: true,
                 },
                 {
-                    name: `<:cmd:894171593431994388> ${language.ROLEINFO[8]}: `,
-                    value: role.managed ? '```' + language.ROLEINFO[10] + '```' : '```' + language.ROLEINFO[11] + '```',
+                    name: translate(keys.roleinfo.managed),
+                    value: role.managed ? '```' + translate(keys.YES) + '```' : '```' + translate(keys.NO) + '```',
                     inline: true,
                 },
             )

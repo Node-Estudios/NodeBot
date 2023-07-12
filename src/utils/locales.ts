@@ -58,9 +58,20 @@ export const keys: {
   ping: {
     global: string
     internal: string
-    api: string
-    ping: string
   }
+  API: string
+  PING: string
+  roleinfo: {
+    name: string
+    id: string
+    position: string
+    color: string
+    mentionable: string
+    separated: string
+    managed: string
+  }
+  YES: string
+  NO: string
 } = {
   question_ball: {
     no_question: "question_ball.no_question",
@@ -121,7 +132,18 @@ export const keys: {
   ping: {
     global: "ping.global",
     internal: "ping.internal",
-    api: "ping.api",
-    ping: "ping.ping",
   },
+  API: "API",
+  PING: "PING",
+  roleinfo: {
+    name: "roleinfo.name",
+    id: "roleinfo.id",
+    position: "roleinfo.position",
+    color: "roleinfo.color",
+    mentionable: "roleinfo.mentionable",
+    separated: "roleinfo.separated",
+    managed: "roleinfo.managed",
+  },
+  YES: "YES",
+  NO: "NO",
 }

@@ -57,9 +57,19 @@
     },
     "ping": {
         "global": "Global ping",
-        "internal": "Internal Processing (database + processing)",
-        "api": "API",
-        "ping": "Ping"
-    }
-
+        "internal": "Internal Processing (database + processing)"
+    },
+    "API": "API",
+    "PING": "Ping",
+    "roleinfo": {
+        "name": "<:pepeblink:967941236029788160> Name:",
+        "id": "<:textchannelblurple:893490117451333632> ID:",
+        "position": "🔢 Position:",
+        "color": "🎩 Color:",
+        "mentionable": "<:star:893553167915188275> Mentionable:",
+        "separated": "<:share:893553167894216744> Separated:",
+        "managed": "<:cmd:894171593431994388> Managed by Discord"
+    },
+    "YES": "Yes",
+    "NO": "No"
 }
