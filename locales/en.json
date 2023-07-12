@@ -1,0 +1,22 @@
+{
+	"question_ball": {
+		"no_question": "No veo ninguna pregunta a la que responder...",
+		"question": "A su pregunta",
+		"response": "Mi respuesta es",
+		"possibles": {
+			"0": "Yes",
+			"1": "No",
+			"2": "Maybe",
+			"3": "Obviously",
+			"4": "I say yes",
+			"5": "I say no",
+			"6": "Probably",
+			"7": "I have my doubts...",
+			"8": "Do not even doubt it",
+			"9": "You didn't even need to ask ;)",
+			"10": "Not at all...",
+			"11": "I don `t believe..."
+		},
+	},
+	"ERROREMBED": "Error <:error:897836005787308062>"
+}

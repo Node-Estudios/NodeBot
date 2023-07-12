@@ -2,6 +2,8 @@ import { EmbedBuilder as EmbedBuilder } from 'discord.js'
 import { ChatInputCommandInteractionExtended } from '../../../events/client/interactionCreate.js'
 import Client from '../../../structures/Client.js'
 import Command from '../../../structures/Command.js'
+import Translator from '../../../utils/Translator.js'
+import { keys } from '../../../utils/locales.js'
 
 export default class ball extends Command {
     constructor() {
@@ -32,17 +34,16 @@ export default class ball extends Command {
         })
     }
     override async run(interaction: ChatInputCommandInteractionExtended<'cached'>) {
-        const language = interaction.language
+        const translate = Translator(interaction)
         const client = interaction.client as Client
-        let respuesta = language.QUESTIONBALL[4]
         let question = interaction.options.getString('question', true)
         if (!question.endsWith('?'))
             return interaction.reply({
                 embeds: [
                     new EmbedBuilder()
                         .setColor('Red')
-                        .setTitle(language.ERROREMBED)
-                        .setDescription(language.QUESTIONBALL[3])
+                        .setTitle(translate(keys.ERROREMBED))
+                        .setDescription(translate(keys.question_ball.no_question))
                         .setFooter({
                             text: interaction.user.tag,
                             iconURL: interaction.user.displayAvatarURL({ extension: 'png' }),
@@ -55,16 +56,16 @@ export default class ball extends Command {
                 new EmbedBuilder()
                     .setFields(
                         {
-                            name: language.QUESTIONBALL[1],
+                            name: translate(keys.question_ball.question),
                             value: question,
                         },
                         {
-                            name: language.QUESTIONBALL[2],
-                            value: respuesta[Math.floor(Math.random() * respuesta.length)],
+                            name: translate(keys.question_ball.response),
+                            value: translate('question_ball.possibles.'+Math.floor(Math.random() * 13)),
                         },
                     )
                     .setColor(client.settings.color),
             ],
-        }) //y que mande el embed
+        })
     }
 }

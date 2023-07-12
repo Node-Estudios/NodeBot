@@ -22,7 +22,8 @@
         "build": "tsc && doppler run --",
         "dev": "concurrently \"tsc -w\" \"nodemon doppler run -- node build/index.js\"",
         "tsc": "tsc",
-        "tsc:watch": "nodemon --watch src --exec tsc"
+        "tsc:watch": "nodemon --watch src --exec tsc",
+        "type:locales": "cd locales && type-locales && mv locales.ts ../src/utils/locales.ts && cd .."
     },
     "author": "",
     "license": "ISC",
@@ -61,6 +62,7 @@
         "concurrently": "8.2.0",
         "nodemon": "2.0.22",
         "standard": "17.1.0",
+        "type-locales": "github:OnekiDevs/type-locales",
         "typescript": "5.1.6"
     },
     "optionalDependencies": {

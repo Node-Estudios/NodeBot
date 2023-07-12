@@ -1,6 +1,6 @@
 import { EmbedBuilder, TextChannel, VoiceChannel } from 'discord.js';
 // import { YoutubeTrack } from 'yasha/types/api/Youtube.js';
-import { Youtube } from 'yasha/types/src/Source.js';
+// import { Youtube } from 'yasha/types/src/Source.js';
 import performanceMeters from '../../../cache/performanceMeters.js';
 import { ChatInputCommandInteractionExtended } from '../../../events/client/interactionCreate.js';
 import Client from '../../../structures/Client.js';

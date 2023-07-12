@@ -1,10 +1,11 @@
 import { Guild, Interaction, LocaleString } from 'discord.js'
 import logger from './logger.js'
 import i18n from 'i18n'
+import { join } from 'path'
 
 i18n.configure({
     locales: ['en', 'es'],
-    directory: './locales',
+    directory: join(process.cwd(), 'locales'),
     defaultLocale: 'en',
     retryInDefaultLocale: true,
     objectNotation: true,
@@ -36,6 +37,6 @@ type translate = (phrase: string, replace?: object) => string
  */
 export default function Translator(interaction: Interaction | Guild | LocaleString): translate {
     let lang = typeof interaction === 'string' ? interaction : (interaction as Interaction).locale ?? (interaction as Guild).preferredLocale ?? 'en'
-
+    
     return (phrase, replace) => i18n.__mf({ phrase, locale: lang }, replace)
 }
