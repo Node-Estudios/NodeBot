@@ -46,7 +46,7 @@ export default class skip extends Command {
             return message.sendMessage({
                 embeds: [
                     new EmbedBuilder().setColor(client.settings.color).setFooter({
-                        text: translate(keys.skip.no_queue),
+                        text: translate(keys.queue.no_queue),
                         iconURL: interaction.user.displayAvatarURL(),
                     }),
                 ],

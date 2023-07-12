@@ -97,9 +97,15 @@ export const keys: {
       1: string
       2: string
     }
-    no_queue: string
     no_same: string
     skiped: string
+  }
+  queue: {
+    no_queue: string
+    current: string
+    queue: string
+    no_page: string
+    total: string
   }
   play: {
     same: string
@@ -120,6 +126,7 @@ export const keys: {
   RESUME: string
   STOP: string
   SKIP: string
+  NEXT: string
   QUEUE: string
   MEMBERS: string
   REGULAR: string
@@ -247,9 +254,15 @@ export const keys: {
       1: "skip.messages.1",
       2: "skip.messages.2",
     },
-    no_queue: "skip.no_queue",
     no_same: "skip.no_same",
     skiped: "skip.skiped",
+  },
+  queue: {
+    no_queue: "queue.no_queue",
+    current: "queue.current",
+    queue: "queue.queue",
+    no_page: "queue.no_page",
+    total: "queue.total",
   },
   play: {
     same: "play.same",
@@ -270,6 +283,7 @@ export const keys: {
   RESUME: "RESUME",
   STOP: "STOP",
   SKIP: "SKIP",
+  NEXT: "NEXT",
   QUEUE: "QUEUE",
   MEMBERS: "MEMBERS",
   REGULAR: "REGULAR",

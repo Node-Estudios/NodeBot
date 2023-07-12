@@ -1,7 +1,7 @@
 import { ActionRowBuilder, ButtonBuilder, ButtonInteraction, EmbedBuilder } from 'discord.js'
+import Translator from '../../../utils/Translator.js'
 import Client from '../../../structures/Client.js'
 import Button from '../../../structures/Button.js'
-import Translator from '../../../utils/Translator.js'
 import { keys } from '../../../utils/locales.js'
 
 export default class Pause extends Button {
@@ -13,13 +13,13 @@ export default class Pause extends Button {
         if (!interaction.inCachedGuild()) return interaction.deferUpdate()
         const client = interaction.client as Client
         const translate = Translator(interaction)
-        
+
         const player = client.music.players.get(interaction.guild.id)
         if (!player?.queue.current) {
             return interaction.reply({
                 embeds: [
                     new EmbedBuilder().setColor(15548997).setFooter({
-                        text: translate(keys.skip.no_queue),
+                        text: translate(keys.queue.no_queue),
                         iconURL: interaction.user.displayAvatarURL(),
                     }),
                 ],

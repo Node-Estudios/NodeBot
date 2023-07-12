@@ -93,9 +93,15 @@
             "1": "It sounds like you're not listening to music, how about we do it? <:pepeblink:967941236029788160>",
             "2": "What are you doing that you don't listen to music? Add a song now :)"
         },
-        "no_queue": "There aren't songs being played on this server. Why don't you add one?",
         "no_same": "You are not within my voice channel.",
         "skiped": "{song} has been skipped"
+    },
+    "queue": {
+        "no_queue": "There aren't songs being played on this server. Why don't you add one?",
+        "current": "Currently playing:",
+        "queue": "{name}'s queue",
+        "no_page": "¡The page does not exist!",
+        "total": "Total songs queue:"
     },
     "247": {
         "enabled": "24/7 mode is enabled <a:DJPeepo:969757766744944700>",
@@ -120,6 +126,7 @@
     "RESUME": "Resume",
     "STOP": "Stop",
     "SKIP": "Skip",
+    "NEXT": "Next",
     "QUEUE": "Queue",
     "MEMBERS": "Members",
     "REGULAR": "Regular",

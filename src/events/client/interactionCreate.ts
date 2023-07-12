@@ -101,6 +101,6 @@ export class interactionCreate extends BaseEvent {
 
     async processButtonInteraction(interaction: ButtonInteraction) {
         logger.debug(`Button ${interaction.customId} pressed | ${interaction.user.username}`)
-        buttons.getCache().find(b => b.match(interaction.customId))?.run(interaction)
+        buttons.getCache().filter(b => b.match(interaction.customId)).map(i => i.run(interaction))
     }
 }
