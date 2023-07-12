@@ -23,5 +23,20 @@
         "was": "Was the impostor",
         "was_not": "Was not the impostor"
     },
-    "embed_successfully": "Embed created and sent successfully."
+    "embed_successfully": "Embed created and sent successfully.",
+    "github": {
+      "write_username": "Please write an username.",
+      "name": "🧑 Name:",
+      "account": " Account Type:",
+      "organization": "🏢 Organization:",
+      "link": "☁️ Link",
+      "location": "🗺 Location:",
+      "email": "📩 Email",
+      "biography": "📃 Biography",
+      "twitter": "🐦 Twitter:",
+      "repositories": "📂 Public Repositories",
+      "followers": "🧍 Followers",
+      "analizing": "Analizando cuenta, por favor espera...",
+      "unknow": "El usuario no se encontró"
+    }
 }

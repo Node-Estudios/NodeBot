@@ -24,6 +24,21 @@ export const keys: {
     was_not: string
   }
   embed_successfully: string
+  github: {
+    write_username: string
+    name: string
+    account: string
+    organization: string
+    link: string
+    location: string
+    email: string
+    biography: string
+    twitter: string
+    repositories: string
+    followers: string
+    analizing: string
+    unknow: string
+  }
 } = {
   question_ball: {
     no_question: "question_ball.no_question",
@@ -50,4 +65,19 @@ export const keys: {
     was_not: "impostor.was_not",
   },
   embed_successfully: "embed_successfully",
+  github: {
+    write_username: "github.write_username",
+    name: "github.name",
+    account: "github.account",
+    organization: "github.organization",
+    link: "github.link",
+    location: "github.location",
+    email: "github.email",
+    biography: "github.biography",
+    twitter: "github.twitter",
+    repositories: "github.repositories",
+    followers: "github.followers",
+    analizing: "github.analizing",
+    unknow: "github.unknow",
+  },
 }
