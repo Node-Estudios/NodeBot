@@ -124,6 +124,10 @@ export default {
     leaving: "voice_update.leaving",
     alone: "voice_update.alone",
   },
+  automix: {
+    generated: "automix.generated",
+    disabled: "automix.disabled",
+  },
   ERROREMBED: "ERROREMBED",
   SUCCESSEMBED: "SUCCESSEMBED",
   PAUSE: "PAUSE",
@@ -132,12 +136,14 @@ export default {
   SKIP: "SKIP",
   NEXT: "NEXT",
   QUEUE: "QUEUE",
+  TITLE: "TITLE",
   MEMBERS: "MEMBERS",
   REGULAR: "REGULAR",
   ANIMATED: "ANIMATED",
   CHANNELS: "CHANNELS",
   ROLES: "ROLES",
   CATEGORIES: "CATEGORIES",
+  SONGS: "SONGS",
   TEXT: "TEXT",
   VOICE: "VOICE",
   BOOSTERS: "BOOSTERS",
@@ -158,6 +164,7 @@ export default {
   MENTIONABLE: "MENTIONABLE",
   SEPARATED: "SEPARATED",
   YES: "YES",
+  PLAYING: "PLAYING",
   GENERICERROR: "GENERICERROR",
 } as {
   247: {
@@ -285,6 +292,10 @@ export default {
     leaving: string
     alone: string
   }
+  automix: {
+    generated: string
+    disabled: string
+  }
   ERROREMBED: string
   SUCCESSEMBED: string
   PAUSE: string
@@ -293,12 +304,14 @@ export default {
   SKIP: string
   NEXT: string
   QUEUE: string
+  TITLE: string
   MEMBERS: string
   REGULAR: string
   ANIMATED: string
   CHANNELS: string
   ROLES: string
   CATEGORIES: string
+  SONGS: string
   TEXT: string
   VOICE: string
   BOOSTERS: string
@@ -319,5 +332,6 @@ export default {
   MENTIONABLE: string
   SEPARATED: string
   YES: string
+  PLAYING: string
   GENERICERROR: string
 }
