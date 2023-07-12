@@ -19,6 +19,11 @@ export const keys: {
     }
   }
   ERROREMBED: string
+  impostor: {
+    was: string
+    was_not: string
+  }
+  embed_successfully: string
 } = {
   question_ball: {
     no_question: "question_ball.no_question",
@@ -40,4 +45,9 @@ export const keys: {
     },
   },
   ERROREMBED: "ERROREMBED",
+  impostor: {
+    was: "impostor.was",
+    was_not: "impostor.was_not",
+  },
+  embed_successfully: "embed_successfully",
 }

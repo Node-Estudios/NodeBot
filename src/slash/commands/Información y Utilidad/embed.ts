@@ -10,6 +10,8 @@ import { ChatInputCommandInteractionExtended } from '../../../events/client/inte
 // import langFile from '../../../lang/index.json' assert { type: 'json' }
 import Client from '../../../structures/Client.js'
 import Command from '../../../structures/Command.js'
+import Translator from '../../../utils/Translator.js'
+import { keys } from '../../../utils/locales.js'
 
 export default class embed extends Command {
     constructor() {
@@ -18,8 +20,20 @@ export default class embed extends Command {
             description: 'Sends a embed.',
             description_localizations: {
                 'es-ES': 'Envía un embed.',
+                'en-US': 'Sends a embed.',
+            },
+            name_localizations: {
+                'es-ES': 'embed',
+                'en-US': 'embed',
             },
             cooldown: 5,
+            permissions: {
+                botPermissions: new PermissionsBitField([
+                    PermissionsBitField.Flags.SendMessages,
+                    PermissionsBitField.Flags.EmbedLinks,
+                    PermissionsBitField.Flags.ViewChannel,
+                ]),
+            },
             options: [
                 {
                     type: 7,
@@ -27,10 +41,12 @@ export default class embed extends Command {
                     channel_types: [ChannelType.GuildText],
                     name_localizations: {
                         'es-ES': 'canal',
+                        'en-US': 'channel',
                     },
                     description: 'Channel where the embed will be sent.',
                     description_localizations: {
                         'es-ES': 'Canal deseado para enviar el embed',
+                        'en-US': 'Channel where the embed will be sent.',
                     },
                     required: true,
                 },
@@ -39,10 +55,12 @@ export default class embed extends Command {
                     name: 'color',
                     name_localizations: {
                         'es-ES': 'color',
+                        'en-US': 'color',
                     },
                     description: 'Color of the embed',
                     description_localizations: {
                         'es-ES': 'Color a elegir del embed.',
+                        'en-US': 'Color of the embed',
                     },
                     choices: getColorChoices(),
                     required: true,
@@ -52,10 +70,12 @@ export default class embed extends Command {
                     name: 'title',
                     name_localizations: {
                         'es-ES': 'titulo',
+                        'en-US': 'title',
                     },
                     description: 'Title of the embed',
                     description_localizations: {
                         'es-ES': 'Título del embed',
+                        'en-US': 'Title of the embed',
                     },
                     required: true,
                 },
@@ -64,10 +84,12 @@ export default class embed extends Command {
                     name: 'description',
                     name_localizations: {
                         'es-ES': 'descripcion',
+                        'en-US': 'description',
                     },
                     description: 'Description of the embed',
                     description_localizations: {
                         'es-ES': 'Descripción del embed',
+                        'en-US': 'Description of the embed',
                     },
                     required: true,
                 },
@@ -83,22 +105,8 @@ export default class embed extends Command {
             titulo = interaction.options.getString('title', true)
         const embed = new EmbedBuilder().setDescription(`${descripcion}`).setColor(color).setTitle(titulo)
 
-        if (
-            !canal
-                .permissionsFor(client.user.id)
-                ?.has([
-                    PermissionsBitField.Flags.SendMessages,
-                    PermissionsBitField.Flags.EmbedLinks,
-                    PermissionsBitField.Flags.ViewChannel,
-                ])
-        )
-            return interaction.reply({
-                content:
-                    'No tengo los permisos `SEND_MESSAGES`, `EMBED_LINKS` ni `VIEW_CHANNEL`, que son necesarios para enviar el embed.',
-            })
-
         canal.send({ embeds: [embed] })
-        return interaction.reply({ content: 'Embed creado y enviado con éxito.' })
+        return interaction.reply(Translator(interaction)(keys.embed_successfully))
     }
 }
 function getColorChoices() {
@@ -107,6 +115,7 @@ function getColorChoices() {
             name: 'Default',
             name_localizations: {
                 'es-ES': 'Defecto',
+                'en-US': 'Default'
             },
             value: Colors.Default,
         },
@@ -114,6 +123,7 @@ function getColorChoices() {
             name: 'Aqua',
             name_localizations: {
                 'es-ES': 'Agua',
+                'en-US': 'Aqua'
             },
             value: Colors.Aqua,
         },
@@ -121,6 +131,7 @@ function getColorChoices() {
             name: 'Dark Aqua',
             name_localizations: {
                 'es-ES': 'Agua Oscuro',
+                'en-US': 'Dark Aqua'
             },
             value: Colors.DarkAqua,
         },
@@ -128,6 +139,7 @@ function getColorChoices() {
             name: 'Green',
             name_localizations: {
                 'es-ES': 'Verde',
+                'en-US': 'Green'
             },
             value: Colors.Green,
         },
@@ -135,6 +147,7 @@ function getColorChoices() {
             name: 'Dark Green',
             name_localizations: {
                 'es-ES': 'Verde Oscuro',
+                'en-US': 'Dark Green'
             },
             value: Colors.DarkGreen,
         },
@@ -142,6 +155,7 @@ function getColorChoices() {
             name: 'Blue',
             name_localizations: {
                 'es-ES': 'Azul',
+                'en-US': 'Blue'
             },
             value: Colors.Blue,
         },
@@ -149,6 +163,7 @@ function getColorChoices() {
             name: 'Dark Blue',
             name_localizations: {
                 'es-ES': 'Azul Oscuro',
+                'en-US': 'Dark Blue'
             },
             value: Colors.DarkBlue,
         },
@@ -156,6 +171,7 @@ function getColorChoices() {
             name: 'Purple',
             name_localizations: {
                 'es-ES': 'Morado',
+                'en-US': 'Purple'
             },
             value: Colors.Purple,
         },
@@ -163,6 +179,7 @@ function getColorChoices() {
             name: 'Dark Purple',
             name_localizations: {
                 'es-ES': 'Morado Oscuro',
+                'en-US': 'Dark Purple'
             },
             value: Colors.DarkPurple,
         },
@@ -170,6 +187,7 @@ function getColorChoices() {
             name: 'Lumious Vivid Pink',
             name_localizations: {
                 'es-ES': 'Rosa Brillante',
+                'en-US': 'Lumious Vivid Pink'
             },
             value: Colors.LuminousVividPink,
         },
@@ -177,6 +195,7 @@ function getColorChoices() {
             name: 'Dark Vivid Pink',
             name_localizations: {
                 'es-ES': 'Rosa Brillante Oscuro',
+                'en-US': 'Dark Vivid Pink'
             },
             value: Colors.DarkVividPink,
         },
@@ -184,6 +203,7 @@ function getColorChoices() {
             name: 'Gold',
             name_localizations: {
                 'es-ES': 'Oro',
+                'en-US': 'Gold'
             },
             value: Colors.Gold,
         },
@@ -191,6 +211,7 @@ function getColorChoices() {
             name: 'Dark Gold',
             name_localizations: {
                 'es-ES': 'Oro Oscuro',
+                'en-US': 'Dark Gold'
             },
             value: Colors.DarkGold,
         },
@@ -198,6 +219,7 @@ function getColorChoices() {
             name: 'Orange',
             name_localizations: {
                 'es-ES': 'Naranja',
+                'en-US': 'Orange'
             },
             value: Colors.Orange,
         },
@@ -205,6 +227,7 @@ function getColorChoices() {
             name: 'Dark Orange',
             name_localizations: {
                 'es-ES': 'Naranja Oscuro',
+                'en-US': 'Dark Orange'
             },
             value: Colors.DarkOrange,
         },
@@ -212,6 +235,7 @@ function getColorChoices() {
             name: 'Red',
             name_localizations: {
                 'es-ES': 'Rojo',
+                'en-US': 'Red'
             },
             value: Colors.Red,
         },
@@ -219,6 +243,7 @@ function getColorChoices() {
             name: 'Dark Red',
             name_localizations: {
                 'es-ES': 'Rojo Oscuro',
+                'en-US': 'Dark Red'
             },
             value: Colors.DarkRed,
         },
@@ -226,6 +251,7 @@ function getColorChoices() {
             name: 'Grey',
             name_localizations: {
                 'es-ES': 'Gris',
+                'en-US': 'Grey'
             },
             value: Colors.Grey,
         },
@@ -233,6 +259,7 @@ function getColorChoices() {
             name: 'Dark Grey',
             name_localizations: {
                 'es-ES': 'Gris Oscuro',
+                'en-US': 'Dark Grey'
             },
             value: Colors.DarkGrey,
         },
@@ -240,6 +267,7 @@ function getColorChoices() {
             name: 'Darker Grey',
             name_localizations: {
                 'es-ES': 'Gris Oscuro',
+                'en-US': 'Darker Grey'
             },
             value: Colors.DarkerGrey,
         },
@@ -247,6 +275,7 @@ function getColorChoices() {
             name: 'Light Grey',
             name_localizations: {
                 'es-ES': 'Gris Claro',
+                'en-US': 'Light Grey'
             },
             value: Colors.LightGrey,
         },
@@ -254,6 +283,7 @@ function getColorChoices() {
             name: 'Navy',
             name_localizations: {
                 'es-ES': 'Azul Marino',
+                'en-US': 'Navy'
             },
             value: Colors.Navy,
         },
@@ -261,6 +291,7 @@ function getColorChoices() {
             name: 'Dark Navy',
             name_localizations: {
                 'es-ES': 'Azul Marino Oscuro',
+                'en-US': 'Dark Navy'
             },
             value: Colors.DarkNavy,
         },
@@ -268,6 +299,7 @@ function getColorChoices() {
             name: 'Yellow',
             name_localizations: {
                 'es-ES': 'Amarillo',
+                'en-US': 'Yellow'
             },
             value: Colors.Yellow,
         },
