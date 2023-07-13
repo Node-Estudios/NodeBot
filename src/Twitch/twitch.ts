@@ -1,22 +1,22 @@
-import express from 'express'
+import { EmbedBuilder, TextChannel } from 'discord.js'
+import express, { Request, Response } from 'express'
+import TwitchModel from '../models/twitch'
+import logger from '../utils/logger.js'
 import crypto from 'node:crypto'
+import client from '../bot.js'
+
+const twitchSigningSecret = '273823283ehywdh'
 const app = express()
 const port = '8085'
-const twitchSigningSecret = '273823283ehywdh'
-import logger from '../utils/logger.js'
-import TwitchModel from '../models/twitch'
-// TODO? use global client?
-import client from '../bot.js'
-import { EmbedBuilder, TextChannel } from 'discord.js'
 
 logger.debug('Twitch Iniciado Correctamente')
 app.get('/', (req, res) => {
     res.send('Hola pa')
 })
 
-const verifyTwitchSignature = (req, res, buf, encoding) => {
-    const messageId = req.header('Twitch-Eventsub-Message-Id')
-    const timestamp = req.header('Twitch-Eventsub-Message-Timestamp')
+const verifyTwitchSignature = (req: Request, res: Response, buf: Buffer) => {
+    const messageId = req.header('Twitch-Eventsub-Message-Id') ?? ''
+    const timestamp = +(req.header('Twitch-Eventsub-Message-Timestamp') ?? 0)
     const messageSignature = req.header('Twitch-Eventsub-Message-Signature')
     const time = Math.floor(Date.now() / 1000)
     logger.log(`Message ${messageId} Signature: `, messageSignature)
@@ -91,11 +91,12 @@ app.post('/webhooks/callback/', async (req, res) => {
                                 .setTitle(tituloEmbed)
                                 .setColor(context.guild.customMessage.embed.color)
                                 .setDescription(descripcionEmbed)
-                                .setAuthor(
-                                    'Node Bot',
-                                    'https://cdn.discordapp.com/avatars/828771710676500502/c0e14a183dead07a277b0aa907ebc270.webp?size=4096',
-                                    'https://nodebot.xyz',
-                                )
+                                .setAuthor({
+                                    name: 'Node Bot',
+                                    iconURL:
+                                        'https://cdn.discordapp.com/avatars/828771710676500502/c0e14a183dead07a277b0aa907ebc270.webp?size=4096',
+                                    url: 'https://nodebot.xyz',
+                                })
                                 .setImage(
                                     `https://static-cdn.jtvnw.net/previews-ttv/live_user_${context.s.login}-1920x1080.jpg`,
                                 )

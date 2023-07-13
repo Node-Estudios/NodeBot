@@ -9,7 +9,7 @@ import MusicManager from './MusicManager.js'
 export default class Client extends ClientBase<true> {
     devs: string[]
     cluster: HybridClient<Client>
-    settings: { color: ColorResolvable; mode: 'production' | 'development', debug: "true" | "false" }
+    settings: { color: ColorResolvable; mode: 'production' | 'development'; debug: 'true' | 'false' }
     music = new MusicManager()
     officialServerURL: string
     services: { sentry: { loggedIn: boolean } }
@@ -35,10 +35,8 @@ export default class Client extends ClientBase<true> {
         this.settings = {
             color: 'Green',
             mode: process.env.NODE_ENV,
-            debug: process.env.DEBUG_MODE as "true" | "false"
+            debug: process.env.DEBUG_MODE as 'true' | 'false',
         }
-        // TODO check type
-        // @ts-ignore
         this.cluster = new HybridClient(this)
         // console.log(this.cluster)
         if (process.env.SENTRY_DSN && process.env.NODE_ENV == 'production') {

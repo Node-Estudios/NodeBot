@@ -7,25 +7,29 @@ export default async function (
     originShard: Cluster,
     message: {
         data: any
-        type: any
-        shard: any
+        type: 'reboot'
+        shard: 'all' | number
         value: any
     },
     manager: NodeManager,
 ) {
     if (!originShard || !message) return
 
-    switch (message.type) {
-        case 'reboot':
-            switch (message.shard) {
-                case 'all':
-                    logger.warn('Reiniciando todas las shards...')
-                    manager.recluster?.start({ restartMode: 'gracefulSwitch', totalShards: 'auto', shardsPerClusters: 10 })
-                case 'shard':
-                    logger.warn(`Reiniciando Shard ${message.shard}`)
-                    manager.recluster?.start({ restartMode: 'gracefulSwitch', totalShards: 'auto', shardsPerClusters: message.shard })
-                    break
-            }
-            break
+    if (message.type === 'reboot') {
+        if (message.shard === 'all') {
+            logger.warn('Reiniciando todas las shards...')
+            manager.recluster?.start({
+                restartMode: 'gracefulSwitch',
+                totalShards: 'auto',
+                shardsPerClusters: 10,
+            })
+        } else {
+            logger.warn(`Reiniciando Shard ${message.shard}`)
+            manager.recluster?.start({
+                restartMode: 'gracefulSwitch',
+                totalShards: 'auto',
+                shardsPerClusters: message.shard,
+            })
+        }
     }
 }

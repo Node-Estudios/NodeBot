@@ -1,14 +1,10 @@
-import { ChatInputCommandInteractionExtended } from '../events/client/interactionCreate.js'
-import logger from '../utils/logger.js'
-
 import {
-    APIApplicationCommandOption,
-    ApplicationCommand,
-    ApplicationCommandType,
-    LocalizationMap,
-    PermissionsBitField,
-    PermissionsString,
     RESTPostAPIChatInputApplicationCommandsJSONBody,
+    APIApplicationCommandOption,
+    ChatInputCommandInteraction,
+    PermissionsString,
+    PermissionsBitField,
+    LocalizationMap,
 } from 'discord.js'
 
 export default class Command {
@@ -85,10 +81,7 @@ export default class Command {
         this.default_member_permissions = default_member_permissions ?? null
         this.dm_permission = dm_permission
         this.nsfw = nsfw
-        //TODO: Add funcitonality in interactionCreate for only_dm && add more options
         this.only_dm = only_dm
-        // this.args = options.args || false
-        // this.cooldown = options.cooldown || false
         this.permissions = {
             dev: !!permissions?.dev,
             botPermissions: permissions?.botPermissions,
@@ -96,7 +89,7 @@ export default class Command {
         this.cooldown = cooldown ?? 0
     }
 
-    run(interaction: ChatInputCommandInteractionExtended<'cached'>): Promise<any> {
+    run(interaction: ChatInputCommandInteraction): Promise<any> {
         return interaction.reply({
             content: 'This command is not ready yet.',
             ephemeral: true,

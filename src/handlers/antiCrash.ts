@@ -1,40 +1,64 @@
+import { EmbedBuilder, WebhookClient } from 'discord.js'
 import Logger from '../utils/logger'
-import simplestDiscordWebhook from 'simplest-discord-webhook'
-import { EmbedBuilder } from 'discord.js'
-// TODO: se cmbiara a sentry
 import Sentry from '@sentry/node'
-const webhookClient = new simplestDiscordWebhook(process.env.errorWebhookURL)
+// TODO: se cmbiara a sentry
+const webhookClient = new WebhookClient({
+    url: process.env.errorWebhookURL!,
+})
 process.on('unhandledRejection', async (reason, p) => {
-    const errorEmbed = new EmbedBuilder()
-        .setColor(15548997)
-        .addField('Razón', '```' + (await reason) + '```')
-        .addField('Error', '```' + (await p) + '```')
-    await webhookClient.send(errorEmbed)
+    await webhookClient.send({
+        embeds: [
+            new EmbedBuilder()
+                .setColor(15548997)
+                .setFields(
+                    { name: 'Razón', value: '```' + (await reason) + '```' },
+                    { name: 'Error', value: '```' + (await p) + '```' },
+                ),
+        ],
+    })
     Sentry.captureException(p)
     Logger.warn(' [antiCrash] :: Unhandled Rejection/Catch')
     Logger.error(reason, p)
 })
 process.on('uncaughtException', (err, origin) => {
-    const errorEmbed = new EmbedBuilder()
-        .setColor(15548997)
-        .addField('Origen', '```' + origin + '```')
-        .addField('Error', '```' + err + '```')
-    webhookClient.send(errorEmbed)
+    webhookClient.send({
+        embeds: [
+            new EmbedBuilder().setColor(15548997).setFields(
+                { name: 'Origen', value: '```' + origin + '```' },
+                {
+                    name: 'Error',
+                    value: '```' + err + '```',
+                },
+            ),
+        ],
+    })
     Logger.warn(' [antiCrash] :: Uncaught Exception/Catch')
     Logger.error(err, origin)
 })
 process.on('uncaughtExceptionMonitor', (err, origin) => {
-    const errorEmbed = new EmbedBuilder()
-        .setColor(15548997)
-        .addField('Origen', '```' + origin + '```')
-        .addField('Error', '```' + err + '```')
-    webhookClient.send(errorEmbed)
+    webhookClient.send({
+        embeds: [
+            new EmbedBuilder().setColor(15548997).setFields(
+                { name: 'Origen', value: '```' + origin + '```' },
+                {
+                    name: 'Error',
+                    value: '```' + err + '```',
+                },
+            ),
+        ],
+    })
     Logger.warn(' [antiCrash] :: Uncaught Exception/Catch (MONITOR)')
     Logger.error(err, origin)
 })
 process.on('multipleResolves', (type, promise, reason) => {
-    const errorEmbed = new EmbedBuilder().setColor(15548997).addField('Razón', '```' + reason + '```')
-    webhookClient.send(errorEmbed)
+    webhookClient.send({
+        embeds: [
+            new EmbedBuilder().setColor(15548997).setFields({
+                name: 'Razón',
+                value: '```' + reason + '```',
+            }),
+        ],
+    })
     Logger.warn(' [antiCrash] :: Multiple Resolves')
     Logger.error(reason)
 })

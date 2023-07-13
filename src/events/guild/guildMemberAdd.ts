@@ -1,4 +1,4 @@
-import { MessageAttachment, GuildMember, TextChannel } from 'discord.js'
+import { AttachmentBuilder, GuildMember, TextChannel } from 'discord.js'
 import { Canvas, loadImage } from 'canvas'
 
 export default async function (member: GuildMember) {
@@ -38,11 +38,13 @@ export default async function (member: GuildMember) {
     ctx.clip()
     const avatar = await loadImage(
         member.user.displayAvatarURL({
-            format: 'jpg',
+            extension: 'jpg',
         }),
     )
     ctx.drawImage(avatar, 65, canvas.height / 2 - 250, 500, 500)
-    const attachment = new MessageAttachment(canvas.toBuffer(), 'welcome-image.png')
+    const attachment = new AttachmentBuilder(canvas.toBuffer(), {
+        name: 'welcome-image.png',
+    })
     // TODO: implement this in a database
     const channel = member.guild.channels.cache.get('964522476396748831') as TextChannel
     channel.send({ files: [attachment], content: 'Welcome to the server!' })

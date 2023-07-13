@@ -1,5 +1,4 @@
-import { AttachmentBuilder } from 'discord.js'
-import { ChatInputCommandInteractionExtended } from '../../../events/client/interactionCreate.js'
+import { AttachmentBuilder, ChatInputCommandInteraction } from 'discord.js'
 import Command from '../../../structures/Command.js'
 export default class mcserver extends Command {
     constructor() {
@@ -8,6 +7,7 @@ export default class mcserver extends Command {
             description: 'Send a image of a Minecraft server.',
             description_localizations: {
                 'es-ES': 'Envía una imagen de un servidor de Minecraft.',
+                'en-US': 'Send a image of a Minecraft server.'
             },
             cooldown: 5,
             options: [
@@ -17,9 +17,11 @@ export default class mcserver extends Command {
                     description: 'Minecraft server to show the image of.',
                     name_localizations: {
                         'es-ES': 'servidor',
+                        'en-US': 'server'
                     },
                     description_localizations: {
                         'es-ES': 'Servidor de Minecraft.',
+                        'en-US': 'Minecraft server to show the image of.'
                     },
                     required: true,
                 },
@@ -27,7 +29,7 @@ export default class mcserver extends Command {
         })
     }
 
-    override async run(interaction: ChatInputCommandInteractionExtended<'cached'>) {
+    override async run(interaction: ChatInputCommandInteraction) {
         const server = interaction.options.getString('server', true)
         interaction.reply({
             files: [

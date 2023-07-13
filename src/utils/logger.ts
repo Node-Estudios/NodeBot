@@ -1,6 +1,6 @@
 import signale from 'signale'
-const {Signale} = signale
-// TODO? use global client?
+const { Signale } = signale
+
 export default new Signale({
     // TODO: use cluster id
     scope: `Cluster $ID`,
