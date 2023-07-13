@@ -1,5 +1,5 @@
 import { EmbedBuilder, VoiceChannel, VoiceState } from 'discord.js'
-import Translator, { keys } from '../../utils/Translator'
+import Translator, { keys } from '../../utils/Translator.js'
 import { BaseEvent } from '../../structures/Events.js'
 import Client from '../../structures/Client.js'
 import logger from '../../utils/logger.js'
