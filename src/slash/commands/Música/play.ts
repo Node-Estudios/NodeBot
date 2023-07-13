@@ -1,16 +1,22 @@
-import { ApplicationCommandOptionType, EmbedBuilder, TextChannel, VoiceChannel, ChatInputCommandInteraction } from 'discord.js';
-import performanceMeters from '../../../cache/performanceMeters.js';
-import formatTime from '../../../utils/formatTime.js';
-import Translator, { keys } from '../../../utils/Translator.js';
-import Command from '../../../structures/Command.js';
-import Client from '../../../structures/Client.js';
-;
-import logger from '../../../utils/logger.js';
+import {
+    ApplicationCommandOptionType,
+    EmbedBuilder,
+    TextChannel,
+    VoiceChannel,
+    ChatInputCommandInteraction,
+} from 'discord.js'
+import { MusicCarouselShelf } from 'youtubei.js/dist/src/parser/nodes.js'
+import performanceMeters from '../../../cache/performanceMeters.js'
+import Translator, { keys } from '../../../utils/Translator.js'
+import formatTime from '../../../utils/formatTime.js'
+import Command from '../../../structures/Command.js'
+import Client from '../../../structures/Client.js'
+import logger from '../../../utils/logger.js'
 
 function shuffleArray(array: any[]) {
     for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1))
-            ;[array[i], array[j]] = [array[j], array[i]]
+        ;[array[i], array[j]] = [array[j], array[i]]
     }
     return array
 }
@@ -22,7 +28,7 @@ export default class play extends Command {
             description: 'Play the song that you want with the name or a youtube/spotify link',
             name_localizations: {
                 'es-ES': 'reproducir',
-                'en-US': 'play'
+                'en-US': 'play',
             },
             description_localizations: {
                 'en-US': 'Play the song that you want with the name or a youtube/spotify link',
@@ -37,7 +43,7 @@ export default class play extends Command {
                     description: 'Name of the song that u want to listen.',
                     name_localizations: {
                         'es-ES': 'canción',
-                        'en-US': 'song'
+                        'en-US': 'song',
                     },
                     description_localizations: {
                         'es-ES': 'Nombre de la canción que deseas escuchas.',
@@ -51,7 +57,7 @@ export default class play extends Command {
                     description: 'Amount of songs to load. Only works if you dont put a song string',
                     name_localizations: {
                         'es-ES': 'cantidad',
-                        'en-US': 'amount'
+                        'en-US': 'amount',
                     },
                     description_localizations: {
                         'es-ES': 'Cantidad de canciones a reproducir. Solo funciona si nos dejas elegir.',
@@ -89,10 +95,11 @@ export default class play extends Command {
             const source = 'Youtube'
             let song = interaction.options.getString('song', false)
             if (!song) {
-                const songs = (await (await player.youtubei).music.getHomeFeed()).sections![0].contents;
-                const songs2 = songs.filter((song: any) => song.item_type === 'song');
-                const randomIndex = Math.floor(Math.random() * songs2.length);
-                const song3 = songs2[randomIndex];
+                const songs = ((await (await player.youtubei).music.getHomeFeed()).sections![0] as MusicCarouselShelf)
+                    .contents
+                const songs2 = songs.filter((song: any) => song.item_type === 'song')
+                const randomIndex = Math.floor(Math.random() * songs2.length)
+                const song3 = songs2[randomIndex]
                 // console.log(await song3)
                 //@ts-ignore
                 search = await client.music.search(song3.id, interaction.member, source)
@@ -226,7 +233,7 @@ export default class play extends Command {
             logger.error(e)
             interaction.reply({
                 content: translate(keys.GENERICERROR, {
-                    inviteURL: client.officialServerURL
+                    inviteURL: client.officialServerURL,
                 }),
             })
         }

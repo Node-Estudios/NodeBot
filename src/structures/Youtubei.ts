@@ -1,8 +1,9 @@
 import { Collection, EmbedBuilder, GuildMember, Message } from 'discord.js'
-import { Session, Innertube, Music } from 'youtubei.js'
+import Music from 'youtubei.js/dist/src/core/clients/Music.js'
+import { spamIntervalDB } from './spamInterval.js'
+import { Session, Innertube } from 'youtubei.js'
 import UserModel from '../models/user.js'
 import logger from '../utils/logger.js'
-import { spamIntervalDB } from './spamInterval.js'
 let spamInterval = new spamIntervalDB()
 type UserExtended = GuildMember & {
     youtubei: Youtubei
