@@ -244,9 +244,9 @@ export default class MusicManager extends EventEmitter {
                 let rawData = await (await requester.youtubei.music.search(query, { limit: 1 })).sections[0]
                 track = rawData.contents[0].id
             } else {
-                track = await (await yasha.Source.Youtube.search(query, 0))[0]
+                track = await (await yasha.Source.Youtube.search(query))[0]
             }
-        } else track = await (await yasha.Source.Youtube.search(query, 0))[0]
+        } else track = await (await yasha.Source.Youtube.search(query))[0]
 
         track = await yasha.Source.resolve(
             track ? `https://www.youtube.com/watch?v=${track.id ? track.id : track}` : query,
