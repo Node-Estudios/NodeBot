@@ -1,40 +1,49 @@
-import { Guild, GuildMember, Message, TextChannel, User, VoiceChannel } from 'discord.js'
-import yasha from 'yasha'
-import Innertube2 from 'youtubei.js'
-import logger from '../utils/logger.js'
-import MusicManager from './MusicManager.js'
-import Queue from './Queue.js'
+import { Guild, GuildMember, GuildTextBasedChannel, LocaleString, Message, VoiceChannel, User } from 'discord.js'
+import VoiceConnection from 'yasha/types/VoiceConnection.js'
 import { spamIntervalDB } from './spamInterval.js'
+import MusicManager from './MusicManager.js'
+import logger from '../utils/logger.js'
+import Innertube2 from 'youtubei.js'
+import Queue from './Queue.js'
+import yasha from 'yasha'
+
 const { Innertube } = Innertube2 as any
 let spamIntervald = new spamIntervalDB()
-type UserExtended = GuildMember & {}
 
 export default class Player extends yasha.TrackPlayer {
-    trackRepeat: boolean
-    queueRepeat: boolean
-    stayInVoice: boolean
-    position: number
-    playing: boolean
-    paused: boolean
-    volume: number
-    queue: Queue
+    trackRepeat = false
+    queueRepeat = false
+    stayInVoice = false
+    position = 0
+    playing = false
+    paused = false
+    volume?: number
+    queue = new Queue()
     manager: MusicManager
-    textChannel: TextChannel
-    language: string
+    textChannel: GuildTextBasedChannel
+    language: LocaleString = 'es-ES'
     voiceChannel: VoiceChannel
     message?: Message
     guild: Guild
     leaveTimeout?: NodeJS.Timeout
     bitrate?: number
-    subscription: any
-    connection: any
+    connection?: VoiceConnection
+    subscription?: any
     stayInVc = false
     previouslyPaused = false
     pausedUser?: User
     resumedUser?: User
     youtubei = Innertube.create()
     waitingMessage: Message | null = null
-    constructor(options: any) {
+    constructor(options: {
+        musicManager: MusicManager
+        lang?: LocaleString
+        bitrate?: number
+        volume?: number
+        voiceChannel: VoiceChannel
+        textChannel: GuildTextBasedChannel
+        guild?: Guild
+    }) {
         super({
             external_packet_send: false,
             external_encrypt: true,
@@ -42,38 +51,26 @@ export default class Player extends yasha.TrackPlayer {
         })
         // this.youtubei = Innertube2.create()
         this.manager = options.musicManager
-        this.trackRepeat = false
-
-        this.queueRepeat = false
-        this.language = options.lang
-
-        this.stayInVoice = false
-
-        this.queue = new Queue()
-
+        this.language = options.lang ?? options.voiceChannel.guild.preferredLocale
         this.bitrate = options.bitrate
-
-        this.position = 0
-        this.playing = false
-        this.paused = false
         this.volume = options.volume
 
         this.voiceChannel = options.voiceChannel
         this.textChannel = options.textChannel
-        this.guild = options.guild
-
-        this.leaveTimeout = undefined
+        this.guild = options.guild ?? options.voiceChannel.guild
     }
     async connect() {
         this.connection = await yasha.VoiceConnection.connect(this.voiceChannel, {
             selfDeaf: true,
         })
-        this.subscription = this.connection.subscribe(this)
-        this.connection.on('error', (error: Error) => logger.error(error))
+        // TODO: delete ts-ignore when yasha is updated
+        // @ts-ignore
+        this.subscription = this.connection?.subscribe(this)
+        this.connection?.on('error', (error: Error) => logger.error(error))
     }
 
     disconnect() {
-        this.connection.disconnect()
+        this.connection?.disconnect()
         if (this.connection) this.connection.destroy()
     }
 
@@ -86,7 +83,7 @@ export default class Player extends yasha.TrackPlayer {
         // //NORMALIZE VOLUME
         // console.log("stream: ", this.stream)
         // if (this.stream.volume && !this.volume) this.volume = this.stream.volume;
-        if (!this.volume) this.volume = 100;
+        if (!this.volume) this.volume = 100
         // console.log("volume: ", this.volume);
         this.start()
     }

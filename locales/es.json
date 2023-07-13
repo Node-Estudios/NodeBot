@@ -1,0 +1,169 @@
+{
+    "question_ball": {
+        "no_question": "No veo ninguna pregunta a la que responder...",
+        "question": "A su pregunta",
+        "response": "Mi respuesta es",
+        "possibles": {
+            "0": "Sí",
+            "1": "No",
+            "2": "Tal vez",
+            "3": "Obviamente",
+            "4": "Yo digo que sí.",
+            "5": "Yo digo que no.",
+            "6": "Probablemente",
+            "7": "Tengo mis dudas...",
+            "8": "Ni lo dudes",
+            "9": "Ni siquiera tenías que preguntar ;)",
+            "10": "En absoluto...",
+            "11": "No creo..."
+        }
+    },
+    "impostor": {
+        "was": "¿Fue el impostor",
+        "was_not": "¿No era el impostor"
+    },
+    "embed_successfully": "Incrustación creada y enviada correctamente.",
+    "github": {
+        "write_username": "Por favor, escriba un nombre de usuario.",
+        "name": "🧑 Nombre:",
+        "account": " Tipo de cuenta:",
+        "organization": "🏢 Organización:",
+        "link": "☁️ Enlace",
+        "location": "🗺 Ubicación:",
+        "email": "Correo electrónico",
+        "biography": "📃 Biografía",
+        "twitter": "🐦 Twitter:",
+        "repositories": "📂 Repositorios públicos",
+        "followers": "🧍 Seguidores",
+        "analizing": "Analizando cuenta, por favor espera...",
+        "unknow": "El usuario no se encontró"
+    },
+    "help": {
+        "presentation": "<a:pin:893553168259121172> Hola, soy Node un bot todo en uno, multifuncional y con comandos innovadores.",
+        "how_use": "¿Cómo puedo ver los comandos?",
+        "how_use_answer": "Fácil, sólo tienes que escribir",
+        "need_support": "Si necesito ayuda, ¿cómo puedo ponerme en contacto con el equipo de asistencia?",
+        "need_support_answer": "Puede preguntar en nuestro [servidor de soporte]({inviteURL})",
+        "how_vote": "¿Cómo puedo votar al robot?",
+        "how_vote_answer": "u puede hacerlo utilizando el comando <a:arrowright:970388686816550912> `/vote` o [Clicando Aquí](https://vote.nodebot.xyz) 'Estamos esperando su voto :)'",
+        "title": "✨ - Menú Ayuda"
+    },
+    "avatar": "aquí tienes el avatar de {user}",
+    "mchistory": {
+        "dont": "El nombre de usuario no existe",
+        "names": "Historial del nombre",
+        "first": "Nombre"
+    },
+    "ping": {
+        "global": "Ping global",
+        "internal": "Procesamiento interno (base de datos + procesamiento)"
+    },
+    "roleinfo": {
+        "managed": "Gestionado por Discord"
+    },
+    "serverinfo": {
+        "verification": {
+            "no": "No hay verificación.",
+            "low": "Baja (Cuenta verificada).",
+            "medium": "Medium (cuenta verificada durante +5 minutos).",
+            "high": "Alta (cuenta verificada durante +10 minutos).",
+            "extreme": "Extreme (Cuenta verificada y número de teléfono verificado vinculados)."
+        },
+        "explicit": {
+            "disabled": "No se escanea ningún mensaje.",
+            "members_without_role": "Escanear usuarios sin rol.",
+            "all_members": "Escanea cada mensaje."
+        },
+        "emoji_count": "Cuenta Emoji",
+        "tier_level": "Nivel",
+        "verification_level": "Nivel de verificación",
+        "explicit_filter": "Nivel de filtro de contenido explícito"
+    },
+    "ban": {
+        "not_found": "Miembro no encontrado",
+        "self": "No puedes prohibirte a ti mismo",
+        "owner": "No se puede prohibir al propietario",
+        "higher": "No puedes banear a un miembro con un rol superior al tuyo",
+        "ban": "Prohibido con éxito",
+        "unbannable": "No puedo expulsar a este miembro"
+    },
+    "skip": {
+        "messages": {
+            "0": "No hay canciones sonando en tu canal de voz. ¿Por qué no añades una? <:pepeblink:967941236029788160>",
+            "1": "Parece que no estás escuchando música, ¿qué tal si lo hacemos? <:pepeblink:967941236029788160>",
+            "2": "¿Qué haces que no escuchas música? Añade una canción ahora :)"
+        },
+        "no_same": "No estás en mi canal de voz.",
+        "skiped": "{song} se ha omitido"
+    },
+    "queue": {
+        "no_queue": "No se están reproduciendo canciones en este servidor. ¿Por qué no añades una?",
+        "current": "Actualmente jugando:",
+        "queue": "{name}'s queue",
+        "no_page": "¡La página no existe!",
+        "total": "Cola total de canciones:"
+    },
+    "247": {
+        "enabled": "El modo 24/7 está activado <a:DJPeepo:969757766744944700>",
+        "disabled": "El modo 24/7 está desactivado"
+    },
+    "play": {
+        "same": "Necesitas estar en el mismo canal de voz que el bot para ejecutar este comando.",
+        "not_reproducible": "El enlace adjunto no contiene contenidos reproducibles.",
+        "added": "{song} añadido a la lista"
+    },
+    "reboot": {
+        "all": "Reiniciando todos los fragmentos...",
+        "shard": "Reiniciando shard {shard}..."
+    },
+    "stop": {
+        "resumed": "Música reanudada por {user}",
+        "paused": "Música pausada por {user}"
+    },
+    "voice_update": {
+        "leaving": "Saliendo de {channel} en {time} minutos",
+        "alone": "Estaba solo, y me fui {channel}"
+    },
+    "automix": {
+        "generated": "¡Se ha generado Auto-Mix!",
+        "disabled": "AutoMix desactivado"
+    },
+    "ERROREMBED": "Error <:error:897836005787308062>",
+    "SUCCESSEMBED": "Success <a:tick:836295873091862568>",
+    "PAUSE": "Pausa",
+    "RESUME": "Currículum",
+    "STOP": "Stop",
+    "SKIP": "Saltar",
+    "NEXT": "Siguiente",
+    "QUEUE": "Cola",
+    "TITLE": "Título",
+    "MEMBERS": "Miembros",
+    "REGULAR": "Regular",
+    "ANIMATED": "Animación",
+    "CHANNELS": "Canales",
+    "ROLES": "Funciones",
+    "CATEGORIES": "Categorías",
+    "SONGS": "Canciones",
+    "TEXT": "Texto",
+    "VOICE": "Voz",
+    "BOOSTERS": "Boosters",
+    "REGION": "Región",
+    "TIER": "Animales",
+    "CREATED_AT": "Creado en",
+    "OWNER": "Propietario",
+    "AUTHOR": "Autor",
+    "REQUESTER": "Solicitante",
+    "DURATION": "Duración",
+    "NO": "No",
+    "API": "API",
+    "PING": "Ping",
+    "NAME": "Nombre",
+    "ID": "ID",
+    "POSITION": "Posición",
+    "COLOR": "Color",
+    "MENTIONABLE": "Mencionable",
+    "SEPARATED": "Separado",
+    "YES": "Sí",
+    "PLAYING": "Jugando a",
+    "GENERICERROR": "Oops, parece que ha habido un error.\nPuedes ponerte en contacto con el desarrollador para hacérselo saber en [The Official Discord]({inviteURL})"
+}

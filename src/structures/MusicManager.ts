@@ -38,11 +38,10 @@ export default class MusicManager extends EventEmitter {
     async createNewPlayer(vc: VoiceChannel, textChannel: TextChannel, guild: Guild, volume?: number) {
         const player = new Player({
             musicManager: this,
-            guild,
             voiceChannel: vc,
             textChannel,
             volume,
-            language: guild.preferredLocale,
+            lang: vc.guild.preferredLocale,
         })
         // Imprime un mensaje de depuración
         // logger.debug('Sign in successful: ', credentials);
