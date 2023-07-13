@@ -57,7 +57,7 @@ export default class MusicManager extends EventEmitter {
 
         player.on(yasha.VoiceConnection.Status.Destroyed, () => player.destroy())
 
-        player.on('error', (err: any) => {
+        player.on('error', err => {
             logger.error(err)
             // console.log(err)
             player.skip()
@@ -222,7 +222,7 @@ export default class MusicManager extends EventEmitter {
         }
     }
 
-    get(guild: any) {
+    get(guild: Guild) {
         return this.players.get(guild.id)
     }
 
@@ -238,17 +238,13 @@ export default class MusicManager extends EventEmitter {
     }
 
     async search(query: any, requester: any, source: 'Spotify' | 'Youtube' | 'Soundcloud') {
-        // async search(query: any, requester: any, source: 'Spotify' | 'Youtube' | 'Soundcloud'): Promise<YoutubeTrack | YoutubePlaylist> {
         let track
-        // console.log('requester: ', requester.youtubei)
         if (requester.youtubei) {
             if (requester.youtubei.session.logged_in) {
                 let rawData = await (await requester.youtubei.music.search(query, { limit: 1 })).sections[0]
-                // console.log('logged in ', rawData)
                 track = rawData.contents[0].id
             } else {
                 track = await (await yasha.Source.Youtube.search(query, 0))[0]
-                // console.log('not logged in')
             }
         } else track = await (await yasha.Source.Youtube.search(query, 0))[0]
 
@@ -260,7 +256,7 @@ export default class MusicManager extends EventEmitter {
             else {
                 // logger.log('track: ', track)
                 // if (track instanceof TrackPlaylist) {
-                //     track.forEach((t: any) => {
+                //     track.forEach(t => {
                 //         t.requester = requester;
                 //         t.icon = null;
                 //         t.thumbnail;
@@ -277,25 +273,26 @@ export default class MusicManager extends EventEmitter {
             }
             return track
             // }
-        } catch (err: any) {
-            throw new Error(err)
+        } catch (err) {
+            throw err
         }
     }
 
     getPlayingPlayers() {
-        return this.players.filter((p: any) => p.playing)
+        return this.players.filter(p => p.playing)
     }
 }
 //TODO: REMOVE ANY TYPES
-function getMax(arr: any, prop: any) {
-    var max: any
+function getMax(arr: any[], prop: string) {
+    let max: any
     for (var i = 0; i < arr.length; i++)
         if (arr[i].audio && !arr[i].video && (max == null || parseInt(arr[i][prop]) > parseInt(max[prop]))) max = arr[i]
 
-    let best = arr.findIndex((o: any) => o.url === max.url)
+    let best = arr.findIndex(o => o.url === max.url)
     logger.debug('formatting better qualitty for audio: ', best)
     return best
 }
+
 export function formatDuration(duration: number) {
     if (isNaN(duration) || typeof duration === 'undefined') return '00:00'
     // if (duration > 3600000000) return language.LIVE

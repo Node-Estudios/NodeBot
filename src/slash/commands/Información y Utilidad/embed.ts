@@ -9,7 +9,6 @@ import {
 import Translator, { keys } from '../../../utils/Translator.js'
 import Command from '../../../structures/Command.js'
 
-
 export default class embed extends Command {
     constructor() {
         super({
@@ -95,7 +94,7 @@ export default class embed extends Command {
         })
     }
     override async run(interaction: ChatInputCommandInteraction) {
-        //TODO: Add more colors && make it work with hex colors && Add language support
+        //TODO: Add more colors && make it work with hex colors
         const canal = interaction.options.getChannel('channel', true, [ChannelType.GuildText]),
             descripcion = interaction.options.getString('description', true),
             color = interaction.options.getNumber('color', true),
@@ -113,7 +112,7 @@ function getColorChoices() {
             name: 'Default',
             name_localizations: {
                 'es-ES': 'Defecto',
-                'en-US': 'Default'
+                'en-US': 'Default',
             },
             value: Colors.Default,
         },
@@ -121,7 +120,7 @@ function getColorChoices() {
             name: 'Aqua',
             name_localizations: {
                 'es-ES': 'Agua',
-                'en-US': 'Aqua'
+                'en-US': 'Aqua',
             },
             value: Colors.Aqua,
         },
@@ -129,7 +128,7 @@ function getColorChoices() {
             name: 'Dark Aqua',
             name_localizations: {
                 'es-ES': 'Agua Oscuro',
-                'en-US': 'Dark Aqua'
+                'en-US': 'Dark Aqua',
             },
             value: Colors.DarkAqua,
         },
@@ -137,7 +136,7 @@ function getColorChoices() {
             name: 'Green',
             name_localizations: {
                 'es-ES': 'Verde',
-                'en-US': 'Green'
+                'en-US': 'Green',
             },
             value: Colors.Green,
         },
@@ -145,7 +144,7 @@ function getColorChoices() {
             name: 'Dark Green',
             name_localizations: {
                 'es-ES': 'Verde Oscuro',
-                'en-US': 'Dark Green'
+                'en-US': 'Dark Green',
             },
             value: Colors.DarkGreen,
         },
@@ -153,7 +152,7 @@ function getColorChoices() {
             name: 'Blue',
             name_localizations: {
                 'es-ES': 'Azul',
-                'en-US': 'Blue'
+                'en-US': 'Blue',
             },
             value: Colors.Blue,
         },
@@ -161,7 +160,7 @@ function getColorChoices() {
             name: 'Dark Blue',
             name_localizations: {
                 'es-ES': 'Azul Oscuro',
-                'en-US': 'Dark Blue'
+                'en-US': 'Dark Blue',
             },
             value: Colors.DarkBlue,
         },
@@ -169,7 +168,7 @@ function getColorChoices() {
             name: 'Purple',
             name_localizations: {
                 'es-ES': 'Morado',
-                'en-US': 'Purple'
+                'en-US': 'Purple',
             },
             value: Colors.Purple,
         },
@@ -177,7 +176,7 @@ function getColorChoices() {
             name: 'Dark Purple',
             name_localizations: {
                 'es-ES': 'Morado Oscuro',
-                'en-US': 'Dark Purple'
+                'en-US': 'Dark Purple',
             },
             value: Colors.DarkPurple,
         },
@@ -185,7 +184,7 @@ function getColorChoices() {
             name: 'Lumious Vivid Pink',
             name_localizations: {
                 'es-ES': 'Rosa Brillante',
-                'en-US': 'Lumious Vivid Pink'
+                'en-US': 'Lumious Vivid Pink',
             },
             value: Colors.LuminousVividPink,
         },
@@ -193,7 +192,7 @@ function getColorChoices() {
             name: 'Dark Vivid Pink',
             name_localizations: {
                 'es-ES': 'Rosa Brillante Oscuro',
-                'en-US': 'Dark Vivid Pink'
+                'en-US': 'Dark Vivid Pink',
             },
             value: Colors.DarkVividPink,
         },
@@ -201,7 +200,7 @@ function getColorChoices() {
             name: 'Gold',
             name_localizations: {
                 'es-ES': 'Oro',
-                'en-US': 'Gold'
+                'en-US': 'Gold',
             },
             value: Colors.Gold,
         },
@@ -209,7 +208,7 @@ function getColorChoices() {
             name: 'Dark Gold',
             name_localizations: {
                 'es-ES': 'Oro Oscuro',
-                'en-US': 'Dark Gold'
+                'en-US': 'Dark Gold',
             },
             value: Colors.DarkGold,
         },
@@ -217,7 +216,7 @@ function getColorChoices() {
             name: 'Orange',
             name_localizations: {
                 'es-ES': 'Naranja',
-                'en-US': 'Orange'
+                'en-US': 'Orange',
             },
             value: Colors.Orange,
         },
@@ -225,7 +224,7 @@ function getColorChoices() {
             name: 'Dark Orange',
             name_localizations: {
                 'es-ES': 'Naranja Oscuro',
-                'en-US': 'Dark Orange'
+                'en-US': 'Dark Orange',
             },
             value: Colors.DarkOrange,
         },
@@ -233,7 +232,7 @@ function getColorChoices() {
             name: 'Red',
             name_localizations: {
                 'es-ES': 'Rojo',
-                'en-US': 'Red'
+                'en-US': 'Red',
             },
             value: Colors.Red,
         },
@@ -241,7 +240,7 @@ function getColorChoices() {
             name: 'Dark Red',
             name_localizations: {
                 'es-ES': 'Rojo Oscuro',
-                'en-US': 'Dark Red'
+                'en-US': 'Dark Red',
             },
             value: Colors.DarkRed,
         },
@@ -249,7 +248,7 @@ function getColorChoices() {
             name: 'Grey',
             name_localizations: {
                 'es-ES': 'Gris',
-                'en-US': 'Grey'
+                'en-US': 'Grey',
             },
             value: Colors.Grey,
         },
@@ -257,7 +256,7 @@ function getColorChoices() {
             name: 'Dark Grey',
             name_localizations: {
                 'es-ES': 'Gris Oscuro',
-                'en-US': 'Dark Grey'
+                'en-US': 'Dark Grey',
             },
             value: Colors.DarkGrey,
         },
@@ -265,7 +264,7 @@ function getColorChoices() {
             name: 'Darker Grey',
             name_localizations: {
                 'es-ES': 'Gris Oscuro',
-                'en-US': 'Darker Grey'
+                'en-US': 'Darker Grey',
             },
             value: Colors.DarkerGrey,
         },
@@ -273,7 +272,7 @@ function getColorChoices() {
             name: 'Light Grey',
             name_localizations: {
                 'es-ES': 'Gris Claro',
-                'en-US': 'Light Grey'
+                'en-US': 'Light Grey',
             },
             value: Colors.LightGrey,
         },
@@ -281,7 +280,7 @@ function getColorChoices() {
             name: 'Navy',
             name_localizations: {
                 'es-ES': 'Azul Marino',
-                'en-US': 'Navy'
+                'en-US': 'Navy',
             },
             value: Colors.Navy,
         },
@@ -289,7 +288,7 @@ function getColorChoices() {
             name: 'Dark Navy',
             name_localizations: {
                 'es-ES': 'Azul Marino Oscuro',
-                'en-US': 'Dark Navy'
+                'en-US': 'Dark Navy',
             },
             value: Colors.DarkNavy,
         },
@@ -297,7 +296,7 @@ function getColorChoices() {
             name: 'Yellow',
             name_localizations: {
                 'es-ES': 'Amarillo',
-                'en-US': 'Yellow'
+                'en-US': 'Yellow',
             },
             value: Colors.Yellow,
         },

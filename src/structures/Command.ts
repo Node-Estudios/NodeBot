@@ -81,10 +81,7 @@ export default class Command {
         this.default_member_permissions = default_member_permissions ?? null
         this.dm_permission = dm_permission
         this.nsfw = nsfw
-        //TODO: Add funcitonality in interactionCreate for only_dm && add more options
         this.only_dm = only_dm
-        // this.args = options.args || false
-        // this.cooldown = options.cooldown || false
         this.permissions = {
             dev: !!permissions?.dev,
             botPermissions: permissions?.botPermissions,
