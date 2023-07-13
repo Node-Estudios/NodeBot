@@ -1,14 +1,11 @@
-import * as Sentry from '@sentry/node'
-import { IPCMessage } from 'discord-hybrid-sharding'
-import { connect } from 'mongoose'
-import logger from '../../utils/logger.js'
-//TODO? use global client?
-import Client from '../../structures/Client.js'
-
-// TODO: Remove (variable: any) in the code
-// Interfaz de eventos
-import commands from '../../cache/commands.js'
 import { BaseEvent } from '../../structures/Events.js'
+import { IPCMessage } from 'discord-hybrid-sharding'
+import Command from '../../structures/Command.js'
+import Client from '../../structures/Client.js'
+import commands from '../../cache/commands.js'
+import logger from '../../utils/logger.js'
+import * as Sentry from '@sentry/node'
+import { connect } from 'mongoose'
 
 export default class Ready extends BaseEvent {
     async run(client: Client): Promise<void> {
@@ -24,8 +21,8 @@ export default class Ready extends BaseEvent {
             }).then(() => logger.db('Se ha conectado la base de datos correctamente.'))
         // cluster
         // client.cluster.triggerReady()
-        let arr: any[] = []
-        commands.getCache().map((command) => {
+        let arr: Command[] = []
+        commands.getCache().map(command => {
             arr.push(command)
         })
         // console.log(JSON.stringify(arr))
@@ -48,23 +45,20 @@ export default class Ready extends BaseEvent {
                     // logger.debug(`Cluster's ${client.cluster.id} received statistics`)
                     client.cluster
                         .broadcastEval(
-                            (c: any) => ({
+                            c => ({
                                 guilds: c.guilds.cache.size,
                                 ping: c.ws.ping,
                                 channels: c.channels.cache.size,
-                                members: c.guilds.cache.reduce(
-                                    (prev: any, guild: { memberCount: any }) => prev + guild.memberCount,
-                                    0,
-                                ),
+                                members: c.guilds.cache.reduce((prev, guild) => prev + guild.memberCount, 0),
                                 memoryUsage: (process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2),
                                 players: c.music.players.size,
-                                playingPlayers: c.music.players.filter((p: { playing: any }) => p.playing).size,
+                                playingPlayers: c.music.players.filter(p => p.playing).size,
                             }),
                             { cluster: client.cluster.id },
                         )
-                        .then((results: any) => {
+                        .then(results => {
                             // console.log(results)
-                            (message2 as any).reply(results)
+                            message2.reply(results)
                         })
                 } catch (e) {
                     logger.error(e)
@@ -80,7 +74,7 @@ export default class Ready extends BaseEvent {
                         logger.debug('Sentry error sent')
                     }
                     // * Status 500 is Internal Server Error
-                    ; (message as any).reply({
+                    message.reply({
                         error: 'Statistics internal error, call the developer with the next id',
                         status: 500,
                     })
