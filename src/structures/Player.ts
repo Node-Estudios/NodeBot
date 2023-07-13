@@ -1,13 +1,12 @@
-import { Guild, GuildMember, GuildTextBasedChannel, LocaleString, Message, VoiceChannel, User } from 'discord.js'
+import { Guild, GuildTextBasedChannel, LocaleString, Message, VoiceChannel, User } from 'discord.js'
 import VoiceConnection from 'yasha/types/VoiceConnection.js'
 import { spamIntervalDB } from './spamInterval.js'
 import MusicManager from './MusicManager.js'
 import logger from '../utils/logger.js'
-import Innertube2 from 'youtubei.js'
+import { Innertube } from 'youtubei.js'
 import Queue from './Queue.js'
 import yasha from 'yasha'
 
-const { Innertube } = Innertube2 as any
 let spamIntervald = new spamIntervalDB()
 
 export default class Player extends yasha.TrackPlayer {
