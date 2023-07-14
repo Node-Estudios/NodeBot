@@ -1,4 +1,4 @@
-import { Guild, GuildTextBasedChannel, LocaleString, Message, VoiceChannel, User } from 'discord.js'
+import { Guild, LocaleString, Message, VoiceChannel, User, TextChannel } from 'discord.js'
 import VoiceConnection from 'yasha/types/src/VoiceConnection.js'
 import { spamIntervalDB } from './spamInterval.js'
 import MusicManager from './MusicManager.js'
@@ -16,11 +16,10 @@ export default class Player extends yasha.TrackPlayer {
     position = 0
     playing = false
     paused = false
-    volume?: number
+    volume = 100
     queue = new Queue()
     manager: MusicManager
-    textChannel: GuildTextBasedChannel
-    language: LocaleString = 'es-ES'
+    textChannel: TextChannel
     voiceChannel: VoiceChannel
     message?: Message
     guild: Guild
@@ -40,7 +39,7 @@ export default class Player extends yasha.TrackPlayer {
         bitrate?: number
         volume?: number
         voiceChannel: VoiceChannel
-        textChannel: GuildTextBasedChannel
+        textChannel: TextChannel
         guild?: Guild
     }) {
         super({
@@ -48,11 +47,9 @@ export default class Player extends yasha.TrackPlayer {
             external_encrypt: true,
             normalize_volume: true,
         })
-        // this.youtubei = Innertube2.create()
         this.manager = options.musicManager
-        this.language = options.lang ?? options.voiceChannel.guild.preferredLocale
         this.bitrate = options.bitrate
-        this.volume = options.volume
+        this.volume = options.volume ?? 100
 
         this.voiceChannel = options.voiceChannel
         this.textChannel = options.textChannel
@@ -75,14 +72,13 @@ export default class Player extends yasha.TrackPlayer {
 
     override async play(track?: any) {
         //TODO: Check if this code works
-        if (!track) super.play(this.queue.current as any)
+        if (!track) super.play(this.queue.current!)
         else super.play(track)
         clearTimeout(this.leaveTimeout)
         this.leaveTimeout = undefined
         // //NORMALIZE VOLUME
         // console.log("stream: ", this.stream)
         // if (this.stream.volume && !this.volume) this.volume = this.stream.volume;
-        if (!this.volume) this.volume = 100
         // console.log("volume: ", this.volume);
         this.start()
     }
@@ -102,20 +98,21 @@ export default class Player extends yasha.TrackPlayer {
         this.manager.trackEnd(this, false)
     }
 
-    get(key: any): any {
+    get(key: string): any {
         // @ts-ignore
         return this[key] as any
     }
 
-    set(key: any, value: any) {
+    set(key: string, value: any) {
         // @ts-ignore
         this[key] = value
     }
+
     override setEqualizer(equalizer: any) {
         super.setEqualizer(equalizer)
     }
 
-    override setVolume(volume: any) {
+    override setVolume(volume: number) {
         if (volume > 100000) volume = 100000
         super.setVolume(volume / 100)
     }
@@ -125,7 +122,7 @@ export default class Player extends yasha.TrackPlayer {
         return super.getTime()
     }
 
-    setTrackRepeat(repeat: boolean) {
+    setTrackRepeat(repeat = true) {
         if (repeat) {
             this.trackRepeat = true
             this.queueRepeat = false
@@ -134,7 +131,7 @@ export default class Player extends yasha.TrackPlayer {
         return this
     }
 
-    setQueueRepeat(repeat: boolean) {
+    setQueueRepeat(repeat = true) {
         if (repeat) {
             this.trackRepeat = false
             this.queueRepeat = true
@@ -143,7 +140,7 @@ export default class Player extends yasha.TrackPlayer {
         return this
     }
 
-    pause(pause: boolean) {
+    pause(pause = true) {
         if (this.paused === pause || !this.queue.totalSize) return this
 
         this.playing = !pause

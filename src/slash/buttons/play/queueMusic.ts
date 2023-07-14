@@ -75,7 +75,7 @@ export default class Queue extends Button {
                 () =>
                     `**${++j}.** [${queue[++i].title}](https://www.music.youtube.com/watch?v=${queue[i].id}) [<@${
                         queue[i].requester.id
-                    }> - ${formatTime(Math.trunc(queue[i].duration), false)} - ${queue[i].streams[0].bitrate
+                    }> - ${formatTime(Math.trunc(queue[i].duration), false)} - ${queue[i].streams?.[0].bitrate
                         .toString()
                         .slice(0, 3)}Kbps]`,
             )

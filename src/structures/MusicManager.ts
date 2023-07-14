@@ -35,18 +35,17 @@ export default class MusicManager extends EventEmitter {
         // } else return
     }
 
-    async createNewPlayer(vc: VoiceChannel, textChannel: TextChannel, guild: Guild, volume?: number) {
+    async createNewPlayer(vc: VoiceChannel, textChannel: TextChannel, volume?: number) {
         const player = new Player({
             musicManager: this,
             voiceChannel: vc,
             textChannel,
             volume,
-            lang: vc.guild.preferredLocale,
         })
         // Imprime un mensaje de depuración
         // logger.debug('Sign in successful: ', credentials);
         // Crea un objeto "EmbedBuilder" y establece la descripción del mensaje
-        this.players.set(guild.id, player)
+        this.players.set(vc.guild.id, player)
         // console.log(player.youtubei)
         player.on('ready', () => this.trackStart(player))
 
@@ -131,14 +130,14 @@ export default class MusicManager extends EventEmitter {
         }
 
         if (player.queueRepeat) {
-            player.queue.add(player.queue.current)
-            player.queue.current = player.queue.shift()
+            player.queue.add(player.queue.current!)
+            player.queue.current = player.queue.shift() ?? null
             player.play()
             return this
         }
 
         if (player.queue.length) {
-            player.queue.current = player.queue.shift()
+            player.queue.current = player.queue.shift() ?? null
             player.play()
             return this
         }
@@ -169,7 +168,7 @@ export default class MusicManager extends EventEmitter {
             embeds: [embed],
         })
         if (player.stayInVc) {
-            const playlist = await (await player.youtubei)!.music.getUpNext(player.queue.current!.id, true)
+            const playlist = await (await player.youtubei)!.music.getUpNext(player.queue.current!.id ?? '', true)
             const veces = 6
             async function ejecutarAccionesEnParalelo(contents: any[], maxVeces: number): Promise<void> {
                 const cantidadEjecuciones = Math.min(maxVeces, contents.length)

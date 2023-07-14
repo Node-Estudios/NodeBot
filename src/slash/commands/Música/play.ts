@@ -76,7 +76,6 @@ export default class play extends Command {
             player = await client.music.createNewPlayer(
                 interaction.member.voice.channel as VoiceChannel,
                 interaction.channel as TextChannel,
-                interaction.guild,
             )
             await player.connect()
         }
@@ -100,7 +99,6 @@ export default class play extends Command {
                 const songs2 = songs.filter((song: any) => song.item_type === 'song')
                 const randomIndex = Math.floor(Math.random() * songs2.length)
                 const song3 = songs2[randomIndex]
-                // console.log(await song3)
                 //@ts-ignore
                 search = await client.music.search(song3.id, interaction.member, source)
                 // search = await client.music.search(song3.id, interaction.member, source)

@@ -63,18 +63,17 @@ export default class voiceStateUpdate extends BaseEvent {
         const voiceMembers = newUserVoiceChannel.members.filter(member => !member.user.bot).size
         if (!voiceMembers || voiceMembers < 1) {
             let newPlayer = client.music.players.get(newState.guild.id)
-            if (player) {
-                newPlayer?.destroy()
-            } else {
-                newPlayer = await client.music.createNewPlayer(
-                    oldState.guild.members.cache.get(client.user.id)?.voice.channel! as VoiceChannel,
-                    (player as any).textChannel, // TODO: player don't exist in this scope
-                    oldState.guild,
-                    100,
-                )
-                await newPlayer?.connect()
-                newPlayer.destroy()
-            }
+            // if (player) {            // esto no es necesario
+            //     newPlayer?.destroy() // ya que en la linea 12 se verifica que player exista
+            // } else {                 // y que este en voz o corta el proceso si no
+            newPlayer = await client.music.createNewPlayer(
+                oldState.guild.members.cache.get(client.user.id)?.voice.channel! as VoiceChannel,
+                player.textChannel,
+                100,
+            )
+            await newPlayer?.connect()
+            newPlayer.destroy()
+            // }
             if (player.waitingMessage)
                 player.waitingMessage.edit({
                     embeds: [
