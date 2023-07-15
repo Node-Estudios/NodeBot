@@ -58,8 +58,8 @@
         "@types/yasha": "github:eliyya/yasha-types",
         "concurrently": "8.2.0",
         "nodemon": "3.0.1",
-        "standard": "17.1.0",
         "transjson": "github:OnekiDevs/transjson#jspkg",
+        "ts-standard": "12.0.2",
         "type-locales": "github:OnekiDevs/type-locales",
         "typescript": "5.1.6"
     },
@@ -68,7 +68,7 @@
         "utf-8-validate": "6.0.3"
     },
     "eslintConfig": {
-        "extends": "./node_modules/standard/eslintrc.json"
+        "extends": "./node_modules/ts-standard/eslintrc.json"
     },
     "prettier": {
         "printWidth": 120,
