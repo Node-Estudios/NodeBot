@@ -1,6 +1,6 @@
 import { init } from '@sentry/node'
 import { ClusterClient as HybridClient, getInfo } from 'discord-hybrid-sharding'
-import { Client as ClientBase, Collection, ColorResolvable, GatewayIntentBits, Message, Partials } from 'discord.js'
+import { Client as ClientBase, Collection, ColorResolvable, Colors, GatewayIntentBits, Message, Partials } from 'discord.js'
 import events from '../events/index.js'
 import '../handlers/commands.js'
 import { EventHandler } from '../handlers/events.js'
@@ -8,12 +8,23 @@ import logger from '../utils/logger.js'
 import MusicManager from './MusicManager.js'
 export default class Client extends ClientBase<true> {
     devs: string[]
-    cluster: HybridClient<Client>
-    settings: { color: ColorResolvable; mode: 'production' | 'development'; debug: 'true' | 'false' }
+    cluster = new HybridClient(this)
+    settings: { 
+        color: ColorResolvable; 
+        mode: 'production' | 'development'; 
+        debug: 'true' | 'false' 
+    } = {
+        color: Colors.Green,
+        mode: process.env.NODE_ENV,
+        debug: process.env.DEBUG_MODE,
+    }
     music = new MusicManager()
-    officialServerURL: string
-    services: { sentry: { loggedIn: boolean } }
-    snipes: Collection<string, Message<true>>
+    officialServerURL = 'https://discord.gg/xhAWYggKKh'
+    services = { 
+        sentry: { 
+            loggedIn: false 
+        } 
+    }
     constructor() {
         super({
             partials: [Partials.Channel, Partials.Reaction],
@@ -24,21 +35,13 @@ export default class Client extends ClientBase<true> {
                 GatewayIntentBits.GuildVoiceStates,
                 GatewayIntentBits.GuildMessageReactions,
             ],
-            allowedMentions: { parse: ['users', 'roles'], repliedUser: true },
+            allowedMentions: { 
+                parse: ['users', 'roles'], 
+                repliedUser: true
+            },
             shards: getInfo().SHARD_LIST,
             shardCount: getInfo().TOTAL_SHARDS,
         })
-
-        this.snipes = new Collection()
-        this.services = { sentry: { loggedIn: false } }
-        this.officialServerURL = 'https://discord.gg/xhAWYggKKh'
-        this.settings = {
-            color: 'Green',
-            mode: process.env.NODE_ENV,
-            debug: process.env.DEBUG_MODE as 'true' | 'false',
-        }
-        this.cluster = new HybridClient(this)
-        // console.log(this.cluster)
         if (process.env.SENTRY_DSN && process.env.NODE_ENV == 'production') {
             init({
                 dsn: process.env.SENTRY_DSN,
@@ -55,8 +58,7 @@ export default class Client extends ClientBase<true> {
     async init() {
         try {
             // * Load Events (./handlers/events.js) ==> ./events/*/* ==> ./cache/events.ts (Collection)
-            const eventLoader = new EventHandler(this)
-            eventLoader.load(events)
+            new EventHandler(this).load(events)
             return super.login(process.env.TOKEN).then(() => logger.startUp(`${this.user!.username} logged in`))
         } catch (e) {
             if ((e as any).code == 'TOKEN_INVALID') logger.error('Invalid token')
