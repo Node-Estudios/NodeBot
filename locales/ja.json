@@ -119,7 +119,8 @@
     },
     "stop": {
         "resumed": "音楽は{user}によって再開された。",
-        "paused": "音楽は{user}で一時停止。"
+        "paused": "音楽は{user}で一時停止。",
+        "success": "音楽は停止された。"
     },
     "paused": "スローミュージック",
     "resumed": "音楽は再開された",

@@ -119,7 +119,8 @@
     },
     "stop": {
         "resumed": "Música reanudada por {user}",
-        "paused": "Música pausada por {user}"
+        "paused": "Música pausada por {user}",
+        "success": "Música detenida"
     },
     "paused":"Música pausada",
     "resumed":"Música reanudada",

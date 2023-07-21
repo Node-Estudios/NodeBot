@@ -120,6 +120,7 @@ export default {
   stop: {
     resumed: "stop.resumed",
     paused: "stop.paused",
+    success: "stop.success",
   },
   paused: "paused",
   resumed: "resumed",
@@ -291,6 +292,7 @@ export default {
   stop: {
     resumed: string
     paused: string
+    success: string
   }
   paused: string
   resumed: string

@@ -119,7 +119,8 @@
     },
     "stop": {
         "resumed": "Music resumed by {user}",
-        "paused": "Music paused by {user}"
+        "paused": "Music paused by {user}",
+        "success": "Music stopped"
     },
     "paused":"Music paused",
     "resumed":"Music resumed",
