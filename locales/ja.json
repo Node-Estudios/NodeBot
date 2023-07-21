@@ -132,8 +132,8 @@
         "generated": "オートミックスが生成された！",
         "disabled": "オートミックス無効"
     },
-    "ERROREMBED": "Error <:error:897836005787308062>",
-    "SUCCESSEMBED": "Success <a:tick:836295873091862568>",
+    "ERROREMBED": "Error",
+    "SUCCESSEMBED": "Success",
     "PAUSE": "ポーズ",
     "RESUME": "履歴書",
     "STOP": "ストップ",

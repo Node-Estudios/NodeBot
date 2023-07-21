@@ -39,6 +39,7 @@
         "figlet": "1.6.0",
         "i18n": "0.15.1",
         "jsonwebtoken": "9.0.1",
+        "moment": "^2.29.4",
         "mongoose": "7.3.4",
         "mongoose-encryption": "2.1.2",
         "signale": "1.4.0",
@@ -74,28 +75,28 @@
             "project": "./tsconfig.json"
         },
         "rules": {
-          "@typescript-eslint/explicit-function-return-type": "off",
-          "@typescript-eslint/indent": [
-            "error",
-            4
-          ],
-          "@typescript-eslint/strict-boolean-expressions": "off",
-          "@typescript-eslint/comma-dangle": [
-            "error",
-            "always-multiline"
-          ],
-          "@typescript-eslint/no-misused-promises": [
-            "error",
-            {
-              "checksVoidReturn": {
-                "arguments": false,
-                "attributes": false
-              }
-            }
-          ],
-          "@typescript-eslint/no-floating-promises": "off",
-          "@typescript-eslint/restrict-plus-operands": "off",
-          "@typescript-eslint/restrict-template-expressions": "off"
+            "@typescript-eslint/explicit-function-return-type": "off",
+            "@typescript-eslint/indent": [
+                "error",
+                4
+            ],
+            "@typescript-eslint/strict-boolean-expressions": "off",
+            "@typescript-eslint/comma-dangle": [
+                "error",
+                "always-multiline"
+            ],
+            "@typescript-eslint/no-misused-promises": [
+                "error",
+                {
+                    "checksVoidReturn": {
+                        "arguments": false,
+                        "attributes": false
+                    }
+                }
+            ],
+            "@typescript-eslint/no-floating-promises": "off",
+            "@typescript-eslint/restrict-plus-operands": "off",
+            "@typescript-eslint/restrict-template-expressions": "off"
         }
     },
     "prettier": {
