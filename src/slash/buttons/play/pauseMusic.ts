@@ -47,6 +47,8 @@ export default class Pause extends Button {
 
         if (player.paused) player.resumedUser = interaction.user
         else player.pausedUser = interaction.user
+        console.log(1, !player.paused)
+
         player.pause(!player.paused)
 
         return await interaction.update({

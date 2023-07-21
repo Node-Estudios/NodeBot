@@ -77,7 +77,8 @@ export default class Pause extends Command {
                 ephemeral: true,
             })
         }
-        player.pause()
+        player.pausedUser = interaction.user
+        player.pause(true)
 
         interaction.reply({
             embeds: [
@@ -90,6 +91,5 @@ export default class Pause extends Command {
                     .setFooter({ text: interaction.user.username, iconURL: interaction.user.displayAvatarURL() }),
             ],
         }).catch(e => logger.debug(e))
-        return player.skip()
     }
 }
