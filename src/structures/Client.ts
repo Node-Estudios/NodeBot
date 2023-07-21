@@ -1,6 +1,6 @@
 import { init } from '@sentry/node'
 import { ClusterClient as HybridClient, getInfo } from 'discord-hybrid-sharding'
-import { Client as ClientBase, Collection, ColorResolvable, Colors, GatewayIntentBits, Message, Partials } from 'discord.js'
+import { Client as ClientBase, Collection, ColorResolvable, Colors, GatewayIntentBits, Message, Options, Partials } from 'discord.js'
 import events from '../events/index.js'
 import '../handlers/commands.js'
 import { EventHandler } from '../handlers/events.js'
@@ -9,14 +9,35 @@ import MusicManager from './MusicManager.js'
 export default class Client extends ClientBase<true> {
     devs: string[]
     cluster = new HybridClient(this)
+    makeCache = Options.cacheWithLimits({
+        ReactionManager: 0,
+        ReactionUserManager: 0,
+        GuildStickerManager: 0,
+        GuildBanManager: 0,
+        GuildEmojiManager: 0,
+        GuildInviteManager: 0,
+        GuildForumThreadManager: 0,
+        BaseGuildEmojiManager: 0,
+        GuildTextThreadManager: 0,
+        GuildMemberManager: 0,
+        GuildScheduledEventManager: 0,
+        UserManager: {
+            maxSize: 100,
+            keepOverLimit: member => member.id === this.user.id,
+        },
+        VoiceStateManager: {
+            maxSize: 200,
+            keepOverLimit: member => member.id === this.user.id
+        }
+    })
     settings: { 
         color: ColorResolvable; 
         mode: 'production' | 'development'; 
         debug: 'true' | 'false' 
     } = {
         color: Colors.Green,
-        mode: process.env.NODE_ENV,
-        debug: process.env.DEBUG_MODE,
+        mode: process.env.NODE_ENV as 'production' | 'development',
+        debug: process.env.DEBUG_MODE as 'true' | 'false',
     }
     music = new MusicManager()
     officialServerURL = 'https://discord.gg/xhAWYggKKh'

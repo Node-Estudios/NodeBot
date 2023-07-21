@@ -12,7 +12,8 @@ RUN apt-get install -y libsodium-dev libtool
 # RUN npm install --global yarn
 # RUN apt-get install -y autoconf automake build-base libtool nasm
 COPY . .
-RUN npm install
+RUN npm install -g npm@latest
+#RUN npm install
 # ci --only=production
 RUN npm install -g typescript
 RUN apt install -y pkg-config libssl-dev libmp3lame-dev libopus-dev libvorbis-dev nasm
