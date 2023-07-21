@@ -19,16 +19,19 @@ Node es un bot multifunción, multilenguaje, programado en [Discord.js](https://
 ## Requisitos
 
 1. Token de Discord Developers **[Guía](https://discordjs.guide/preparations/setting-up-a-bot-application.html#creating-your-bot)**
-2. Java (para ejecutar Lavalink, el módulo de música)
 3. Node.js v18.12.0 o una más reciente.
 4. Servidor de Redis y MongoDB
-5. libsodium
-    - `apt install libsodium-dev` en Debian
-    - `yay -Sy libsodium-git` en Arch
-6. protoc-gen-js ( `npm i -g protoc-gen-js` en Arch)
-7. doppler ( `yay -Sy doppler-cli` en Arch)
-8. cmake ( `yay -Sy cmake` en Arch)
-9. protobuf ( `yay -Sy protobuf` en Arch)
+5. Dependencias
+    * en Debian
+    ```sh-session
+    apt install libsodium-dev
+    ```
+    * en Arch
+    ```sh-session
+    yay -Sy libsodium-git doppler-cli cmake protobuf
+    
+    npm i -g protoc-gen-js
+    ```
 
 ## 🛠️ Características
 

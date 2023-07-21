@@ -4,6 +4,7 @@ import {
     TextChannel,
     VoiceChannel,
     ChatInputCommandInteraction,
+    Colors,
 } from 'discord.js'
 import { MusicCarouselShelf } from 'youtubei.js/dist/src/parser/nodes.js'
 import performanceMeters from '../../../cache/performanceMeters.js'
@@ -72,6 +73,15 @@ export default class play extends Command {
         const client = interaction.client as Client
         const translate = Translator(interaction)
         let player = client.music.players.get(interaction.guildId)
+        if (!interaction.member.voice.channelId) return interaction.reply({
+            embeds: [
+                new EmbedBuilder().setColor(Colors.Red).setFooter({
+                    text: translate(keys.play.not_voice),
+                    iconURL: client.user?.displayAvatarURL(),
+                })
+            ],
+            ephemeral: true
+        })
         if (!player) {
             player = await client.music.createNewPlayer(
                 interaction.member.voice.channel as VoiceChannel,
@@ -79,16 +89,17 @@ export default class play extends Command {
             )
             await player.connect()
         }
-        if (player.voiceChannel.id !== interaction.member.voice.channel?.id)
+        if (player.voiceChannel.id !== interaction.member.voice.channelId)
             return interaction.reply({
                 embeds: [
-                    new EmbedBuilder().setColor(15548997).setFooter({
+                    new EmbedBuilder().setColor(Colors.Red).setFooter({
                         text: translate(keys.play.same),
                         iconURL: client.user?.displayAvatarURL(),
                     }),
                 ],
                 ephemeral: true,
             })
+        
         //Si el usuario está en el mismo canal de voz que el bot
         try {
             await interaction.deferReply()

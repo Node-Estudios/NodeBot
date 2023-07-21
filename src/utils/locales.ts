@@ -109,6 +109,7 @@ export default {
   },
   play: {
     same: "play.same",
+    not_voice: "play.not_voice",
     not_reproducible: "play.not_reproducible",
     added: "play.added",
   },
@@ -120,6 +121,8 @@ export default {
     resumed: "stop.resumed",
     paused: "stop.paused",
   },
+  paused: "paused",
+  resumed: "resumed",
   voice_update: {
     leaving: "voice_update.leaving",
     alone: "voice_update.alone",
@@ -277,6 +280,7 @@ export default {
   }
   play: {
     same: string
+    not_voice: string
     not_reproducible: string
     added: string
   }
@@ -288,6 +292,8 @@ export default {
     resumed: string
     paused: string
   }
+  paused: string
+  resumed: string
   voice_update: {
     leaving: string
     alone: string

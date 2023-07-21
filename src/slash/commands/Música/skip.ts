@@ -1,5 +1,5 @@
 import { ChatInputCommandInteraction, Colors, EmbedBuilder } from 'discord.js'
-import { messageHelper } from '../../../handlers/messageHandler.js'
+import { MessageHelper } from '../../../handlers/messageHandler.js'
 import Translator, { keys } from '../../../utils/Translator.js'
 import Command from '../../../structures/Command.js'
 import Client from '../../../structures/Client.js'
@@ -7,7 +7,7 @@ import Client from '../../../structures/Client.js'
 import logger from '../../../utils/logger.js'
 
 export default class skip extends Command {
-    constructor() {
+    constructor () {
         super({
             name: 'skip',
             description: 'Skips the current song!',
@@ -37,13 +37,14 @@ export default class skip extends Command {
             // ]
         })
     }
-    override async run(interaction: ChatInputCommandInteraction<'cached'>) {
+
+    override async run (interaction: ChatInputCommandInteraction<'cached'>) {
         const client = interaction.client as Client
         const translate = Translator(interaction)
-        const message = new messageHelper(interaction)
+        const message = new MessageHelper(interaction)
         const player = client.music.players.get(interaction.guild.id)
-        if (!player)
-            return message.sendMessage({
+        if (!player) {
+            return await message.sendMessage({
                 embeds: [
                     new EmbedBuilder().setColor(client.settings.color).setFooter({
                         text: translate(keys.queue.no_queue),
@@ -51,9 +52,10 @@ export default class skip extends Command {
                     }),
                 ],
             })
+        }
 
-        if (!interaction.member.voice)
-            return message
+        if (!interaction.member.voice) {
+            return await message
                 .sendMessage({
                     embeds: [
                         new EmbedBuilder().setColor(Colors.Red).setFooter({
@@ -63,10 +65,11 @@ export default class skip extends Command {
                     ],
                 })
                 .catch(e => logger.debug(e))
+        }
 
-        let vc = player.voiceChannel
+        const vc = player.voiceChannel
         if (interaction.member.voice.channelId !== vc.id) {
-            return message
+            return await message
                 .sendMessage({
                     embeds: [
                         new EmbedBuilder().setColor(Colors.Red).setFooter({

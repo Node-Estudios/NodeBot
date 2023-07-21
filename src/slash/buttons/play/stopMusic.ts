@@ -6,19 +6,19 @@ import Button from '../../../structures/Button.js'
 import logger from '../../../utils/logger.js'
 
 export default class Skip extends Button {
-    constructor() {
+    constructor () {
         super('stopMusic')
     }
 
-    override async run(interaction: ButtonInteraction) {
+    override async run (interaction: ButtonInteraction) {
         try {
             if (!interaction.inCachedGuild()) return
             const client = interaction.client as Client
             const translate = Translator(interaction)
             const player = client.music.players.get(interaction.guild.id)
 
-            if (!player?.queue.current)
-                return interaction.reply({
+            if (!player?.queue.current) {
+                return await interaction.reply({
                     embeds: [
                         new EmbedBuilder().setColor(client.settings.color).setFooter({
                             text: translate(keys.queue.no_queue),
@@ -26,9 +26,10 @@ export default class Skip extends Button {
                         }),
                     ],
                 })
+            }
 
-            if (interaction.member.voice.channelId !== (player.voiceChannel.id ?? ''))
-                return interaction.reply({
+            if (interaction.member.voice.channelId !== (player.voiceChannel.id ?? '')) {
+                return await interaction.reply({
                     embeds: [
                         new EmbedBuilder().setColor(client.settings.color).setFooter({
                             text: translate(keys.skip.no_same),
@@ -36,6 +37,7 @@ export default class Skip extends Button {
                         }),
                     ],
                 })
+            }
 
             if (!player.queue.current) return
             if (player.trackRepeat) player.setTrackRepeat(false)

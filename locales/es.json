@@ -109,6 +109,7 @@
     },
     "play": {
         "same": "Necesitas estar en el mismo canal de voz que el bot para ejecutar este comando.",
+        "not_voice": "Necesitas estar en un canal de voz para ejecutar este comando.",
         "not_reproducible": "El enlace adjunto no contiene contenidos reproducibles.",
         "added": "{song} añadido a la lista"
     },
@@ -120,6 +121,8 @@
         "resumed": "Música reanudada por {user}",
         "paused": "Música pausada por {user}"
     },
+    "paused":"Música pausada",
+    "resumed":"Música reanudada",
     "voice_update": {
         "leaving": "Saliendo de {channel} en {time} minutos",
         "alone": "Estaba solo, y me fui {channel}"

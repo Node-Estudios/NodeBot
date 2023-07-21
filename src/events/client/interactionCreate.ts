@@ -10,6 +10,8 @@ import logger from '../../utils/logger.js'
 export class interactionCreate extends BaseEvent {
     
     async run(client: Client, interaction: Interaction) {
+        console.log('interactionCreate');
+        
         if (interaction.member?.user.bot) return
         performanceMeters.set('interaction_' + interaction.id, new performanceMeter())
         performanceMeters.get('interaction_' + interaction.id).start()

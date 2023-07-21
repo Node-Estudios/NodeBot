@@ -1,13 +1,13 @@
 import { Guild, LocaleString, Message, VoiceChannel, User, TextChannel } from 'discord.js'
 import VoiceConnection from 'yasha/types/src/VoiceConnection.js'
-import { spamIntervalDB } from './spamInterval.js'
+// import { spamIntervalDB } from './spamInterval.js'
 import MusicManager from './MusicManager.js'
 import logger from '../utils/logger.js'
 import { Innertube } from 'youtubei.js'
 import Queue from './Queue.js'
 import yasha from 'yasha'
 
-let spamIntervald = new spamIntervalDB()
+// const spamIntervald = new spamIntervalDB()
 
 export default class Player extends yasha.TrackPlayer {
     trackRepeat = false
@@ -33,7 +33,7 @@ export default class Player extends yasha.TrackPlayer {
     resumedUser?: User
     youtubei = Innertube.create()
     waitingMessage: Message | null = null
-    constructor(options: {
+    constructor (options: {
         musicManager: MusicManager
         lang?: LocaleString
         bitrate?: number
@@ -55,23 +55,24 @@ export default class Player extends yasha.TrackPlayer {
         this.textChannel = options.textChannel
         this.guild = options.guild ?? options.voiceChannel.guild
     }
-    async connect() {
+
+    async connect () {
         this.connection = await yasha.VoiceConnection.connect(this.voiceChannel, {
             selfDeaf: true,
         })
         // TODO: Remove ts-ignore when yasha is updated
-        // @ts-ignore
+        // @ts-expect-error
         this.subscription = this.connection?.subscribe(this)
         this.connection?.on('error', (error: Error) => logger.error(error))
     }
 
-    disconnect() {
+    disconnect () {
         this.connection?.disconnect()
         if (this.connection) this.connection.destroy()
     }
 
-    override async play(track?: any) {
-        //TODO: Check if this code works
+    override async play (track?: any) {
+        // TODO: Check if this code works
         if (!track) super.play(this.queue.current!)
         else super.play(track)
         clearTimeout(this.leaveTimeout)
@@ -83,7 +84,7 @@ export default class Player extends yasha.TrackPlayer {
         this.start()
     }
 
-    override async destroy() {
+    override async destroy () {
         try {
             if (this.connection) this.disconnect()
             if (this.player) super.destroy()
@@ -94,35 +95,35 @@ export default class Player extends yasha.TrackPlayer {
         }
     }
 
-    skip() {
+    skip () {
         this.manager.trackEnd(this, false)
     }
 
-    get(key: string): any {
-        // @ts-ignore
+    get (key: string): any {
+        // @ts-expect-error
         return this[key] as any
     }
 
-    set(key: string, value: any) {
-        // @ts-ignore
+    set (key: string, value: any) {
+        // @ts-expect-error
         this[key] = value
     }
 
-    override setEqualizer(equalizer: any) {
+    override setEqualizer (equalizer: any) {
         super.setEqualizer(equalizer)
     }
 
-    override setVolume(volume: number) {
+    override setVolume (volume: number) {
         if (volume > 100000) volume = 100000
         super.setVolume(volume / 100)
     }
 
-    override getTime() {
+    override getTime () {
         if (!this.player) return null
         return super.getTime()
     }
 
-    setTrackRepeat(repeat = true) {
+    setTrackRepeat (repeat = true) {
         if (repeat) {
             this.trackRepeat = true
             this.queueRepeat = false
@@ -131,7 +132,7 @@ export default class Player extends yasha.TrackPlayer {
         return this
     }
 
-    setQueueRepeat(repeat = true) {
+    setQueueRepeat (repeat = true) {
         if (repeat) {
             this.trackRepeat = false
             this.queueRepeat = true
@@ -140,7 +141,7 @@ export default class Player extends yasha.TrackPlayer {
         return this
     }
 
-    pause(pause = true) {
+    pause (pause = true) {
         if (this.paused === pause || !this.queue.totalSize) return this
 
         this.playing = !pause
@@ -151,10 +152,10 @@ export default class Player extends yasha.TrackPlayer {
         return this
     }
 
-    override seek(time: number) {
+    override seek (time: number) {
         if (!this.queue.current) return
 
-        //set timer in the player too
+        // set timer in the player too
         super.seek(Number(time))
     }
 }

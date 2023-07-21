@@ -57,6 +57,7 @@
         "@types/signale": "1.4.4",
         "@types/yasha": "github:eliyya/yasha-types",
         "concurrently": "8.2.0",
+        "eslint": "8.45.0",
         "nodemon": "3.0.1",
         "transjson": "github:OnekiDevs/transjson#jspkg",
         "ts-standard": "12.0.2",
@@ -68,7 +69,34 @@
         "utf-8-validate": "6.0.3"
     },
     "eslintConfig": {
-        "extends": "./node_modules/ts-standard/eslintrc.json"
+        "extends": "./node_modules/ts-standard/eslintrc.json",
+        "parserOptions": {
+            "project": "./tsconfig.json"
+        },
+        "rules": {
+          "@typescript-eslint/explicit-function-return-type": "off",
+          "@typescript-eslint/indent": [
+            "error",
+            4
+          ],
+          "@typescript-eslint/strict-boolean-expressions": "off",
+          "@typescript-eslint/comma-dangle": [
+            "error",
+            "always-multiline"
+          ],
+          "@typescript-eslint/no-misused-promises": [
+            "error",
+            {
+              "checksVoidReturn": {
+                "arguments": false,
+                "attributes": false
+              }
+            }
+          ],
+          "@typescript-eslint/no-floating-promises": "off",
+          "@typescript-eslint/restrict-plus-operands": "off",
+          "@typescript-eslint/restrict-template-expressions": "off"
+        }
     },
     "prettier": {
         "printWidth": 120,
