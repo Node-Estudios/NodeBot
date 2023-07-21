@@ -15,7 +15,7 @@ export default class Resume extends Command {
             },
             name_localizations: {
                 'es-ES': 'resumir',
-                'en-US': 'pause',
+                'en-US': 'resume',
             },
             cooldown: 5,
             dm_permission: false,
