@@ -87,9 +87,11 @@ export default class play extends Command {
                         iconURL: client.user?.displayAvatarURL(),
                     }),
                 ],
+                ephemeral: true,
             })
         //Si el usuario está en el mismo canal de voz que el bot
         try {
+            await interaction.deferReply()
             let search
             const source = 'Youtube'
             let song = interaction.options.getString('song', false)
@@ -111,7 +113,7 @@ export default class play extends Command {
                     search = await client.music.search(song, interaction.member, source)
                 } catch (e) {
                     logger.error(e)
-                    interaction.reply({
+                    interaction.editReply({
                         embeds: [
                             new EmbedBuilder().setColor(15548997).setFooter({
                                 text: translate(keys.play.not_reproducible),
@@ -226,10 +228,10 @@ export default class play extends Command {
                     )
                 embed.setThumbnail(search!.thumbnails[0].url)
             }
-            interaction.reply({ embeds: [embed] })
+            interaction.editReply({ embeds: [embed] })
         } catch (e) {
             logger.error(e)
-            interaction.reply({
+            interaction.editReply({
                 content: translate(keys.GENERICERROR, {
                     inviteURL: client.officialServerURL,
                 }),

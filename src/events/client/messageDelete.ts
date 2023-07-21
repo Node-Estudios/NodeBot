@@ -1,8 +1,6 @@
-//TODO? use global client?
 import { Message } from 'discord.js';
 import Client from '../../structures/Client.js';
 
-// TODO: Remove (variable: any) in the code
 // Interfaz de eventos
 import { BaseEvent } from '../../structures/Events.js';
 
