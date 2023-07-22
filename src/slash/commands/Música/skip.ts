@@ -1,9 +1,9 @@
-import { ChatInputCommandInteraction, Colors, EmbedBuilder } from 'discord.js'
+import { ChatInputCommandInteraction, EmbedBuilder } from 'discord.js'
 import { MessageHelper } from '../../../handlers/messageHandler.js'
 import Translator, { keys } from '../../../utils/Translator.js'
 import Command from '../../../structures/Command.js'
 import Client from '../../../structures/Client.js'
-
+import Player from '../../../structures/Player.js'
 import logger from '../../../utils/logger.js'
 
 export default class skip extends Command {
@@ -42,9 +42,10 @@ export default class skip extends Command {
         const client = interaction.client as Client
         const translate = Translator(interaction)
         const message = new MessageHelper(interaction)
-        const player = client.music.players.get(interaction.guild.id)
-        if (!player) {
-            return await message.sendMessage({
+        const player = await Player.tryGetPlayer(interaction, false)
+
+        if (!player?.queue.current) {
+            return await interaction.reply({
                 embeds: [
                     new EmbedBuilder().setColor(client.settings.color).setFooter({
                         text: translate(keys.queue.no_queue),
@@ -53,35 +54,6 @@ export default class skip extends Command {
                 ],
             })
         }
-
-        if (!interaction.member.voice) {
-            return await message
-                .sendMessage({
-                    embeds: [
-                        new EmbedBuilder().setColor(Colors.Red).setFooter({
-                            text: translate(keys.skip.no_same),
-                            iconURL: interaction.user.displayAvatarURL(),
-                        }),
-                    ],
-                })
-                .catch(e => logger.debug(e))
-        }
-
-        const vc = player.voiceChannel
-        if (interaction.member.voice.channelId !== vc.id) {
-            return await message
-                .sendMessage({
-                    embeds: [
-                        new EmbedBuilder().setColor(Colors.Red).setFooter({
-                            text: translate(keys.skip.no_same),
-                            iconURL: interaction.user.displayAvatarURL(),
-                        }),
-                    ],
-                })
-                .catch(e => logger.debug(e))
-        }
-
-        if (!player.queue.current) return
         if (player.trackRepeat) player.setTrackRepeat(false)
         if (player.queueRepeat) player.setQueueRepeat(false)
 

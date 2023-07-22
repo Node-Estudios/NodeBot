@@ -1,5 +1,5 @@
 import { MessageHelper } from '../../../handlers/messageHandler.js'
-import Translator, { keys } from '../../../utils/Translator.js'
+import Translator, { keys, randomMessage } from '../../../utils/Translator.js'
 import Command from '../../../structures/Command.js'
 import Client from '../../../structures/Client.js'
 
@@ -26,8 +26,7 @@ export default class stayinvoice extends Command {
     override async run (interaction: ChatInputCommandInteraction<'cached'>) {
         const client = interaction.client as Client
         const translate = Translator(interaction)
-        const msgs = [translate(keys.skip.messages[0]), translate(keys.skip.messages[1]), translate(keys.skip.messages[2])]
-        const msgr = translate(msgs[Math.floor(Math.random() * msgs.length)])
+        const msgr = randomMessage(translate, keys.skip.messages)
         const message = new MessageHelper(interaction)
         const player = client.music.players.get(interaction.guild.id)
         if (!player) {

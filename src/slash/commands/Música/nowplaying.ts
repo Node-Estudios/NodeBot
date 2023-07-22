@@ -1,45 +1,34 @@
-import { EmbedBuilder } from 'discord.js'
-
-import { ChatInputCommandInteractionExtended } from '../../../events/client/interactionCreate.js'
+import { ChatInputCommandInteraction, EmbedBuilder } from 'discord.js'
 import Command from '../../../structures/Command.js'
 import Client from '../../../structures/Client.js'
-import moment from 'moment'
 import Translator, { keys } from '../../../utils/Translator.js'
 import { MessageHelper } from '../../../handlers/messageHandler.js'
-export default class nowPlaying extends Command {
+import Player from '../../../structures/Player.js'
+
+export default class NowPlaying extends Command {
     constructor () {
         super({
             name: 'nowplaying',
             description: 'See the current song playing.',
             name_localizations: {
-                'es-ES': 'nowplaying',
+                'es-ES': 'reproduciendoahora',
+                'en-US': 'nowplaying',
             },
             description_localizations: {
                 'es-ES': 'Revisa la canción que se está actualmente reproduciendo.',
+                'en-US': 'See the current song playing.',
             },
             cooldown: 5,
         })
     }
 
-    override async run (interaction: ChatInputCommandInteractionExtended<'cached'>) {
+    override async run (interaction: ChatInputCommandInteraction<'cached'>) {
         const client = interaction.client as Client
         const translate = Translator(interaction)
         const message = new MessageHelper(interaction)
-        const player = client.music.players.get(interaction.guildId)
-        if (!player) {
-            return await message.sendMessage(
-                {
-                    embeds: [
-                        new EmbedBuilder().setColor(15548997).setFooter({
-                            text: interaction.language.SKIP[1][1],
-                            iconURL: interaction.user.displayAvatarURL(),
-                        }),
-                    ],
-                },
-                false,
-            )
-        }
-        if (!player.queue.current) {
+        const player = await Player.tryGetPlayer(interaction, false)
+
+        if (!player?.queue.current) {
             return await message.sendEphemeralMessage({
                 embeds: [
                     new EmbedBuilder().setColor(client.settings.color).setFooter({

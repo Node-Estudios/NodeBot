@@ -36,10 +36,15 @@ type translate = (phrase: string, replace?: object) => string
  * @param {Interaction | Guild} interaction - Interaction - The interaction object that contains the locale and client.
  * @returns {transalte} A function that takes a phrase and params and returns a string.
  */
-export default function Translator(interaction: Interaction | Guild | LocaleString): translate {
-    let lang = typeof interaction === 'string' ? interaction : (interaction as Interaction).locale ?? (interaction as Guild).preferredLocale ?? 'en'
-    
+export default function Translator (interaction: Interaction | Guild | LocaleString): translate {
+    const lang = typeof interaction === 'string' ? interaction : (interaction as Interaction).locale ?? (interaction as Guild).preferredLocale ?? 'en'
+
     return (phrase, replace) => i18n.__mf({ phrase, locale: lang }, replace)
+}
+
+export function randomMessage (translate: translate, keys: { [key: `${number}`]: string }) {
+    const key = Object.keys(keys)[Math.floor(Math.random() * Object.keys(keys).length)] as `${number}`
+    return translate(keys[key])
 }
 
 export { keys }

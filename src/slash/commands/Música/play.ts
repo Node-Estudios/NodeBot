@@ -49,7 +49,7 @@ export default class Play extends Command {
     override async run (interaction: ChatInputCommandInteraction<'cached'>) {
         const client = interaction.client as Client
         const translate = Translator(interaction)
-        const player = await Player.tryGetChannel(interaction)
+        const player = await Player.tryGetPlayer(interaction)
         if (!player) return
 
         // Si el usuario está en el mismo canal de voz que el bot

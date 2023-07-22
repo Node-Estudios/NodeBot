@@ -161,7 +161,7 @@ export default class Player extends yasha.TrackPlayer {
         super.seek(Number(time))
     }
 
-    static async tryGetChannel (interaction: Interaction<'cached'>) {
+    static async tryGetPlayer (interaction: Interaction<'cached'>, create = true) {
         const client = interaction.client as Client
         let player = client.music.players.get(interaction.guildId)
         const translate = Translator(interaction)
@@ -181,6 +181,7 @@ export default class Player extends yasha.TrackPlayer {
         }
 
         if (!player) {
+            if (!create) return null
             player = await client.music.createNewPlayer(
                 interaction.member.voice.channel as VoiceChannel,
                 interaction.channel as TextChannel,

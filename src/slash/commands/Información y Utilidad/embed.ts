@@ -10,7 +10,7 @@ import Translator, { keys } from '../../../utils/Translator.js'
 import Command from '../../../structures/Command.js'
 
 export default class embed extends Command {
-    constructor() {
+    constructor () {
         super({
             name: 'embed',
             description: 'Sends a embed.',
@@ -93,20 +93,21 @@ export default class embed extends Command {
             ],
         })
     }
-    override async run(interaction: ChatInputCommandInteraction) {
-        //TODO: Add more colors && make it work with hex colors
-        const canal = interaction.options.getChannel('channel', true, [ChannelType.GuildText]),
-            descripcion = interaction.options.getString('description', true),
-            color = interaction.options.getNumber('color', true),
-            titulo = interaction.options.getString('title', true)
+
+    override async run (interaction: ChatInputCommandInteraction) {
+        // TODO: Add more colors && make it work with hex colors
+        const canal = interaction.options.getChannel('channel', true, [ChannelType.GuildText])
+        const descripcion = interaction.options.getString('description', true)
+        const color = interaction.options.getNumber('color', true)
+        const titulo = interaction.options.getString('title', true)
         const embed = new EmbedBuilder().setDescription(`${descripcion}`).setColor(color).setTitle(titulo)
 
         canal.send({ embeds: [embed] })
-        return interaction.reply(Translator(interaction)(keys.embed_successfully))
+        return await interaction.reply(Translator(interaction)(keys.embed_successfully))
     }
 }
 
-function getColorChoices() {
+function getColorChoices () {
     return [
         {
             name: 'Default',
