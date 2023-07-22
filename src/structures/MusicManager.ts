@@ -101,7 +101,7 @@ export default class MusicManager extends EventEmitter {
         }
         // ^ Si no tenemos un mensaje ya enviado, lo enviamos, y si lo tenemos, borramos el anterior y enviamos uno nuevo <3
         player.message?.delete()
-        if (client.settings.debug == 'true') {
+        if (client.settings.debug === 'true') {
             logger.debug(
                 'Playing | ' +
                     player.queue.current?.title +
@@ -122,7 +122,7 @@ export default class MusicManager extends EventEmitter {
     trackEnd (player: Player, finished: boolean) {
         const track = player.queue.current
         // logger.log(player.queue.length, player.queue.previous)
-        if (!track?.duration) track!.duration = player.getDuration()
+        if (!track?.duration) track.duration = player.getDuration()
 
         if (player.trackRepeat) {
             player.play()
@@ -163,14 +163,14 @@ export default class MusicManager extends EventEmitter {
                         player.queue.current?.requester.id
                     }>`,
             )
-            .setThumbnail(`https://img.youtube.com/vi/${player.queue.current!.id}/maxresdefault.jpg`)
+            .setThumbnail(`https://img.youtube.com/vi/${player.queue.current?.id}/maxresdefault.jpg`)
         player.message?.edit({
             components: [],
             embeds: [embed],
         })
         if (player.stayInVc) {
-            const playlist = await (await player.youtubei)!.music.getUpNext(player.queue.current!.id ?? '', true)
-            const veces = 6
+            const playlist = await (await player.youtubei)?.music.getUpNext(player.queue.current?.id ?? '', true)
+            // const veces = 6
             async function ejecutarAccionesEnParalelo (contents: any[], maxVeces: number): Promise<void> {
                 const cantidadEjecuciones = Math.min(maxVeces, contents.length)
                 const promesas: Array<Promise<void>> = []
@@ -208,7 +208,7 @@ export default class MusicManager extends EventEmitter {
                     },
                     {
                         name: translate(keys.REQUESTER),
-                        value: player.queue.current!.requester.user.toString(),
+                        value: `${player.queue.current?.requester.user}`,
                         inline: true,
                     },
                 )
@@ -252,31 +252,26 @@ export default class MusicManager extends EventEmitter {
         track = await yasha.Source.resolve(
             track ? `https://www.youtube.com/watch?v=${track.id ? track.id : track}` : query,
         )
-        try {
-            if (!track) logger.debug('No track found')
-            else {
-                // logger.log('track: ', track)
-                // if (track instanceof TrackPlaylist) {
-                //     track.forEach(t => {
-                //         t.requester = requester;
-                //         t.icon = null;
-                //         t.thumbnail;
-                //     });
-                // } else {
-                if (track.streams) {
-                    // console.log(track.streams)
-                    const stream = getMax(track.streams, 'bitrate')
-                    track.streams = track.streams.splice(stream, stream)
-                }
-                track.requester = requester
-                track.icon = null
-                track.thumbnail
+        if (!track) logger.debug('No track found')
+        else {
+            // logger.log('track: ', track)
+            // if (track instanceof TrackPlaylist) {
+            //     track.forEach(t => {
+            //         t.requester = requester;
+            //         t.icon = null;
+            //         t.thumbnail;
+            //     });
+            // } else {
+            if (track.streams) {
+                // console.log(track.streams)
+                const stream = getMax(track.streams, 'bitrate')
+                track.streams = track.streams.splice(stream, stream)
             }
-            return track
-            // }
-        } catch (err) {
-            throw err
+            track.requester = requester
+            track.icon = null
         }
+        return track
+        // }
     }
 
     getPlayingPlayers () {
