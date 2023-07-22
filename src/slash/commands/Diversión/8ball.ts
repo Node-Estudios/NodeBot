@@ -44,7 +44,7 @@ export default class ball extends Command {
                 embeds: [
                     new EmbedBuilder()
                         .setColor(Colors.Red)
-                        .setTitle(translate(keys.ERROREMBED))
+                        .setTitle(translate(keys.ERROREMBED)+' <:error:897836005787308062>')
                         .setDescription(translate(keys.question_ball.no_question))
                         .setFooter({
                             text: interaction.user.tag,

@@ -132,8 +132,8 @@
         "generated": "Auto-Mix has been generated!",
         "disabled": "AutoMix disabled"
     },
-    "ERROREMBED": "Error <:error:897836005787308062>",
-    "SUCCESSEMBED": "Success <a:tick:836295873091862568>",
+    "ERROREMBED": "Error",
+    "SUCCESSEMBED": "Success",
     "PAUSE": "Pause",
     "RESUME": "Resume",
     "STOP": "Stop",

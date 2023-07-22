@@ -61,6 +61,15 @@
     "roleinfo": {
         "managed": "Gestionado por Discord"
     },
+    "nowplaying": {
+        "1": "Necesitas estar en un canal de voz para poder ejecutar este comando.",
+        "2": "No se están reproduciendo canciones en este momento.",
+        "3": "Reproduciendo ahora",
+        "4": "Pausado",
+        "5": "Autor",
+        "6": "Solicitada por",
+        "7": "Duración"
+    },
     "serverinfo": {
         "verification": {
             "no": "No hay verificación.",
@@ -132,8 +141,8 @@
         "generated": "¡Se ha generado Auto-Mix!",
         "disabled": "AutoMix desactivado"
     },
-    "ERROREMBED": "Error <:error:897836005787308062>",
-    "SUCCESSEMBED": "Success <a:tick:836295873091862568>",
+    "ERROREMBED": "Error",
+    "SUCCESSEMBED": "Success",
     "PAUSE": "Pausa",
     "RESUME": "Currículum",
     "STOP": "Stop",

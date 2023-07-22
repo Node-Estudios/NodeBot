@@ -86,7 +86,7 @@ export default class Pause extends Command {
             embeds: [
                 new EmbedBuilder()
                     .setColor(client.settings.color)
-                    .setTitle(translate(keys.SUCCESSEMBED))
+                    .setTitle(translate(keys.SUCCESSEMBED) + ' <a:tick:836295873091862568>')
                     .setDescription(
                         translate(keys.paused),
                     )

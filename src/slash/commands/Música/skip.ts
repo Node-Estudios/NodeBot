@@ -87,7 +87,7 @@ export default class skip extends Command {
 
         const embed = new EmbedBuilder()
             .setColor(client.settings.color)
-            .setTitle(translate(keys.SUCCESSEMBED))
+            .setTitle(translate(keys.SUCCESSEMBED) + ' <a:tick:836295873091862568>')
             .setDescription(
                 translate(keys.skip.skiped, {
                     song: player.queue.current.title,
