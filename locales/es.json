@@ -141,6 +141,13 @@
         "generated": "¡Se ha generado Auto-Mix!",
         "disabled": "AutoMix desactivado"
     },
+    "twitch": {
+        "no_streamer_found": "No se encontró ningún canal con ese nombre.",
+        "already_following": "Ya estás siguiendo a este streamer.",
+        "now_following": "Ahora estás siguiendo a {streamer}. Las notificaciones se enviarán a {channel}.",
+        "unfollowed": "Ya no estás siguiendo a {streamer}.",
+        "role_mention": "Se mencionara a {role}."
+    },
     "ERROREMBED": "Error",
     "SUCCESSEMBED": "Success",
     "PAUSE": "Pausa",

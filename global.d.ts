@@ -5,5 +5,8 @@ declare namespace NodeJS {
         errorWebhookURL: string
         DEBUG_MODE: 'true' | 'false'
         DEVS: string
+        TWITCH_AUTHORIZATION: string
+        TWITCH_CLIENT_ID: string
+        TWITCH_WEBHOOK_SECRET: string
     }
 }

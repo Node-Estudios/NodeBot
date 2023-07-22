@@ -1,61 +1,276 @@
-import performanceMeters from '../../../cache/performanceMeters.js'
+import { ChatInputCommandInteraction, ApplicationCommandOptionType, ChannelType } from 'discord.js'
 import Translator, { keys } from '../../../utils/Translator.js'
 import Command from '../../../structures/Command.js'
 import Client from '../../../structures/Client.js'
-import { Colors, EmbedBuilder, ChatInputCommandInteraction } from 'discord.js'
-
 import logger from '../../../utils/logger.js'
-export default class ping extends Command {
-    constructor() {
+import TwitchModel from '../../../models/twitch.js'
+
+const headers = {
+    'Client-ID': process.env.TWITCH_CLIENT_ID,
+    Authorization: process.env.TWITCH_AUTHORIZATION,
+}
+
+export default class Twitch extends Command {
+    constructor () {
         super({
-            name: 'ping',
-            description: 'Shows the bot latency.',
+            name: 'twitch',
+            description: 'Set a notification for when a streamer goes live',
             name_localizations: {
-                'es-ES': 'ping',
-                'en-US': 'ping',
+                'es-ES': 'twich',
+                'en-US': 'twitch',
             },
             description_localizations: {
-                'es-ES': 'Muestra la latencia del Bot.',
-                'en-US': 'Shows the bot latency.',
+                'es-ES': 'Establece una notificación para cuando un streamer se ponga en directo',
+                'en-US': 'Set a notification for when a streamer goes live',
             },
             cooldown: 5,
+            dm_permission: false,
+            options: [
+                {
+                    type: ApplicationCommandOptionType.Subcommand,
+                    name: 'add',
+                    description: 'Add a notification for when a streamer goes live',
+                    name_localizations: {
+                        'es-ES': 'añadir',
+                        'en-US': 'add',
+                    },
+                    description_localizations: {
+                        'es-ES': 'Añade una notificación para cuando un streamer se ponga en directo',
+                        'en-US': 'Add a notification for when a streamer goes live',
+                    },
+                    options: [
+                        {
+                            type: ApplicationCommandOptionType.String,
+                            name: 'streamer',
+                            description: 'Streamer to set the notification',
+                            required: true,
+                            name_localizations: {
+                                'es-ES': 'streamer',
+                                'en-US': 'streamer',
+                            },
+                            description_localizations: {
+                                'es-ES': 'Nobre del streamer para establecer la notificación',
+                                'en-US': 'Name of streamer to set the notification',
+                            },
+                        },
+                        {
+                            type: ApplicationCommandOptionType.Channel,
+                            name: 'channel',
+                            description: 'Channel to send the notification',
+                            required: true,
+                            name_localizations: {
+                                'es-ES': 'canal',
+                                'en-US': 'channel',
+                            },
+                            description_localizations: {
+                                'es-ES': 'Canal para enviar la notificación',
+                                'en-US': 'Channel to send the notification',
+                            },
+                            channel_types: [ChannelType.GuildText],
+                        },
+                        {
+                            type: ApplicationCommandOptionType.Role,
+                            name: 'role',
+                            description: 'Role to mention when the streamer goes live',
+                            name_localizations: {
+                                'es-ES': 'rol',
+                                'en-US': 'role',
+                            },
+                            description_localizations: {
+                                'es-ES': 'Rol para mencionar cuando el streamer se ponga en directo',
+                                'en-US': 'Role to mention when the streamer goes live',
+                            },
+                        },
+                    ],
+                },
+                {
+                    type: ApplicationCommandOptionType.Subcommand,
+                    name: 'remove',
+                    description: 'Remove a notification for when a streamer goes live',
+                    name_localizations: {
+                        'es-ES': 'eliminar',
+                        'en-US': 'remove',
+                    },
+                    description_localizations: {
+                        'es-ES': 'Elimina una notificación para cuando un streamer se ponga en directo',
+                        'en-US': 'Remove a notification for when a streamer goes live',
+                    },
+                    options: [
+                        {
+                            type: ApplicationCommandOptionType.String,
+                            name: 'streamer',
+                            description: 'Streamer to remove the notification',
+                            required: true,
+                            name_localizations: {
+                                'es-ES': 'streamer',
+                                'en-US': 'streamer',
+                            },
+                            description_localizations: {
+                                'es-ES': 'Nobre del streamer para eliminar la notificación',
+                                'en-US': 'Name of streamer to remove the notification',
+                            },
+                        },
+                    ],
+                },
+            ],
         })
     }
-    override async run(interaction: ChatInputCommandInteraction) {
+
+    override async run (interaction: ChatInputCommandInteraction) {
+        const option = interaction.options.getSubcommand()
+        if (option === 'add') this.add(interaction)
+        else if (option === 'remove') this.remove(interaction)
+    }
+
+    async add (interaction: ChatInputCommandInteraction) {
+        if (!interaction.inCachedGuild()) return
         const translate = Translator(interaction)
         const client = interaction.client as Client
-        const ping = Math.abs((interaction.createdAt.getTime() - Date.now()) / 1000)
-        return client.cluster
-            .broadcastEval(
-                (c: any) => ({
-                    ping: c.ws.ping,
+        const streamer = interaction.options.getString('streamer', true)
+        const channel = interaction.options.getChannel('channel', true, [ChannelType.GuildText])
+        const role = interaction.options.getRole('role')
+
+        const streamerReq = await fetch(`https://api.twitch.tv/helix/users?login=${streamer}`, { headers })
+        if (!streamerReq.ok) {
+            return await interaction.reply({
+                content: translate(keys.GENERICERROR, {
+                    inviteURL: client.officialServerURL,
                 }),
-                { cluster: client.cluster.id },
-            )
-            .then(async (results: any) => {
-                let performance = await performanceMeters.get('interaction_' + interaction.id)
-                if (performance) {
-                    performance = await performance.stop()
-                    performanceMeters.delete('interaction_' + interaction.id)
-                }
-                //Todo: process.env.mode === 'development'
-                return interaction
-                    .reply({
-                        embeds: [
-                            new EmbedBuilder()
-                                .setColor(Colors.Green)
-                                .setFields(
-                                    { name: translate(keys.API), value: `${results[0].ping}ms`, inline: true },
-                                    { name: translate(keys.ping.internal), value: performance + 'ms' },
-                                    { name: translate(keys.ping.global), value: `${ping}ms`, inline: true },
-                                )
-                                .setTitle(translate(keys.PING))
-                                .setTimestamp(),
-                        ],
-                    })
-                    .then(() => {
-                        logger.debug('ping execution finished')
-                    })
+                ephemeral: true,
             })
+        }
+
+        const streamerData = await streamerReq.json() as { data: TwitchUser[] }
+        if (!streamerData.data[0]) {
+            return await interaction.reply({
+                content: translate(keys.twitch.no_streamer_found),
+                ephemeral: true,
+            })
+        }
+
+        const subreq = await fetch(`https://api.twitch.tv/helix/eventsub/subscriptions?id=${2}`, {
+            method: 'POST',
+            headers: {
+                ...headers,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                type: 'stream.online',
+                version: '1',
+                condition: {
+                    broadcaster_user_id: streamerData.data[0].id,
+                },
+                transport: {
+                    method: 'webhook',
+                    callback: 'https://api.nodebot.xyz/twitch/interaction/webhooks/callback',
+                    secret: process.env.TWITCH_WEBHOOK_SECRET,
+                },
+            }),
+        })
+        if (!subreq.ok) {
+            return await interaction.reply({
+                content: translate(keys.GENERICERROR, {
+                    inviteURL: client.officialServerURL,
+                }),
+                ephemeral: true,
+            })
+        }
+        const subData = await subreq.json() as {
+            data: TwitchSubscription[]
+            total: number
+            total_cost: number
+            max_total_cost: number
+        }
+        logger.info(`TWITCH: ${subData.total} subs creadas | ${subData.total_cost}/${subData.max_total_cost}`)
+
+        await TwitchModel.findOneAndUpdate({
+            streamerId: streamerData.data[0].id,
+            guildId: interaction.guild.id,
+        }, {
+            subscriptionId: subData.data[0].id,
+            streamerId: streamerData.data[0].id,
+            guildId: interaction.guild.id,
+            channelId: channel.id,
+            roleId: role?.id,
+        }, {
+            upsert: true,
+        })
+
+        return await interaction.reply({
+            content: translate(keys.twitch.now_following, {
+                streamer: streamerData.data[0].display_name,
+                // eslint-disable-next-line @typescript-eslint/no-base-to-string
+                channel: channel.toString(),
+            }) + (role
+                ? translate(keys.twitch.role_mention, {
+                    role: role.toString(),
+                })
+                : ''),
+        })
     }
+
+    async remove (interaction: ChatInputCommandInteraction) {
+        if (!interaction.inCachedGuild()) return
+        const translate = Translator(interaction)
+        const client = interaction.client as Client
+        const streamer = interaction.options.getString('streamer', true)
+
+        const streamerReq = await fetch(`https://api.twitch.tv/helix/users?login=${streamer}`, { headers })
+        if (!streamerReq.ok) {
+            return await interaction.reply({
+                content: translate(keys.GENERICERROR, {
+                    inviteURL: client.officialServerURL,
+                }),
+                ephemeral: true,
+            })
+        }
+        const streamerData = await streamerReq.json() as { data: TwitchUser[] }
+        if (!streamerData.data[0]) {
+            return await interaction.reply({
+                content: translate(keys.twitch.no_streamer_found),
+                ephemeral: true,
+            })
+        }
+
+        await TwitchModel.findOneAndDelete({
+            streamerId: streamerData.data[0].id,
+            guildId: interaction.guild.id,
+        })
+
+        return await interaction.reply({
+            content: translate(keys.twitch.unfollowed, {
+                streamer: streamerData.data[0].display_name,
+            }),
+        })
+    }
+}
+
+export interface TwitchUser {
+    id: string
+    login: string
+    display_name: string
+    type: string
+    broadcaster_type: string
+    description: string
+    profile_image_url: string
+    offline_image_url: string
+    view_count: number
+    email: string
+    created_at: string
+}
+
+export interface TwitchSubscription {
+    id: string
+    status: string
+    type: string
+    version: string
+    condition: {
+        user_id: string
+    }
+    created_at: string
+    transport: {
+        method: string
+        callback: string
+    }
+    cost: number
 }

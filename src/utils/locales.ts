@@ -132,6 +132,13 @@ export default {
     generated: "automix.generated",
     disabled: "automix.disabled",
   },
+  twitch: {
+    no_streamer_found: "twitch.no_streamer_found",
+    already_following: "twitch.already_following",
+    now_following: "twitch.now_following",
+    unfollowed: "twitch.unfollowed",
+    role_mention: "twitch.role_mention",
+  },
   ERROREMBED: "ERROREMBED",
   SUCCESSEMBED: "SUCCESSEMBED",
   PAUSE: "PAUSE",
@@ -170,6 +177,15 @@ export default {
   YES: "YES",
   PLAYING: "PLAYING",
   GENERICERROR: "GENERICERROR",
+  nowplaying: {
+    1: "nowplaying.1",
+    2: "nowplaying.2",
+    3: "nowplaying.3",
+    4: "nowplaying.4",
+    5: "nowplaying.5",
+    6: "nowplaying.6",
+    7: "nowplaying.7",
+  },
 } as {
   247: {
     enabled: string
@@ -304,6 +320,13 @@ export default {
     generated: string
     disabled: string
   }
+  twitch: {
+    no_streamer_found: string
+    already_following: string
+    now_following: string
+    unfollowed: string
+    role_mention: string
+  }
   ERROREMBED: string
   SUCCESSEMBED: string
   PAUSE: string
@@ -342,4 +365,13 @@ export default {
   YES: string
   PLAYING: string
   GENERICERROR: string
+  nowplaying?: {
+    1?: string
+    2?: string
+    3?: string
+    4?: string
+    5?: string
+    6?: string
+    7?: string
+  }
 }

@@ -132,6 +132,13 @@
         "generated": "オートミックスが生成された！",
         "disabled": "オートミックス無効"
     },
+    "twitch": {
+        "no_streamer_found": "ストリーマーが見つかりません",
+        "already_following": "すでにこのストリーマーをフォローしています。",
+        "now_following": "あなたは今{streamer}をフォローしています。通知は{channel}に送信されます。",
+        "unfollowed": "あなたは{streamer}をフォローしていません。",
+        "role_mention": "{role}について言及しなければならない。"
+    },
     "ERROREMBED": "Error",
     "SUCCESSEMBED": "Success",
     "PAUSE": "ポーズ",
