@@ -43,7 +43,7 @@ export default class Resume extends Command {
         player.resumedUser = interaction.user
         player.pause(false)
 
-        interaction.reply({
+        return await interaction.reply({
             embeds: [
                 new EmbedBuilder()
                     .setColor(client.settings.color)

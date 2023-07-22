@@ -44,7 +44,7 @@ export default class Stop extends Command {
         if (player.queueRepeat) player.setQueueRepeat(false)
         await client.music.queueEnd(player)
 
-        interaction.reply({
+        return await interaction.reply({
             embeds: [
                 new EmbedBuilder()
                     .setColor(client.settings.color)

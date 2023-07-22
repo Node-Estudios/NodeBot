@@ -43,7 +43,7 @@ export default class Pause extends Command {
         player.pausedUser = interaction.user
         player.pause(true)
 
-        interaction.reply({
+        return await interaction.reply({
             embeds: [
                 new EmbedBuilder()
                     .setColor(client.settings.color)
