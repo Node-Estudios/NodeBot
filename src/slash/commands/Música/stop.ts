@@ -2,7 +2,6 @@ import { ChatInputCommandInteraction, Colors, EmbedBuilder } from 'discord.js'
 import Translator, { keys } from '../../../utils/Translator.js'
 import Command from '../../../structures/Command.js'
 import Client from '../../../structures/Client.js'
-
 import logger from '../../../utils/logger.js'
 
 export default class Stop extends Command {

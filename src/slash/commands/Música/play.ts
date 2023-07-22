@@ -1,29 +1,27 @@
 import {
     ApplicationCommandOptionType,
     EmbedBuilder,
-    TextChannel,
-    VoiceChannel,
     ChatInputCommandInteraction,
-    Colors,
 } from 'discord.js'
 import { MusicCarouselShelf } from 'youtubei.js/dist/src/parser/nodes.js'
 import performanceMeters from '../../../cache/performanceMeters.js'
 import Translator, { keys } from '../../../utils/Translator.js'
 import formatTime from '../../../utils/formatTime.js'
 import Command from '../../../structures/Command.js'
+import Player from '../../../structures/Player.js'
 import Client from '../../../structures/Client.js'
 import logger from '../../../utils/logger.js'
 
-function shuffleArray(array: any[]) {
-    for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1))
-        ;[array[i], array[j]] = [array[j], array[i]]
-    }
-    return array
-}
+// function shuffleArray (array: any[]) {
+//     for (let i = array.length - 1; i > 0; i--) {
+//         const j = Math.floor(Math.random() * (i + 1))
+//         ;[array[i], array[j]] = [array[j], array[i]]
+//     }
+//     return array
+// }
 
-export default class play extends Command {
-    constructor() {
+export default class Play extends Command {
+    constructor () {
         super({
             name: 'play',
             description: 'Play the song that you want with the name or a youtube/spotify link',
@@ -50,69 +48,31 @@ export default class play extends Command {
                         'es-ES': 'Nombre de la canción que deseas escuchas.',
                         'en-US': 'Name of the song that u want to listen.',
                     },
-                    required: false,
-                },
-                {
-                    type: ApplicationCommandOptionType.Integer,
-                    name: 'amount',
-                    description: 'Amount of songs to load. Only works if you dont put a song string',
-                    name_localizations: {
-                        'es-ES': 'cantidad',
-                        'en-US': 'amount',
-                    },
-                    description_localizations: {
-                        'es-ES': 'Cantidad de canciones a reproducir. Solo funciona si nos dejas elegir.',
-                        'en-US': 'Amount of songs to load. Only works if you dont put a song string',
-                    },
-                    required: false,
+                    required: true,
                 },
             ],
         })
     }
-    override async run(interaction: ChatInputCommandInteraction<'cached'>) {
+
+    override async run (interaction: ChatInputCommandInteraction<'cached'>) {
         const client = interaction.client as Client
         const translate = Translator(interaction)
-        let player = client.music.players.get(interaction.guildId)
-        if (!interaction.member.voice.channelId) return interaction.reply({
-            embeds: [
-                new EmbedBuilder().setColor(Colors.Red).setFooter({
-                    text: translate(keys.play.not_voice),
-                    iconURL: client.user?.displayAvatarURL(),
-                })
-            ],
-            ephemeral: true
-        })
-        if (!player) {
-            player = await client.music.createNewPlayer(
-                interaction.member.voice.channel as VoiceChannel,
-                interaction.channel as TextChannel,
-            )
-            await player.connect()
-        }
-        if (player.voiceChannel.id !== interaction.member.voice.channelId)
-            return interaction.reply({
-                embeds: [
-                    new EmbedBuilder().setColor(Colors.Red).setFooter({
-                        text: translate(keys.play.same),
-                        iconURL: client.user?.displayAvatarURL(),
-                    }),
-                ],
-                ephemeral: true,
-            })
-        
-        //Si el usuario está en el mismo canal de voz que el bot
+        const player = await Player.tryGetChannel(interaction)
+        if (!player) return
+
+        // Si el usuario está en el mismo canal de voz que el bot
         try {
             await interaction.deferReply()
             let search
             const source = 'Youtube'
-            let song = interaction.options.getString('song', false)
+            const song = interaction.options.getString('song', true)
             if (!song) {
-                const songs = ((await (await player.youtubei).music.getHomeFeed()).sections![0] as MusicCarouselShelf)
+                const songs = ((await (await player.youtubei).music.getHomeFeed()).sections?.[0] as MusicCarouselShelf)
                     .contents
                 const songs2 = songs.filter((song: any) => song.item_type === 'song')
                 const randomIndex = Math.floor(Math.random() * songs2.length)
                 const song3 = songs2[randomIndex]
-                //@ts-ignore
+                // @ts-expect-error
                 search = await client.music.search(song3.id, interaction.member, source)
                 // search = await client.music.search(song3.id, interaction.member, source)
                 // const playlist = await (await player.youtubei).getPlaylist()
@@ -203,7 +163,7 @@ export default class play extends Command {
             const embed = new EmbedBuilder().setColor(client.settings.color).setFields(
                 {
                     name: translate(keys.AUTHOR),
-                    value: search!.author,
+                    value: search.author,
                     inline: true,
                 },
                 {
@@ -213,31 +173,32 @@ export default class play extends Command {
                 },
                 {
                     name: translate(keys.DURATION),
-                    value: formatTime(Math.trunc(search!.duration), false),
+                    value: formatTime(Math.trunc(search.duration), false),
                     inline: true,
                 },
             )
-            if (client.settings.mode == 'development') {
+            if (client.settings.mode === 'development') {
                 let executionTime = await performanceMeters.get('interaction_' + interaction.id)
                 executionTime = executionTime.stop()
-                let finaltext = 'Internal execution time: ' + executionTime + 'ms'
+                const finaltext = 'Internal execution time: ' + executionTime + 'ms'
                 embed.setFooter({ text: finaltext })
             }
             if (source === 'Youtube') {
-                embed.setThumbnail(`https://img.youtube.com/vi/${search!.id}/maxresdefault.jpg`)
+                embed.setThumbnail(`https://img.youtube.com/vi/${search.id}/maxresdefault.jpg`)
                 embed.setDescription(
                     `**${translate(keys.play.added, {
                         song: `[${search.title}](https://www.youtube.com/watch?v=${search.id})`,
                     })}** <:pepeblink:967941236029788160>`,
                 )
             } else if (source === 'Spotify') {
-                if (search!.thumbnails[0])
+                if (search.thumbnails[0]) {
                     embed.setDescription(
                         `**${translate(keys.play.added, {
                             song: `[${search.title}](https://open.spotify.com/track/${search.id})`,
                         })}** <:pepeblink:967941236029788160>`,
                     )
-                embed.setThumbnail(search!.thumbnails[0].url)
+                }
+                embed.setThumbnail(search.thumbnails[0].url)
             }
             interaction.editReply({ embeds: [embed] })
         } catch (e) {
@@ -248,6 +209,5 @@ export default class play extends Command {
                 }),
             })
         }
-        return
     }
 }

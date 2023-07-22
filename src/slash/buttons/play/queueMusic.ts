@@ -1,9 +1,8 @@
-import { ButtonInteraction, EmbedBuilder } from 'discord.js'
 import Translator, { keys } from '../../../utils/Translator.js'
+import { ButtonInteraction, EmbedBuilder } from 'discord.js'
 import formatTime from '../../../utils/formatTime.js'
 import Client from '../../../structures/Client.js'
 import Button from '../../../structures/Button.js'
-
 import logger from '../../../utils/logger.js'
 
 export default class Queue extends Button {
@@ -55,7 +54,7 @@ export default class Queue extends Button {
                                 }) [<@${player.queue.current.requester.id}> - ${formatTime(
                                     Math.trunc(player.queue.current.duration),
                                     false,
-                                )} - ${player.queue.current.streams![0].bitrate.toString().slice(0, 3)}Kbps]`,
+                                )} - ${player.queue.current.streams?.[0].bitrate.toString().slice(0, 3)}Kbps]`,
                             )
                             .setAuthor({
                                 name: translate(keys.queue.queue, {
@@ -104,7 +103,7 @@ export default class Queue extends Button {
                             }) [<@${player.queue.current.requester.id}> - ${formatTime(
                                 Math.trunc(player.queue.current.duration),
                                 false,
-                            )} - ${player.queue.current.streams![0].bitrate.toString().slice(0, 3)}Kbps]\n__${
+                            )} - ${player.queue.current.streams?.[0].bitrate.toString().slice(0, 3)}Kbps]\n__${
                                 translate(keys.NEXT)
                             }__:\n${queuelist}`,
                         )

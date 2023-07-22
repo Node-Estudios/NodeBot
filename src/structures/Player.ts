@@ -1,4 +1,4 @@
-import { Guild, LocaleString, Message, VoiceChannel, User, TextChannel } from 'discord.js'
+import { Guild, LocaleString, Message, VoiceChannel, User, TextChannel, EmbedBuilder, Colors, Interaction } from 'discord.js'
 import VoiceConnection from 'yasha/types/src/VoiceConnection.js'
 // import { spamIntervalDB } from './spamInterval.js'
 import MusicManager from './MusicManager.js'
@@ -6,6 +6,8 @@ import logger from '../utils/logger.js'
 import { Innertube } from 'youtubei.js'
 import Queue from './Queue.js'
 import yasha from 'yasha'
+import Translator, { keys } from '../utils/Translator.js'
+import Client from './Client.js'
 
 // const spamIntervald = new spamIntervalDB()
 
@@ -157,5 +159,50 @@ export default class Player extends yasha.TrackPlayer {
 
         // set timer in the player too
         super.seek(Number(time))
+    }
+
+    static async tryGetChannel (interaction: Interaction<'cached'>) {
+        const client = interaction.client as Client
+        let player = client.music.players.get(interaction.guildId)
+        const translate = Translator(interaction)
+        if (!interaction.member.voice.channel?.id) {
+            if (interaction.isChatInputCommand()) {
+                await interaction.reply({
+                    embeds: [
+                        new EmbedBuilder().setColor(Colors.Red).setFooter({
+                            text: translate(keys.play.not_voice),
+                            iconURL: client.user.displayAvatarURL(),
+                        }),
+                    ],
+                    ephemeral: true,
+                })
+            } else if (interaction.isButton()) await interaction.deferUpdate()
+            return null
+        }
+
+        if (!player) {
+            player = await client.music.createNewPlayer(
+                interaction.member.voice.channel as VoiceChannel,
+                interaction.channel as TextChannel,
+            )
+            await player.connect()
+        }
+
+        if (player.voiceChannel.id !== interaction.member.voice.channelId) {
+            if (interaction.isChatInputCommand()) {
+                await interaction.reply({
+                    embeds: [
+                        new EmbedBuilder().setColor(Colors.Red).setFooter({
+                            text: translate(keys.play.same),
+                            iconURL: client.user?.displayAvatarURL(),
+                        }),
+                    ],
+                    ephemeral: true,
+                })
+            } else if (interaction.isButton()) await interaction.deferUpdate()
+            return null
+        }
+
+        return player
     }
 }

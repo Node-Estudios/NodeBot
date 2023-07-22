@@ -43,7 +43,9 @@ export default class Pause extends Command {
             return await interaction.reply({
                 embeds: [
                     new EmbedBuilder().setColor(Colors.Red).setFooter({
-                        text: translate(keys.skip.no_same),
+                        text: translate(keys.skip.no_same, {
+                            user: interaction.user.username,
+                        }),
                         iconURL: interaction.user.displayAvatarURL(),
                     }),
                 ],
