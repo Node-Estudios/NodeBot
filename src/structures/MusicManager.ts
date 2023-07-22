@@ -122,6 +122,7 @@ export default class MusicManager extends EventEmitter {
     trackEnd (player: Player, finished: boolean) {
         const track = player.queue.current
         // logger.log(player.queue.length, player.queue.previous)
+        if (!track) return
         if (!track?.duration) track.duration = player.getDuration()
 
         if (player.trackRepeat) {
