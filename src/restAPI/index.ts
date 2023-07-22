@@ -8,11 +8,11 @@ export default class restApiBase {
     manager: NodeManager
     app = express()
 
-    constructor(manager: NodeManager) {
+    constructor (manager: NodeManager) {
         this.manager = manager
     }
 
-    async #loadModules() {
+    async #loadModules () {
         // this.app.use(express.static(__dirname + "/public"));
         this.app.use(
             cors({
@@ -34,7 +34,7 @@ export default class restApiBase {
         })
     }
 
-    async start() {
+    async start () {
         await this.#loadModules()
         this.app.listen(3000, () => {
             logger.startUp('Server listening on port 3000')

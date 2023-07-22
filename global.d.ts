@@ -8,5 +8,7 @@ declare namespace NodeJS {
         TWITCH_AUTHORIZATION: string
         TWITCH_CLIENT_ID: string
         TWITCH_WEBHOOK_SECRET: string
+        STRIPE: string
+        TOKEN: string
     }
 }

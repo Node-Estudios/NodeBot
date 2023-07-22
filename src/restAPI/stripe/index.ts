@@ -2,19 +2,21 @@ import express, { Router as router, Request } from 'express'
 import NodeManager from '../../structures/NodeManager.js'
 
 import { Stripe } from 'stripe'
+import logger from '../../utils/logger.js'
 
-const stripeAcces = new Stripe(process.env.STRIPE!, { apiVersion: '2022-11-15', typescript: true })
+const stripeAcces = new Stripe(process.env.STRIPE, { apiVersion: '2022-11-15', typescript: true })
 const endpointSecret = 'whsec_49455f433220997b19b1470c119bfa10304a72f4638e02eca17d06636bea7ab3'
 // export default router
-export class stripe {
+export default class StripeApi {
     manager: NodeManager
     router = router()
     // app: Express.Application
-    constructor(manager: NodeManager) {
+    constructor (manager: NodeManager) {
         this.manager = manager
         this.#load()
     }
-    #load() {
+
+    #load () {
         this.router.use(express.json())
         this.router.post('/pay', async (req: Request<{}, {}, payBody>, res) => {
             const product = await stripeAcces.products.retrieve(req.body.product_id)
@@ -46,7 +48,7 @@ export class stripe {
                     endpointSecret,
                 )
             } catch (err: any) {
-                console.log(`⚠️  Webhook signature verification failed.`, err.message)
+                logger.error('⚠️  Webhook signature verification failed.', err.message)
                 return response.sendStatus(400)
             }
 
@@ -54,7 +56,7 @@ export class stripe {
             switch (event.type) {
                 case 'payment_intent.succeeded':
                     const paymentIntent = event.data.object as any
-                    console.log(`PaymentIntent for ${paymentIntent.amount} was successful!`)
+                    logger.debug(`PaymentIntent for ${paymentIntent.amount} was successful!`)
                     // Then define and call a method to handle the successful payment intent.
                     // handlePaymentIntentSucceeded(paymentIntent);
                     break
@@ -65,7 +67,7 @@ export class stripe {
                     break
                 default:
                     // Unexpected event type
-                    console.log(`Unhandled event type ${event.type}.`)
+                    logger.debug(`Unhandled event type ${event.type}.`)
             }
 
             // Return a 200 response to acknowledge receipt of the event
@@ -76,7 +78,7 @@ export class stripe {
 }
 
 // '/pay' body
-type payBody = {
+interface payBody {
     success_url: string // like a 'https://myweb.com/pay_sucess'
     cancel_url?: string // like a 'https://myweb.com/cancel'
     payment_method_types?: Stripe.Checkout.SessionCreateParams.PaymentMethodType[]

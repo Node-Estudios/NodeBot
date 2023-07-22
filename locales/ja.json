@@ -137,7 +137,8 @@
         "already_following": "すでにこのストリーマーをフォローしています。",
         "now_following": "あなたは今{streamer}をフォローしています。通知は{channel}に送信されます。",
         "unfollowed": "あなたは{streamer}をフォローしていません。",
-        "role_mention": "{role}について言及しなければならない。"
+        "role_mention": "{role}について言及しなければならない。",
+        "now_live": "今{streamer}はライブです！"
     },
     "ERROREMBED": "Error",
     "SUCCESSEMBED": "Success",

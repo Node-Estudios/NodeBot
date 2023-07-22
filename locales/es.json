@@ -146,7 +146,8 @@
         "already_following": "Ya estás siguiendo a este streamer.",
         "now_following": "Ahora estás siguiendo a {streamer}. Las notificaciones se enviarán a {channel}.",
         "unfollowed": "Ya no estás siguiendo a {streamer}.",
-        "role_mention": "Se mencionara a {role}."
+        "role_mention": "Se mencionara a {role}.",
+        "now_live": "¡{streamer} está en vivo!"
     },
     "ERROREMBED": "Error",
     "SUCCESSEMBED": "Success",

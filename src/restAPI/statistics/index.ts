@@ -3,22 +3,22 @@ import logger from '../../utils/logger.js'
 
 import { Router as router } from 'express'
 // export default router
-export class statistics {
+export default class Statistics {
     manager: NodeManager
     // app: Express.Application
     result: any[] = []
     #router = router()
 
-    constructor(manager: NodeManager) {
+    constructor (manager: NodeManager) {
         this.manager = manager
         this.#load()
     }
 
-    get router() {
+    get router () {
         return this.#router
     }
 
-    async getData(manager: NodeManager, result: any[]): Promise<any[] | undefined> {
+    async getData (manager: NodeManager, result: any[]): Promise<any[] | undefined> {
         /*
         & My function for get data from clusters, it only took me 4 hours ._.
 ? Example output:
@@ -103,7 +103,7 @@ export class statistics {
     }
 }
 ]
- 
+
 */
         /* Posible responses:
                     ~ 503: Shards still spawning
@@ -114,7 +114,7 @@ export class statistics {
             if (manager.queue.queue.length !== 0) return
             result = []
             // Convertimos el objeto Map en un array y lo iteramos con map
-            //todo: remove any from here
+            // todo: remove any from here
             const Promises = Array.from(manager.clusters).map(([key, cluster]: any) => {
                 return cluster.request({ content: 'statistics' }).then((data: any) => {
                     Object.assign(data[0], { cluster: cluster.id, shardList: cluster.shardList })
@@ -187,12 +187,13 @@ export class statistics {
             return result
         }
     }
-    async #load() {
-        //ejecutar funcion de estadisticas
-        let getData = await this.getData(this.manager, this.result)
+
+    async #load () {
+        // ejecutar funcion de estadisticas
+        const getData = await this.getData(this.manager, this.result)
         if (getData) this.result = getData
         setInterval(async () => {
-            let getData = await this.getData(this.manager, this.result)
+            const getData = await this.getData(this.manager, this.result)
             if (getData) this.result = getData
         }, 6000)
         this.router.get('/', (req: any, res: any) => {

@@ -162,7 +162,7 @@ export default class Twitch extends Command {
                 },
                 transport: {
                     method: 'webhook',
-                    callback: 'https://api.nodebot.xyz/twitch/interaction/webhooks/callback',
+                    callback: 'https://api.nodebot.xyz/twitch/webhook',
                     secret: process.env.TWITCH_WEBHOOK_SECRET,
                 },
             }),
@@ -187,7 +187,6 @@ export default class Twitch extends Command {
             streamerId: streamerData.data[0].id,
             guildId: interaction.guild.id,
         }, {
-            subscriptionId: subData.data[0].id,
             streamerId: streamerData.data[0].id,
             guildId: interaction.guild.id,
             channelId: channel.id,

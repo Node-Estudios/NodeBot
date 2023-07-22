@@ -138,6 +138,7 @@ export default {
     now_following: "twitch.now_following",
     unfollowed: "twitch.unfollowed",
     role_mention: "twitch.role_mention",
+    now_live: "twitch.now_live",
   },
   ERROREMBED: "ERROREMBED",
   SUCCESSEMBED: "SUCCESSEMBED",
@@ -326,6 +327,7 @@ export default {
     now_following: string
     unfollowed: string
     role_mention: string
+    now_live: string
   }
   ERROREMBED: string
   SUCCESSEMBED: string
