@@ -73,13 +73,16 @@ export default class MusicManager extends EventEmitter {
         if (!song) return
         const translate = Translator(player.guild)
         const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
-            new ButtonBuilder().setStyle(ButtonStyle.Danger).setLabel(translate(keys.STOP)).setCustomId('stopMusic'),
+            new ButtonBuilder().setStyle(ButtonStyle.Secondary).setCustomId('likeMusic').setEmoji('<:grey_heart:1133326993694392401>'), // TODO: Change to blue if user already liked music
+            new ButtonBuilder().setStyle(ButtonStyle.Secondary).setCustomId('shuffleMusic').setEmoji('<:grey_shuffle:1133320757800357938>'),
+            new ButtonBuilder().setStyle(ButtonStyle.Secondary).setCustomId('shuffleMusic').setEmoji('<:grey_previous:1133320744089178132>'),
             new ButtonBuilder()
                 .setStyle(ButtonStyle.Secondary)
-                .setLabel(translate(keys.PAUSE))
-                .setCustomId('pauseMusic'),
-            new ButtonBuilder().setStyle(ButtonStyle.Primary).setLabel(translate(keys.SKIP)).setCustomId('skipMusic'),
-            new ButtonBuilder().setStyle(ButtonStyle.Primary).setLabel(translate(keys.QUEUE)).setCustomId('queueMusic'),
+                .setCustomId('pauseMusic')
+                .setEmoji('<:gray_play:1133320736434561054>'),
+            new ButtonBuilder().setStyle(ButtonStyle.Secondary).setCustomId('skipMusic').setEmoji('<:grey_next:1133320741174116422>'),
+            new ButtonBuilder().setStyle(ButtonStyle.Secondary).setCustomId('repeatMusic').setEmoji('<:blue_repeat_all:1133323538024104036>'),
+            new ButtonBuilder().setStyle(ButtonStyle.Secondary).setCustomId('queueMusic').setEmoji('<:grey_library:1133327046953668659>'),
         )
 
         const embed = new EmbedBuilder().setColor(client.settings.color)
@@ -131,6 +134,7 @@ export default class MusicManager extends EventEmitter {
         }
 
         if (player.queueRepeat) {
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             player.queue.add(player.queue.current!)
             player.queue.current = player.queue.shift() ?? null
             player.play()

@@ -38,20 +38,21 @@ export default class NowPlaying extends Command {
                 ],
             }, true)
         }
-        const song = player.queue.current
-        const parsedCurrentDuration = moment
-            .duration(player.position, 'milliseconds')
-            .format('mm:ss', {
-                trim: false,
-            })
-        const parsedDuration = moment
-            .duration(duration, 'milliseconds')
-            .format('mm:ss', {
-                trim: false,
-            })
-        const part = Math.floor((player.position / duration) * 30)
-        const uni = player.playing ? '▶' : '⏸️'
-        const thumbnail = `https://img.youtube.com/vi/${identifier}/maxresdefault.jpg`
-        const user = `<@${requester.userId}>`
+        return true;
+        //const song = player.queue.current
+        //const parsedCurrentDuration = moment
+         //   .duration(player.position, 'milliseconds')
+         //   .format('mm:ss', {
+        //        trim: false,
+         //   })
+        //const parsedDuration = moment
+         //   .duration(duration, 'milliseconds')
+         //   .format('mm:ss', {
+         //       trim: false,
+          //  })
+        //const part = Math.floor((player.position / duration) * 30)
+       // const uni = player.playing ? '▶' : '⏸️'
+        //const thumbnail = `https://img.youtube.com/vi/${identifier}/maxresdefault.jpg`
+        //const user = `<@${requester.userId}>`
     }
 }
