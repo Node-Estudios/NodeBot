@@ -1,18 +1,20 @@
 import {
     ApplicationCommandOptionType,
     EmbedBuilder,
+    TextChannel,
+    VoiceChannel,
     ChatInputCommandInteraction,
+    Colors,
 } from 'discord.js'
-// import { MusicCarouselShelf } from 'youtubei.js/dist/src/parser/nodes.js'
+import { MusicCarouselShelf } from 'youtubei.js/dist/src/parser/nodes.js'
 import performanceMeters from '../../../cache/performanceMeters.js'
 import Translator, { keys } from '../../../utils/Translator.js'
 import formatTime from '../../../utils/formatTime.js'
 import Command from '../../../structures/Command.js'
-import Player from '../../../structures/Player.js'
 import Client from '../../../structures/Client.js'
 import logger from '../../../utils/logger.js'
 
-export default class Play extends Command {
+export default class play extends Command {
     constructor () {
         super({
             name: 'play',
@@ -40,7 +42,21 @@ export default class Play extends Command {
                         'es-ES': 'Nombre de la canción que deseas escuchas.',
                         'en-US': 'Name of the song that u want to listen.',
                     },
-                    required: true,
+                    required: false,
+                },
+                {
+                    type: ApplicationCommandOptionType.Integer,
+                    name: 'amount',
+                    description: 'Amount of songs to load. Only works if you dont put a song string',
+                    name_localizations: {
+                        'es-ES': 'cantidad',
+                        'en-US': 'amount',
+                    },
+                    description_localizations: {
+                        'es-ES': 'Cantidad de canciones a reproducir. Solo funciona si nos dejas elegir.',
+                        'en-US': 'Amount of songs to load. Only works if you dont put a song string',
+                    },
+                    required: false,
                 },
             ],
         })
@@ -49,41 +65,71 @@ export default class Play extends Command {
     override async run (interaction: ChatInputCommandInteraction<'cached'>) {
         const client = interaction.client as Client
         const translate = Translator(interaction)
-        const player = await Player.tryGetPlayer(interaction)
-        if (!player) return
+        let player = client.music.players.get(interaction.guildId)
+        if (!interaction.member.voice.channelId) {
+            return await interaction.reply({
+                embeds: [
+                    new EmbedBuilder().setColor(Colors.Red).setFooter({
+                        text: translate(keys.play.not_voice),
+                        iconURL: client.user?.displayAvatarURL(),
+                    }),
+                ],
+                ephemeral: true,
+            })
+        }
+        if (!player) {
+            player = await client.music.createNewPlayer(
+                interaction.member.voice.channel as VoiceChannel,
+                interaction.channel as TextChannel,
+            )
+            await player.connect()
+        }
+        if (player.voiceChannel.id !== interaction.member.voice.channelId) {
+            return await interaction.reply({
+                embeds: [
+                    new EmbedBuilder().setColor(Colors.Red).setFooter({
+                        text: translate(keys.play.same),
+                        iconURL: client.user?.displayAvatarURL(),
+                    }),
+                ],
+                ephemeral: true,
+            })
+        }
 
         // Si el usuario está en el mismo canal de voz que el bot
         try {
             await interaction.deferReply()
+            let search
             const source = 'Youtube'
-            const song = interaction.options.getString('song', true)
-            const search = await client.music.search(song, interaction.member, source).catch((e) => {
-                logger.error(e)
-                interaction.editReply({
-                    embeds: [
-                        new EmbedBuilder().setColor(15548997).setFooter({
-                            text: translate(keys.play.not_reproducible),
-                            iconURL: client.user?.displayAvatarURL(),
-                        }),
-                    ],
-                })
-            })
-            // if (!song) {
-            //     const songs = ((await (await player.youtubei).music.getHomeFeed()).sections?.[0] as MusicCarouselShelf)
-            //         .contents
-            //     const songs2 = songs.filter((song: any) => song.item_type === 'song')
-            //     const randomIndex = Math.floor(Math.random() * songs2.length)
-            //     const song3 = songs2[randomIndex]
-            //     // @ts-expect-error
-            //     search = await client.music.search(song3.id, interaction.member, source)
-            //     // search = await client.music.search(song3.id, interaction.member, source)
-            //     // const playlist = await (await player.youtubei).getPlaylist()
-            //     // if(playlist) {
-            //     //     search = playlist
-            //     // }
-            // } else {
-
-            // }
+            const song = interaction.options.getString('song', false)
+            if (!song) {
+                const songs = ((await (await player.youtubei).music.getHomeFeed()).sections?.[0] as MusicCarouselShelf)
+                    .contents
+                const songs2 = songs.filter((song: any) => song.item_type === 'song')
+                const randomIndex = Math.floor(Math.random() * songs2.length)
+                const song3 = songs2[randomIndex]
+                // @ts-expect-error
+                search = await client.music.search(song3.id, interaction.member, source)
+                // search = await client.music.search(song3.id, interaction.member, source)
+                // const playlist = await (await player.youtubei).getPlaylist()
+                // if(playlist) {
+                //     search = playlist
+                // }
+            } else {
+                try {
+                    search = await client.music.search(song, interaction.member, source)
+                } catch (e) {
+                    logger.error(e)
+                    interaction.editReply({
+                        embeds: [
+                            new EmbedBuilder().setColor(15548997).setFooter({
+                                text: translate(keys.play.not_reproducible),
+                                iconURL: client.user?.displayAvatarURL(),
+                            }),
+                        ],
+                    })
+                }
+            }
             // console.log(typeof search)
 
             // if (search instanceof TrackPlaylist) {
@@ -174,7 +220,7 @@ export default class Play extends Command {
                 embed.setFooter({ text: finaltext })
             }
             if (source === 'Youtube') {
-                embed.setImage(`https://img.youtube.com/vi/${search.id}/maxresdefault.jpg`)
+                embed.setThumbnail(`https://img.youtube.com/vi/${search.id}/maxresdefault.jpg`)
                 embed.setDescription(
                     `**${translate(keys.play.added, {
                         song: `[${search.title}](https://www.youtube.com/watch?v=${search.id})`,
@@ -188,7 +234,7 @@ export default class Play extends Command {
                         })}** <:pepeblink:967941236029788160>`,
                     )
                 }
-                embed.setImage(search.thumbnails[0].url)
+                embed.setThumbnail(search.thumbnails[0].url)
             }
             interaction.editReply({ embeds: [embed] })
         } catch (e) {
@@ -199,5 +245,6 @@ export default class Play extends Command {
                 }),
             })
         }
+        return true
     }
 }

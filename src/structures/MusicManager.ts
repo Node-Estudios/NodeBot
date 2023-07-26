@@ -73,16 +73,16 @@ export default class MusicManager extends EventEmitter {
         if (!song) return
         const translate = Translator(player.guild)
         const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
-            new ButtonBuilder().setStyle(ButtonStyle.Secondary).setCustomId('likeMusic').setEmoji('<:grey_heart:1133326993694392401>'), // TODO: Change to blue if user already liked music
-            new ButtonBuilder().setStyle(ButtonStyle.Secondary).setCustomId('shuffleMusic').setEmoji('<:grey_shuffle:1133320757800357938>'),
-            new ButtonBuilder().setStyle(ButtonStyle.Secondary).setCustomId('shuffleMusic').setEmoji('<:grey_previous:1133320744089178132>'),
+            /* new ButtonBuilder().setStyle(ButtonStyle.Secondary).setCustomId('likeMusic').setEmoji('<:grey_heart:1133326993694392401>'), */ // TODO: Change to blue if user already liked music
+            new ButtonBuilder().setStyle(ButtonStyle.Secondary).setCustomId('shuffleMusic').setEmoji('<:white_shuffle:1133738851672784916>'),
+            /* new ButtonBuilder().setStyle(ButtonStyle.Secondary).setCustomId('previousMusic').setEmoji('<:grey_previous:1133320744089178132>'), */
             new ButtonBuilder()
                 .setStyle(ButtonStyle.Secondary)
                 .setCustomId('pauseMusic')
-                .setEmoji('<:gray_play:1133320736434561054>'),
-            new ButtonBuilder().setStyle(ButtonStyle.Secondary).setCustomId('skipMusic').setEmoji('<:grey_next:1133320741174116422>'),
-            new ButtonBuilder().setStyle(ButtonStyle.Secondary).setCustomId('repeatMusic').setEmoji('<:blue_repeat_all:1133323538024104036>'),
-            new ButtonBuilder().setStyle(ButtonStyle.Secondary).setCustomId('queueMusic').setEmoji('<:grey_library:1133327046953668659>'),
+                .setEmoji('<:white_pause:1133738854415867966>'),
+            new ButtonBuilder().setStyle(ButtonStyle.Secondary).setCustomId('nextMusic').setEmoji('<:white_next:1133738850162855986>'),
+            new ButtonBuilder().setStyle(ButtonStyle.Secondary).setCustomId('repeatMusic').setEmoji('<:white_repeat_all:1133738845079347282>'),
+            new ButtonBuilder().setStyle(ButtonStyle.Secondary).setCustomId('queueMusic').setEmoji('<:white_library:1133738836858519603>'),
         )
 
         const embed = new EmbedBuilder().setColor(client.settings.color)
