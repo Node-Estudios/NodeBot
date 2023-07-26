@@ -8,6 +8,16 @@ import {
     GuildMember,
     Collection,
     Guild,
+    Message,
+    DiscordAPIError,
+    ButtonComponent,
+    ComponentType,
+    Component,
+    APIMessageComponentEmoji,
+    User,
+    ChatInputCommandInteraction,
+    APIEmbed,
+    ButtonInteraction,
 } from 'discord.js'
 import Translator, { keys } from '../utils/Translator.js'
 import { SpamIntervalDB } from './spamInterval.js'
@@ -64,6 +74,52 @@ export default class MusicManager extends EventEmitter {
         return player
     }
 
+    async trackPause (player: Player, interaction: ChatInputCommandInteraction<'cached'> | ButtonInteraction): Promise<false | Message<boolean>> {
+        // Return false in case the player is not playing || paused || there is no message
+        const translate = Translator(interaction)
+        if (!player.queue.current) return false
+        if (!player.playing || player.paused) {
+            player.playing = true
+            player.paused = false
+            player.pause()
+        } else {
+            player.playing = false
+            player.paused = true
+            player.pause()
+        }
+        type Writeable<T extends { [x: string]: any }, K extends string> = {
+            [P in K]: T[P];
+        }
+        const prevDesc = player.message?.embeds[0].description?.split('\n')[0]
+        const newDesc = `${prevDesc}\n\n${translate(keys.stop[player.paused ? 'paused' : 'resumed'], { user: interaction.user.toString() })}`
+        const updatedEmbed: APIEmbed = {
+            ...player.message?.embeds[0], // Spread the existing embed properties
+            description: newDesc, // Update the description
+        }
+        if (player.message?.components) {
+            const actionRowComponents = player.message.components[0]?.components
+            if (actionRowComponents) {
+                const pauseButton = actionRowComponents.find((c) => c.customId === 'pauseMusic' && c.type === ComponentType.Button)
+                if (pauseButton && pauseButton.type === 2) { // Make sure it's a button component
+                    if (player.playing) {
+                        (pauseButton.data.emoji as Writeable<APIMessageComponentEmoji, keyof APIMessageComponentEmoji>) = {
+                            name: client.settings.emojis.white.pause.name.toString(),
+                            id: client.settings.emojis.white.pause.id.toString(),
+                            animated: pauseButton.data.emoji?.animated,
+                        }
+                    } else {
+                        (pauseButton.data.emoji as Writeable<APIMessageComponentEmoji, keyof APIMessageComponentEmoji>) = {
+                            name: client.settings.emojis.white.play.name.toString(),
+                            id: client.settings.emojis.white.play.id.toString(),
+                            animated: pauseButton.data.emoji?.animated,
+                        }
+                    }
+                }
+            }
+        }
+        if (player.message) { return await player.message.edit({ components: player.message.components, embeds: [updatedEmbed] }) } else return false
+    }
+
     async trackStart (player: Player) {
         // todo: Check if the song limit is the saçme as stablished for the admins
         // if(player.queue.current?.duration > player.guild.)
@@ -74,21 +130,21 @@ export default class MusicManager extends EventEmitter {
         const translate = Translator(player.guild)
         const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
             /* new ButtonBuilder().setStyle(ButtonStyle.Secondary).setCustomId('likeMusic').setEmoji('<:grey_heart:1133326993694392401>'), */ // TODO: Change to blue if user already liked music
-            new ButtonBuilder().setStyle(ButtonStyle.Secondary).setCustomId('shuffleMusic').setEmoji('<:white_shuffle:1133738851672784916>'),
+            new ButtonBuilder().setStyle(ButtonStyle.Secondary).setCustomId('shuffleMusic').setEmoji(`${client.settings.emojis.white.shuffle.full}`),
             /* new ButtonBuilder().setStyle(ButtonStyle.Secondary).setCustomId('previousMusic').setEmoji('<:grey_previous:1133320744089178132>'), */
             new ButtonBuilder()
                 .setStyle(ButtonStyle.Secondary)
                 .setCustomId('pauseMusic')
-                .setEmoji('<:white_pause:1133738854415867966>'),
-            new ButtonBuilder().setStyle(ButtonStyle.Secondary).setCustomId('nextMusic').setEmoji('<:white_next:1133738850162855986>'),
-            new ButtonBuilder().setStyle(ButtonStyle.Secondary).setCustomId('repeatMusic').setEmoji('<:white_repeat_all:1133738845079347282>'),
-            new ButtonBuilder().setStyle(ButtonStyle.Secondary).setCustomId('queueMusic').setEmoji('<:white_library:1133738836858519603>'),
+                .setEmoji(`${client.settings.emojis.white.pause.full}`),
+            new ButtonBuilder().setStyle(ButtonStyle.Secondary).setCustomId('nextMusic').setEmoji(`${client.settings.emojis.white.next.full}`),
+            new ButtonBuilder().setStyle(ButtonStyle.Secondary).setCustomId('repeatMusic').setEmoji(`${client.settings.emojis.white.repeat_off.full}`),
+            new ButtonBuilder().setStyle(ButtonStyle.Secondary).setCustomId('queueMusic').setEmoji(`${client.settings.emojis.white.library.full}`),
         )
 
         const embed = new EmbedBuilder().setColor(client.settings.color)
         if (song.platform === 'Youtube') {
             embed
-                .setThumbnail(`https://img.youtube.com/vi/${song.id}/maxresdefault.jpg`)
+                .setImage(`https://img.youtube.com/vi/${song.id}/maxresdefault.jpg`)
                 .setDescription(
                     `${translate(keys.PLAYING)} **[${song.title}](https://music.youtube.com/watch?v=${
                         song.id
@@ -99,7 +155,7 @@ export default class MusicManager extends EventEmitter {
                 embed.setDescription(
                     `**${translate(keys.PLAYING)}\n[${song.title}](https://open.spotify.com/track/${song.id})**`,
                 )
-                embed.setThumbnail(song.thumbnails[0].url)
+                embed.setImage(song.thumbnails[0].url)
             }
         }
         // ^ Si no tenemos un mensaje ya enviado, lo enviamos, y si lo tenemos, borramos el anterior y enviamos uno nuevo <3
@@ -107,7 +163,7 @@ export default class MusicManager extends EventEmitter {
         if (client.settings.debug === 'true') {
             logger.debug(
                 'Playing | ' +
-                    player.queue.current?.title +
+                player.queue.current?.title +
                     ' | ' +
                     player.guild.name +
                     ' | ' +

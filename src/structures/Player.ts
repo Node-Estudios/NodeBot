@@ -46,7 +46,7 @@ export default class Player extends yasha.TrackPlayer {
     }) {
         super({
             external_packet_send: false,
-            external_encrypt: true,
+            external_encrypt: false,
             normalize_volume: true,
         })
         this.manager = options.musicManager
@@ -65,7 +65,7 @@ export default class Player extends yasha.TrackPlayer {
         // TODO: Remove ts-ignore when yasha is updated
         // @ts-expect-error
         this.subscription = this.connection?.subscribe(this)
-        this.connection?.on('error', (error: Error) => logger.error(error))
+        this.connection?.on('error', (error: any) => logger.error(error))
     }
 
     disconnect () {
@@ -83,6 +83,7 @@ export default class Player extends yasha.TrackPlayer {
         // console.log("stream: ", this.stream)
         // if (this.stream.volume && !this.volume) this.volume = this.stream.volume;
         // console.log("volume: ", this.volume);
+        /* this.on('packet', (buffer: Buffer, frame_size: number) => logger.log(`Packet: ${frame_size} samples`)) */
         this.start()
     }
 
