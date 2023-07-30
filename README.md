@@ -10,6 +10,7 @@
 [![](https://img.shields.io/badge/discord.js-v13.0.0--dev-blue.svg?logo=npm)](https://github.com/discordjs)
 [![DevServer](https://discordapp.com/api/guilds/834440041010561074/widget.png?style=shield)](https://discord.gg/SbsFVV5dNG)
 [![](https://img.shields.io/github/languages/top/LyricalString/Node-Discord-Bot)]()
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/J3J1N9LEG)
 
 > Este bot está siendo usado por más de 3.000.000 usuarios de Discord y más de 28.000 servidores.
 
