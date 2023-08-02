@@ -39,11 +39,11 @@ export default class MusicManager extends EventEmitter {
         // } else return
     }
 
-    async createNewPlayer (vc: VoiceChannel, textChannel: TextChannel, volume?: number) {
+    async createNewPlayer (vc: VoiceChannel, textChannelId: string, volume?: number) {
         const player = new Player({
             musicManager: this,
             voiceChannel: vc,
-            textChannel,
+            textChannelId,
             volume,
         })
         // Imprime un mensaje de depuración
@@ -169,12 +169,10 @@ export default class MusicManager extends EventEmitter {
                     player.queue.current?.requester.displayName,
             )
         }
-        const msg = await player.textChannel.send({
+        return (player.message = await (await player.getTextChannel())?.send({
             embeds: [embed],
             components: [row],
-        })
-        player.message = msg
-        return msg
+        }))
     }
 
     trackEnd (player: Player, finished: boolean) {
@@ -274,7 +272,7 @@ export default class MusicManager extends EventEmitter {
                     },
                 )
                 .setThumbnail(`https://img.youtube.com/vi/${player.queue.current?.id}/maxresdefault.jpg`)
-            await player.textChannel.send({
+            await (await player.getTextChannel())?.send({
                 embeds: [e],
                 content: '',
             })

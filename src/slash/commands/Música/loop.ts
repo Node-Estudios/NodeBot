@@ -2,8 +2,6 @@ import { ChatInputCommandInteraction, Colors, EmbedBuilder } from 'discord.js'
 import Command from '../../../structures/Command.js'
 import Client from '../../../structures/Client.js'
 import Translator, { keys } from '../../../utils/Translator.js'
-import { MessageHelper } from '../../../handlers/messageHandler.js'
-import Player from '../../../structures/Player.js'
 import logger from '../../../utils/logger.js'
 
 export default class Loop extends Command {
@@ -22,7 +20,7 @@ export default class Loop extends Command {
         })
     }
 
-    override async run(interaction: ChatInputCommandInteraction<'cached'>) {
+    override async run (interaction: ChatInputCommandInteraction<'cached'>) {
         const client = interaction.client as Client
         const translate = Translator(interaction)
         const player = client.music.players.get(interaction.guild.id)
@@ -38,7 +36,7 @@ export default class Loop extends Command {
             })
         }
         await interaction.deferReply()
-       
+
         if (!interaction.member.voice) {
             return await interaction.reply({
                 embeds: [
@@ -75,8 +73,8 @@ export default class Loop extends Command {
             })
         }
         if (!player.trackRepeat) {
-            player.setQueueRepeat(true);
-            player.setTrackRepeat(false);
+            player.setQueueRepeat(true)
+            player.setTrackRepeat(false)
         }
         return await interaction.reply({
             embeds: [
@@ -86,7 +84,7 @@ export default class Loop extends Command {
                         text: translate(keys.loop.song),
                         iconURL: interaction.user.displayAvatarURL(),
                     }),
-            ]
+            ],
         })
     }
 }

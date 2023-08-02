@@ -1,12 +1,9 @@
-import { Guild, LocaleString, Message, VoiceChannel, User, TextChannel } from 'discord.js'
-// import { spamIntervalDB } from './spamInterval.js'
+import { Guild, LocaleString, Message, VoiceChannel, User, Snowflake, TextChannel, PermissionFlagsBits } from 'discord.js'
 import MusicManager from './MusicManager.js'
 import logger from '../utils/logger.js'
 import { Innertube } from 'youtubei.js'
 import Queue from './Queue.js'
 import yasha from 'yasha'
-
-// const spamIntervald = new spamIntervalDB()
 
 export default class Player extends yasha.TrackPlayer {
     trackRepeat = false
@@ -18,7 +15,7 @@ export default class Player extends yasha.TrackPlayer {
     volume = 100
     queue = new Queue()
     manager: MusicManager
-    textChannel: TextChannel
+    #textChannelId?: Snowflake
     voiceChannel: VoiceChannel
     message?: Message
     guild: Guild
@@ -31,14 +28,14 @@ export default class Player extends yasha.TrackPlayer {
     pausedUser?: User
     resumedUser?: User
     youtubei = Innertube.create()
-    waitingMessage: Message | null = null
+    waitingMessage?: Message
     constructor (options: {
         musicManager: MusicManager
         lang?: LocaleString
         bitrate?: number
         volume?: number
         voiceChannel: VoiceChannel
-        textChannel: TextChannel
+        textChannelId: Snowflake
         guild?: Guild
     }) {
         super({
@@ -51,8 +48,12 @@ export default class Player extends yasha.TrackPlayer {
         this.volume = options.volume ?? 100
 
         this.voiceChannel = options.voiceChannel
-        this.textChannel = options.textChannel
         this.guild = options.guild ?? options.voiceChannel.guild
+        this.guild.channels.fetch(options.textChannelId).then(channel => {
+            if (!channel?.isTextBased()) return
+            if (this.guild.members.me?.permissionsIn(channel).has([PermissionFlagsBits.EmbedLinks, PermissionFlagsBits.SendMessages]) === false) return
+            this.#textChannelId = options.textChannelId
+        }).catch(() => null)
     }
 
     async connect () {
@@ -75,11 +76,6 @@ export default class Player extends yasha.TrackPlayer {
         else super.play(track)
         clearTimeout(this.leaveTimeout)
         this.leaveTimeout = undefined
-        // //NORMALIZE VOLUME
-        // console.log("stream: ", this.stream)
-        // if (this.stream.volume && !this.volume) this.volume = this.stream.volume;
-        // console.log("volume: ", this.volume);
-        /* this.on('packet', (buffer: Buffer, frame_size: number) => logger.log(`Packet: ${frame_size} samples`)) */
         this.start()
     }
 
@@ -151,5 +147,24 @@ export default class Player extends yasha.TrackPlayer {
 
         // set timer in the player too
         super.seek(Number(time))
+    }
+
+    async getTextChannel () {
+        const channel = await this.guild.channels.fetch(this.#textChannelId ?? '')
+        if (!channel?.isTextBased()) return null
+        return channel as TextChannel
+    }
+
+    // eslint-disable-next-line accessor-pairs
+    set textChannelId (id: Snowflake) {
+        this.guild.channels.fetch(id).then(channel => {
+            if (!channel?.isTextBased()) return
+            if (this.guild.members.me?.permissionsIn(channel).has([PermissionFlagsBits.EmbedLinks, PermissionFlagsBits.SendMessages]) === false) return
+            this.#textChannelId = id
+        }).catch(() => null)
+    }
+
+    get textChannelId (): string | undefined {
+        return this.#textChannelId
     }
 }

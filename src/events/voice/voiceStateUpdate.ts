@@ -21,7 +21,7 @@ export default class voiceStateUpdate extends BaseEvent {
             if (!player.waitingMessage && player.stayInVc) return player.pause(false)
             if (player.waitingMessage) {
                 player.waitingMessage.delete()
-                player.waitingMessage = null
+                delete player.waitingMessage
                 player.pause(false)
             }
             return
@@ -44,10 +44,9 @@ export default class voiceStateUpdate extends BaseEvent {
                     }) + ' <:pepesad:967939851863343154>',
                 )
                 .setColor(client.settings.color)
-            const msg = await player.textChannel.send({
+            player.waitingMessage = await (await player.getTextChannel())?.send({
                 embeds: [embed],
             })
-            player.waitingMessage = msg
             player.previouslyPaused = player.paused
 
             player.pause(true)
@@ -65,7 +64,7 @@ export default class voiceStateUpdate extends BaseEvent {
             let newPlayer = client.music.players.get(newState.guild.id)
             newPlayer = await client.music.createNewPlayer(
                 (await oldState.guild.members.fetch(client.user.id))?.voice.channel as VoiceChannel,
-                player.textChannel,
+                player.textChannelId ?? '',
                 100,
             )
             await newPlayer?.connect()

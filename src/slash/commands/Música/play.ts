@@ -1,7 +1,6 @@
 import {
     ApplicationCommandOptionType,
     EmbedBuilder,
-    TextChannel,
     VoiceChannel,
     ChatInputCommandInteraction,
     Colors,
@@ -81,7 +80,7 @@ export default class play extends Command {
         if (!player) {
             player = await client.music.createNewPlayer(
                 interaction.member.voice.channel as VoiceChannel,
-                interaction.channel as TextChannel,
+                interaction.channelId,
             )
             await player.connect()
         }
@@ -96,6 +95,7 @@ export default class play extends Command {
                 ephemeral: true,
             })
         }
+        player.textChannelId = interaction.channelId
 
         // Si el usuario está en el mismo canal de voz que el bot
         try {
