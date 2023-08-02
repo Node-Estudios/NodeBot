@@ -1,22 +1,19 @@
 import { AutocompleteInteraction, ButtonInteraction, ChatInputCommandInteraction, Interaction } from 'discord.js'
-import { Timer as PerformanceMeter } from '../../handlers/performanceMeter.js'
+import { Timer as performanceMeter } from '../../handlers/performanceMeter.js'
 import performanceMeters from '../../cache/performanceMeters.js'
 import { BaseEvent } from '../../structures/Events.js'
 import Client from '../../structures/Client.js'
 import commands from '../../cache/commands.js'
 import buttons from '../../cache/buttons.js'
 import logger from '../../utils/logger.js'
+import autocomplete from '../../cache/autocomplete.js'
 
 export class interactionCreate extends BaseEvent {
     async run (client: Client, interaction: Interaction) {
-        console.log('interactionCreate')
-
         if (interaction.member?.user.bot) return
-        performanceMeters.set('interaction_' + interaction.id, new PerformanceMeter())
-        performanceMeters.get('interaction_' + interaction.id).start()
 
         // return false if something went wrong, true if everything was okey
-        if (client.settings.debug === 'true') { logger.debug('Interaction Executed | ' + interaction.guild?.name ?? 'No guild' + ' | ' + interaction.user.username) }
+        if (client.settings.debug === 'true' && interaction.type !== 2) { logger.debug('Interaction, type: ' + interaction.type + ' | ' + interaction.guild?.name ?? 'No guild' + ' | ' + interaction.user.username) }
         if (!client.isReady()) return // <-- return statement here
 
         if (interaction.isChatInputCommand()) return await this.processChatImputCommand(interaction)
@@ -26,6 +23,8 @@ export class interactionCreate extends BaseEvent {
 
     async processChatImputCommand (interaction: ChatInputCommandInteraction) {
         try {
+            performanceMeters.set('interaction_' + interaction.id, new performanceMeter())
+            performanceMeters.get('interaction_' + interaction.id).start()
             const cmd = commands.getCache().find(c => c.name === interaction.commandName)
             if (!cmd) return
             if (interaction.guild && cmd?.only_dm) return // <-- return statement here
@@ -60,9 +59,9 @@ export class interactionCreate extends BaseEvent {
             }
             await cmd.run(interaction)
             await performanceMeters.get('interaction_' + interaction.id)?.stop() // the ping command stop the process
-            performanceMeters.delete('interaction_' + interaction.id)
+            return performanceMeters.delete('interaction_' + interaction.id)
         } catch (e) {
-            logger.debug(e)
+            return logger.debug(e)
         }
     }
 
@@ -72,7 +71,6 @@ export class interactionCreate extends BaseEvent {
     }
 
     async processAutocompleteInteraction (interaction: AutocompleteInteraction) {
-        const cmd = commands.getCache().find(c => c.name === interaction.commandName)
-        cmd?.autocomplete(interaction)
+        autocomplete.getCache().filter(b => b.match(interaction.commandName)).map(async i => await i.run(interaction))
     }
 }

@@ -43,8 +43,8 @@ export default class play extends Command {
                         'es-ES': 'Nombre de la canción que deseas escuchas.',
                         'en-US': 'Name of the song that u want to listen.',
                     },
-                    required: true,
                     autocomplete: true,
+                    required: false,
                 },
             ],
         })
@@ -210,7 +210,7 @@ export default class play extends Command {
             )
             if (client.settings.mode === 'development') {
                 let executionTime = await performanceMeters.get('interaction_' + interaction.id)
-                executionTime = executionTime.stop()
+                executionTime = executionTime?.stop()
                 const finaltext = 'Internal execution time: ' + executionTime + 'ms'
                 embed.setFooter({ text: finaltext })
             }
@@ -243,13 +243,13 @@ export default class play extends Command {
         return true
     }
 
-    override async autocomplete (interaction: AutocompleteInteraction): Promise<any> {
-        const query = interaction.options.getFocused()
-        const search = await Source.Youtube.search(query)
-        if (search.length > 25) search.length = 25
-        interaction.respond(search.map(r => ({
-            name: r.title ?? '',
-            value: r.author ?? '',
-        })))
-    }
+    // override async autocomplete (interaction: AutocompleteInteraction): Promise<any> {
+    //     const query = interaction.options.getFocused()
+    //     const search = await Source.Youtube.search(query)
+    //     if (search.length > 25) search.length = 25
+    //     interaction.respond(search.map(r => ({
+    //         name: r.title ?? '',
+    //         value: r.author ?? '',
+    //     })))
+    // }
 }
