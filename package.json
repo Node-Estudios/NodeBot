@@ -45,7 +45,7 @@
         "signale": "1.4.0",
         "statcord.js": "3.4.3",
         "stripe": "12.13.0",
-        "yasha": "github:eliyya/ts-yasha#master",
+        "yasha": "github:davidzeng0/yasha",
         "youtubei.js": "5.4.0"
     },
     "devDependencies": {
@@ -56,7 +56,6 @@
         "@types/jsonwebtoken": "9.0.2",
         "@types/node": "20.4.2",
         "@types/signale": "1.4.4",
-        "@types/yasha": "github:eliyya/yasha-types",
         "concurrently": "8.2.0",
         "eslint": "8.45.0",
         "nodemon": "3.0.1",

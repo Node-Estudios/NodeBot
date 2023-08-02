@@ -16,7 +16,7 @@ import logger from '../utils/logger.js'
 import EventEmitter from 'events'
 import Player from './Player.js'
 import client from '../bot.js'
-import yasha from 'yasha'
+import yasha, { Track, TrackStreams } from 'yasha'
 const spamIntervald = new SpamIntervalDB()
 type UserExtended = GuildMember & {}
 
@@ -51,7 +51,8 @@ export default class MusicManager extends EventEmitter {
         // player.on('packet', (buffer: Buffer, frame_size: number) => {
         //     console.log(`Packet: ${frame_size} samples`);
         // });
-
+        // TODO: update ts-yasha and pull request
+        // @ts-expect-error
         player.on(yasha.VoiceConnection.Status.Destroyed, async () => await player.destroy())
 
         player.on('error', err => {
@@ -89,10 +90,10 @@ export default class MusicManager extends EventEmitter {
                 .setDescription(
                     `${translate(keys.PLAYING)} **[${song.title}](https://music.youtube.com/watch?v=${
                         song.id
-                    })** [${formatDuration(song.duration)}] • ${song.requester.toString()}`,
+                    })** [${formatDuration(song.duration ?? 0)}] • ${song.requester.toString()}`,
                 )
         } else if (song.platform === 'Spotify') {
-            if (song.thumbnails[0]) {
+            if (song.thumbnails?.[0]) {
                 embed.setDescription(
                     `**${translate(keys.PLAYING)}\n[${song.title}](https://open.spotify.com/track/${song.id})**`,
                 )
@@ -131,6 +132,7 @@ export default class MusicManager extends EventEmitter {
         }
 
         if (player.queueRepeat) {
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             player.queue.add(player.queue.current!)
             player.queue.current = player.queue.shift() ?? null
             player.play()
@@ -187,7 +189,8 @@ export default class MusicManager extends EventEmitter {
             async function ejecutarAccion (elemento: any) {
                 // Lógica de tu acción
                 const track = await client.music.search(elemento.video_id, client.user, 'Youtube')
-                player.queue.add(track)
+                // TODO extends track
+                player.queue.add(track as Track & { requester: any })
             }
             ejecutarAccionesEnParalelo(playlist.contents, 5).then(() => {
                 player.skip()
@@ -263,13 +266,14 @@ export default class MusicManager extends EventEmitter {
             //         t.thumbnail;
             //     });
             // } else {
-            if (track.streams) {
+            if (track instanceof Track && track.streams) {
                 // console.log(track.streams)
                 const stream = getMax(track.streams, 'bitrate')
-                track.streams = track.streams.splice(stream, stream)
+                track.streams = track.streams.splice(stream, stream) as TrackStreams
             }
+            // @ts-expect-error
             track.requester = requester
-            track.icon = null
+            // track.icon = null
         }
         return track
         // }

@@ -1,5 +1,4 @@
 import { Guild, LocaleString, Message, VoiceChannel, User, TextChannel, EmbedBuilder, Colors, Interaction } from 'discord.js'
-import VoiceConnection from 'yasha/types/src/VoiceConnection.js'
 // import { spamIntervalDB } from './spamInterval.js'
 import MusicManager from './MusicManager.js'
 import logger from '../utils/logger.js'
@@ -27,7 +26,7 @@ export default class Player extends yasha.TrackPlayer {
     guild: Guild
     leaveTimeout?: NodeJS.Timeout
     bitrate?: number
-    connection?: VoiceConnection
+    connection?: yasha.VoiceConnection
     subscription?: any
     stayInVc = false
     previouslyPaused = false
@@ -63,7 +62,6 @@ export default class Player extends yasha.TrackPlayer {
             selfDeaf: true,
         })
         // TODO: Remove ts-ignore when yasha is updated
-        // @ts-expect-error
         this.subscription = this.connection?.subscribe(this)
         this.connection?.on('error', (error: Error) => logger.error(error))
     }
@@ -118,11 +116,6 @@ export default class Player extends yasha.TrackPlayer {
     override setVolume (volume: number) {
         if (volume > 100000) volume = 100000
         super.setVolume(volume / 100)
-    }
-
-    override getTime () {
-        if (!this.player) return null
-        return super.getTime()
     }
 
     setTrackRepeat (repeat = true) {

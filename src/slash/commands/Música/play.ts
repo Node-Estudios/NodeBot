@@ -11,6 +11,7 @@ import Command from '../../../structures/Command.js'
 import Player from '../../../structures/Player.js'
 import Client from '../../../structures/Client.js'
 import logger from '../../../utils/logger.js'
+import { Track } from 'yasha'
 
 export default class Play extends Command {
     constructor () {
@@ -68,92 +69,15 @@ export default class Play extends Command {
                     ],
                 })
             })
-            // if (!song) {
-            //     const songs = ((await (await player.youtubei).music.getHomeFeed()).sections?.[0] as MusicCarouselShelf)
-            //         .contents
-            //     const songs2 = songs.filter((song: any) => song.item_type === 'song')
-            //     const randomIndex = Math.floor(Math.random() * songs2.length)
-            //     const song3 = songs2[randomIndex]
-            //     // @ts-expect-error
-            //     search = await client.music.search(song3.id, interaction.member, source)
-            //     // search = await client.music.search(song3.id, interaction.member, source)
-            //     // const playlist = await (await player.youtubei).getPlaylist()
-            //     // if(playlist) {
-            //     //     search = playlist
-            //     // }
-            // } else {
 
-            // }
-            // console.log(typeof search)
-
-            // if (search instanceof TrackPlaylist) {
-            //     const firstTrack = search.first_track;
-            //     let list = [];
-
-            //     if (firstTrack) list.push(firstTrack);
-
-            //     while (search && search.length) {
-            //         if (firstTrack) {
-            //             for (let i = 0; i < search.length; i++) {
-            //                 if (search[i].equals(firstTrack)) {
-            //                     search.splice(i, 1);
-            //                     break;
-            //                 }
-            //             }
-            //         }
-            //         list = list.concat(search);
-            //         try {
-            //             search = await search.next();
-            //         }
-            //         catch (e) {
-            //             logger.error(e);
-            //             throw e;
-            //         }
-            //     }
-
-            //     if (list.length) {
-            //         for (const track of list) {
-            //             if (!track.requester) track.requester = interaction.member;
-            //             player.queue.add(track);
-            //         }
-            //     }
-
-            //     const totalDuration = list.reduce((acc, cur) => acc + cur.duration, 0);
-
-            //     if (!player.playing && !player.paused) player.play();
-
-            //     const e = new MessageEmbed()
-            //         .setTitle(interaction.language.PLAY[11])
-            //         .setColor("GREEN")
-            //         .addField(interaction.language.PLAY[12], `${search.title}`, true)
-            //         .addField(
-            //             interaction.language.PLAY[13],
-            //             `\`${list.length}\``,
-            //             true
-            //         )
-            //         .addField(
-            //             interaction.language.PLAY[5],
-            //             interaction.user.tag,
-            //             true
-            //         )
-            //         .addField(interaction.language.PLAY[6], `${totalDuration}`, true)
-            //     if (search.platform === 'Youtube') {
-            //         e.setThumbnail(
-            //             `https://img.youtube.com/vi/${search.id}/maxresdefault.jpg`
-            //         )
-            //     } else if (search.platform === 'Spotify') {
-            //         if (search.thumbnails[0])
-            //             e.setThumbnail(search.thumbnails[0])
-            //     }
-            //     interaction.reply({ embeds: [e], content: '' })
-            // }
-
-            player.queue.add(search)
+            // TODO: inject requester
+            if (!(search instanceof Track)) return
+            player.queue.add(search as Track & { requester: any })
             if (!player.playing && !player.paused) player.play()
             const embed = new EmbedBuilder().setColor(client.settings.color).setFields(
                 {
                     name: translate(keys.AUTHOR),
-                    value: search.author,
+                    value: search.author ?? '',
                     inline: true,
                 },
                 {
@@ -163,7 +87,7 @@ export default class Play extends Command {
                 },
                 {
                     name: translate(keys.DURATION),
-                    value: formatTime(Math.trunc(search.duration), false),
+                    value: formatTime(Math.trunc(search.duration ?? 0), false),
                     inline: true,
                 },
             )
@@ -181,14 +105,14 @@ export default class Play extends Command {
                     })}** <:pepeblink:967941236029788160>`,
                 )
             } else if (source === 'Spotify') {
-                if (search.thumbnails[0]) {
+                if (search instanceof Track && search.thumbnails?.[0]) {
                     embed.setDescription(
                         `**${translate(keys.play.added, {
                             song: `[${search.title}](https://open.spotify.com/track/${search.id})`,
                         })}** <:pepeblink:967941236029788160>`,
                     )
                 }
-                embed.setImage(search.thumbnails[0].url)
+                embed.setImage((search).thumbnails?.[0].url ?? null)
             }
             interaction.editReply({ embeds: [embed] })
         } catch (e) {

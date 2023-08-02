@@ -52,7 +52,7 @@ export default class Queue extends Button {
                                 `🎧 ${translate(keys.queue.current)}\n[${title}](https://www.music.youtube.com/watch?v=${
                                     player.queue.current.id
                                 }) [<@${player.queue.current.requester.id}> - ${formatTime(
-                                    Math.trunc(player.queue.current.duration),
+                                    Math.trunc(player.queue.current.duration ?? 0),
                                     false,
                                 )} - ${player.queue.current.streams?.[0].bitrate.toString().slice(0, 3)}Kbps]`,
                             )
@@ -77,7 +77,7 @@ export default class Queue extends Button {
                     () =>
                         `**${++j}.** [${queue[++i].title}](https://www.music.youtube.com/watch?v=${queue[i].id}) [<@${
                             queue[i].requester.id
-                        }> - ${formatTime(Math.trunc(queue[i].duration), false)} - ${queue[i].streams?.[0].bitrate
+                        }> - ${formatTime(Math.trunc(queue[i].duration ?? 0), false)} - ${queue[i].streams?.[0].bitrate
                             .toString()
                             .slice(0, 3)}Kbps]`,
                 )
@@ -101,7 +101,7 @@ export default class Queue extends Button {
                             `🎧 ${translate(keys.queue.current)}\n [${title}](https://www.music.youtube.com/watch?v=${
                                 player.queue.current.id
                             }) [<@${player.queue.current.requester.id}> - ${formatTime(
-                                Math.trunc(player.queue.current.duration),
+                                Math.trunc(player.queue.current.duration ?? 0),
                                 false,
                             )} - ${player.queue.current.streams?.[0].bitrate.toString().slice(0, 3)}Kbps]\n__${
                                 translate(keys.NEXT)
