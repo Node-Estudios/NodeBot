@@ -120,7 +120,7 @@ export default class play extends Command {
                     search = await client.music.search(song, interaction.member, source)
                 } catch (e) {
                     logger.error(e)
-                    interaction.editReply({
+                    return await interaction.editReply({
                         embeds: [
                             new EmbedBuilder().setColor(15548997).setFooter({
                                 text: translate(keys.play.not_reproducible),
@@ -193,7 +193,12 @@ export default class play extends Command {
             //     }
             //     interaction.reply({ embeds: [e], content: '' })
             // }
-
+            // TODO: Add streaming support
+            if (search.streams.live) {
+                return await interaction.editReply({
+                    content: 'We are currently working on supporting Live Streaming videos. :D',
+                })
+            }
             player.queue.add(search)
             if (!player.playing && !player.paused) player.play()
             const embed = new EmbedBuilder().setColor(client.settings.color).setFields(

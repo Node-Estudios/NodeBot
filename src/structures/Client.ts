@@ -46,11 +46,13 @@ export default class Client extends ClientBase<true> {
                 play: emoji
                 shuffle: emoji
                 next: emoji
-                repeat: emoji
+                repeat_off: emoji
                 library: emoji
             }
             blue: {
                 shuffle: emoji
+                repeat_all: emoji
+                repeat_one: emoji
             }
             grey: {
             }
@@ -81,10 +83,10 @@ export default class Client extends ClientBase<true> {
                         id: '1133738850162855986',
                         name: 'white_next',
                     },
-                    repeat: {
-                        full: '<:white_repeat_all:1133738845079347282>',
-                        id: '1133738845079347282',
-                        name: 'white_repeat_all',
+                    repeat_off: {
+                        full: '<:white_repeat_off:1133896931043721267>',
+                        id: '1133896931043721267',
+                        name: 'white_repeat_off',
                     },
                     library: {
                         full: '<:white_library:1133738836858519603>',
@@ -97,6 +99,16 @@ export default class Client extends ClientBase<true> {
                         full: '<:blue_shuffle:1133323554654527540>',
                         id: '1133323554654527540',
                         name: 'blue_shuffle',
+                    },
+                    repeat_all: {
+                        full: '<:blue_repeat_all:1133323538024104036>',
+                        id: '1133323538024104036',
+                        name: 'blue_repeat_all',
+                    },
+                    repeat_one: {
+                        full: '<:blue_repeat_one:1133323549088682056>',
+                        id: '1133323549088682056',
+                        name: 'blue_repeat_one',
                     },
                 },
                 grey: {

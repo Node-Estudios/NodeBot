@@ -9,12 +9,8 @@ import {
     Collection,
     Guild,
     Message,
-    DiscordAPIError,
-    ButtonComponent,
     ComponentType,
-    Component,
     APIMessageComponentEmoji,
-    User,
     ChatInputCommandInteraction,
     APIEmbed,
     ButtonInteraction,
@@ -58,6 +54,7 @@ export default class MusicManager extends EventEmitter {
         player.on('ready', async () => await this.trackStart(player))
 
         player.on('finish', () => this.trackEnd(player, true))
+        player.on('debug', (debug: any) => logger.log(debug))
         // player.on('packet', (buffer: Buffer, frame_size: number) => {
         //     console.log(`Packet: ${frame_size} samples`);
         // });
@@ -117,7 +114,7 @@ export default class MusicManager extends EventEmitter {
                 }
             }
         }
-        if (player.message) { return await player.message.edit({ components: player.message.components, embeds: [updatedEmbed] }) } else return true
+        if (player.message) { return await player.message.edit({ components: player.message.components, embeds: [updatedEmbed] }) } else return false
     }
 
     async trackStart (player: Player) {
@@ -137,7 +134,7 @@ export default class MusicManager extends EventEmitter {
                 .setCustomId('pauseMusic')
                 .setEmoji(`${client.settings.emojis.white.pause.full}`),
             new ButtonBuilder().setStyle(ButtonStyle.Secondary).setCustomId('nextMusic').setEmoji(`${client.settings.emojis.white.next.full}`),
-            new ButtonBuilder().setStyle(ButtonStyle.Secondary).setCustomId('repeatMusic').setEmoji(`${client.settings.emojis.white.repeat.full}`),
+            new ButtonBuilder().setStyle(ButtonStyle.Secondary).setCustomId('repeatMusic').setEmoji(`${client.settings.emojis.white.repeat_off.full}`),
             new ButtonBuilder().setStyle(ButtonStyle.Secondary).setCustomId('queueMusic').setEmoji(`${client.settings.emojis.white.library.full}`),
         )
 
@@ -306,6 +303,7 @@ export default class MusicManager extends EventEmitter {
                 const rawData = await (await requester.youtubei.music.search(query, { limit: 1 })).sections[0]
                 track = rawData.contents[0].id
             } else {
+                (await requester.youtubei)
                 track = await (await yasha.Source.Youtube.search(query))[0]
             }
         } else track = await (await yasha.Source.Youtube.search(query))[0]
@@ -323,11 +321,11 @@ export default class MusicManager extends EventEmitter {
             //         t.thumbnail;
             //     });
             // } else {
-            if (track.streams) {
+            /* if (track.streams) {
                 // console.log(track.streams)
                 const stream = getMax(track.streams, 'bitrate')
-                track.streams = track.streams.splice(stream, stream)
-            }
+                track.streams = [stream.object]
+            } */
             track.requester = requester
             track.icon = null
         }
@@ -338,15 +336,6 @@ export default class MusicManager extends EventEmitter {
     getPlayingPlayers () {
         return this.players.filter(p => p.playing)
     }
-}
-// TODO: REMOVE ANY TYPES
-function getMax (arr: any[], prop: string) {
-    let max: any
-    for (let i = 0; i < arr.length; i++) { if (arr[i].audio && !arr[i].video && (max == null || parseInt(arr[i][prop]) > parseInt(max[prop]))) max = arr[i] }
-
-    const best = arr.findIndex(o => o.url === max.url)
-    logger.debug('formatting better qualitty for audio: ', best)
-    return best
 }
 
 export function formatDuration (duration: number) {

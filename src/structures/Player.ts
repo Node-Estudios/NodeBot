@@ -1,4 +1,4 @@
-import { Guild, LocaleString, Message, VoiceChannel, User, TextChannel, EmbedBuilder, Colors, Interaction } from 'discord.js'
+import { Guild, LocaleString, Message, VoiceChannel, User, TextChannel } from 'discord.js'
 import VoiceConnection from 'yasha/types/src/VoiceConnection.js'
 // import { spamIntervalDB } from './spamInterval.js'
 import MusicManager from './MusicManager.js'
@@ -6,8 +6,6 @@ import logger from '../utils/logger.js'
 import { Innertube } from 'youtubei.js'
 import Queue from './Queue.js'
 import yasha from 'yasha'
-import Translator, { keys } from '../utils/Translator.js'
-import Client from './Client.js'
 
 // const spamIntervald = new spamIntervalDB()
 
@@ -75,7 +73,7 @@ export default class Player extends yasha.TrackPlayer {
 
     override async play (track?: any) {
         // TODO: Check if this code works
-        if (!track) super.play(this.queue.current!)
+        if (!track && this.queue.current) super.play(this.queue.current)
         else super.play(track)
         clearTimeout(this.leaveTimeout)
         this.leaveTimeout = undefined
