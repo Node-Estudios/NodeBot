@@ -4,20 +4,20 @@ import Command from '../structures/Command'
 
 class CommandCache {
     private static instance: CommandCache
-    private cache: Collection<string, Command>
+    private readonly cache: Collection<string, Command>
 
-    private constructor() {
+    private constructor () {
         this.cache = new Collection<string, Command>()
     }
 
-    public static getInstance(): CommandCache {
+    public static getInstance (): CommandCache {
         if (!CommandCache.instance) {
             CommandCache.instance = new CommandCache()
         }
         return CommandCache.instance
     }
 
-    public getCache(): Collection<string, Command> {
+    public getCache (): Collection<string, Command> {
         return this.cache
     }
 }

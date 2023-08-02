@@ -8,27 +8,26 @@ import * as Sentry from '@sentry/node'
 import { connect } from 'mongoose'
 
 export default class Ready extends BaseEvent {
-    async run(client: Client): Promise<void> {
+    async run (client: Client): Promise<void> {
         // console.log('client: \n', client.cluster)
         // ...
 
         //* ADD DATABASE CONNECTION
-        if (process.env.MONGOURL)
+        if (process.env.MONGOURL) {
             connect(process.env.MONGOURL.toString(), {
-                // @ts-ignore
+            // @ts-expect-error
                 useUnifiedTopology: true,
                 useNewUrlParser: true,
             }).then(() => logger.db('Se ha conectado la base de datos correctamente.'))
+        }
         // cluster
         // client.cluster.triggerReady()
-        let arr: Command[] = []
-        commands.getCache().map(command => {
-            arr.push(command)
-        })
+        const arr: Command[] = []
+        for (const [,command] of commands.getCache()) arr.push(command)
         // console.log(JSON.stringify(arr))
         if (process.env.TESTINGGUILD) {
-            const guild = client.guilds.cache.get(process.env.TESTINGGUILD)
-            guild?.commands.set(arr)
+            const guild = await client.guilds.fetch(process.env.TESTINGGUILD)
+            guild.commands.set(arr)
         }
         // fetch('https://discord.com/api/v9/applications/834164602694139985/guilds/862635336165097483/commands', {
         //     method: 'PUT,
@@ -39,8 +38,8 @@ export default class Ready extends BaseEvent {
         //     body: arr,
         // }).then(() => console.log('Successfully registered application commands.'))
         client.cluster.on('message', async (message2: any) => {
-            let message = (message2 as IPCMessage).raw
-            if (message.content == 'statistics') {
+            const message = (message2 as IPCMessage).raw
+            if (message.content === 'statistics') {
                 try {
                     // logger.debug(`Cluster's ${client.cluster.id} received statistics`)
                     client.cluster
@@ -66,7 +65,7 @@ export default class Ready extends BaseEvent {
                         Sentry.captureException(e, scope => {
                             scope.clear()
                             scope.setContext('Statistics', {
-                                message: message,
+                                message,
                                 cluster: client.cluster.id,
                             })
                             return scope
@@ -81,6 +80,6 @@ export default class Ready extends BaseEvent {
                 }
             }
         })
-        logger.debug(`${client.user!.username} ✅`)
+        logger.debug(`${client.user.username} ✅`)
     }
 }

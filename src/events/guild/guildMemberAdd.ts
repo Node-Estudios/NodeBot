@@ -4,7 +4,7 @@ import { Canvas, loadImage } from 'canvas'
 export default async function (member: GuildMember) {
     const canvas = new Canvas(1772, 633)
     const ctx = canvas.getContext('2d')
-    const background = await loadImage(`./files/welcome.png`)
+    const background = await loadImage('./files/welcome.png')
     ctx.drawImage(background, 0, 0, canvas.width, canvas.height)
     ctx.strokeStyle = '#f2f2f2'
     ctx.strokeRect(0, 0, canvas.width, canvas.height)
@@ -22,18 +22,18 @@ export default async function (member: GuildMember) {
     ctx.font = 'bold 40px Genta'
     ctx.fillStyle = '#f2f2f2'
     ctx.fillText(textString2, 730, canvas.height / 2 + 58)
-    //define the Member count
+    // define the Member count
     const textString4 = `Member #${member.guild.memberCount}`
     ctx.font = 'bold 60px Genta'
     ctx.fillStyle = '#f2f2f2'
     ctx.fillText(textString4, 750, canvas.height / 2 + 125)
-    //get the Guild Name
+    // get the Guild Name
     const textString5 = `${member.guild.name}`
     ctx.font = 'bold 60px Genta'
     ctx.fillStyle = '#f2f2f2'
     ctx.fillText(textString5, 700, canvas.height / 2 - 150)
     ctx.beginPath()
-    ctx.arc(315, canvas.height / 2, 250, 0, Math.PI * 2, true) //position of img
+    ctx.arc(315, canvas.height / 2, 250, 0, Math.PI * 2, true) // position of img
     ctx.closePath()
     ctx.clip()
     const avatar = await loadImage(
@@ -46,6 +46,6 @@ export default async function (member: GuildMember) {
         name: 'welcome-image.png',
     })
     // TODO: implement this in a database
-    const channel = member.guild.channels.cache.get('964522476396748831') as TextChannel
+    const channel = await member.guild.channels.fetch('964522476396748831') as TextChannel
     channel.send({ files: [attachment], content: 'Welcome to the server!' })
 }

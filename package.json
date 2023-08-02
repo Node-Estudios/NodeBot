@@ -3,6 +3,9 @@
     "version": "1.0.0",
     "description": "",
     "main": "build/index.js",
+    "engines": {
+        "node": ">=18.12.0"
+    },
     "signale": {
         "displayScope": true,
         "displayBadge": true,
@@ -28,25 +31,25 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
-        "@sentry/node": "7.58.1",
-        "bindings": "^1.5.0",
+        "@sentry/node": "7.61.0",
+        "bindings": "1.5.0",
         "canvas": "2.11.2",
         "cors": "2.8.5",
         "discord-hybrid-sharding": "github:meister03/discord-hybrid-sharding",
-        "discord.js": "14.11.0",
+        "discord.js": "14.12.1",
         "dotenv": "16.3.1",
         "express": "4.18.2",
         "figlet": "1.6.0",
         "i18n": "0.15.1",
         "jsonwebtoken": "9.0.1",
-        "moment": "^2.29.4",
-        "mongoose": "7.3.4",
+        "moment": "2.29.4",
+        "mongoose": "7.4.1",
         "mongoose-encryption": "2.1.2",
         "signale": "1.4.0",
         "statcord.js": "3.4.3",
-        "stripe": "12.13.0",
-        "yasha": "github:davidzeng0/yasha",
-        "youtubei.js": "5.4.0"
+        "stripe": "12.16.0",
+        "yasha": "github:eliyya/ts-yasha#main",
+        "youtubei.js": "5.8.0"
     },
     "devDependencies": {
         "@types/cors": "2.8.13",
@@ -54,10 +57,10 @@
         "@types/figlet": "1.5.6",
         "@types/i18n": "0.13.6",
         "@types/jsonwebtoken": "9.0.2",
-        "@types/node": "20.4.2",
+        "@types/node": "20.4.6",
         "@types/signale": "1.4.4",
         "concurrently": "8.2.0",
-        "eslint": "8.45.0",
+        "eslint": "8.46.0",
         "nodemon": "3.0.1",
         "transjson": "github:OnekiDevs/transjson#jspkg",
         "ts-standard": "12.0.2",
@@ -95,7 +98,8 @@
             ],
             "@typescript-eslint/no-floating-promises": "off",
             "@typescript-eslint/restrict-plus-operands": "off",
-            "@typescript-eslint/restrict-template-expressions": "off"
+            "@typescript-eslint/restrict-template-expressions": "off",
+            "@typescript-eslint/no-base-to-string": "off"
         }
     },
     "prettier": {
