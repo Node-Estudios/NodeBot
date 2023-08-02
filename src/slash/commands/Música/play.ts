@@ -4,6 +4,7 @@ import {
     VoiceChannel,
     ChatInputCommandInteraction,
     Colors,
+    AutocompleteInteraction,
 } from 'discord.js'
 import { MusicCarouselShelf } from 'youtubei.js/dist/src/parser/nodes.js'
 import performanceMeters from '../../../cache/performanceMeters.js'
@@ -12,7 +13,7 @@ import formatTime from '../../../utils/formatTime.js'
 import Command from '../../../structures/Command.js'
 import Client from '../../../structures/Client.js'
 import logger from '../../../utils/logger.js'
-import { Track } from 'yasha'
+import { Source, Track } from 'yasha'
 
 export default class play extends Command {
     constructor () {
@@ -42,21 +43,8 @@ export default class play extends Command {
                         'es-ES': 'Nombre de la canción que deseas escuchas.',
                         'en-US': 'Name of the song that u want to listen.',
                     },
-                    required: false,
-                },
-                {
-                    type: ApplicationCommandOptionType.Integer,
-                    name: 'amount',
-                    description: 'Amount of songs to load. Only works if you dont put a song string',
-                    name_localizations: {
-                        'es-ES': 'cantidad',
-                        'en-US': 'amount',
-                    },
-                    description_localizations: {
-                        'es-ES': 'Cantidad de canciones a reproducir. Solo funciona si nos dejas elegir.',
-                        'en-US': 'Amount of songs to load. Only works if you dont put a song string',
-                    },
-                    required: false,
+                    required: true,
+                    autocomplete: true,
                 },
             ],
         })
@@ -253,5 +241,15 @@ export default class play extends Command {
             })
         }
         return true
+    }
+
+    override async autocomplete (interaction: AutocompleteInteraction): Promise<any> {
+        const query = interaction.options.getFocused()
+        const search = await Source.Youtube.search(query)
+        if (search.length > 25) search.length = 25
+        interaction.respond(search.map(r => ({
+            name: r.title ?? '',
+            value: r.author ?? '',
+        })))
     }
 }

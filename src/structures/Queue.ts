@@ -1,7 +1,8 @@
 import { GuildMember } from 'discord.js'
 import { formatDuration } from './MusicManager.js'
+import { type Track as yashaTrack, TrackStream } from 'yasha'
 
-type Track = import('yasha').Track & { requester: GuildMember, streams: Array<import('yasha').TrackStream> | null }
+type Track = yashaTrack & { requester: GuildMember, streams: TrackStream[] | null }
 export default class Queue extends Array<Track> {
     current: Track | null
     previous: Track | null

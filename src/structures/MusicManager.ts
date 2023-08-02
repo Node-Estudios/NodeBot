@@ -22,7 +22,7 @@ import logger from '../utils/logger.js'
 import EventEmitter from 'events'
 import Player from './Player.js'
 import client from '../bot.js'
-import yasha, { Track } from 'yasha'
+import yasha, { type Track } from 'yasha'
 const spamIntervald = new SpamIntervalDB()
 type UserExtended = GuildMember & {}
 
