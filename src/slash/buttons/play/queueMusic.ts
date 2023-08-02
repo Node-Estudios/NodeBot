@@ -57,9 +57,9 @@ export default class Queue extends Button {
                                 )} - ${player.queue.current.streams?.[0].bitrate.toString().slice(0, 3)}Kbps]`,
                             )
                             .setAuthor({
-                                name: translate(keys.queue.queue, {
-                                    name: player.queue.current?.author ?? 'Unknown',
-                                }),
+                                name: `${translate(keys.queue.queue, {
+                                    name: interaction.user.username ?? 'Unknown',
+                                })}`,
                                 iconURL: 'https://i.imgur.com/CCqeomm.gif',
                             })
                             .setColor(client.settings.color),

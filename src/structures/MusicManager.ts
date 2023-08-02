@@ -15,6 +15,7 @@ import {
     APIEmbed,
     ButtonInteraction,
 } from 'discord.js'
+import { Innertube } from 'youtubei.js'
 import Translator, { keys } from '../utils/Translator.js'
 import { SpamIntervalDB } from './spamInterval.js'
 import formatTime from '../utils/formatTime.js'
@@ -29,6 +30,7 @@ type UserExtended = GuildMember & {}
 export default class MusicManager extends EventEmitter {
     players = new Collection<string, Player>()
     spamInterval = spamIntervald
+    youtubei = Innertube.create()
     youtubeCodes = new Collection<string, UserExtended>()
 
     private async sendSpamMSG (user: UserExtended, player: Player) {

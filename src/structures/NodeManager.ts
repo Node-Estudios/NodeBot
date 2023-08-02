@@ -1,16 +1,16 @@
-import { Cluster, ClusterManager, HeartbeatManager, ReClusterManager } from 'discord-hybrid-sharding';
-import pkg from 'figlet';
-import { ShardingClient } from 'statcord.js';
-import restApiBase from '../restAPI/index.js';
-import logger from '../utils/logger.js';
-const { textSync } = pkg;
+import { Cluster, ClusterManager, HeartbeatManager, ReClusterManager } from 'discord-hybrid-sharding'
+import pkg from 'figlet'
+import { ShardingClient } from 'statcord.js'
+import restApiBase from '../restAPI/index.js'
+import logger from '../utils/logger.js'
+const { textSync } = pkg
 
 export default class NodeManager extends ClusterManager {
     // public clustersArray: Collection<any, any>;
     // public players: Collection<any, any>;
     public statcord: ShardingClient | undefined
-    constructor() {
-        super(`build/bot.js`, {
+    constructor () {
+        super('build/bot.js', {
             totalClusters: 'auto',
             shardsPerClusters: 5,
             totalShards: 'auto',
@@ -110,13 +110,13 @@ export default class NodeManager extends ClusterManager {
         // });
         // let numClustersReady = 0 - this.totalClusters * 2 + this.totalClusters
         this.extend(
-            new ReClusterManager({ restartMode: 'gracefulSwitch', }),
+            new ReClusterManager({ restartMode: 'gracefulSwitch' }),
             new HeartbeatManager({
                 interval: 2000, // Interval to send a heartbeat
                 maxMissedHeartbeats: 5, // Maximum amount of missed Heartbeats until Cluster will get respawned
             }),
         )
-        this.on('debug', logger.debug);
+        this.on('debug', logger.debug)
         // if (numClustersReady == this.totalClusters)
         // (async () => {
         new restApiBase(this).start()

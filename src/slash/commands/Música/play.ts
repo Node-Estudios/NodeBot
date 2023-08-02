@@ -42,20 +42,7 @@ export default class play extends Command {
                         'es-ES': 'Nombre de la canción que deseas escuchas.',
                         'en-US': 'Name of the song that u want to listen.',
                     },
-                    required: false,
-                },
-                {
-                    type: ApplicationCommandOptionType.Integer,
-                    name: 'amount',
-                    description: 'Amount of songs to load. Only works if you dont put a song string',
-                    name_localizations: {
-                        'es-ES': 'cantidad',
-                        'en-US': 'amount',
-                    },
-                    description_localizations: {
-                        'es-ES': 'Cantidad de canciones a reproducir. Solo funciona si nos dejas elegir.',
-                        'en-US': 'Amount of songs to load. Only works if you dont put a song string',
-                    },
+                    autocomplete: true,
                     required: false,
                 },
             ],
@@ -220,7 +207,7 @@ export default class play extends Command {
             )
             if (client.settings.mode === 'development') {
                 let executionTime = await performanceMeters.get('interaction_' + interaction.id)
-                executionTime = executionTime.stop()
+                executionTime = executionTime?.stop()
                 const finaltext = 'Internal execution time: ' + executionTime + 'ms'
                 embed.setFooter({ text: finaltext })
             }
