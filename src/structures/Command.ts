@@ -5,6 +5,7 @@ import {
     PermissionsString,
     PermissionsBitField,
     LocalizationMap,
+    AutocompleteInteraction,
 } from 'discord.js'
 
 export default class Command {
@@ -48,14 +49,14 @@ export default class Command {
     // args: any
     // cooldown = false
     only_dm?: boolean
-    permissions: { dev?: boolean; botPermissions?: PermissionsBitField }
+    permissions: { dev?: boolean, botPermissions?: PermissionsBitField }
     cooldown = 0
 
-    constructor(
+    constructor (
         command: RESTPostAPIChatInputApplicationCommandsJSONBody & {
             only_dm?: boolean
             default_member_permissions?: PermissionsString[] | null
-            permissions?: { dev?: boolean; botPermissions?: PermissionsBitField }
+            permissions?: { dev?: boolean, botPermissions?: PermissionsBitField }
             cooldown?: number
         },
     ) {
@@ -89,14 +90,18 @@ export default class Command {
         this.cooldown = cooldown ?? 0
     }
 
-    run(interaction: ChatInputCommandInteraction): Promise<any> {
-        return interaction.reply({
+    async run (interaction: ChatInputCommandInteraction): Promise<any> {
+        return await interaction.reply({
             content: 'This command is not ready yet.',
             ephemeral: true,
         })
     }
 
-    toJSON(): RESTPostAPIChatInputApplicationCommandsJSONBody {
+    async autocomplete (interaction: AutocompleteInteraction): Promise<any> {
+        return await interaction.respond([])
+    }
+
+    toJSON (): RESTPostAPIChatInputApplicationCommandsJSONBody {
         return {
             name: this.name,
             name_localizations: this.name_localizations,
