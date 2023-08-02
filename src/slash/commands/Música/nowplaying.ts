@@ -23,10 +23,10 @@ export default class NowPlaying extends Command {
     }
 
     override async run (interaction: ChatInputCommandInteraction<'cached'>) {
-        // const client = interaction.client as Client
-        // const translate = Translator(interaction)
-        // const message = new MessageHelper(interaction)
-        // const player = await Player.tryGetPlayer(interaction, false)
+        /*         const client = interaction.client as Client
+        const translate = Translator(interaction)
+        const message = new MessageHelper(interaction)
+        const player = await Player.tryGetPlayer(interaction, false)
 
         // if (!player?.queue.current) {
         //      return await message.sendEphemeralMessage({
@@ -34,21 +34,22 @@ export default class NowPlaying extends Command {
         //       new EmbedBuilder().setColor(client.settings.color).setFooter({
         //            text: translate(keys.skip.messages[1]), // me gusta
 
-        //          }),
-        //       ],
-        //    }, true)
-        // }
+                    }),
+                ],
+            }, true)
+        } */
+        return true
         // const song = player.queue.current
         // const parsedCurrentDuration = moment
         //   .duration(player.position, 'milliseconds')
-        //    .format('mm:ss', {
-        //         trim: false,
-        //      })
+        //   .format('mm:ss', {
+        //        trim: false,
+        //   })
         // const parsedDuration = moment
-        //    .duration(duration, 'milliseconds')
-        //     .format('mm:ss', {
-        //          trim: false,
-        //       })
+        //   .duration(duration, 'milliseconds')
+        //   .format('mm:ss', {
+        //       trim: false,
+        //  })
         // const part = Math.floor((player.position / duration) * 30)
         // const uni = player.playing ? '▶' : '⏸️'
         // const thumbnail = `https://img.youtube.com/vi/${identifier}/maxresdefault.jpg`

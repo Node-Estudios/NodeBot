@@ -187,7 +187,17 @@ export default {
     6: "nowplaying.6",
     7: "nowplaying.7",
   },
+  loop: {
+    queue: 'loop.queue',
+    song: 'loop.song',
+    disabled: 'loop.disabled',
+  }
 } as {
+  loop: {
+    queue: string
+    song: string
+    disabled: string
+  }
   247: {
     enabled: string
     disabled: string

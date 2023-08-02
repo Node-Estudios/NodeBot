@@ -8,6 +8,12 @@ import {
     GuildMember,
     Collection,
     Guild,
+    Message,
+    ComponentType,
+    APIMessageComponentEmoji,
+    ChatInputCommandInteraction,
+    APIEmbed,
+    ButtonInteraction,
 } from 'discord.js'
 import Translator, { keys } from '../utils/Translator.js'
 import { SpamIntervalDB } from './spamInterval.js'
@@ -16,7 +22,7 @@ import logger from '../utils/logger.js'
 import EventEmitter from 'events'
 import Player from './Player.js'
 import client from '../bot.js'
-import yasha, { Track, TrackStreams } from 'yasha'
+import yasha, { Track } from 'yasha'
 const spamIntervald = new SpamIntervalDB()
 type UserExtended = GuildMember & {}
 
@@ -48,6 +54,8 @@ export default class MusicManager extends EventEmitter {
         player.on('ready', async () => await this.trackStart(player))
 
         player.on('finish', () => this.trackEnd(player, true))
+        // @ts-expect-error
+        player.on('debug', (debug: any) => logger.log(debug))
         // player.on('packet', (buffer: Buffer, frame_size: number) => {
         //     console.log(`Packet: ${frame_size} samples`);
         // });
@@ -65,6 +73,52 @@ export default class MusicManager extends EventEmitter {
         return player
     }
 
+    async trackPause (player: Player, interaction: ChatInputCommandInteraction<'cached'> | ButtonInteraction): Promise<false | Message<boolean>> {
+        // Return false in case the player is not playing || paused || there is no message
+        const translate = Translator(interaction)
+        if (!player.queue.current) return false
+        if (!player.playing || player.paused) {
+            player.playing = true
+            player.paused = false
+            player.pause()
+        } else {
+            player.playing = false
+            player.paused = true
+            player.pause()
+        }
+        type Writeable<T extends { [x: string]: any }, K extends string> = {
+            [P in K]: T[P];
+        }
+        const prevDesc = player.message?.embeds[0].description?.split('\n')[0]
+        const newDesc = `${prevDesc}\n\n${translate(keys.stop[player.paused ? 'paused' : 'resumed'], { user: interaction.user.toString() })}`
+        const updatedEmbed: APIEmbed = {
+            ...player.message?.embeds[0], // Spread the existing embed properties
+            description: newDesc, // Update the description
+        }
+        if (player.message?.components) {
+            const actionRowComponents = player.message.components[0]?.components
+            if (actionRowComponents) {
+                const pauseButton = actionRowComponents.find((c) => c.customId === 'pauseMusic' && c.type === ComponentType.Button)
+                if (pauseButton && pauseButton.type === 2) { // Make sure it's a button component
+                    if (player.playing) {
+                        (pauseButton.data.emoji as Writeable<APIMessageComponentEmoji, keyof APIMessageComponentEmoji>) = {
+                            name: client.settings.emojis.white.pause.name.toString(),
+                            id: client.settings.emojis.white.pause.id.toString(),
+                            animated: pauseButton.data.emoji?.animated,
+                        }
+                    } else {
+                        (pauseButton.data.emoji as Writeable<APIMessageComponentEmoji, keyof APIMessageComponentEmoji>) = {
+                            name: client.settings.emojis.white.play.name.toString(),
+                            id: client.settings.emojis.white.play.id.toString(),
+                            animated: pauseButton.data.emoji?.animated,
+                        }
+                    }
+                }
+            }
+        }
+        if (player.message) { return await player.message.edit({ components: player.message.components, embeds: [updatedEmbed] }) } else return false
+    }
+
     async trackStart (player: Player) {
         // todo: Check if the song limit is the saçme as stablished for the admins
         // if(player.queue.current?.duration > player.guild.)
@@ -74,19 +128,22 @@ export default class MusicManager extends EventEmitter {
         if (!song) return
         const translate = Translator(player.guild)
         const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
-            new ButtonBuilder().setStyle(ButtonStyle.Danger).setLabel(translate(keys.STOP)).setCustomId('stopMusic'),
+            /* new ButtonBuilder().setStyle(ButtonStyle.Secondary).setCustomId('likeMusic').setEmoji('<:grey_heart:1133326993694392401>'), */ // TODO: Change to blue if user already liked music
+            new ButtonBuilder().setStyle(ButtonStyle.Secondary).setCustomId('shuffleMusic').setEmoji(`${client.settings.emojis.white.shuffle.full}`),
+            /* new ButtonBuilder().setStyle(ButtonStyle.Secondary).setCustomId('previousMusic').setEmoji('<:grey_previous:1133320744089178132>'), */
             new ButtonBuilder()
                 .setStyle(ButtonStyle.Secondary)
-                .setLabel(translate(keys.PAUSE))
-                .setCustomId('pauseMusic'),
-            new ButtonBuilder().setStyle(ButtonStyle.Primary).setLabel(translate(keys.SKIP)).setCustomId('skipMusic'),
-            new ButtonBuilder().setStyle(ButtonStyle.Primary).setLabel(translate(keys.QUEUE)).setCustomId('queueMusic'),
+                .setCustomId('pauseMusic')
+                .setEmoji(`${client.settings.emojis.white.pause.full}`),
+            new ButtonBuilder().setStyle(ButtonStyle.Secondary).setCustomId('nextMusic').setEmoji(`${client.settings.emojis.white.next.full}`),
+            new ButtonBuilder().setStyle(ButtonStyle.Secondary).setCustomId('repeatMusic').setEmoji(`${client.settings.emojis.white.repeat_off.full}`),
+            new ButtonBuilder().setStyle(ButtonStyle.Secondary).setCustomId('queueMusic').setEmoji(`${client.settings.emojis.white.library.full}`),
         )
 
         const embed = new EmbedBuilder().setColor(client.settings.color)
         if (song.platform === 'Youtube') {
             embed
-                .setThumbnail(`https://img.youtube.com/vi/${song.id}/maxresdefault.jpg`)
+                .setImage(`https://img.youtube.com/vi/${song.id}/maxresdefault.jpg`)
                 .setDescription(
                     `${translate(keys.PLAYING)} **[${song.title}](https://music.youtube.com/watch?v=${
                         song.id
@@ -97,7 +154,7 @@ export default class MusicManager extends EventEmitter {
                 embed.setDescription(
                     `**${translate(keys.PLAYING)}\n[${song.title}](https://open.spotify.com/track/${song.id})**`,
                 )
-                embed.setThumbnail(song.thumbnails[0].url)
+                embed.setImage(song.thumbnails[0].url)
             }
         }
         // ^ Si no tenemos un mensaje ya enviado, lo enviamos, y si lo tenemos, borramos el anterior y enviamos uno nuevo <3
@@ -105,7 +162,7 @@ export default class MusicManager extends EventEmitter {
         if (client.settings.debug === 'true') {
             logger.debug(
                 'Playing | ' +
-                    player.queue.current?.title +
+                player.queue.current?.title +
                     ' | ' +
                     player.guild.name +
                     ' | ' +
@@ -249,6 +306,7 @@ export default class MusicManager extends EventEmitter {
                 const rawData = await (await requester.youtubei.music.search(query, { limit: 1 })).sections[0]
                 track = rawData.contents[0].id
             } else {
+                (await requester.youtubei)
                 track = await (await yasha.Source.Youtube.search(query))[0]
             }
         } else track = await (await yasha.Source.Youtube.search(query))[0]
@@ -266,11 +324,11 @@ export default class MusicManager extends EventEmitter {
             //         t.thumbnail;
             //     });
             // } else {
-            if (track instanceof Track && track.streams) {
+            /* if (track.streams) {
                 // console.log(track.streams)
                 const stream = getMax(track.streams, 'bitrate')
-                track.streams = track.streams.splice(stream, stream) as TrackStreams
-            }
+                track.streams = [stream.object]
+            } */
             // @ts-expect-error
             track.requester = requester
             // track.icon = null
@@ -282,15 +340,6 @@ export default class MusicManager extends EventEmitter {
     getPlayingPlayers () {
         return this.players.filter(p => p.playing)
     }
-}
-// TODO: REMOVE ANY TYPES
-function getMax (arr: any[], prop: string) {
-    let max: any
-    for (let i = 0; i < arr.length; i++) { if (arr[i].audio && !arr[i].video && (max == null || parseInt(arr[i][prop]) > parseInt(max[prop]))) max = arr[i] }
-
-    const best = arr.findIndex(o => o.url === max.url)
-    logger.debug('formatting better qualitty for audio: ', best)
-    return best
 }
 
 export function formatDuration (duration: number) {

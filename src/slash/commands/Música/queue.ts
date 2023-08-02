@@ -3,7 +3,7 @@ import Translator, { keys } from '../../../utils/Translator.js'
 import Command from '../../../structures/Command.js'
 import Client from '../../../structures/Client.js'
 import formatTime from '../../../utils/formatTime.js'
-import Player from '../../../structures/Player.js'
+import { MessageHelper } from '../../../handlers/messageHandler.js'
 
 export default class Queue extends Command {
     constructor () {
@@ -26,9 +26,18 @@ export default class Queue extends Command {
     override async run (interaction: ChatInputCommandInteraction<'cached'>) {
         const client = interaction.client as Client
         const translate = Translator(interaction)
-        const player = await Player.tryGetPlayer(interaction, false)
-        if (!player) return
-
+        const message = new MessageHelper(interaction)
+        const player = client.music.players.get(interaction.guild.id)
+        if (!player) {
+            return await message.sendMessage({
+                embeds: [
+                    new EmbedBuilder().setColor(client.settings.color).setFooter({
+                        text: translate(keys.queue.no_queue),
+                        iconURL: interaction.user.displayAvatarURL(),
+                    }),
+                ],
+            })
+        }
         if (!player.queue.current) {
             return await interaction.reply({
                 embeds: [

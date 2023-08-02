@@ -3,7 +3,7 @@ const { Signale } = signale
 
 export default new Signale({
     // TODO: use cluster id
-    scope: 'Cluster $ID',
+/*     scope: 'Cluster $ID', */
     config: {
         displayTimestamp: true,
         displayDate: true,

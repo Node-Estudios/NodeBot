@@ -149,6 +149,11 @@
         "role_mention": "Se mencionara a {role}.",
         "now_live": "¡{streamer} está en vivo!"
     },
+    "loop": {
+        "queue": "Bucle de cola",
+        "song": "Bucle de canción",
+        "disabled": "Bucle desactivado"
+    },
     "ERROREMBED": "Error",
     "SUCCESSEMBED": "Success",
     "PAUSE": "Pausa",

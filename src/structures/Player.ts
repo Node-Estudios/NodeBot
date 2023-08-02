@@ -1,12 +1,10 @@
-import { Guild, LocaleString, Message, VoiceChannel, User, TextChannel, EmbedBuilder, Colors, Interaction } from 'discord.js'
+import { Guild, LocaleString, Message, VoiceChannel, User, TextChannel } from 'discord.js'
 // import { spamIntervalDB } from './spamInterval.js'
 import MusicManager from './MusicManager.js'
 import logger from '../utils/logger.js'
 import { Innertube } from 'youtubei.js'
 import Queue from './Queue.js'
 import yasha from 'yasha'
-import Translator, { keys } from '../utils/Translator.js'
-import Client from './Client.js'
 
 // const spamIntervald = new spamIntervalDB()
 
@@ -45,7 +43,7 @@ export default class Player extends yasha.TrackPlayer {
     }) {
         super({
             external_packet_send: false,
-            external_encrypt: true,
+            external_encrypt: false,
             normalize_volume: true,
         })
         this.manager = options.musicManager
@@ -63,7 +61,7 @@ export default class Player extends yasha.TrackPlayer {
         })
         // TODO: Remove ts-ignore when yasha is updated
         this.subscription = this.connection?.subscribe(this)
-        this.connection?.on('error', (error: Error) => logger.error(error))
+        this.connection?.on('error', (error: any) => logger.error(error))
     }
 
     disconnect () {
@@ -73,7 +71,7 @@ export default class Player extends yasha.TrackPlayer {
 
     override async play (track?: any) {
         // TODO: Check if this code works
-        if (!track) super.play(this.queue.current!)
+        if (!track && this.queue.current) super.play(this.queue.current)
         else super.play(track)
         clearTimeout(this.leaveTimeout)
         this.leaveTimeout = undefined
@@ -81,6 +79,7 @@ export default class Player extends yasha.TrackPlayer {
         // console.log("stream: ", this.stream)
         // if (this.stream.volume && !this.volume) this.volume = this.stream.volume;
         // console.log("volume: ", this.volume);
+        /* this.on('packet', (buffer: Buffer, frame_size: number) => logger.log(`Packet: ${frame_size} samples`)) */
         this.start()
     }
 
@@ -152,51 +151,5 @@ export default class Player extends yasha.TrackPlayer {
 
         // set timer in the player too
         super.seek(Number(time))
-    }
-
-    static async tryGetPlayer (interaction: Interaction<'cached'>, create = true) {
-        const client = interaction.client as Client
-        let player = client.music.players.get(interaction.guildId)
-        const translate = Translator(interaction)
-        if (!interaction.member.voice.channel?.id) {
-            if (interaction.isChatInputCommand()) {
-                await interaction.reply({
-                    embeds: [
-                        new EmbedBuilder().setColor(Colors.Red).setFooter({
-                            text: translate(keys.play.not_voice),
-                            iconURL: client.user.displayAvatarURL(),
-                        }),
-                    ],
-                    ephemeral: true,
-                })
-            } else if (interaction.isButton()) await interaction.deferUpdate()
-            return null
-        }
-
-        if (!player) {
-            if (!create) return null
-            player = await client.music.createNewPlayer(
-                interaction.member.voice.channel as VoiceChannel,
-                interaction.channel as TextChannel,
-            )
-            await player.connect()
-        }
-
-        if (player.voiceChannel.id !== interaction.member.voice.channelId) {
-            if (interaction.isChatInputCommand()) {
-                await interaction.reply({
-                    embeds: [
-                        new EmbedBuilder().setColor(Colors.Red).setFooter({
-                            text: translate(keys.play.same),
-                            iconURL: client.user?.displayAvatarURL(),
-                        }),
-                    ],
-                    ephemeral: true,
-                })
-            } else if (interaction.isButton()) await interaction.deferUpdate()
-            return null
-        }
-
-        return player
     }
 }

@@ -7,7 +7,7 @@ import logger from '../../../utils/logger.js'
 
 export default class Skip extends Button {
     constructor () {
-        super('stopMusic')
+        super('shuffleMusic')
     }
 
     override async run (interaction: ButtonInteraction) {
