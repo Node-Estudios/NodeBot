@@ -21,6 +21,7 @@ export default class Player extends yasha.TrackPlayer {
     guild: Guild
     leaveTimeout?: NodeJS.Timeout
     bitrate?: number
+    // @ts-expect-error
     connection?: yasha.VoiceConnection
     subscription?: any
     stayInVc = false

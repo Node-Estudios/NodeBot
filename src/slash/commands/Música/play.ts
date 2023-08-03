@@ -4,7 +4,6 @@ import {
     VoiceChannel,
     ChatInputCommandInteraction,
     Colors,
-    AutocompleteInteraction,
 } from 'discord.js'
 import { MusicCarouselShelf } from 'youtubei.js/dist/src/parser/nodes.js'
 import performanceMeters from '../../../cache/performanceMeters.js'
@@ -13,7 +12,7 @@ import formatTime from '../../../utils/formatTime.js'
 import Command from '../../../structures/Command.js'
 import Client from '../../../structures/Client.js'
 import logger from '../../../utils/logger.js'
-import { Source, Track } from 'yasha'
+import { Track } from 'yasha'
 
 export default class play extends Command {
     constructor () {
@@ -183,13 +182,12 @@ export default class play extends Command {
             //     interaction.reply({ embeds: [e], content: '' })
             // }
             // TODO: Add streaming support
-            if (!(search instanceof Track)) return
             if (search.streams?.live) {
                 return await interaction.editReply({
                     content: 'We are currently working on supporting Live Streaming videos. :D',
                 })
             }
-            player.queue.add(search as Track & { requester: any })
+            player.queue.add(search)
             if (!player.playing && !player.paused) player.play()
             const embed = new EmbedBuilder().setColor(client.settings.color).setFields(
                 {
@@ -222,7 +220,7 @@ export default class play extends Command {
                     })}** <:pepeblink:967941236029788160>`,
                 )
             } else if (source === 'Spotify') {
-                if (search instanceof Track && search.thumbnails?.[0]) {
+                if (search.thumbnails?.[0]) {
                     embed.setDescription(
                         `**${translate(keys.play.added, {
                             song: `[${search.title}](https://open.spotify.com/track/${search.id})`,

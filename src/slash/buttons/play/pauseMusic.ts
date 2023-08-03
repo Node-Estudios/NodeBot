@@ -24,6 +24,7 @@ export default class Pause extends Button {
                 ],
             })
         }
+        interaction.deferUpdate()
 
         return await client.music.trackPause(player, interaction)
     }

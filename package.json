@@ -1,5 +1,5 @@
 {
-    "name": "node-with-ts",
+    "name": "NodeBot",
     "version": "1.0.0",
     "description": "",
     "main": "build/index.js",
@@ -48,7 +48,7 @@
         "signale": "1.4.0",
         "statcord.js": "3.4.3",
         "stripe": "12.16.0",
-        "yasha": "github:eliyya/ts-yasha#main",
+        "yasha": "github:eliyya/ts-yasha#types",
         "youtubei.js": "5.8.0"
     },
     "devDependencies": {

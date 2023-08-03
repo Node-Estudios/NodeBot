@@ -3,9 +3,8 @@ import Translator, { keys } from '../../../utils/Translator.js'
 import Command from '../../../structures/Command.js'
 import Client from '../../../structures/Client.js'
 
-
 export default class serverinfo extends Command {
-    constructor() {
+    constructor () {
         super({
             name: 'serverinfo',
             description: 'Get information about the server.',
@@ -22,7 +21,7 @@ export default class serverinfo extends Command {
         })
     }
 
-    override async run(interaction: ChatInputCommandInteraction<'cached'>) {
+    override async run (interaction: ChatInputCommandInteraction<'cached'>) {
         const client = interaction.client as Client
         const translate = Translator(interaction)
         // try {
@@ -67,7 +66,7 @@ export default class serverinfo extends Command {
         const [category, others] = interaction.guild.channels.cache.partition((c: any) => c.type === 'GUILD_CATEGORY')
         const [text, voice] = others.partition((c: any) => c.type === 'GUILD_TEXT')
         const [regular, animated] = emojis.partition(emoji => !emoji.animated)
-        const banner = interaction.guild.bannerURL({extension:'gif', size: 4096})
+        const banner = interaction.guild.bannerURL({ extension: 'gif', size: 4096 })
         const iconURL = interaction.guild.iconURL()
         const embed = new EmbedBuilder()
             .setColor(client.settings.color)

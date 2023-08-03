@@ -56,13 +56,11 @@ export default class MusicManager extends EventEmitter {
         player.on('ready', async () => await this.trackStart(player))
 
         player.on('finish', () => this.trackEnd(player, true))
-        // @ts-expect-error
         player.on('debug', (debug: any) => logger.log(debug))
         // player.on('packet', (buffer: Buffer, frame_size: number) => {
         //     console.log(`Packet: ${frame_size} samples`);
         // });
         // TODO: update ts-yasha and pull request
-        // @ts-expect-error
         player.on(yasha.VoiceConnection.Status.Destroyed, async () => await player.destroy())
 
         player.on('error', err => {
@@ -79,15 +77,7 @@ export default class MusicManager extends EventEmitter {
         // Return false in case the player is not playing || paused || there is no message
         const translate = Translator(interaction)
         if (!player.queue.current) return false
-        if (!player.playing || player.paused) {
-            player.playing = true
-            player.paused = false
-            player.pause()
-        } else {
-            player.playing = false
-            player.paused = true
-            player.pause()
-        }
+        player.playing ? player.pause() : player.pause(false)
         type Writeable<T extends { [x: string]: any }, K extends string> = {
             [P in K]: T[P];
         }
@@ -95,8 +85,9 @@ export default class MusicManager extends EventEmitter {
         const newDesc = `${prevDesc}\n\n${translate(keys.stop[player.paused ? 'paused' : 'resumed'], { user: interaction.user.toString() })}`
         const updatedEmbed: APIEmbed = {
             ...player.message?.embeds[0], // Spread the existing embed properties
-            description: newDesc, // Update the description
+            description: newDesc,
         }
+        const updatedEmbed2 = new EmbedBuilder(updatedEmbed).setImage(player.message?.embeds[0].data.image?.url ?? null).setColor(player.message?.embeds[0].data.color ?? null)
         if (player.message?.components) {
             const actionRowComponents = player.message.components[0]?.components
             if (actionRowComponents) {
@@ -118,7 +109,7 @@ export default class MusicManager extends EventEmitter {
                 }
             }
         }
-        if (player.message) { return await player.message.edit({ components: player.message.components, embeds: [updatedEmbed] }) } else return false
+        if (player.message) { return await player.message.edit({ components: player.message.components, embeds: [updatedEmbed2] }) } else return false
     }
 
     async trackStart (player: Player) {
@@ -144,8 +135,9 @@ export default class MusicManager extends EventEmitter {
 
         const embed = new EmbedBuilder().setColor(client.settings.color)
         if (song.platform === 'Youtube') {
+            console.log(song.thumbnails)
             embed
-                .setImage(`https://img.youtube.com/vi/${song.id}/maxresdefault.jpg`)
+                .setImage(song.thumbnails[0].url)
                 .setDescription(
                     `${translate(keys.PLAYING)} **[${song.title}](https://music.youtube.com/watch?v=${
                         song.id
@@ -190,7 +182,7 @@ export default class MusicManager extends EventEmitter {
 
         if (player.queueRepeat) {
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            player.queue.add(player.queue.current!)
+            player.queue.add(player.queue.current)
             player.queue.current = player.queue.shift() ?? null
             player.play()
             return this
@@ -247,7 +239,7 @@ export default class MusicManager extends EventEmitter {
                 // Lógica de tu acción
                 const track = await client.music.search(elemento.video_id, client.user, 'Youtube')
                 // TODO extends track
-                player.queue.add(track as Track & { requester: any })
+                player.queue.add(track)
             }
             ejecutarAccionesEnParalelo(playlist.contents, 5).then(() => {
                 player.skip()
@@ -329,7 +321,6 @@ export default class MusicManager extends EventEmitter {
                 const stream = getMax(track.streams, 'bitrate')
                 track.streams = [stream.object]
             } */
-            // @ts-expect-error
             track.requester = requester
             // track.icon = null
         }
