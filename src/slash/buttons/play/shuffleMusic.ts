@@ -40,12 +40,12 @@ export default class Skip extends Button {
             }
 
             if (!player.queue.current) return
-            if (player.trackRepeat) player.setTrackRepeat(false)
-            if (player.queueRepeat) player.setQueueRepeat(false)
+            player.queue.shuffle()
 
-            return await client.music.queueEnd(player)
+            return await interaction.deferUpdate()
         } catch (e) {
             logger.error(e)
         }
+        return true
     }
 }

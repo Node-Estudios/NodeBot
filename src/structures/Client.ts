@@ -161,7 +161,7 @@ export default class Client extends ClientBase<true> {
             new EventHandler(this).load(events)
             return await super.login(process.env.TOKEN).then(() => logger.startUp(`${this.user.username} logged in`))
         } catch (e) {
-            if ((e as any).code == 'TOKEN_INVALID') logger.error('Invalid token')
+            if ((e as any).code === 'TOKEN_INVALID') logger.error('Invalid token')
         }
     }
 }

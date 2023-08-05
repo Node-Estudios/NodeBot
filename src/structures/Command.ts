@@ -5,7 +5,6 @@ import {
     PermissionsString,
     PermissionsBitField,
     LocalizationMap,
-    AutocompleteInteraction,
 } from 'discord.js'
 
 export default class Command {
@@ -95,10 +94,6 @@ export default class Command {
             content: 'This command is not ready yet.',
             ephemeral: true,
         })
-    }
-
-    async autocomplete (interaction: AutocompleteInteraction): Promise<any> {
-        return await interaction.respond([])
     }
 
     toJSON (): RESTPostAPIChatInputApplicationCommandsJSONBody {
