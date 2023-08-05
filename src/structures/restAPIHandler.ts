@@ -3,13 +3,13 @@ import express from 'express'
 import logger from '../utils/logger.js'
 import Manager from './NodeManager.js'
 
-//funcione logger:
-//Logger.log, Logger.error, Logger.warn, Logger.info, Logger.debug
+// funcione logger:
+// Logger.log, Logger.error, Logger.warn, Logger.info, Logger.debug
 
 export default function (manager: Manager) {
     const app = express()
     app.use(cors())
-    //Definimos las variables necesarias en el oncstructor para la rest API
+    // Definimos las variables necesarias en el oncstructor para la rest API
 
     let result: any[] = []
     app.get('/statistics', async (req: express.Request, res: express.Response) => {
@@ -104,10 +104,10 @@ export default function (manager: Manager) {
                     }
                 }
             ]
-            
+
         */
 
-    async function getData() {
+    async function getData () {
         /* Posible responses:
                     ~ 503: Shards still spawning
                     * 200: OK
@@ -117,12 +117,11 @@ export default function (manager: Manager) {
             if (manager.queue.queue.length !== 0) return
             result = []
             // Convertimos el objeto Map en un array y lo iteramos con map
-            const Promises = Array.from(manager.clusters).map(([key, cluster]) => {
-                return cluster.request({ content: 'statistics' }).then((data: any) => {
-                    Object.assign(data[0], { cluster: cluster.id, shardList: cluster.shardList })
-                    result.push(data[0])
-                    return data[0]
-                })
+            const Promises = Array.from(manager.clusters).map(async ([key, cluster]) => {
+                const data: any = await cluster.request({ content: 'statistics' })
+                Object.assign(data[0], { cluster: cluster.id, shardList: cluster.shardList })
+                result.push(data[0])
+                return data[0]
             })
             // Esperamos a que todas las promesas se completen
             await Promise.all(Promises).then(data => {

@@ -3,7 +3,6 @@ import {
     ButtonBuilder,
     EmbedBuilder,
     VoiceChannel,
-    TextChannel,
     ButtonStyle,
     GuildMember,
     Collection,
@@ -23,7 +22,7 @@ import logger from '../utils/logger.js'
 import EventEmitter from 'events'
 import Player from './Player.js'
 import client from '../bot.js'
-import yasha, { type Track } from 'yasha'
+import yasha from 'yasha'
 const spamIntervald = new SpamIntervalDB()
 type UserExtended = GuildMember & {}
 
