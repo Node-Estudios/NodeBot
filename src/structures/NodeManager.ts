@@ -116,7 +116,7 @@ export default class NodeManager extends ClusterManager {
                 maxMissedHeartbeats: 5, // Maximum amount of missed Heartbeats until Cluster will get respawned
             }),
         )
-        this.on('debug', logger.debug)
+        this.on('debug', (input: any) => logger.debug(input))
         // if (numClustersReady == this.totalClusters)
         // (async () => {
         new restApiBase(this).start()

@@ -6,7 +6,6 @@ import logger from '../../utils/logger.js'
 
 export default class voiceStateUpdate extends BaseEvent {
     async run (client: Client, oldState: VoiceState, newState: VoiceState): Promise<any> {
-        console.log('voiceStateUpdate')
         if (!client.music) return
         const translate = Translator(newState.guild)
         const player = client.music.players.get(oldState.guild.id)

@@ -9,5 +9,6 @@ const client = new Client()
     },
     dbmPropagationMode: 'full'
 }); */
+
 client.init()
 export default client

@@ -151,7 +151,7 @@ export default class Client extends ClientBase<true> {
         try {
             // * Load Events (./handlers/events.js) ==> ./events/*/* ==> ./cache/events.ts (Collection)
             new EventHandler(this).load(events)
-            return await super.login(process.env.TOKEN).then(() => logger.startUp(`${this.user.username} logged in`))
+            return await super.login(process.env.TOKEN).then(() => logger.startUp(`${this.user.username} logged in | Cluster ${this.cluster.id}`))
         } catch (e) {
             if ((e as any).code === 'TOKEN_INVALID') logger.error('Invalid token')
         }

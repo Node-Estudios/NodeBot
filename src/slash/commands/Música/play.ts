@@ -25,14 +25,6 @@ export default class play extends Command {
                     type: ApplicationCommandOptionType.String,
                     name: 'song',
                     description: 'Name of the song that u want to listen.',
-                    name_localizations: {
-                        'es-ES': 'canción',
-                        'en-US': 'song',
-                    },
-                    description_localizations: {
-                        'es-ES': 'Nombre de la canción que deseas escuchas.',
-                        'en-US': 'Name of the song that u want to listen.',
-                    },
                     autocomplete: true,
                     required: false,
                 },

@@ -1,7 +1,7 @@
-import { ApplicationCommandOptionType, Colors, EmbedBuilder, ChatInputCommandInteraction } from 'discord.js'
-import Translator, { keys } from '../../../utils/Translator.js'
-import Command from '../../../structures/Command.js'
+import { ApplicationCommandOptionType, ChatInputCommandInteraction, Colors, EmbedBuilder } from 'discord.js'
 import Client from '../../../structures/Client.js'
+import Command from '../../../structures/Command.js'
+import Translator, { keys } from '../../../utils/Translator.js'
 
 export default class ball extends Command {
     constructor () {
@@ -14,14 +14,6 @@ export default class ball extends Command {
                     type: ApplicationCommandOptionType.String,
                     name: 'question',
                     description: 'The question to ask',
-                    name_localizations: {
-                        'es-ES': 'pregunta',
-                        'en-US': 'question',
-                    },
-                    description_localizations: {
-                        'es-ES': 'La pregunta a preguntar',
-                        'en-US': 'The question to ask',
-                    },
                     required: true,
                 },
             ],

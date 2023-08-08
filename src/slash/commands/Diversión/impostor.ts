@@ -1,7 +1,7 @@
 /* eslint-disable no-irregular-whitespace */
 import { ApplicationCommandOptionType, ChatInputCommandInteraction } from 'discord.js'
-import Translator, { keys } from '../../../utils/Translator.js'
 import Command from '../../../structures/Command.js'
+import Translator, { keys } from '../../../utils/Translator.js'
 
 export default class impostor extends Command {
     constructor () {
@@ -14,14 +14,6 @@ export default class impostor extends Command {
                     type: ApplicationCommandOptionType.User,
                     name: 'user',
                     description: 'Are this user the impostor? SUS na na na na na na na',
-                    name_localizations: {
-                        'es-ES': 'usuario',
-                        'en-US': 'user',
-                    },
-                    description_localizations: {
-                        'es-ES': 'Es este usuario el impostor? SUS na na na na na na na',
-                        'en-US': 'Are this user the impostor? SUS na na na na na na na',
-                    },
                     required: false,
                 },
             ],
@@ -37,6 +29,8 @@ export default class impostor extends Command {
         .　　 。　　　　　 ඞ 。 . 　　 • 　　　　•
 
         　　ﾟ　　 ${(interaction.options.getUser('user') ?? interaction.user).tag} ${
+    Math.random() < 0.7 ? trnaslate(keys.impostor.was_not) : trnaslate(keys.impostor.was)
+} 　 。　.
     Math.random() < 0.7 ? trnaslate(keys.impostor.was_not) : trnaslate(keys.impostor.was)
 } 　 。　.
 

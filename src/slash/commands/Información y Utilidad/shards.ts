@@ -1,7 +1,7 @@
-import { EmbedBuilder, ChatInputCommandInteraction } from 'discord.js'
-import Command from '../../../structures/Command.js'
-import Client from '../../../structures/Client.js'
+import { ChatInputCommandInteraction, EmbedBuilder } from 'discord.js'
 import { MessageHelper } from '../../../handlers/messageHandler.js'
+import Client from '../../../structures/Client.js'
+import Command from '../../../structures/Command.js'
 
 export default class shards extends Command {
     constructor () {
@@ -53,7 +53,7 @@ export default class shards extends Command {
                 .setColor(client.settings.color)
 
             embed
-                .setDescription(`This guild is currently on **Shard ${client.cluster.ids}**.`)
+                .setDescription(`This guild is currently on **Cluster ${client.cluster.id}**.`)
                 .setAuthor({ name: 'NodeBot', iconURL: client.user.displayAvatarURL({ forceStatic: false }) })
 
             for (const shard of shardArray) {
@@ -61,7 +61,7 @@ export default class shards extends Command {
                 embed.addFields([
                     {
                         inline: true,
-                        name: `${status} Shard ${(shard.id).toString()}`,
+                        name: `${status} Cluster ${(shard.id).toString()}`,
                         value: `\`\`\`Servers: ${shard.guilds.toLocaleString()}\nChannels: ${shard.channels.toLocaleString()}\nUsers: ${shard.members.toLocaleString()}\nMemory: ${Number(shard.memoryUsage).toLocaleString()} MB\nAPI: ${shard.ping.toLocaleString()} ms\nPlayers: ${shard.playingPlayers.toLocaleString()}/${shard.players.toLocaleString()} \`\`\``,
                     },
                 ])
@@ -69,6 +69,7 @@ export default class shards extends Command {
                 totalPlayers += shard.players
                 totalPlayingPlayers += shard.playingPlayers
             }
+            embeds.push(embed)
         }
 
         embeds.push(

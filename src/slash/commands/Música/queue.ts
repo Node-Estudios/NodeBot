@@ -1,9 +1,9 @@
 import { ChatInputCommandInteraction, EmbedBuilder } from 'discord.js'
-import Translator, { keys } from '../../../utils/Translator.js'
-import Command from '../../../structures/Command.js'
-import Client from '../../../structures/Client.js'
-import formatTime from '../../../utils/formatTime.js'
 import { MessageHelper } from '../../../handlers/messageHandler.js'
+import Client from '../../../structures/Client.js'
+import Command from '../../../structures/Command.js'
+import Translator, { keys } from '../../../utils/Translator.js'
+import formatTime from '../../../utils/formatTime.js'
 
 export default class Queue extends Command {
     constructor () {

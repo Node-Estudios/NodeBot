@@ -1,6 +1,6 @@
 import { ApplicationCommandOptionType, ChatInputCommandInteraction } from 'discord.js'
-import Translator, { keys } from '../../../utils/Translator.js'
 import Command from '../../../structures/Command.js'
+import Translator, { keys } from '../../../utils/Translator.js'
 
 export default class Ban extends Command {
     constructor () {
@@ -15,28 +15,12 @@ export default class Ban extends Command {
                     name: 'user',
                     description: 'User to ban',
                     required: true,
-                    name_localizations: {
-                        'es-ES': 'usuario',
-                        'en-US': 'user',
-                    },
-                    description_localizations: {
-                        'es-ES': 'Usuario a banear',
-                        'en-US': 'User to ban',
-                    },
                 },
                 {
                     type: ApplicationCommandOptionType.String,
                     name: 'reason',
                     description: 'Reason for the ban',
                     required: false,
-                    name_localizations: {
-                        'es-ES': 'razón',
-                        'en-US': 'reason',
-                    },
-                    description_localizations: {
-                        'es-ES': 'Razón del ban',
-                        'en-US': 'Reason for the ban',
-                    },
                 },
                 {
                     type: ApplicationCommandOptionType.Integer,

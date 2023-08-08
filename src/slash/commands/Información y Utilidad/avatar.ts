@@ -14,14 +14,6 @@ export default class avatar extends Command {
                     type: ApplicationCommandOptionType.User,
                     name: 'user',
                     description: 'The user to get the avatar of.',
-                    name_localizations: {
-                        'es-ES': 'usuario',
-                        'en-US': 'user',
-                    },
-                    description_localizations: {
-                        'es-ES': 'La foto de perfil del usuario que quieres ver.',
-                        'en-US': 'The user to get the avatar of. xD',
-                    },
                 },
             ],
         })

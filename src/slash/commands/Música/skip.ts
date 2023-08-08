@@ -1,8 +1,8 @@
 import { ChatInputCommandInteraction, Colors, EmbedBuilder } from 'discord.js'
 import { MessageHelper } from '../../../handlers/messageHandler.js'
-import Translator, { keys } from '../../../utils/Translator.js'
-import Command from '../../../structures/Command.js'
 import Client from '../../../structures/Client.js'
+import Command from '../../../structures/Command.js'
+import Translator, { keys } from '../../../utils/Translator.js'
 
 import logger from '../../../utils/logger.js'
 

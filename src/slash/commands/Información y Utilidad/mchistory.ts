@@ -1,7 +1,7 @@
-import { ApplicationCommandOptionType, EmbedBuilder, ChatInputCommandInteraction } from 'discord.js'
-import Translator, { keys } from '../../../utils/Translator.js'
-import Command from '../../../structures/Command.js'
+import { ApplicationCommandOptionType, ChatInputCommandInteraction, EmbedBuilder } from 'discord.js'
 import Client from '../../../structures/Client.js'
+import Command from '../../../structures/Command.js'
+import Translator, { keys } from '../../../utils/Translator.js'
 
 export default class mchistory extends Command {
     constructor () {
@@ -14,14 +14,6 @@ export default class mchistory extends Command {
                     type: ApplicationCommandOptionType.String,
                     name: 'account',
                     description: 'The account to show the history of.',
-                    name_localizations: {
-                        'es-ES': 'cuenta',
-                        'en-US': 'account',
-                    },
-                    description_localizations: {
-                        'es-ES': 'La cuenta para mostrar el historial.',
-                        'en-US': 'The account to show the history of.',
-                    },
                     required: true,
                 },
             ],

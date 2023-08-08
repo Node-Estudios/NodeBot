@@ -152,7 +152,7 @@ export default class MusicManager extends EventEmitter {
         // ^ Si no tenemos un mensaje ya enviado, lo enviamos, y si lo tenemos, borramos el anterior y enviamos uno nuevo <3
         player.message?.delete()
         if (client.settings.debug === 'true') {
-            logger.debug(
+            logger.music(
                 'Playing | ' +
                 player.queue.current?.title +
                     ' | ' +
