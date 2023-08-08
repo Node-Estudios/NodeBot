@@ -14,6 +14,7 @@ i18n.configure({
         'en-*': 'en',
         'es-*': 'es',
     },
+    updateFiles: false,
     logDebugFn: (msg) => logger.debug(msg),
     logWarnFn: (msg) => logger.warn(msg),
     logErrorFn: (msg) => logger.error(msg),

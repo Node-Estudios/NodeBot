@@ -15,14 +15,6 @@ export default class Twitch extends Command {
         super({
             name: 'twitch',
             description: 'Set a notification for when a streamer goes live',
-            name_localizations: {
-                'es-ES': 'twich',
-                'en-US': 'twitch',
-            },
-            description_localizations: {
-                'es-ES': 'Establece una notificación para cuando un streamer se ponga en directo',
-                'en-US': 'Set a notification for when a streamer goes live',
-            },
             cooldown: 5,
             dm_permission: false,
             options: [

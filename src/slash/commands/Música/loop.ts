@@ -9,13 +9,6 @@ export default class Loop extends Command {
         super({
             name: 'loop',
             description: 'Loops the current queue',
-            name_localizations: {
-                'es-ES': 'loop',
-                'en-US': 'repetir',
-            },
-            description_localizations: {
-                'es-ES': 'Repite la cola/canción actual',
-            },
             cooldown: 5,
         })
     }

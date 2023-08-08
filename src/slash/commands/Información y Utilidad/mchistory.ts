@@ -8,10 +8,6 @@ export default class mchistory extends Command {
         super({
             name: 'mchistory',
             description: 'Show the history of a Minecraft account.',
-            description_localizations: {
-                'es-ES': 'Muesrta el historial de una cuenta de Minecraft.',
-                'en-US': 'Show the history of a Minecraft account.',
-            },
             cooldown: 5,
             options: [
                 {
@@ -76,7 +72,7 @@ export default class mchistory extends Command {
         })
     }
 }
-function add_cero_day (numero: number) {
+function addCeroDay (numero: number) {
     if (numero < 10) return '0' + numero
     else return numero + ''
 }
@@ -84,16 +80,16 @@ function add_cero_day (numero: number) {
 function parserTimeStamp (date: Date): string {
     date = new Date(date)
     return (
-        add_cero_day(date.getDate()) +
+        addCeroDay(date.getDate()) +
         '-' +
-        add_cero_day(date.getMonth() + 1) +
+        addCeroDay(date.getMonth() + 1) +
         '-' +
-        add_cero_day(date.getFullYear()) +
+        addCeroDay(date.getFullYear()) +
         '  ' +
-        add_cero_day(date.getHours()) +
+        addCeroDay(date.getHours()) +
         ':' +
-        add_cero_day(date.getMinutes()) +
+        addCeroDay(date.getMinutes()) +
         ':' +
-        add_cero_day(date.getSeconds())
+        addCeroDay(date.getSeconds())
     )
 }

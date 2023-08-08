@@ -11,14 +11,6 @@ export default class skip extends Command {
         super({
             name: 'skip',
             description: 'Skips the current song!',
-            description_localizations: {
-                'es-ES': '¡Salta la canción actual!',
-                'en-US': 'Skips the current song!',
-            },
-            name_localizations: {
-                'es-ES': 'saltar',
-                'en-US': 'skip',
-            },
             cooldown: 5,
             dm_permission: false,
             // options: [

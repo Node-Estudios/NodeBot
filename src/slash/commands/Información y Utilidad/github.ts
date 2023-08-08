@@ -8,14 +8,6 @@ export default class github extends Command {
         super({
             name: 'github',
             description: 'Show Information about a Github Account.',
-            description_localizations: {
-                'es-ES': 'Muestra información sobre una cuenta de Github.',
-                'en-US': 'Show Information about a Github Account.',
-            },
-            name_localizations: {
-                'es-ES': 'github',
-                'en-US': 'github',
-            },
             cooldown: 5,
             options: [
                 {

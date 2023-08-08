@@ -10,14 +10,6 @@ export default class Pause extends Command {
         super({
             name: 'pause',
             description: 'Pause the current song!',
-            description_localizations: {
-                'es-ES': '¡Pausa la canción actual!',
-                'en-US': 'Pause the current song!',
-            },
-            name_localizations: {
-                'es-ES': 'pausar',
-                'en-US': 'pause',
-            },
             cooldown: 5,
             dm_permission: false,
         })

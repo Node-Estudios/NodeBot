@@ -8,14 +8,6 @@ export default class help extends Command {
         super({
             name: 'help',
             description: 'Show information about me.',
-            name_localizations: {
-                'es-ES': 'ayuda',
-                'en-US': 'help',
-            },
-            description_localizations: {
-                'es-ES': 'Muestra información sobre mi.',
-                'en-US': 'Show information about me.',
-            },
             cooldown: 5,
             // options: [
             //     {

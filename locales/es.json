@@ -191,5 +191,103 @@
     "SEPARATED": "Separado",
     "YES": "Sí",
     "PLAYING": "Jugando a",
-    "GENERICERROR": "Oops, parece que ha habido un error.\nPuedes ponerte en contacto con el desarrollador para hacérselo saber en [The Official Discord]({inviteURL})"
+    "GENERICERROR": "Oops, parece que ha habido un error.\nPuedes ponerte en contacto con el desarrollador para hacérselo saber en [The Official Discord]({inviteURL})",
+    "commands": {
+        "reboot": {
+            "name": "reiniciar",
+            "description": "Reinicia una o todas las shards"
+        },
+        "8ball": {
+            "name": "bola8",
+            "description": "Pregúntale algo a la bola mágica"
+        },
+        "impostor": {
+            "name": "impostor",
+            "description": "Eres el impostor? SUS"
+        },
+        "avatar": {
+            "name": "avatar",
+            "description": "Envia tu foto de perfil o de otro usuario!"
+        },
+        "twitch": {
+            "name": "twitch",
+            "description": "Establece una notificación para cuando un streamer se ponga en directo!"
+        },
+        "shards": {
+            "name": "fragmentos",
+            "description": "Muestra información sobre los fragmentos"
+        },
+        "serverinfo": {
+            "name": "infoservidor",
+            "description": "Muestra información sobre el servidor"
+        },
+        "roleinfo": {
+            "name": "inforol",
+            "description": "Muestra información sobre un rol"
+        },
+        "ping": {
+            "name": "ping",
+            "description": "Muestra la latencia del bot"
+        },
+        "mcserver": {
+            "name": "servidormc",
+            "description": "Envía una imagen de un servidor de Minecraft"
+        },
+        "mchistory": {
+            "name": "historialmc",
+            "description": "Muestra el historial de nombres de un jugador de Minecraft"
+        },
+        "help": {
+            "name": "ayuda",
+            "description": "Muestra información sobre mi"
+        },
+        "github": {
+            "name": "github",
+            "description": "Muestra información sobre un usuario de GitHub"
+        },
+        "embed": {
+            "name": "embed",
+            "description": "Crea un embed personalizado"
+        },
+        "ban": {
+            "name": "ban",
+            "description": "Banea a un usuario"
+        },
+        "play": {
+            "name": "reproducir",
+            "description": "Reproduce la canción que desees con su nombre o un link de youtube/spotify"
+        },
+        "stop": {
+            "name": "detener",
+            "description": "Detiene el reproductor de música"
+        },
+        "skip": {
+            "name": "saltar",
+            "description": "Salta la canción que se está reproduciendo"
+        },
+        "resume": {
+            "name": "reanudar",
+            "description": "Reanuda la canción actual"
+        },
+        "queue": {
+            "name": "cola",
+            "description": "Muestra la cola de canciones"
+        },
+        "pause": {
+            "name": "pausa",
+            "description": "Pausa la canción actual"
+        },
+        "nowplaying": {
+            "name": "reproduciendo",
+            "description": "Muestra la canción que se está reproduciendo actualmente"
+        },
+        "loop": {
+            "name": "bucle",
+            "description": "Repite la cola/canción actual"
+        },
+        "247": {
+            "name": "247",
+            "description": "Mantente 24/7 en un canal de voz"
+        }
+    }
 }

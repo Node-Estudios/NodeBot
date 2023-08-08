@@ -1,22 +1,13 @@
+/* eslint-disable no-irregular-whitespace */
 import { ApplicationCommandOptionType, ChatInputCommandInteraction } from 'discord.js'
 import Translator, { keys } from '../../../utils/Translator.js'
 import Command from '../../../structures/Command.js'
-import Client from '../../../structures/Client.js'
-
 
 export default class impostor extends Command {
-    constructor() {
+    constructor () {
         super({
             name: 'impostor',
-            name_localizations: {
-                'es-ES': 'impostor',
-                'en-US': 'impostor',
-            },
             description: 'Are you the impostor? SUS',
-            description_localizations: {
-                'es-ES': 'Eres el impostor? SUS',
-                'en-US': 'Are you the impostor? SUS',
-            },
             cooldown: 5,
             options: [
                 {
@@ -36,9 +27,9 @@ export default class impostor extends Command {
             ],
         })
     }
-    override async run(interaction: ChatInputCommandInteraction) {
+
+    override async run (interaction: ChatInputCommandInteraction) {
         const trnaslate = Translator(interaction)
-        const client = interaction.client as Client
         interaction.reply(`. 　　　。　　　　•　 　ﾟ　　。 　　.
 
         　　　.　　　 　　.　　　　　。　　 。　. 　
@@ -46,8 +37,8 @@ export default class impostor extends Command {
         .　　 。　　　　　 ඞ 。 . 　　 • 　　　　•
 
         　　ﾟ　　 ${(interaction.options.getUser('user') ?? interaction.user).tag} ${
-            Math.random() < 0.7 ? trnaslate(keys.impostor.was_not) : trnaslate(keys.impostor.was)
-        } 　 。　.
+    Math.random() < 0.7 ? trnaslate(keys.impostor.was_not) : trnaslate(keys.impostor.was)
+} 　 。　.
 
         　　'　　　  　 　　。     ,         ﾟ             ,   ﾟ      .       ,        .             ,
 

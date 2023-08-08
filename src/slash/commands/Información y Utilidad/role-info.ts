@@ -2,20 +2,11 @@ import { ApplicationCommandOptionType, EmbedBuilder, ChatInputCommandInteraction
 import Translator, { keys } from '../../../utils/Translator.js'
 import Command from '../../../structures/Command.js'
 
-
 export default class roleinfo extends Command {
-    constructor() {
+    constructor () {
         super({
             name: 'roleinfo',
             description: 'Get information about a role.',
-            name_localizations: {
-                'es-ES': 'inforol',
-                'en-US': 'roleinfo'
-            },
-            description_localizations: {
-                'es-ES': 'Obtener información sobre un rol.',
-                'en-US': 'Get information about a role.'
-            },
             cooldown: 5,
             dm_permission: false,
             options: [
@@ -25,21 +16,22 @@ export default class roleinfo extends Command {
                     description: 'Role to get information about.',
                     name_localizations: {
                         'es-ES': 'rol',
-                        'en-US': 'role'
+                        'en-US': 'role',
                     },
                     description_localizations: {
                         'es-ES': 'El rol a obtener información sobre.',
-                        'en-US': 'Role to get information about.'
+                        'en-US': 'Role to get information about.',
                     },
                     required: true,
                 },
             ],
         })
     }
-    override async run(interaction: ChatInputCommandInteraction) {
+
+    override async run (interaction: ChatInputCommandInteraction) {
         if (!interaction.inCachedGuild()) return
         const translate = Translator(interaction)
-        let role = interaction.options.getRole('role', true)
+        const role = interaction.options.getRole('role', true)
         const rol = new EmbedBuilder()
             .setThumbnail(interaction.user.displayAvatarURL())
             .setTimestamp()
@@ -61,7 +53,7 @@ export default class roleinfo extends Command {
                 },
                 {
                     name: `🔢 ${translate(keys.POSITION)}:`,
-                    value: '```' + Math.abs(role.position - interaction.guild!.roles.cache.size) + '```',
+                    value: '```' + Math.abs(role.position - interaction.guild.roles.cache.size) + '```',
                     inline: true,
                 },
                 {
@@ -71,22 +63,22 @@ export default class roleinfo extends Command {
                 },
                 {
                     name: `<:star:893553167915188275> ${translate(keys.MENTIONABLE)}:`,
-                    value:'```' + translate(keys[role.mentionable?'YES':'NO']) + '```',
+                    value: '```' + translate(keys[role.mentionable ? 'YES' : 'NO']) + '```',
                     inline: true,
                 },
                 {
                     name: `<:share:893553167894216744> ${translate(keys.SEPARATED)}:`,
-                    value:'```' + translate(keys[role.hoist?'YES':'NO']) + '```',
+                    value: '```' + translate(keys[role.hoist ? 'YES' : 'NO']) + '```',
                     inline: true,
                 },
                 {
                     name: `<:cmd:894171593431994388> ${translate(keys.roleinfo.managed)}:`,
-                    value:'```' + translate(keys[role.managed?'YES':'NO']) + '```',
+                    value: '```' + translate(keys[role.managed ? 'YES' : 'NO']) + '```',
                     inline: true,
                 },
             )
             .setImage(interaction.guild.iconURL())
 
-        return interaction.reply({ embeds: [rol] })
+        return await interaction.reply({ embeds: [rol] })
     }
 }

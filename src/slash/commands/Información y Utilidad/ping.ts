@@ -10,14 +10,6 @@ export default class ping extends Command {
         super({
             name: 'ping',
             description: 'Shows the bot latency.',
-            name_localizations: {
-                'es-ES': 'ping',
-                'en-US': 'ping',
-            },
-            description_localizations: {
-                'es-ES': 'Muestra la latencia del Bot.',
-                'en-US': 'Shows the bot latency.',
-            },
             cooldown: 5,
         })
     }

@@ -7,15 +7,7 @@ export default class avatar extends Command {
     constructor () {
         super({
             name: 'avatar',
-            description: 'Send your avatar!',
-            name_localizations: {
-                'es-ES': 'perfil',
-                'en-US': 'profile',
-            },
-            description_localizations: {
-                'es-ES': 'Envia tu foto de perfil o de otro usuario.',
-                'en-US': 'Send your avatar or the other user one!',
-            },
+            description: 'Send your avatar or the other user one!',
             cooldown: 5,
             options: [
                 {

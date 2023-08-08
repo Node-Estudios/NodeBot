@@ -177,5 +177,103 @@
     "SEPARATED": "Separated",
     "YES": "Yes",
     "PLAYING": "Playing",
-    "GENERICERROR": "Oops, there seems to have been an error.\nYou can contact the developer to let him know at [The Official Discord]({inviteURL})"
+    "GENERICERROR": "Oops, there seems to have been an error.\nYou can contact the developer to let him know at [The Official Discord]({inviteURL})",
+    "commands": {
+        "reboot": {
+            "name": "reboot",
+            "description": "Reboot a shard or all shards"
+        },
+        "8ball": {
+            "name": "8ball",
+            "description": "Ask a question to the magic ball"
+        },
+        "impostor": {
+            "name": "impostor",
+            "description": "Are you the impostor? SUS"
+        },
+        "avatar": {
+            "name": "avatar",
+            "description": "Send your avatar or the other user one!"
+        },
+        "twitch": {
+            "name": "twitch",
+            "description": "Set a notification for when a streamer goes live!"
+        },
+        "shards": {
+            "name": "shards",
+            "description": "Get information about shards"
+        },
+        "serverinfo": {
+            "name": "serverinfo",
+            "description": "Get information about the server"
+        },
+        "roleinfo": {
+            "name": "roleinfo",
+            "description": "Get information about a role"
+        },
+        "ping": {
+            "name": "ping",
+            "description": "Shows the bot latency"
+        },
+        "mcserver": {
+            "name": "mcserver",
+            "description": "Send a image of a Minecraft server"
+        },
+        "mchistory": {
+            "name": "mchistory",
+            "description": "Show the history of a Minecraft account"
+        },
+        "help": {
+            "name": "help",
+            "description": "Show information about me"
+        },
+        "github": {
+            "name": "github",
+            "description": "Show information about a GitHub account"
+        },
+        "embed": {
+            "name": "embed",
+            "description": "Send a embed"
+        },
+        "ban": {
+            "name": "ban",
+            "description": "Ban a member"
+        },
+        "play": {
+            "name": "play",
+            "description": "Play the song that you want with the name or a youtube/spotify link"
+        },
+        "stop": {
+            "name": "stop",
+            "description": "Stop the player"
+        },
+        "skip": {
+            "name": "skip",
+            "description": "Skip the current song"
+        },
+        "resume": {
+            "name": "resume",
+            "description": "Resume the current song!"
+        },
+        "queue": {
+            "name": "queue",
+            "description": "Show the queue"
+        },
+        "pause": {
+            "name": "pause",
+            "description": "Pause the current song"
+        },
+        "nowplaying": {
+            "name": "nowplaying",
+            "description": "Show the current song"
+        },
+        "loop": {
+            "name": "loop",
+            "description": "Repeats the current queue/song"
+        },
+        "247": {
+            "name": "247",
+            "description": "Stay 24/7 in a voice channel"
+        }
+    }
 }

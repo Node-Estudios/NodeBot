@@ -10,14 +10,6 @@ export default class Queue extends Command {
         super({
             name: 'queue',
             description: 'Show the queue!',
-            description_localizations: {
-                'es-ES': '¡Muestra la cola!',
-                'en-US': 'Show the queue!',
-            },
-            name_localizations: {
-                'es-ES': 'cola',
-                'en-US': 'queue',
-            },
             cooldown: 5,
             dm_permission: false,
         })

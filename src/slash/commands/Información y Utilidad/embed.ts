@@ -14,14 +14,6 @@ export default class embed extends Command {
         super({
             name: 'embed',
             description: 'Sends a embed.',
-            description_localizations: {
-                'es-ES': 'Envía un embed.',
-                'en-US': 'Sends a embed.',
-            },
-            name_localizations: {
-                'es-ES': 'embed',
-                'en-US': 'embed',
-            },
             cooldown: 5,
             dm_permission: false,
             permissions: {

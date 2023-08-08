@@ -10,14 +10,6 @@ export default class stayinvoice extends Command {
         super({
             name: '247',
             description: 'Stay 24/7 in a voice channel',
-            description_localizations: {
-                'es-ES': 'Mantente 24/7 en un canal de voz',
-                'en-US': 'Stay 24/7 in a voice channel',
-            },
-            name_localizations: {
-                'es-ES': '247',
-                'en-US': '247',
-            },
             cooldown: 5,
             dm_permission: false,
         })

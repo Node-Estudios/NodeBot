@@ -177,5 +177,103 @@
     "SEPARATED": "分離",
     "YES": "はい",
     "PLAYING": "プレー",
-    "GENERICERROR": "おっと、エラーがあったようだ。\n公式Discord]({inviteURL})で開発者に連絡してください。"
+    "GENERICERROR": "おっと、エラーがあったようだ。\n公式Discord]({inviteURL})で開発者に連絡してください。",
+    "commands": {
+        "reboot": {
+            "name": "再起動",
+            "description": "1つまたはすべてのシャードをリセットする"
+        },
+        "8ball": {
+            "name": "ボール8",
+            "description": "魔球に質問する"
+        },
+        "impostor": {
+            "name": "食わせ物",
+            "description": "あなたは詐欺師？ SUS"
+        },
+        "avatar": {
+            "name": "アバター",
+            "description": "あなたのプロフィール写真または他のユーザーの写真を送信します！"
+        },
+        "twitch": {
+            "name": "twitch",
+            "description": "ストリーマーがライブを開始したときの通知を設定します！"
+        },
+        "shards": {
+            "name": "破片",
+            "description": "ボットのシャードを表示します。"
+        },
+        "serverinfo": {
+            "name": "サーバー情報",
+            "description": "サーバーの情報を表示します。"
+        },
+        "roleinfo": {
+            "name": "役割情報",
+            "description": "役割の情報を表示します。"
+        },
+        "ping": {
+            "name": "ピン",
+            "description": "ボットの待ち時間を表示"
+        },
+        "mcserver": {
+            "name": "マインクラフトサーバー",
+            "description": "Minecraftサーバーから画像を送信する"
+        },
+        "mchistory": {
+            "name": "マインクラフトの歴史",
+            "description": "Minecraftユーザーの名前の歴史を表示します。"
+        },
+        "help": {
+            "name": "助けて",
+            "description": "私に関する情報を表示する"
+        },
+        "github": {
+            "name": "ギットハブ",
+            "description": "GitHubユーザーの情報を表示します。"
+        },
+        "embed": {
+            "name": "埋め込み",
+            "description": "埋め込みを作成する"
+        },
+        "ban": {
+            "name": "禁止",
+            "description": "ユーザーを禁止する"
+        },
+        "play": {
+            "name": "演奏",
+            "description": "好きな曲を、その曲名またはyoutube/spotifyのリンクとともに流す。"
+        },
+        "stop": {
+            "name": "停止",
+            "description": "選手を止める！"
+        },
+        "skip": {
+            "name": "スキップ",
+            "description": "現在の曲をスキップする"
+        },
+        "resume": {
+            "name": "履歴書",
+            "description": "現在の曲を再開する！"
+        },
+        "queue": {
+            "name": "キュー",
+            "description": "現在のキューを表示する"
+        },
+        "pause": {
+            "name": "ポーズ",
+            "description": "現在の曲を一時停止する"
+        },
+        "nowplaying": {
+            "name": "再生中",
+            "description": "現在の曲を表示する"
+        },
+        "loop": {
+            "name": "ループ",
+            "description": "現在のキュー/曲を繰り返す"
+        },
+        "247": {
+            "name": "24/7",
+            "description": "年中無休の音声チャンネル"
+        }
+    }
 }
