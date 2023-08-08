@@ -18,14 +18,6 @@ export default class play extends Command {
         super({
             name: 'play',
             description: 'Play the song that you want with the name or a youtube/spotify link',
-            name_localizations: {
-                'es-ES': 'reproducir',
-                'en-US': 'play',
-            },
-            description_localizations: {
-                'en-US': 'Play the song that you want with the name or a youtube/spotify link',
-                'es-ES': 'Reproduce la canción que desees con su nombre o un link de youtube/spotify',
-            },
             dm_permission: false,
             cooldown: 5,
             options: [
@@ -33,14 +25,6 @@ export default class play extends Command {
                     type: ApplicationCommandOptionType.String,
                     name: 'song',
                     description: 'Name of the song that u want to listen.',
-                    name_localizations: {
-                        'es-ES': 'canción',
-                        'en-US': 'song',
-                    },
-                    description_localizations: {
-                        'es-ES': 'Nombre de la canción que deseas escuchas.',
-                        'en-US': 'Name of the song that u want to listen.',
-                    },
                     autocomplete: true,
                     required: false,
                 },

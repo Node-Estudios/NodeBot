@@ -1,35 +1,19 @@
-import { ApplicationCommandOptionType, Colors, EmbedBuilder, ChatInputCommandInteraction } from 'discord.js'
-import Translator, { keys } from '../../../utils/Translator.js'
-import Command from '../../../structures/Command.js'
+import { ApplicationCommandOptionType, ChatInputCommandInteraction, Colors, EmbedBuilder } from 'discord.js'
 import Client from '../../../structures/Client.js'
+import Command from '../../../structures/Command.js'
+import Translator, { keys } from '../../../utils/Translator.js'
 
 export default class github extends Command {
     constructor () {
         super({
             name: 'github',
             description: 'Show Information about a Github Account.',
-            description_localizations: {
-                'es-ES': 'Muestra información sobre una cuenta de Github.',
-                'en-US': 'Show Information about a Github Account.',
-            },
-            name_localizations: {
-                'es-ES': 'github',
-                'en-US': 'github',
-            },
             cooldown: 5,
             options: [
                 {
                     type: ApplicationCommandOptionType.String,
                     name: 'account',
                     description: 'Account to show information about.',
-                    name_localizations: {
-                        'es-ES': 'cuenta',
-                        'en-US': 'account',
-                    },
-                    description_localizations: {
-                        'es-ES': 'Cuenta para mostrar la información.',
-                        'en-US': 'Account to show information about.',
-                    },
                     required: true,
                 },
             ],

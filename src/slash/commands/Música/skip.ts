@@ -1,8 +1,8 @@
 import { ChatInputCommandInteraction, Colors, EmbedBuilder } from 'discord.js'
 import { MessageHelper } from '../../../handlers/messageHandler.js'
-import Translator, { keys } from '../../../utils/Translator.js'
-import Command from '../../../structures/Command.js'
 import Client from '../../../structures/Client.js'
+import Command from '../../../structures/Command.js'
+import Translator, { keys } from '../../../utils/Translator.js'
 
 import logger from '../../../utils/logger.js'
 
@@ -11,14 +11,6 @@ export default class skip extends Command {
         super({
             name: 'skip',
             description: 'Skips the current song!',
-            description_localizations: {
-                'es-ES': '¡Salta la canción actual!',
-                'en-US': 'Skips the current song!',
-            },
-            name_localizations: {
-                'es-ES': 'saltar',
-                'en-US': 'skip',
-            },
             cooldown: 5,
             dm_permission: false,
             // options: [

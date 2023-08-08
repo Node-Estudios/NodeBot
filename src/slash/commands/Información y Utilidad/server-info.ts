@@ -8,14 +8,6 @@ export default class serverinfo extends Command {
         super({
             name: 'serverinfo',
             description: 'Get information about the server.',
-            name_localizations: {
-                'es-ES': 'serverinfo',
-                'en-US': 'serverinfo',
-            },
-            description_localizations: {
-                'es-ES': 'Obtener información sobre el servidor.',
-                'en-US': 'Get information about the server.',
-            },
             cooldown: 5,
             dm_permission: false,
         })

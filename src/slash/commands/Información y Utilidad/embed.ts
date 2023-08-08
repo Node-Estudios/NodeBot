@@ -1,27 +1,19 @@
 import {
     ApplicationCommandOptionType,
-    ChatInputCommandInteraction,
-    PermissionsBitField,
-    EmbedBuilder,
     ChannelType,
+    ChatInputCommandInteraction,
     Colors,
+    EmbedBuilder,
+    PermissionsBitField,
 } from 'discord.js'
-import Translator, { keys } from '../../../utils/Translator.js'
 import Command from '../../../structures/Command.js'
+import Translator, { keys } from '../../../utils/Translator.js'
 
 export default class embed extends Command {
     constructor () {
         super({
             name: 'embed',
             description: 'Sends a embed.',
-            description_localizations: {
-                'es-ES': 'Envía un embed.',
-                'en-US': 'Sends a embed.',
-            },
-            name_localizations: {
-                'es-ES': 'embed',
-                'en-US': 'embed',
-            },
             cooldown: 5,
             dm_permission: false,
             permissions: {
@@ -36,58 +28,26 @@ export default class embed extends Command {
                     type: ApplicationCommandOptionType.Channel,
                     name: 'channel',
                     channel_types: [ChannelType.GuildText],
-                    name_localizations: {
-                        'es-ES': 'canal',
-                        'en-US': 'channel',
-                    },
                     description: 'Channel where the embed will be sent.',
-                    description_localizations: {
-                        'es-ES': 'Canal deseado para enviar el embed',
-                        'en-US': 'Channel where the embed will be sent.',
-                    },
                     required: true,
                 },
                 {
                     type: ApplicationCommandOptionType.Number,
                     name: 'color',
-                    name_localizations: {
-                        'es-ES': 'color',
-                        'en-US': 'color',
-                    },
                     description: 'Color of the embed',
-                    description_localizations: {
-                        'es-ES': 'Color a elegir del embed.',
-                        'en-US': 'Color of the embed',
-                    },
                     choices: getColorChoices(),
                     required: true,
                 },
                 {
                     type: ApplicationCommandOptionType.String,
                     name: 'title',
-                    name_localizations: {
-                        'es-ES': 'titulo',
-                        'en-US': 'title',
-                    },
                     description: 'Title of the embed',
-                    description_localizations: {
-                        'es-ES': 'Título del embed',
-                        'en-US': 'Title of the embed',
-                    },
                     required: true,
                 },
                 {
                     type: ApplicationCommandOptionType.String,
                     name: 'description',
-                    name_localizations: {
-                        'es-ES': 'descripcion',
-                        'en-US': 'description',
-                    },
                     description: 'Description of the embed',
-                    description_localizations: {
-                        'es-ES': 'Descripción del embed',
-                        'en-US': 'Description of the embed',
-                    },
                     required: true,
                 },
             ],

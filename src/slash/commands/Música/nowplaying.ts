@@ -10,14 +10,6 @@ export default class NowPlaying extends Command {
         super({
             name: 'nowplaying',
             description: 'See the current song playing.',
-            name_localizations: {
-                'es-ES': 'reproduciendoahora',
-                'en-US': 'nowplaying',
-            },
-            description_localizations: {
-                'es-ES': 'Revisa la canción que se está actualmente reproduciendo.',
-                'en-US': 'See the current song playing.',
-            },
             cooldown: 5,
         })
     }

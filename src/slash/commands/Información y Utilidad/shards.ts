@@ -8,12 +8,6 @@ export default class shards extends Command {
         super({
             name: 'shards',
             description: 'Get information about shards.',
-            name_localizations: {
-                'es-ES': 'shards',
-            },
-            description_localizations: {
-                'es-ES': 'Obtener información sobre shards.',
-            },
             cooldown: 5,
         })
     }

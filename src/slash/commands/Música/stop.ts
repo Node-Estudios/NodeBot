@@ -1,24 +1,15 @@
 import { ChatInputCommandInteraction, EmbedBuilder } from 'discord.js'
-import Translator, { keys } from '../../../utils/Translator.js'
-import Command from '../../../structures/Command.js'
-import Client from '../../../structures/Client.js'
-import logger from '../../../utils/logger.js'
-import Player from '../../../structures/Player.js'
 import { MessageHelper } from '../../../handlers/messageHandler.js'
+import Client from '../../../structures/Client.js'
+import Command from '../../../structures/Command.js'
+import Translator, { keys } from '../../../utils/Translator.js'
+import logger from '../../../utils/logger.js'
 
 export default class Stop extends Command {
     constructor () {
         super({
             name: 'stop',
             description: 'Stop the player!',
-            description_localizations: {
-                'es-ES': '¡Detiene el reproductor!',
-                'en-US': 'Stop the player!',
-            },
-            name_localizations: {
-                'es-ES': 'detener',
-                'en-US': 'stop',
-            },
             cooldown: 5,
             dm_permission: false,
         })

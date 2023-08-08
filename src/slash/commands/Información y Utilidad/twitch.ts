@@ -1,9 +1,9 @@
-import { ChatInputCommandInteraction, ApplicationCommandOptionType, ChannelType } from 'discord.js'
-import Translator, { keys } from '../../../utils/Translator.js'
-import Command from '../../../structures/Command.js'
-import Client from '../../../structures/Client.js'
-import logger from '../../../utils/logger.js'
+import { ApplicationCommandOptionType, ChannelType, ChatInputCommandInteraction } from 'discord.js'
 import TwitchModel from '../../../models/twitch.js'
+import Client from '../../../structures/Client.js'
+import Command from '../../../structures/Command.js'
+import Translator, { keys } from '../../../utils/Translator.js'
+import logger from '../../../utils/logger.js'
 
 const headers = {
     'Client-ID': process.env.TWITCH_CLIENT_ID,
@@ -15,14 +15,6 @@ export default class Twitch extends Command {
         super({
             name: 'twitch',
             description: 'Set a notification for when a streamer goes live',
-            name_localizations: {
-                'es-ES': 'twich',
-                'en-US': 'twitch',
-            },
-            description_localizations: {
-                'es-ES': 'Establece una notificación para cuando un streamer se ponga en directo',
-                'en-US': 'Set a notification for when a streamer goes live',
-            },
             cooldown: 5,
             dm_permission: false,
             options: [
@@ -30,56 +22,24 @@ export default class Twitch extends Command {
                     type: ApplicationCommandOptionType.Subcommand,
                     name: 'add',
                     description: 'Add a notification for when a streamer goes live',
-                    name_localizations: {
-                        'es-ES': 'añadir',
-                        'en-US': 'add',
-                    },
-                    description_localizations: {
-                        'es-ES': 'Añade una notificación para cuando un streamer se ponga en directo',
-                        'en-US': 'Add a notification for when a streamer goes live',
-                    },
                     options: [
                         {
                             type: ApplicationCommandOptionType.String,
                             name: 'streamer',
                             description: 'Streamer to set the notification',
                             required: true,
-                            name_localizations: {
-                                'es-ES': 'streamer',
-                                'en-US': 'streamer',
-                            },
-                            description_localizations: {
-                                'es-ES': 'Nobre del streamer para establecer la notificación',
-                                'en-US': 'Name of streamer to set the notification',
-                            },
                         },
                         {
                             type: ApplicationCommandOptionType.Channel,
                             name: 'channel',
                             description: 'Channel to send the notification',
                             required: true,
-                            name_localizations: {
-                                'es-ES': 'canal',
-                                'en-US': 'channel',
-                            },
-                            description_localizations: {
-                                'es-ES': 'Canal para enviar la notificación',
-                                'en-US': 'Channel to send the notification',
-                            },
                             channel_types: [ChannelType.GuildText],
                         },
                         {
                             type: ApplicationCommandOptionType.Role,
                             name: 'role',
                             description: 'Role to mention when the streamer goes live',
-                            name_localizations: {
-                                'es-ES': 'rol',
-                                'en-US': 'role',
-                            },
-                            description_localizations: {
-                                'es-ES': 'Rol para mencionar cuando el streamer se ponga en directo',
-                                'en-US': 'Role to mention when the streamer goes live',
-                            },
                         },
                     ],
                 },
@@ -87,28 +47,12 @@ export default class Twitch extends Command {
                     type: ApplicationCommandOptionType.Subcommand,
                     name: 'remove',
                     description: 'Remove a notification for when a streamer goes live',
-                    name_localizations: {
-                        'es-ES': 'eliminar',
-                        'en-US': 'remove',
-                    },
-                    description_localizations: {
-                        'es-ES': 'Elimina una notificación para cuando un streamer se ponga en directo',
-                        'en-US': 'Remove a notification for when a streamer goes live',
-                    },
                     options: [
                         {
                             type: ApplicationCommandOptionType.String,
                             name: 'streamer',
                             description: 'Streamer to remove the notification',
                             required: true,
-                            name_localizations: {
-                                'es-ES': 'streamer',
-                                'en-US': 'streamer',
-                            },
-                            description_localizations: {
-                                'es-ES': 'Nobre del streamer para eliminar la notificación',
-                                'en-US': 'Name of streamer to remove the notification',
-                            },
                         },
                     ],
                 },
