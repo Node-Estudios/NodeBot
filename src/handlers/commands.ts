@@ -9,29 +9,30 @@ import autoCompleteCache from '../cache/autocomplete.js'
 for (const dir of await readdir('./build/slash/commands')) {
     for (const file of await readdir(`./build/slash/commands/${dir}`)) {
         if (file.endsWith('.js')) {
-            const { default: commandFile } = await import(`../../build/slash/commands/${dir}/${file}`)
-            if (typeof commandFile === 'function') {
+            const { default: CommandFile } = await import(`../../build/slash/commands/${dir}/${file}`)
+            if (typeof CommandFile === 'function') {
                 try {
-                    const command = new commandFile()
+                    const command = new CommandFile()
                     if (!commands.getCache().has(command.name)) commands.getCache().set(command.name, command)
                 } catch (e) {
-                    logger.error(commandFile, e)
+                    logger.error(CommandFile, e)
                 }
             }
         }
     }
 }
+
 // cache buttons
 for (const dir of await readdir('./build/slash/buttons')) {
     for (const file of await readdir(`./build/slash/buttons/${dir}`)) {
         if (file.endsWith('.js')) {
-            const { default: buttonFile } = await import(`../../build/slash/buttons/${dir}/${file}`)
-            if (typeof buttonFile === 'function') {
+            const { default: ButtonFile } = await import(`../../build/slash/buttons/${dir}/${file}`)
+            if (typeof ButtonFile === 'function') {
                 try {
-                    const button = new buttonFile() as Button
+                    const button = new ButtonFile() as Button
                     if (!buttons.getCache().has(button.pattern)) buttons.getCache().set(button.pattern, button)
                 } catch (e) {
-                    logger.error(buttonFile, e)
+                    logger.error(ButtonFile, e)
                 }
             }
         }
@@ -40,13 +41,13 @@ for (const dir of await readdir('./build/slash/buttons')) {
 for (const dir of await readdir('./build/slash/autocomplete')) {
     for (const file of await readdir(`./build/slash/autocomplete/${dir}`)) {
         if (file.endsWith('.js')) {
-            const { default: autocompleteFile } = await import(`../../build/slash/autocomplete/${dir}/${file}`)
-            if (typeof autocompleteFile === 'function') {
+            const { default: AutocompleteFile } = await import(`../../build/slash/autocomplete/${dir}/${file}`)
+            if (typeof AutocompleteFile === 'function') {
                 try {
-                    const autocomplete = new autocompleteFile() as Autocomplete
+                    const autocomplete = new AutocompleteFile() as Autocomplete
                     if (!autoCompleteCache.getCache().has(autocomplete.pattern)) autoCompleteCache.getCache().set(autocomplete.pattern, autocomplete)
                 } catch (e) {
-                    logger.error(autocompleteFile, e)
+                    logger.error(AutocompleteFile, e)
                 }
             }
         }

@@ -1,21 +1,16 @@
-import { Guild, Interaction, Locale, LocaleString, LocalizationMap } from 'discord.js'
+import { Guild, Interaction, LocaleString, LocalizationMap } from 'discord.js'
 import logger from './logger.js'
 import keys from './locales.js'
 import { join } from 'path'
 import i18n from 'i18n'
 
 i18n.configure({
-    locales: ['en', 'es'],
     directory: join(process.cwd(), 'locales'),
-    defaultLocale: 'en',
+    defaultLocale: 'en-US',
     retryInDefaultLocale: true,
     objectNotation: true,
-    fallbacks: {
-        'en-*': 'en',
-        'es-*': 'es',
-    },
     updateFiles: false,
-    logDebugFn: (msg) => logger.debug(msg),
+    // logDebugFn: (msg) => logger.debug(msg),
     logWarnFn: (msg) => logger.warn(msg),
     logErrorFn: (msg) => logger.error(msg),
     missingKeyFn: (locale, value) => {
@@ -50,7 +45,7 @@ export function randomMessage (translate: translate, keys: { [key: `${number}`]:
 
 export function getLocalesTranslations (phrase: string): LocalizationMap {
     const locales: LocalizationMap = {}
-    for (const locale of Object.values(Locale)) {
+    for (const locale of i18n.getLocales() as LocaleString[]) {
         const transalte = Translator(locale)
         locales[locale] = transalte(phrase)
     }
