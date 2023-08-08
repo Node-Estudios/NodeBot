@@ -1,7 +1,7 @@
-import { init } from '@sentry/node'
 import { ClusterClient as HybridClient, getInfo } from 'discord-hybrid-sharding'
-import { Client as ClientBase, ColorResolvable, Colors, GatewayIntentBits, Message, Options, Partials } from 'discord.js'
+import { Client as ClientBase, ColorResolvable, Colors, GatewayIntentBits, Options, Partials } from 'discord.js'
 import events from '../events/index.js'
+import ErrorManager from '../handlers/antiCrash.js'
 import '../handlers/commands.js'
 import { EventHandler } from '../handlers/events.js'
 import logger from '../utils/logger.js'
@@ -14,6 +14,7 @@ interface emoji {
 export default class Client extends ClientBase<true> {
     devs: string[]
     cluster = new HybridClient(this)
+    errorHandler = new ErrorManager(this)
     makeCache = Options.cacheWithLimits({
         ReactionManager: 0,
         ReactionUserManager: 0,
@@ -27,11 +28,11 @@ export default class Client extends ClientBase<true> {
         GuildMemberManager: 0,
         GuildScheduledEventManager: 0,
         UserManager: {
-            maxSize: 100,
+            maxSize: 40,
             keepOverLimit: member => member.id === this.user.id,
         },
         VoiceStateManager: {
-            maxSize: 200,
+            maxSize: 20,
             keepOverLimit: member => member.id === this.user.id,
         },
     })
@@ -142,15 +143,6 @@ export default class Client extends ClientBase<true> {
             shards: getInfo().SHARD_LIST,
             shardCount: getInfo().TOTAL_SHARDS,
         })
-        if (process.env.SENTRY_DSN && process.env.NODE_ENV == 'production') {
-            init({
-                dsn: process.env.SENTRY_DSN,
-                environment: process.env.NODE_ENV,
-                tracesSampleRate: 0.5,
-            })
-            this.services.sentry.loggedIn = true
-            logger.log('Connected to Sentry')
-        } else logger.warn('Sentry dsn missing.')
         if (!process.env.DEVS) { throw new Error('Add developers to the .env file, expected input (example): devs=123456789,987654321 ') }
         this.devs = process.env.DEVS.split(',')
     }

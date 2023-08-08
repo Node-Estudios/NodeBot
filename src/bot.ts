@@ -1,5 +1,5 @@
 /* import tracer from 'dd-trace'; */
-import Client from './structures/Client.js';
+import Client from './structures/Client.js'
 const client = new Client()
 /* tracer.init({
     profiling: true,

@@ -123,7 +123,7 @@ export default class play extends Command {
             //     const firstTrack = search.first_track;
             //     let list = [];
 
-            //     if (firstTrack) list.push(firstTrack);
+            //     if (firstTrack) list.push
 
             //     while (search && search.length) {
             //         if (firstTrack) {

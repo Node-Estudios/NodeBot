@@ -1,9 +1,9 @@
 import { MessageHelper } from '../../../handlers/messageHandler.js'
-import Translator, { keys, randomMessage } from '../../../utils/Translator.js'
-import Command from '../../../structures/Command.js'
 import Client from '../../../structures/Client.js'
+import Command from '../../../structures/Command.js'
+import Translator, { keys, randomMessage } from '../../../utils/Translator.js'
 
-import { EmbedBuilder, ChatInputCommandInteraction } from 'discord.js'
+import { ChatInputCommandInteraction, EmbedBuilder } from 'discord.js'
 
 export default class stayinvoice extends Command {
     constructor () {
@@ -45,13 +45,15 @@ export default class stayinvoice extends Command {
             player.stayInVc = false
             const embed = new EmbedBuilder()
                 .setColor(client.settings.color)
-                .setFooter({ text: translate(keys[247].disabled), iconURL: interaction.user.displayAvatarURL() })
+                .setAuthor({ iconURL: interaction.user.displayAvatarURL(), name: interaction.user.displayName })
+                .setTitle(translate(keys[247].disabled))
             return await message.sendMessage({ embeds: [embed] })
         } else {
             player.stayInVc = true
             const embed = new EmbedBuilder()
                 .setColor(client.settings.color)
-                .setFooter({ text: translate(keys[247].enabled), iconURL: interaction.user.displayAvatarURL() })
+                .setAuthor({ iconURL: interaction.user.displayAvatarURL(), name: interaction.user.displayName })
+                .setTitle(translate(keys[247].enabled))
             return await message.sendMessage({ embeds: [embed] })
         }
     }

@@ -1,11 +1,10 @@
-import { ApplicationCommandOptionType, EmbedBuilder, ChatInputCommandInteraction } from 'discord.js'
-import Translator, { keys } from '../../../utils/Translator.js'
-import Command from '../../../structures/Command.js'
+import { ApplicationCommandOptionType, ChatInputCommandInteraction, EmbedBuilder } from 'discord.js'
 import Client from '../../../structures/Client.js'
-
+import Command from '../../../structures/Command.js'
+import Translator, { keys } from '../../../utils/Translator.js'
 
 export default class avatar extends Command {
-    constructor() {
+    constructor () {
         super({
             name: 'avatar',
             description: 'Send your avatar!',
@@ -35,7 +34,8 @@ export default class avatar extends Command {
             ],
         })
     }
-    override async run(interaction: ChatInputCommandInteraction) {
+
+    override async run (interaction: ChatInputCommandInteraction) {
         const translate = Translator(interaction)
         const client = interaction.client as Client
         const member = interaction.options.getUser('user') ?? interaction.user
@@ -44,7 +44,7 @@ export default class avatar extends Command {
                 new EmbedBuilder()
                     .setColor(client.settings.color)
                     .setImage(member.displayAvatarURL({ size: 4096 }))
-                    .setFooter({ text: translate(keys.avatar, {user: member.toString()})}),
+                    .setFooter({ text: translate(keys.avatar, { user: member.toString() }) }),
             ],
         })
     }

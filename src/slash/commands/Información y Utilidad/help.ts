@@ -1,21 +1,20 @@
-import { EmbedBuilder, ChatInputCommandInteraction } from 'discord.js'
-import Translator, { keys } from '../../../utils/Translator.js'
-import Command from '../../../structures/Command.js'
+import { ChatInputCommandInteraction, EmbedBuilder } from 'discord.js'
 import Client from '../../../structures/Client.js'
-
+import Command from '../../../structures/Command.js'
+import Translator, { keys } from '../../../utils/Translator.js'
 
 export default class help extends Command {
-    constructor() {
+    constructor () {
         super({
             name: 'help',
             description: 'Show information about me.',
             name_localizations: {
                 'es-ES': 'ayuda',
-                'en-US': 'help'
+                'en-US': 'help',
             },
             description_localizations: {
                 'es-ES': 'Muestra información sobre mi.',
-                'en-US': 'Show information about me.'
+                'en-US': 'Show information about me.',
             },
             cooldown: 5,
             // options: [
@@ -34,10 +33,11 @@ export default class help extends Command {
             // ],
         })
     }
-    override async run(interaction: ChatInputCommandInteraction) {
+
+    override async run (interaction: ChatInputCommandInteraction) {
         const translate = Translator(interaction)
         const client = interaction.client as Client
-        return interaction.reply({
+        return await interaction.reply({
             embeds: [
                 new EmbedBuilder()
                     .setColor(client.settings.color)
@@ -46,12 +46,15 @@ export default class help extends Command {
                         name: translate(keys.help.how_use),
                         value: `${translate(keys.help.how_use_answer)} \`/${interaction.commandName}\`.`,
                     })
-                    .addFields({ name: translate(keys.help.need_support), value: translate(keys.help.need_support_answer, {
-                        inviteURL: client.officialServerURL
-                    }) })
+                    .addFields({
+                        name: translate(keys.help.need_support),
+                        value: translate(keys.help.need_support_answer, {
+                            inviteURL: client.officialServerURL,
+                        }),
+                    })
                     .addFields({
                         name: translate(keys.help.how_vote),
-                        value: translate(keys.help.how_vote_answer)
+                        value: translate(keys.help.how_vote_answer),
                     })
                     .setThumbnail(interaction.user.displayAvatarURL())
                     .setTitle(translate(keys.help.title)),

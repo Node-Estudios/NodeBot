@@ -1,28 +1,28 @@
 import {
+    APIEmbed,
+    APIMessageComponentEmoji,
     ActionRowBuilder,
     ButtonBuilder,
-    EmbedBuilder,
-    VoiceChannel,
-    ButtonStyle,
-    GuildMember,
-    Collection,
-    Guild,
-    Message,
-    ComponentType,
-    APIMessageComponentEmoji,
-    ChatInputCommandInteraction,
-    APIEmbed,
     ButtonInteraction,
+    ButtonStyle,
+    ChatInputCommandInteraction,
+    Collection,
+    ComponentType,
+    EmbedBuilder,
+    Guild,
+    GuildMember,
+    Message,
+    VoiceChannel,
 } from 'discord.js'
+import EventEmitter from 'events'
+import yasha from 'yasha'
 import { Innertube } from 'youtubei.js'
+import client from '../bot.js'
 import Translator, { keys } from '../utils/Translator.js'
-import { SpamIntervalDB } from './spamInterval.js'
 import formatTime from '../utils/formatTime.js'
 import logger from '../utils/logger.js'
-import EventEmitter from 'events'
 import Player from './Player.js'
-import client from '../bot.js'
-import yasha from 'yasha'
+import { SpamIntervalDB } from './spamInterval.js'
 const spamIntervald = new SpamIntervalDB()
 type UserExtended = GuildMember & {}
 
@@ -134,7 +134,6 @@ export default class MusicManager extends EventEmitter {
 
         const embed = new EmbedBuilder().setColor(client.settings.color)
         if (song.platform === 'Youtube') {
-            console.log(song.thumbnails)
             embed
                 .setImage(song.thumbnails[0].url)
                 .setDescription(
