@@ -1,15 +1,18 @@
 import { AutocompleteInteraction, ButtonInteraction, ChatInputCommandInteraction, Interaction } from 'discord.js'
-import { Timer as performanceMeter } from '../../handlers/performanceMeter.js'
-import performanceMeters from '../../cache/performanceMeters.js'
-import { BaseEvent } from '../../structures/Events.js'
-import Client from '../../structures/Client.js'
-import commands from '../../cache/commands.js'
-import buttons from '../../cache/buttons.js'
-import logger from '../../utils/logger.js'
 import autocomplete from '../../cache/autocomplete.js'
+import buttons from '../../cache/buttons.js'
+import commands from '../../cache/commands.js'
+import performanceMeters from '../../cache/performanceMeters.js'
+import { Timer as performanceMeter } from '../../handlers/performanceMeter.js'
+import Client from '../../structures/Client.js'
+import { BaseEvent } from '../../structures/Events.js'
+import logger from '../../utils/logger.js'
 
 export class interactionCreate extends BaseEvent {
     async run (client: Client, interaction: Interaction) {
+        if (process.env.TESTINGGUILD) {
+            if (interaction.guild?.id !== process.env.TESTINGGUILD) return
+        }
         if (interaction.member?.user.bot) return
 
         // return false if something went wrong, true if everything was okey
@@ -29,7 +32,7 @@ export class interactionCreate extends BaseEvent {
             if (!cmd) return
             if (interaction.guild && cmd?.only_dm) return // <-- return statement here
 
-            logger.debug(`Comando ${cmd.name} ejecutado | ${interaction.user.username}`)
+            logger.command(`Comando ${cmd.name} ejecutado | ${interaction.user.username}`)
 
             if (cmd.permissions) {
                 // Check if the command is only for devs
@@ -61,7 +64,7 @@ export class interactionCreate extends BaseEvent {
             await performanceMeters.get('interaction_' + interaction.id)?.stop() // the ping command stop the process
             return performanceMeters.delete('interaction_' + interaction.id)
         } catch (e) {
-            return logger.debug(e)
+            return logger.error(e)
         }
     }
 

@@ -1,5 +1,6 @@
 import * as Sentry from '@sentry/node'
 import { IPCMessage } from 'discord-hybrid-sharding'
+import { ActivityType } from 'discord.js'
 import { connect } from 'mongoose'
 import commands from '../../cache/commands.js'
 import Client from '../../structures/Client.js'
@@ -80,6 +81,43 @@ export default class Ready extends BaseEvent {
                 }
             }
         })
+        if (!process.env.TESTINGUILD) {
+            setInterval(() => {
+                updateStatus()
+            }, 300000)
+        }
+
+        async function updateStatus () {
+            const promises = [
+                client.cluster.fetchClientValues('guilds.cache.size'),
+                // client.shard.broadcastEval((c) =>
+                //   c.guilds.cache.reduce((acc, guild) => acc + guild.memberCount, 0),
+                // ),
+                client.cluster.broadcastEval((c) => {
+                    return c.music?.players?.size ?? 0
+                }),
+            ]
+            Promise.all(promises)
+                .then((results) => {
+                    const guildNum = results[0].reduce(
+                        (acc: any, guildCount: any) => acc + guildCount,
+                        0,
+                    )
+                    // const memberNum = results[1].reduce(
+                    //   (acc, memberCount) => acc + memberCount,
+                    //   0
+                    // );
+                    const playersSize = results[1].reduce(
+                        (acc: any, playerCount: any) => acc + playerCount,
+                        0,
+                    )
+                    client.user.setActivity(
+                        `Servidores: ${guildNum}, Escuchando Música: ${playersSize}`,
+                        { type: ActivityType.Listening },
+                    )
+                })
+                .catch(logger.error)
+        }
         logger.debug(`${client.user.username} ✅`)
     }
 }
