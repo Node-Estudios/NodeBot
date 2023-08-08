@@ -1,4 +1,4 @@
-import { Guild, Interaction, LocaleString } from 'discord.js'
+import { Guild, Interaction, Locale, LocaleString, LocalizationMap } from 'discord.js'
 import logger from './logger.js'
 import keys from './locales.js'
 import { join } from 'path'
@@ -45,6 +45,15 @@ export default function Translator (interaction: Interaction | Guild | LocaleStr
 export function randomMessage (translate: translate, keys: { [key: `${number}`]: string }) {
     const key = Object.keys(keys)[Math.floor(Math.random() * Object.keys(keys).length)] as `${number}`
     return translate(keys[key])
+}
+
+export function getLocalesTranslations (phrase: string): LocalizationMap {
+    const locales: LocalizationMap = {}
+    for (const locale of Object.values(Locale)) {
+        const transalte = Translator(locale)
+        locales[locale] = transalte(phrase)
+    }
+    return locales
 }
 
 export { keys }

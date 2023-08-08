@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import {
     RESTPostAPIChatInputApplicationCommandsJSONBody,
     APIApplicationCommandOption,
@@ -6,6 +7,7 @@ import {
     PermissionsBitField,
     LocalizationMap,
 } from 'discord.js'
+import { getLocalesTranslations } from '../utils/Translator'
 
 export default class Command {
     /**
@@ -52,7 +54,7 @@ export default class Command {
     cooldown = 0
 
     constructor (
-        command: RESTPostAPIChatInputApplicationCommandsJSONBody & {
+        command: Omit<RESTPostAPIChatInputApplicationCommandsJSONBody, 'name_localizations' | 'description_localizations'> & {
             only_dm?: boolean
             default_member_permissions?: PermissionsString[] | null
             permissions?: { dev?: boolean, botPermissions?: PermissionsBitField }
@@ -63,9 +65,9 @@ export default class Command {
             description,
             name,
             default_member_permissions,
-            description_localizations,
+            // description_localizations,
             dm_permission,
-            name_localizations,
+            // name_localizations,
             nsfw,
             only_dm,
             options,
@@ -74,9 +76,9 @@ export default class Command {
         } = command
 
         this.name = name
-        this.name_localizations = name_localizations
+        // this.name_localizations = name_localizations
         this.description = description
-        this.description_localizations = description_localizations
+        // this.description_localizations = description_localizations
         this.options = options
         this.default_member_permissions = default_member_permissions ?? null
         this.dm_permission = dm_permission
@@ -87,6 +89,8 @@ export default class Command {
             botPermissions: permissions?.botPermissions,
         }
         this.cooldown = cooldown ?? 0
+        this.name_localizations = this.getNameLocalizations()
+        this.description_localizations = this.getDescriptionLocalizations()
     }
 
     async run (interaction: ChatInputCommandInteraction): Promise<any> {
@@ -94,6 +98,14 @@ export default class Command {
             content: 'This command is not ready yet.',
             ephemeral: true,
         })
+    }
+
+    getNameLocalizations (): LocalizationMap {
+        return getLocalesTranslations(`commands.${this.name}.name`)
+    }
+
+    getDescriptionLocalizations (): LocalizationMap {
+        return getLocalesTranslations(`commands.${this.name}.description`)
     }
 
     toJSON (): RESTPostAPIChatInputApplicationCommandsJSONBody {
