@@ -7,7 +7,7 @@ import {
     PermissionsBitField,
     LocalizationMap,
 } from 'discord.js'
-import { getLocalesTranslations } from '../utils/Translator'
+import { getLocalesTranslations } from '../utils/Translator.js'
 
 export default class Command {
     /**
