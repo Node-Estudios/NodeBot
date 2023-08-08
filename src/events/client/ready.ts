@@ -25,19 +25,10 @@ export default class Ready extends BaseEvent {
         // client.cluster.triggerReady()
         const arr: Command[] = []
         for (const [,command] of commands.getCache()) arr.push(command)
-        // console.log(JSON.stringify(arr))
         if (process.env.TESTINGGUILD) {
             const guild = await client.guilds.fetch(process.env.TESTINGGUILD)
-            guild.commands.set(arr)
+            guild.commands.set(arr).catch(logger.error)
         }
-        // fetch('https://discord.com/api/v9/applications/834164602694139985/guilds/862635336165097483/commands', {
-        //     method: 'PUT,
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //         Authorization: `Bot ${process.env.DISCORD_TOKEN}`,
-        //     },
-        //     body: arr,
-        // }).then(() => console.log('Successfully registered application commands.'))
         client.cluster.on('message', async (message2: any) => {
             const message = (message2 as IPCMessage).raw
             if (message.content === 'statistics') {
