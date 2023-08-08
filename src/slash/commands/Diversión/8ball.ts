@@ -1,50 +1,35 @@
-import { ApplicationCommandOptionType, Colors, EmbedBuilder, ChatInputCommandInteraction } from 'discord.js'
-import Translator, { keys } from '../../../utils/Translator.js'
-import Command from '../../../structures/Command.js'
+import { ApplicationCommandOptionType, ChatInputCommandInteraction, Colors, EmbedBuilder } from 'discord.js'
 import Client from '../../../structures/Client.js'
+import Command from '../../../structures/Command.js'
+import Translator, { keys } from '../../../utils/Translator.js'
 
 export default class ball extends Command {
-    constructor() {
+    constructor () {
         super({
             name: '8ball',
             description: 'Ask the magic 8ball a question',
-            name_localizations: {
-                'es-ES': 'ball',
-                'en-US': '8ball',
-            },
-            description_localizations: {
-                'es-ES': 'Pregunta al poderoso 8ball una pregunta',
-                'en-US': 'Ask the magic 8ball a question',
-            },
             cooldown: 5,
             options: [
                 {
                     type: ApplicationCommandOptionType.String,
                     name: 'question',
                     description: 'The question to ask',
-                    name_localizations: {
-                        'es-ES': 'pregunta',
-                        'en-US': 'question',
-                    },
-                    description_localizations: {
-                        'es-ES': 'La pregunta a preguntar',
-                        'en-US': 'The question to ask',
-                    },
                     required: true,
                 },
             ],
         })
     }
-    override async run(interaction: ChatInputCommandInteraction) {
+
+    override async run (interaction: ChatInputCommandInteraction) {
         const translate = Translator(interaction)
         const client = interaction.client as Client
-        let question = interaction.options.getString('question', true)
-        if (!question.endsWith('?'))
-            return interaction.reply({
+        const question = interaction.options.getString('question', true)
+        if (!question.endsWith('?')) {
+            return await interaction.reply({
                 embeds: [
                     new EmbedBuilder()
                         .setColor(Colors.Red)
-                        .setTitle(translate(keys.ERROREMBED)+' <:error:897836005787308062>')
+                        .setTitle(translate(keys.ERROREMBED) + ' <:error:897836005787308062>')
                         .setDescription(translate(keys.question_ball.no_question))
                         .setFooter({
                             text: interaction.user.tag,
@@ -52,8 +37,9 @@ export default class ball extends Command {
                         }),
                 ],
             })
+        }
 
-        return interaction.reply({
+        return await interaction.reply({
             embeds: [
                 new EmbedBuilder()
                     .setFields(
