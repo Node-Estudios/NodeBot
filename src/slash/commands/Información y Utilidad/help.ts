@@ -9,20 +9,6 @@ export default class help extends Command {
             name: 'help',
             description: 'Show information about me.',
             cooldown: 5,
-            // options: [
-            //     {
-            //         type: 3,
-            //         name: 'command',
-            //         description: 'The command you want to get help for.',
-            //         name_localizations: {
-            //             'es-ES': 'comando',
-            //         },
-            //         description_localizations: {
-            //             'es-ES': 'El comando del que quieres obtener ayuda.',
-            //         },
-            //         required: false,
-            //     },
-            // ],
         })
     }
 

@@ -1,4 +1,4 @@
-import { AttachmentBuilder, ChatInputCommandInteraction } from 'discord.js'
+import { ApplicationCommandOptionType, AttachmentBuilder, ChatInputCommandInteraction } from 'discord.js'
 import Command from '../../../structures/Command.js'
 export default class mcserver extends Command {
     constructor () {
@@ -8,17 +8,9 @@ export default class mcserver extends Command {
             cooldown: 5,
             options: [
                 {
-                    type: 3,
+                    type: ApplicationCommandOptionType.String,
                     name: 'server',
                     description: 'Minecraft server to show the image of.',
-                    name_localizations: {
-                        'es-ES': 'servidor',
-                        'en-US': 'server',
-                    },
-                    description_localizations: {
-                        'es-ES': 'Servidor de Minecraft.',
-                        'en-US': 'Minecraft server to show the image of.',
-                    },
                     required: true,
                 },
             ],

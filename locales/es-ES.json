@@ -195,23 +195,77 @@
     "commands": {
         "reboot": {
             "name": "reiniciar",
-            "description": "Reinicia una o todas las shards"
+            "description": "Reinicia una o todas las shards",
+            "options": {
+                "shard": {
+                    "name": "fragmento",
+                    "description": "El fragmento que quieres reiniciar"
+                }
+            }
         },
         "8ball": {
             "name": "bola8",
-            "description": "Pregúntale algo a la bola mágica"
+            "description": "Pregúntale algo a la bola mágica",
+            "options": {
+                "question": {
+                    "name": "pregunta",
+                    "description": "¿Qué quieres preguntarle a la bola mágica?"
+                }
+            }
         },
         "impostor": {
             "name": "impostor",
-            "description": "Eres el impostor? SUS"
+            "description": "Eres el impostor? SUS",
+            "options": {
+                "user": {
+                    "name": "usuario",
+                    "description": "¿Es este usuario un impostor? SUS na na na na na na na"
+                }
+            }
         },
         "avatar": {
             "name": "avatar",
-            "description": "Envia tu foto de perfil o de otro usuario!"
+            "description": "Envia tu foto de perfil o de otro usuario!",
+            "options": {
+                "user": {
+                    "name": "usuario",
+                    "description": "El usuario del que quieres obtener el avatar"
+                }
+            }
         },
         "twitch": {
             "name": "twitch",
-            "description": "Establece una notificación para cuando un streamer se ponga en directo!"
+            "description": "Establece una notificación para cuando un streamer se ponga en directo!",
+            "options": {
+                "add": {
+                    "name": "añadir",
+                    "description": "Añade una notificación para un streamer",
+                    "options": {
+                        "streamer": {
+                            "name": "streamer",
+                            "description": "El nombre del streamer"
+                        },
+                        "channel": {
+                            "name": "canal",
+                            "description": "El canal donde se enviarán las notificaciones"
+                        },
+                        "role": {
+                            "name": "rol",
+                            "description": "El rol que se mencionará cuando el streamer se ponga en directo"
+                        }
+                    }
+                },
+                "remove": {
+                    "name": "eliminar",
+                    "description": "Elimina una notificación para un streamer",
+                    "options": {
+                        "streamer": {
+                            "name": "streamer",
+                            "description": "El nombre del streamer"
+                        }
+                    }
+                }
+            }
         },
         "shards": {
             "name": "fragmentos",
@@ -223,7 +277,13 @@
         },
         "roleinfo": {
             "name": "inforol",
-            "description": "Muestra información sobre un rol"
+            "description": "Muestra información sobre un rol",
+            "options": {
+                "role": {
+                    "name": "rol",
+                    "description": "El rol del que quieres obtener información"
+                }
+            }
         },
         "ping": {
             "name": "ping",
@@ -231,11 +291,23 @@
         },
         "mcserver": {
             "name": "servidormc",
-            "description": "Envía una imagen de un servidor de Minecraft"
+            "description": "Envía una imagen de un servidor de Minecraft",
+            "options": {
+                "server": {
+                    "name": "servidor",
+                    "description": "El servidor del que quieres obtener información"
+                }
+            }
         },
         "mchistory": {
             "name": "historialmc",
-            "description": "Muestra el historial de nombres de un jugador de Minecraft"
+            "description": "Muestra el historial de nombres de un jugador de Minecraft",
+            "options": {
+                "account": {
+                    "name": "cuenta",
+                    "description": "La cuenta de la que quieres obtener información"
+                }
+            }
         },
         "help": {
             "name": "ayuda",
@@ -243,19 +315,63 @@
         },
         "github": {
             "name": "github",
-            "description": "Muestra información sobre un usuario de GitHub"
+            "description": "Muestra información sobre un usuario de GitHub",
+            "options": {
+                "account": {
+                    "name": "cuenta",
+                    "description": "La cuenta de la que quieres obtener información"
+                }
+            }
         },
         "embed": {
             "name": "embed",
-            "description": "Crea un embed personalizado"
+            "description": "Crea un embed personalizado",
+            "options": {
+                "channel": {
+                    "name": "canal",
+                    "description": "El canal donde se enviará el embed"
+                },
+                "color": {
+                    "name": "color",
+                    "description": "El color del embed"
+                },
+                "title": {
+                    "name": "título",
+                    "description": "El título del embed"
+                },
+                "description": {
+                    "name": "descripción",
+                    "description": "La descripción del embed"
+                }
+            }
         },
         "ban": {
             "name": "ban",
-            "description": "Banea a un usuario"
+            "description": "Banea a un usuario",
+            "options": {
+                "user": {
+                    "name": "user",
+                    "description": "User to ban"
+                },
+                "reason": {
+                    "name": "reason",
+                    "description": "Reason of the ban"
+                },
+                "days": {
+                    "name": "days",
+                    "description": "Days to delete messages from the user"
+                }
+            }
         },
         "play": {
             "name": "reproducir",
-            "description": "Reproduce la canción que desees con su nombre o un link de youtube/spotify"
+            "description": "Reproduce la canción que desees con su nombre o un link de youtube/spotify",
+            "options": {
+                "song": {
+                    "name": "canción",
+                    "description": "El nombre de la canción o el link de youtube/spotify"
+                }
+            }
         },
         "stop": {
             "name": "detener",

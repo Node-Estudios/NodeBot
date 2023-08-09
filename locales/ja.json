@@ -186,23 +186,77 @@
     "commands": {
         "reboot": {
             "name": "再起動",
-            "description": "1つまたはすべてのシャードをリセットする"
+            "description": "1つまたはすべてのシャードをリセットする",
+            "options": {
+                "shard": {
+                    "name": "破片",
+                    "description": "再起動するシャード"
+                }
+            }
         },
         "8ball": {
             "name": "ボール8",
-            "description": "魔球に質問する"
+            "description": "魔球に質問する",
+            "options": {
+                "question": {
+                    "name": "質問",
+                    "description": "質問を書いてください。"
+                }
+            }
         },
         "impostor": {
             "name": "食わせ物",
-            "description": "あなたは詐欺師？ SUS"
+            "description": "あなたは詐欺師？ SUS",
+            "options": {
+                "user": {
+                    "name": "ユーザー",
+                    "description": "このユーザーは偽者なのか？ SUS na na na na na na na"
+                }
+            }
         },
         "avatar": {
             "name": "アバター",
-            "description": "あなたのプロフィール写真または他のユーザーの写真を送信します！"
+            "description": "あなたのプロフィール写真または他のユーザーの写真を送信します！",
+            "options": {
+                "user": {
+                    "name": "ユーザー",
+                    "description": "アバターを表示するユーザー"
+                }
+            }
         },
         "twitch": {
             "name": "twitch",
-            "description": "ストリーマーがライブを開始したときの通知を設定します！"
+            "description": "ストリーマーがライブを開始したときの通知を設定します！",
+            "options": {
+                "add": {
+                    "name": "追加",
+                    "description": "ストリーマーを追加する",
+                    "options": {
+                        "streamer": {
+                            "name": "ストリーマー",
+                            "description": "通知を受け取るストリーマー"
+                        },
+                        "channel": {
+                            "name": "チャンネル",
+                            "description": "通知を受け取るチャンネル"
+                        },
+                        "role": {
+                            "name": "役割",
+                            "description": "通知を受け取る役割"
+                        }
+                    }
+                },
+                "remove": {
+                    "name": "削除",
+                    "description": "ストリーマーを削除する",
+                    "options": {
+                        "streamer": {
+                            "name": "ストリーマー",
+                            "description": "通知を受け取るストリーマー"
+                        }
+                    }
+                }
+            }
         },
         "shards": {
             "name": "破片",
@@ -214,7 +268,13 @@
         },
         "roleinfo": {
             "name": "役割情報",
-            "description": "役割の情報を表示します。"
+            "description": "役割の情報を表示します。",
+            "options": {
+                "role": {
+                    "name": "役割",
+                    "description": "役割の情報を表示します。"
+                }
+            }
         },
         "ping": {
             "name": "ピン",
@@ -222,11 +282,23 @@
         },
         "mcserver": {
             "name": "マインクラフトサーバー",
-            "description": "Minecraftサーバーから画像を送信する"
+            "description": "Minecraftサーバーから画像を送信する",
+            "options": {
+                "server": {
+                    "name": "サーバー",
+                    "description": "サーバーのIPまたはドメイン"
+                }
+            }
         },
         "mchistory": {
             "name": "マインクラフトの歴史",
-            "description": "Minecraftユーザーの名前の歴史を表示します。"
+            "description": "Minecraftユーザーの名前の歴史を表示します。",
+            "options": {
+                "account": {
+                    "name": "アカウント",
+                    "description": "アカウントの名前"
+                }
+            }
         },
         "help": {
             "name": "助けて",
@@ -234,19 +306,63 @@
         },
         "github": {
             "name": "ギットハブ",
-            "description": "GitHubユーザーの情報を表示します。"
+            "description": "GitHubユーザーの情報を表示します。",
+            "options": {
+                "account": {
+                    "name": "アカウント",
+                    "description": "アカウントの名前"
+                }
+            }
         },
         "embed": {
             "name": "埋め込み",
-            "description": "埋め込みを作成する"
+            "description": "埋め込みを作成する",
+            "options": {
+                "channel": {
+                    "name": "チャンネル",
+                    "description": "埋め込みを送信するチャンネル"
+                },
+                "color": {
+                    "name": "カラー",
+                    "description": "埋め込みの色"
+                },
+                "title": {
+                    "name": "タイトル",
+                    "description": "埋め込みのタイトル"
+                },
+                "description": {
+                    "name": "説明",
+                    "description": "埋め込みの説明"
+                }
+            }
         },
         "ban": {
             "name": "禁止",
-            "description": "ユーザーを禁止する"
+            "description": "ユーザーを禁止する",
+            "options": {
+                "user": {
+                    "name": "ユーザー",
+                    "description": "禁止するユーザー"
+                },
+                "reason": {
+                    "name": "理由",
+                    "description": "追放の理由"
+                },
+                "days": {
+                    "name": "ディアス",
+                    "description": "ユーザーメッセージの削除日数"
+                }
+            }
         },
         "play": {
             "name": "演奏",
-            "description": "好きな曲を、その曲名またはyoutube/spotifyのリンクとともに流す。"
+            "description": "好きな曲を、その曲名またはyoutube/spotifyのリンクとともに流す。",
+            "options": {
+                "song": {
+                    "name": "曲",
+                    "description": "演奏する曲"
+                }
+            }
         },
         "stop": {
             "name": "停止",

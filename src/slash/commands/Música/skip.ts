@@ -13,20 +13,6 @@ export default class skip extends Command {
             description: 'Skips the current song!',
             cooldown: 5,
             dm_permission: false,
-            // options: [
-            //     {
-            //         type: 4,
-            //         name: 'amount',
-            //         name_localizations: {
-            //             'es-ES': 'cantidad',
-            //         },
-            //         description: 'Amount of songs to skip.',
-            //         description_localizations: {
-            //             'es-ES': 'Cantidad de canciones para saltar.',
-            //         },
-            //         required: false,
-            //     }
-            // ]
         })
     }
 

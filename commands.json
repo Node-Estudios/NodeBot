@@ -1,0 +1,951 @@
+[
+    {
+        "name": "8ball",
+        "name_localizations": {
+            "en-US": "8ball",
+            "es-ES": "bola8",
+            "ja": "ボール8"
+        },
+        "description": "Ask the magic 8ball a question",
+        "description_localizations": {
+            "en-US": "Ask a question to the magic ball",
+            "es-ES": "Pregúntale algo a la bola mágica",
+            "ja": "魔球に質問する"
+        },
+        "options": [
+            {
+                "type": 3,
+                "name": "question",
+                "description": "The question to ask",
+                "required": true,
+                "name_localizations": {
+                    "en-US": "question",
+                    "es-ES": "pregunta",
+                    "ja": "質問"
+                },
+                "description_localizations": {
+                    "en-US": "What do you want to ask?",
+                    "es-ES": "¿Qué quieres preguntarle a la bola mágica?",
+                    "ja": "質問を書いてください。"
+                }
+            }
+        ],
+        "default_member_permissions": null
+    },
+    {
+        "name": "impostor",
+        "name_localizations": {
+            "en-US": "impostor",
+            "es-ES": "impostor",
+            "ja": "食わせ物"
+        },
+        "description": "Are you the impostor? SUS",
+        "description_localizations": {
+            "en-US": "Are you the impostor? SUS",
+            "es-ES": "Eres el impostor? SUS",
+            "ja": "あなたは詐欺師？ SUS"
+        },
+        "options": [
+            {
+                "type": 6,
+                "name": "user",
+                "description": "Are this user the impostor? SUS na na na na na na na",
+                "required": false,
+                "name_localizations": {
+                    "en-US": "user",
+                    "es-ES": "usuario",
+                    "ja": "ユーザー"
+                },
+                "description_localizations": {
+                    "en-US": "Are this user the impostor? SUS na na na na na na na",
+                    "es-ES": "¿Es este usuario un impostor? SUS na na na na na na na",
+                    "ja": "このユーザーは偽者なのか？ SUS na na na na na na na"
+                }
+            }
+        ],
+        "default_member_permissions": null
+    },
+    {
+        "name": "avatar",
+        "name_localizations": {
+            "en-US": "avatar",
+            "es-ES": "avatar",
+            "ja": "アバター"
+        },
+        "description": "Send your avatar or the other user one!",
+        "description_localizations": {
+            "en-US": "Send your avatar or the other user one!",
+            "es-ES": "Envia tu foto de perfil o de otro usuario!",
+            "ja": "あなたのプロフィール写真または他のユーザーの写真を送信します！"
+        },
+        "options": [
+            {
+                "type": 6,
+                "name": "user",
+                "description": "The user to get the avatar of.",
+                "name_localizations": {
+                    "en-US": "user",
+                    "es-ES": "usuario",
+                    "ja": "ユーザー"
+                },
+                "description_localizations": {
+                    "en-US": "User to get the avatar",
+                    "es-ES": "El usuario del que quieres obtener el avatar",
+                    "ja": "アバターを表示するユーザー"
+                }
+            }
+        ],
+        "default_member_permissions": null
+    },
+    {
+        "name": "embed",
+        "name_localizations": {
+            "en-US": "embed",
+            "es-ES": "embed",
+            "ja": "埋め込み"
+        },
+        "description": "Sends a embed.",
+        "description_localizations": {
+            "en-US": "Send a embed",
+            "es-ES": "Crea un embed personalizado",
+            "ja": "埋め込みを作成する"
+        },
+        "options": [
+            {
+                "type": 7,
+                "name": "channel",
+                "channel_types": [
+                    0
+                ],
+                "description": "Channel where the embed will be sent.",
+                "required": true,
+                "name_localizations": {
+                    "en-US": "channel",
+                    "es-ES": "canal",
+                    "ja": "チャンネル"
+                },
+                "description_localizations": {
+                    "en-US": "Channel to send the embed",
+                    "es-ES": "El canal donde se enviará el embed",
+                    "ja": "埋め込みを送信するチャンネル"
+                }
+            },
+            {
+                "type": 10,
+                "name": "color",
+                "description": "Color of the embed",
+                "choices": [
+                    {
+                        "name": "Default",
+                        "name_localizations": {
+                            "es-ES": "Defecto",
+                            "en-US": "Default"
+                        },
+                        "value": 0
+                    },
+                    {
+                        "name": "Aqua",
+                        "name_localizations": {
+                            "es-ES": "Agua",
+                            "en-US": "Aqua"
+                        },
+                        "value": 1752220
+                    },
+                    {
+                        "name": "Dark Aqua",
+                        "name_localizations": {
+                            "es-ES": "Agua Oscuro",
+                            "en-US": "Dark Aqua"
+                        },
+                        "value": 1146986
+                    },
+                    {
+                        "name": "Green",
+                        "name_localizations": {
+                            "es-ES": "Verde",
+                            "en-US": "Green"
+                        },
+                        "value": 5763719
+                    },
+                    {
+                        "name": "Dark Green",
+                        "name_localizations": {
+                            "es-ES": "Verde Oscuro",
+                            "en-US": "Dark Green"
+                        },
+                        "value": 2067276
+                    },
+                    {
+                        "name": "Blue",
+                        "name_localizations": {
+                            "es-ES": "Azul",
+                            "en-US": "Blue"
+                        },
+                        "value": 3447003
+                    },
+                    {
+                        "name": "Dark Blue",
+                        "name_localizations": {
+                            "es-ES": "Azul Oscuro",
+                            "en-US": "Dark Blue"
+                        },
+                        "value": 2123412
+                    },
+                    {
+                        "name": "Purple",
+                        "name_localizations": {
+                            "es-ES": "Morado",
+                            "en-US": "Purple"
+                        },
+                        "value": 10181046
+                    },
+                    {
+                        "name": "Dark Purple",
+                        "name_localizations": {
+                            "es-ES": "Morado Oscuro",
+                            "en-US": "Dark Purple"
+                        },
+                        "value": 7419530
+                    },
+                    {
+                        "name": "Lumious Vivid Pink",
+                        "name_localizations": {
+                            "es-ES": "Rosa Brillante",
+                            "en-US": "Lumious Vivid Pink"
+                        },
+                        "value": 15277667
+                    },
+                    {
+                        "name": "Dark Vivid Pink",
+                        "name_localizations": {
+                            "es-ES": "Rosa Brillante Oscuro",
+                            "en-US": "Dark Vivid Pink"
+                        },
+                        "value": 11342935
+                    },
+                    {
+                        "name": "Gold",
+                        "name_localizations": {
+                            "es-ES": "Oro",
+                            "en-US": "Gold"
+                        },
+                        "value": 15844367
+                    },
+                    {
+                        "name": "Dark Gold",
+                        "name_localizations": {
+                            "es-ES": "Oro Oscuro",
+                            "en-US": "Dark Gold"
+                        },
+                        "value": 12745742
+                    },
+                    {
+                        "name": "Orange",
+                        "name_localizations": {
+                            "es-ES": "Naranja",
+                            "en-US": "Orange"
+                        },
+                        "value": 15105570
+                    },
+                    {
+                        "name": "Dark Orange",
+                        "name_localizations": {
+                            "es-ES": "Naranja Oscuro",
+                            "en-US": "Dark Orange"
+                        },
+                        "value": 11027200
+                    },
+                    {
+                        "name": "Red",
+                        "name_localizations": {
+                            "es-ES": "Rojo",
+                            "en-US": "Red"
+                        },
+                        "value": 15548997
+                    },
+                    {
+                        "name": "Dark Red",
+                        "name_localizations": {
+                            "es-ES": "Rojo Oscuro",
+                            "en-US": "Dark Red"
+                        },
+                        "value": 10038562
+                    },
+                    {
+                        "name": "Grey",
+                        "name_localizations": {
+                            "es-ES": "Gris",
+                            "en-US": "Grey"
+                        },
+                        "value": 9807270
+                    },
+                    {
+                        "name": "Dark Grey",
+                        "name_localizations": {
+                            "es-ES": "Gris Oscuro",
+                            "en-US": "Dark Grey"
+                        },
+                        "value": 9936031
+                    },
+                    {
+                        "name": "Darker Grey",
+                        "name_localizations": {
+                            "es-ES": "Gris Oscuro",
+                            "en-US": "Darker Grey"
+                        },
+                        "value": 8359053
+                    },
+                    {
+                        "name": "Light Grey",
+                        "name_localizations": {
+                            "es-ES": "Gris Claro",
+                            "en-US": "Light Grey"
+                        },
+                        "value": 12370112
+                    },
+                    {
+                        "name": "Navy",
+                        "name_localizations": {
+                            "es-ES": "Azul Marino",
+                            "en-US": "Navy"
+                        },
+                        "value": 3426654
+                    },
+                    {
+                        "name": "Dark Navy",
+                        "name_localizations": {
+                            "es-ES": "Azul Marino Oscuro",
+                            "en-US": "Dark Navy"
+                        },
+                        "value": 2899536
+                    },
+                    {
+                        "name": "Yellow",
+                        "name_localizations": {
+                            "es-ES": "Amarillo",
+                            "en-US": "Yellow"
+                        },
+                        "value": 16705372
+                    }
+                ],
+                "required": true,
+                "name_localizations": {
+                    "en-US": "color",
+                    "es-ES": "color",
+                    "ja": "カラー"
+                },
+                "description_localizations": {
+                    "en-US": "Color of the embed",
+                    "es-ES": "El color del embed",
+                    "ja": "埋め込みの色"
+                }
+            },
+            {
+                "type": 3,
+                "name": "title",
+                "description": "Title of the embed",
+                "required": true,
+                "name_localizations": {
+                    "en-US": "title",
+                    "es-ES": "título",
+                    "ja": "タイトル"
+                },
+                "description_localizations": {
+                    "en-US": "Title of the embed",
+                    "es-ES": "El título del embed",
+                    "ja": "埋め込みのタイトル"
+                }
+            },
+            {
+                "type": 3,
+                "name": "description",
+                "description": "Description of the embed",
+                "required": true,
+                "name_localizations": {
+                    "en-US": "description",
+                    "es-ES": "descripción",
+                    "ja": "説明"
+                },
+                "description_localizations": {
+                    "en-US": "Description of the embed",
+                    "es-ES": "La descripción del embed",
+                    "ja": "埋め込みの説明"
+                }
+            }
+        ],
+        "default_member_permissions": null,
+        "dm_permission": false
+    },
+    {
+        "name": "github",
+        "name_localizations": {
+            "en-US": "github",
+            "es-ES": "github",
+            "ja": "ギットハブ"
+        },
+        "description": "Show Information about a Github Account.",
+        "description_localizations": {
+            "en-US": "Show information about a GitHub account",
+            "es-ES": "Muestra información sobre un usuario de GitHub",
+            "ja": "GitHubユーザーの情報を表示します。"
+        },
+        "options": [
+            {
+                "type": 3,
+                "name": "account",
+                "description": "Account to show information about.",
+                "name_localizations": {
+                    "en-US": "account",
+                    "es-ES": "cuenta",
+                    "ja": "アカウント"
+                },
+                "description_localizations": {
+                    "en-US": "Account to get information",
+                    "es-ES": "La cuenta de la que quieres obtener información",
+                    "ja": "アカウントの名前"
+                },
+                "required": true
+            }
+        ],
+        "default_member_permissions": null
+    },
+    {
+        "name": "help",
+        "name_localizations": {
+            "en-US": "help",
+            "es-ES": "ayuda",
+            "ja": "助けて"
+        },
+        "description": "Show information about me.",
+        "description_localizations": {
+            "en-US": "Show information about me",
+            "es-ES": "Muestra información sobre mi",
+            "ja": "私に関する情報を表示する"
+        },
+        "default_member_permissions": null
+    },
+    {
+        "name": "mchistory",
+        "name_localizations": {
+            "en-US": "mchistory",
+            "es-ES": "historialmc",
+            "ja": "マインクラフトの歴史"
+        },
+        "description": "Show the history of a Minecraft account.",
+        "description_localizations": {
+            "en-US": "Show the history of a Minecraft account",
+            "es-ES": "Muestra el historial de nombres de un jugador de Minecraft",
+            "ja": "Minecraftユーザーの名前の歴史を表示します。"
+        },
+        "options": [
+            {
+                "type": 3,
+                "name": "account",
+                "description": "The account to show the history of.",
+                "required": true,
+                "name_localizations": {
+                    "en-US": "account",
+                    "es-ES": "cuenta",
+                    "ja": "アカウント"
+                },
+                "description_localizations": {
+                    "en-US": "Account to get information",
+                    "es-ES": "La cuenta de la que quieres obtener información",
+                    "ja": "アカウントの名前"
+                }
+            }
+        ],
+        "default_member_permissions": null
+    },
+    {
+        "name": "mcserver",
+        "name_localizations": {
+            "en-US": "mcserver",
+            "es-ES": "servidormc",
+            "ja": "マインクラフトサーバー"
+        },
+        "description": "Send a image of a Minecraft server.",
+        "description_localizations": {
+            "en-US": "Send a image of a Minecraft server",
+            "es-ES": "Envía una imagen de un servidor de Minecraft",
+            "ja": "Minecraftサーバーから画像を送信する"
+        },
+        "options": [
+            {
+                "type": 3,
+                "name": "server",
+                "description": "Minecraft server to show the image of.",
+                "required": true,
+                "name_localizations": {
+                    "en-US": "server",
+                    "es-ES": "servidor",
+                    "ja": "サーバー"
+                },
+                "description_localizations": {
+                    "en-US": "Server to get information",
+                    "es-ES": "El servidor del que quieres obtener información",
+                    "ja": "サーバーのIPまたはドメイン"
+                }
+            }
+        ],
+        "default_member_permissions": null
+    },
+    {
+        "name": "ping",
+        "name_localizations": {
+            "en-US": "ping",
+            "es-ES": "ping",
+            "ja": "ピン"
+        },
+        "description": "Shows the bot latency.",
+        "description_localizations": {
+            "en-US": "Shows the bot latency",
+            "es-ES": "Muestra la latencia del bot",
+            "ja": "ボットの待ち時間を表示"
+        },
+        "default_member_permissions": null
+    },
+    {
+        "name": "roleinfo",
+        "name_localizations": {
+            "en-US": "roleinfo",
+            "es-ES": "inforol",
+            "ja": "役割情報"
+        },
+        "description": "Get information about a role.",
+        "description_localizations": {
+            "en-US": "Get information about a role",
+            "es-ES": "Muestra información sobre un rol",
+            "ja": "役割の情報を表示します。"
+        },
+        "options": [
+            {
+                "type": 8,
+                "name": "role",
+                "description": "Role to get information about.",
+                "required": true,
+                "name_localizations": {
+                    "en-US": "role",
+                    "es-ES": "rol",
+                    "ja": "役割"
+                },
+                "description_localizations": {
+                    "en-US": "Role to get information",
+                    "es-ES": "El rol del que quieres obtener información",
+                    "ja": "役割の情報を表示します。"
+                }
+            }
+        ],
+        "default_member_permissions": null,
+        "dm_permission": false
+    },
+    {
+        "name": "serverinfo",
+        "name_localizations": {
+            "en-US": "serverinfo",
+            "es-ES": "infoservidor",
+            "ja": "サーバー情報"
+        },
+        "description": "Get information about the server.",
+        "description_localizations": {
+            "en-US": "Get information about the server",
+            "es-ES": "Muestra información sobre el servidor",
+            "ja": "サーバーの情報を表示します。"
+        },
+        "default_member_permissions": null,
+        "dm_permission": false
+    },
+    {
+        "name": "shards",
+        "name_localizations": {
+            "en-US": "shards",
+            "es-ES": "fragmentos",
+            "ja": "破片"
+        },
+        "description": "Get information about shards.",
+        "description_localizations": {
+            "en-US": "Get information about shards",
+            "es-ES": "Muestra información sobre los fragmentos",
+            "ja": "ボットのシャードを表示します。"
+        },
+        "default_member_permissions": null
+    },
+    {
+        "name": "twitch",
+        "name_localizations": {
+            "en-US": "twitch",
+            "es-ES": "twitch",
+            "ja": "twitch"
+        },
+        "description": "Set a notification for when a streamer goes live",
+        "description_localizations": {
+            "en-US": "Set a notification for when a streamer goes live!",
+            "es-ES": "Establece una notificación para cuando un streamer se ponga en directo!",
+            "ja": "ストリーマーがライブを開始したときの通知を設定します！"
+        },
+        "options": [
+            {
+                "type": 1,
+                "name": "add",
+                "description": "Add a notification for when a streamer goes live",
+                "options": [
+                    {
+                        "type": 3,
+                        "name": "streamer",
+                        "description": "Streamer to set the notification",
+                        "required": true,
+                        "name_localizations": {
+                            "en-US": "streamer",
+                            "es-ES": "streamer",
+                            "ja": "ストリーマー"
+                        },
+                        "description_localizations": {
+                            "en-US": "Streamer to add",
+                            "es-ES": "El nombre del streamer",
+                            "ja": "通知を受け取るストリーマー"
+                        }
+                    },
+                    {
+                        "type": 7,
+                        "name": "channel",
+                        "description": "Channel to send the notification",
+                        "required": true,
+                        "channel_types": [
+                            0
+                        ],
+                        "name_localizations": {
+                            "en-US": "channel",
+                            "es-ES": "canal",
+                            "ja": "チャンネル"
+                        },
+                        "description_localizations": {
+                            "en-US": "Channel to send the notification",
+                            "es-ES": "El canal donde se enviarán las notificaciones",
+                            "ja": "通知を受け取るチャンネル"
+                        }
+                    },
+                    {
+                        "type": 8,
+                        "name": "role",
+                        "description": "Role to mention when the streamer goes live",
+                        "name_localizations": {
+                            "en-US": "role",
+                            "es-ES": "rol",
+                            "ja": "役割"
+                        },
+                        "description_localizations": {
+                            "en-US": "Role to mention",
+                            "es-ES": "El rol que se mencionará cuando el streamer se ponga en directo",
+                            "ja": "通知を受け取る役割"
+                        }
+                    }
+                ],
+                "name_localizations": {
+                    "en-US": "add",
+                    "es-ES": "añadir",
+                    "ja": "追加"
+                },
+                "description_localizations": {
+                    "en-US": "Add a streamer to the notification list",
+                    "es-ES": "Añade una notificación para un streamer",
+                    "ja": "ストリーマーを追加する"
+                }
+            },
+            {
+                "type": 1,
+                "name": "remove",
+                "description": "Remove a notification for when a streamer goes live",
+                "options": [
+                    {
+                        "type": 3,
+                        "name": "streamer",
+                        "description": "Streamer to remove the notification",
+                        "required": true,
+                        "name_localizations": {
+                            "en-US": "streamer",
+                            "es-ES": "streamer",
+                            "ja": "ストリーマー"
+                        },
+                        "description_localizations": {
+                            "en-US": "Streamer to remove",
+                            "es-ES": "El nombre del streamer",
+                            "ja": "通知を受け取るストリーマー"
+                        }
+                    }
+                ],
+                "name_localizations": {
+                    "en-US": "remove",
+                    "es-ES": "eliminar",
+                    "ja": "削除"
+                },
+                "description_localizations": {
+                    "en-US": "Remove a streamer from the notification list",
+                    "es-ES": "Elimina una notificación para un streamer",
+                    "ja": "ストリーマーを削除する"
+                }
+            }
+        ],
+        "default_member_permissions": null,
+        "dm_permission": false
+    },
+    {
+        "name": "ban",
+        "name_localizations": {
+            "en-US": "ban",
+            "es-ES": "ban",
+            "ja": "禁止"
+        },
+        "description": "Ban a user from the server",
+        "description_localizations": {
+            "en-US": "Ban a member",
+            "es-ES": "Banea a un usuario",
+            "ja": "ユーザーを禁止する"
+        },
+        "options": [
+            {
+                "type": 6,
+                "name": "user",
+                "description": "User to ban",
+                "required": true,
+                "name_localizations": {
+                    "en-US": "usuario",
+                    "es-ES": "user",
+                    "ja": "ユーザー"
+                },
+                "description_localizations": {
+                    "en-US": "Usuario a banear",
+                    "es-ES": "User to ban",
+                    "ja": "禁止するユーザー"
+                }
+            },
+            {
+                "type": 3,
+                "name": "reason",
+                "description": "Reason for the ban",
+                "required": false,
+                "name_localizations": {
+                    "en-US": "razon",
+                    "es-ES": "reason",
+                    "ja": "理由"
+                },
+                "description_localizations": {
+                    "en-US": "Razon del ban",
+                    "es-ES": "Reason of the ban",
+                    "ja": "追放の理由"
+                }
+            },
+            {
+                "type": 4,
+                "name": "days",
+                "description": "Days to delete messages from the user",
+                "required": false,
+                "name_localizations": {
+                    "en-US": "dias",
+                    "es-ES": "days",
+                    "ja": "ディアス"
+                },
+                "description_localizations": {
+                    "en-US": "Días para borrar mensajes del usuario",
+                    "es-ES": "Days to delete messages from the user",
+                    "ja": "ユーザーメッセージの削除日数"
+                }
+            }
+        ],
+        "default_member_permissions": null,
+        "dm_permission": false
+    },
+    {
+        "name": "247",
+        "name_localizations": {
+            "en-US": "247",
+            "es-ES": "247",
+            "ja": "247"
+        },
+        "description": "Stay 24/7 in a voice channel",
+        "description_localizations": {
+            "en-US": "Stay 24/7 in a voice channel",
+            "es-ES": "Mantente 24/7 en un canal de voz",
+            "ja": "年中無休の音声チャンネル"
+        },
+        "default_member_permissions": null,
+        "dm_permission": false
+    },
+    {
+        "name": "loop",
+        "name_localizations": {
+            "en-US": "loop",
+            "es-ES": "bucle",
+            "ja": "ループ"
+        },
+        "description": "Loops the current queue",
+        "description_localizations": {
+            "en-US": "Repeats the current queue/song",
+            "es-ES": "Repite la cola/canción actual",
+            "ja": "現在のキュー/曲を繰り返す"
+        },
+        "default_member_permissions": null
+    },
+    {
+        "name": "nowplaying",
+        "name_localizations": {
+            "en-US": "nowplaying",
+            "es-ES": "reproduciendo",
+            "ja": "再生中"
+        },
+        "description": "See the current song playing.",
+        "description_localizations": {
+            "en-US": "Show the current song",
+            "es-ES": "Muestra la canción que se está reproduciendo actualmente",
+            "ja": "現在の曲を表示する"
+        },
+        "default_member_permissions": null
+    },
+    {
+        "name": "pause",
+        "name_localizations": {
+            "en-US": "pause",
+            "es-ES": "pausa",
+            "ja": "ポーズ"
+        },
+        "description": "Pause the current song!",
+        "description_localizations": {
+            "en-US": "Pause the current song",
+            "es-ES": "Pausa la canción actual",
+            "ja": "現在の曲を一時停止する"
+        },
+        "default_member_permissions": null,
+        "dm_permission": false
+    },
+    {
+        "name": "play",
+        "name_localizations": {
+            "en-US": "play",
+            "es-ES": "reproducir",
+            "ja": "演奏"
+        },
+        "description": "Play the song that you want with the name or a youtube/spotify link",
+        "description_localizations": {
+            "en-US": "Play the song that you want with the name or a youtube/spotify link",
+            "es-ES": "Reproduce la canción que desees con su nombre o un link de youtube/spotify",
+            "ja": "好きな曲を、その曲名またはyoutube/spotifyのリンクとともに流す。"
+        },
+        "options": [
+            {
+                "type": 3,
+                "name": "song",
+                "description": "Name of the song that u want to listen.",
+                "autocomplete": true,
+                "required": false,
+                "name_localizations": {
+                    "en-US": "song",
+                    "es-ES": "canción",
+                    "ja": "曲"
+                },
+                "description_localizations": {
+                    "en-US": "Song to play",
+                    "es-ES": "El nombre de la canción o el link de youtube/spotify",
+                    "ja": "演奏する曲"
+                }
+            }
+        ],
+        "default_member_permissions": null,
+        "dm_permission": false
+    },
+    {
+        "name": "queue",
+        "name_localizations": {
+            "en-US": "queue",
+            "es-ES": "cola",
+            "ja": "キュー"
+        },
+        "description": "Show the queue!",
+        "description_localizations": {
+            "en-US": "Show the queue",
+            "es-ES": "Muestra la cola de canciones",
+            "ja": "現在のキューを表示する"
+        },
+        "default_member_permissions": null,
+        "dm_permission": false
+    },
+    {
+        "name": "resume",
+        "name_localizations": {
+            "en-US": "resume",
+            "es-ES": "reanudar",
+            "ja": "履歴書"
+        },
+        "description": "Resume the current song!",
+        "description_localizations": {
+            "en-US": "Resume the current song!",
+            "es-ES": "Reanuda la canción actual",
+            "ja": "現在の曲を再開する！"
+        },
+        "default_member_permissions": null,
+        "dm_permission": false
+    },
+    {
+        "name": "skip",
+        "name_localizations": {
+            "en-US": "skip",
+            "es-ES": "saltar",
+            "ja": "スキップ"
+        },
+        "description": "Skips the current song!",
+        "description_localizations": {
+            "en-US": "Skip the current song",
+            "es-ES": "Salta la canción que se está reproduciendo",
+            "ja": "現在の曲をスキップする"
+        },
+        "default_member_permissions": null,
+        "dm_permission": false
+    },
+    {
+        "name": "stop",
+        "name_localizations": {
+            "en-US": "stop",
+            "es-ES": "detener",
+            "ja": "停止"
+        },
+        "description": "Stop the player!",
+        "description_localizations": {
+            "en-US": "Stop the player",
+            "es-ES": "Detiene el reproductor de música",
+            "ja": "選手を止める！"
+        },
+        "default_member_permissions": null,
+        "dm_permission": false
+    },
+    {
+        "name": "reboot",
+        "name_localizations": {
+            "en-US": "reboot",
+            "es-ES": "reiniciar",
+            "ja": "再起動"
+        },
+        "description": "Reboot a shard or all shards.",
+        "description_localizations": {
+            "en-US": "Reboot a shard or all shards",
+            "es-ES": "Reinicia una o todas las shards",
+            "ja": "1つまたはすべてのシャードをリセットする"
+        },
+        "options": [
+            {
+                "type": 4,
+                "name": "shard",
+                "description": "The Shard to reboot",
+                "required": false,
+                "name_localizations": {
+                    "en-US": "shard",
+                    "es-ES": "fragmento",
+                    "ja": "破片"
+                },
+                "description_localizations": {
+                    "en-US": "Shard to reboot",
+                    "es-ES": "El fragmento que quieres reiniciar",
+                    "ja": "再起動するシャード"
+                }
+            }
+        ],
+        "default_member_permissions": null
+    }
+]

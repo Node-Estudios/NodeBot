@@ -27,14 +27,6 @@ export default class Ban extends Command {
                     name: 'days',
                     description: 'Days to delete messages from the user',
                     required: false,
-                    name_localizations: {
-                        'es-ES': 'días',
-                        'en-US': 'days',
-                    },
-                    description_localizations: {
-                        'es-ES': 'Días para borrar mensajes del usuario',
-                        'en-US': 'Days to delete messages from the user',
-                    },
                 },
             ],
         })

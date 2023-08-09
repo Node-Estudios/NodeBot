@@ -186,23 +186,77 @@
     "commands": {
         "reboot": {
             "name": "reboot",
-            "description": "Reboot a shard or all shards"
+            "description": "Reboot a shard or all shards",
+            "options": {
+                "shard": {
+                    "name": "shard",
+                    "description": "Shard to reboot"
+                }
+            }
         },
         "8ball": {
             "name": "8ball",
-            "description": "Ask a question to the magic ball"
+            "description": "Ask a question to the magic ball",
+            "options": {
+                "question": {
+                    "name": "question",
+                    "description": "What do you want to ask?"
+                }
+            }
         },
         "impostor": {
             "name": "impostor",
-            "description": "Are you the impostor? SUS"
+            "description": "Are you the impostor? SUS",
+            "options": {
+                "user": {
+                    "name": "user",
+                    "description": "Are this user the impostor? SUS na na na na na na na"
+                }
+            }
         },
         "avatar": {
             "name": "avatar",
-            "description": "Send your avatar or the other user one!"
+            "description": "Send your avatar or the other user one!",
+            "options": {
+                "user": {
+                    "name": "user",
+                    "description": "User to get the avatar"
+                }
+            }
         },
         "twitch": {
             "name": "twitch",
-            "description": "Set a notification for when a streamer goes live!"
+            "description": "Set a notification for when a streamer goes live!",
+            "options": {
+                "add": {
+                    "name": "add",
+                    "description": "Add a streamer to the notification list",
+                    "options": {
+                        "streamer": {
+                            "name": "streamer",
+                            "description": "Streamer to add"
+                        },
+                        "channel": {
+                            "name": "channel",
+                            "description": "Channel to send the notification"
+                        },
+                        "role": {
+                            "name": "role",
+                            "description": "Role to mention"
+                        }
+                    }
+                },
+                "remove": {
+                    "name": "remove",
+                    "description": "Remove a streamer from the notification list",
+                    "options": {
+                        "streamer": {
+                            "name": "streamer",
+                            "description": "Streamer to remove"
+                        }
+                    }
+                }
+            }
         },
         "shards": {
             "name": "shards",
@@ -214,7 +268,13 @@
         },
         "roleinfo": {
             "name": "roleinfo",
-            "description": "Get information about a role"
+            "description": "Get information about a role",
+            "options": {
+                "role": {
+                    "name": "role",
+                    "description": "Role to get information"
+                }
+            }
         },
         "ping": {
             "name": "ping",
@@ -222,11 +282,23 @@
         },
         "mcserver": {
             "name": "mcserver",
-            "description": "Send a image of a Minecraft server"
+            "description": "Send a image of a Minecraft server",
+            "options": {
+                "server": {
+                    "name": "server",
+                    "description": "Server to get information"
+                }
+            }
         },
         "mchistory": {
             "name": "mchistory",
-            "description": "Show the history of a Minecraft account"
+            "description": "Show the history of a Minecraft account",
+            "options": {
+                "account": {
+                    "name": "account",
+                    "description": "Account to get information"
+                }
+            }
         },
         "help": {
             "name": "help",
@@ -234,19 +306,63 @@
         },
         "github": {
             "name": "github",
-            "description": "Show information about a GitHub account"
+            "description": "Show information about a GitHub account",
+            "options": {
+                "account": {
+                    "name": "account",
+                    "description": "Account to get information"
+                }
+            }
         },
         "embed": {
             "name": "embed",
-            "description": "Send a embed"
+            "description": "Send a embed",
+            "options": {
+                "channel": {
+                    "name": "channel",
+                    "description": "Channel to send the embed"
+                },
+                "color": {
+                    "name": "color",
+                    "description": "Color of the embed"
+                },
+                "title": {
+                    "name": "title",
+                    "description": "Title of the embed"
+                },
+                "description": {
+                    "name": "description",
+                    "description": "Description of the embed"
+                }
+            }
         },
         "ban": {
             "name": "ban",
-            "description": "Ban a member"
+            "description": "Ban a member",
+            "options": {
+                "user": {
+                    "name": "usuario",
+                    "description": "Usuario a banear"
+                },
+                "reason": {
+                    "name": "razon",
+                    "description": "Razon del ban"
+                },
+                "days": {
+                    "name": "dias",
+                    "description": "Días para borrar mensajes del usuario"
+                }
+            }
         },
         "play": {
             "name": "play",
-            "description": "Play the song that you want with the name or a youtube/spotify link"
+            "description": "Play the song that you want with the name or a youtube/spotify link",
+            "options": {
+                "song": {
+                    "name": "song",
+                    "description": "Song to play"
+                }
+            }
         },
         "stop": {
             "name": "stop",

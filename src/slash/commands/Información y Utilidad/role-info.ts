@@ -14,14 +14,6 @@ export default class roleinfo extends Command {
                     type: ApplicationCommandOptionType.Role,
                     name: 'role',
                     description: 'Role to get information about.',
-                    name_localizations: {
-                        'es-ES': 'rol',
-                        'en-US': 'role',
-                    },
-                    description_localizations: {
-                        'es-ES': 'El rol a obtener información sobre.',
-                        'en-US': 'Role to get information about.',
-                    },
                     required: true,
                 },
             ],

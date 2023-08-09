@@ -3,9 +3,10 @@ import {
     RESTPostAPIChatInputApplicationCommandsJSONBody,
     APIApplicationCommandOption,
     ChatInputCommandInteraction,
-    PermissionsString,
     PermissionsBitField,
+    PermissionsString,
     LocalizationMap,
+    ApplicationCommandOptionType,
 } from 'discord.js'
 import { getLocalesTranslations } from '../utils/Translator.js'
 
@@ -54,7 +55,7 @@ export default class Command {
     cooldown = 0
 
     constructor (
-        command: Omit<RESTPostAPIChatInputApplicationCommandsJSONBody, 'name_localizations' | 'description_localizations'> & {
+        command: RESTPostAPIChatInputApplicationCommandsJSONBody & {
             only_dm?: boolean
             default_member_permissions?: PermissionsString[] | null
             permissions?: { dev?: boolean, botPermissions?: PermissionsBitField }
@@ -89,8 +90,10 @@ export default class Command {
             botPermissions: permissions?.botPermissions,
         }
         this.cooldown = cooldown ?? 0
+
         this.name_localizations = this.getNameLocalizations()
         this.description_localizations = this.getDescriptionLocalizations()
+        if (this.options) this.options = this.parseOptionsLocalizations(this.options)
     }
 
     async run (interaction: ChatInputCommandInteraction): Promise<any> {
@@ -106,6 +109,15 @@ export default class Command {
 
     getDescriptionLocalizations (): LocalizationMap {
         return getLocalesTranslations(`commands.${this.name}.description`)
+    }
+
+    parseOptionsLocalizations (options: APIApplicationCommandOption[], deep = `commands.${this.name}.options`): APIApplicationCommandOption[] {
+        return options.map((option) => ({
+            ...option,
+            name_localizations: getLocalesTranslations(`${deep}.${option.name}.name`),
+            description_localizations: getLocalesTranslations(`${deep}.${option.name}.description`),
+            options: option.type === ApplicationCommandOptionType.Subcommand || option.type === ApplicationCommandOptionType.SubcommandGroup ? this.parseOptionsLocalizations(option.options ?? [], `${deep}.${option.name}.options`) : undefined,
+        })) as APIApplicationCommandOption[]
     }
 
     toJSON (): RESTPostAPIChatInputApplicationCommandsJSONBody {
