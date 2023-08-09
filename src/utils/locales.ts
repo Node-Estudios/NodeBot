@@ -140,6 +140,11 @@ export default {
     role_mention: "twitch.role_mention",
     now_live: "twitch.now_live",
   },
+  loop: {
+    queue: "loop.queue",
+    song: "loop.song",
+    disabled: "loop.disabled",
+  },
   ERROREMBED: "ERROREMBED",
   SUCCESSEMBED: "SUCCESSEMBED",
   PAUSE: "PAUSE",
@@ -178,6 +183,104 @@ export default {
   YES: "YES",
   PLAYING: "PLAYING",
   GENERICERROR: "GENERICERROR",
+  commands: {
+    247: {
+      name: "commands.247.name",
+      description: "commands.247.description",
+    },
+    reboot: {
+      name: "commands.reboot.name",
+      description: "commands.reboot.description",
+    },
+    8ball: {
+      name: "commands.8ball.name",
+      description: "commands.8ball.description",
+    },
+    impostor: {
+      name: "commands.impostor.name",
+      description: "commands.impostor.description",
+    },
+    avatar: {
+      name: "commands.avatar.name",
+      description: "commands.avatar.description",
+    },
+    twitch: {
+      name: "commands.twitch.name",
+      description: "commands.twitch.description",
+    },
+    shards: {
+      name: "commands.shards.name",
+      description: "commands.shards.description",
+    },
+    serverinfo: {
+      name: "commands.serverinfo.name",
+      description: "commands.serverinfo.description",
+    },
+    roleinfo: {
+      name: "commands.roleinfo.name",
+      description: "commands.roleinfo.description",
+    },
+    ping: {
+      name: "commands.ping.name",
+      description: "commands.ping.description",
+    },
+    mcserver: {
+      name: "commands.mcserver.name",
+      description: "commands.mcserver.description",
+    },
+    mchistory: {
+      name: "commands.mchistory.name",
+      description: "commands.mchistory.description",
+    },
+    help: {
+      name: "commands.help.name",
+      description: "commands.help.description",
+    },
+    github: {
+      name: "commands.github.name",
+      description: "commands.github.description",
+    },
+    embed: {
+      name: "commands.embed.name",
+      description: "commands.embed.description",
+    },
+    ban: {
+      name: "commands.ban.name",
+      description: "commands.ban.description",
+    },
+    play: {
+      name: "commands.play.name",
+      description: "commands.play.description",
+    },
+    stop: {
+      name: "commands.stop.name",
+      description: "commands.stop.description",
+    },
+    skip: {
+      name: "commands.skip.name",
+      description: "commands.skip.description",
+    },
+    resume: {
+      name: "commands.resume.name",
+      description: "commands.resume.description",
+    },
+    queue: {
+      name: "commands.queue.name",
+      description: "commands.queue.description",
+    },
+    pause: {
+      name: "commands.pause.name",
+      description: "commands.pause.description",
+    },
+    nowplaying: {
+      name: "commands.nowplaying.name",
+      description: "commands.nowplaying.description",
+    },
+    loop: {
+      name: "commands.loop.name",
+      description: "commands.loop.description",
+    },
+  },
   nowplaying: {
     1: "nowplaying.1",
     2: "nowplaying.2",
@@ -187,17 +290,7 @@ export default {
     6: "nowplaying.6",
     7: "nowplaying.7",
   },
-  loop: {
-    queue: 'loop.queue',
-    song: 'loop.song',
-    disabled: 'loop.disabled',
-  }
 } as {
-  loop: {
-    queue: string
-    song: string
-    disabled: string
-  }
   247: {
     enabled: string
     disabled: string
@@ -339,6 +432,11 @@ export default {
     role_mention: string
     now_live: string
   }
+  loop: {
+    queue: string
+    song: string
+    disabled: string
+  }
   ERROREMBED: string
   SUCCESSEMBED: string
   PAUSE: string
@@ -377,6 +475,104 @@ export default {
   YES: string
   PLAYING: string
   GENERICERROR: string
+  commands: {
+    247: {
+      name: string
+      description: string
+    }
+    reboot: {
+      name: string
+      description: string
+    }
+    8ball: {
+      name: string
+      description: string
+    }
+    impostor: {
+      name: string
+      description: string
+    }
+    avatar: {
+      name: string
+      description: string
+    }
+    twitch: {
+      name: string
+      description: string
+    }
+    shards: {
+      name: string
+      description: string
+    }
+    serverinfo: {
+      name: string
+      description: string
+    }
+    roleinfo: {
+      name: string
+      description: string
+    }
+    ping: {
+      name: string
+      description: string
+    }
+    mcserver: {
+      name: string
+      description: string
+    }
+    mchistory: {
+      name: string
+      description: string
+    }
+    help: {
+      name: string
+      description: string
+    }
+    github: {
+      name: string
+      description: string
+    }
+    embed: {
+      name: string
+      description: string
+    }
+    ban: {
+      name: string
+      description: string
+    }
+    play: {
+      name: string
+      description: string
+    }
+    stop: {
+      name: string
+      description: string
+    }
+    skip: {
+      name: string
+      description: string
+    }
+    resume: {
+      name: string
+      description: string
+    }
+    queue: {
+      name: string
+      description: string
+    }
+    pause: {
+      name: string
+      description: string
+    }
+    nowplaying: {
+      name: string
+      description: string
+    }
+    loop: {
+      name: string
+      description: string
+    }
+  }
   nowplaying?: {
     1?: string
     2?: string

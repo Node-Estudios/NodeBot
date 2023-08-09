@@ -26,7 +26,7 @@
         "dev": "concurrently \"tsc -w\" \"nodemon doppler run -- node build/index.js\"",
         "tsc": "tsc",
         "tsc:watch": "nodemon --watch src --exec tsc",
-        "type:locales": "cd locales && type-locales && mv locales.ts ../src/utils/locales.ts && cd .."
+        "type:locales": "cd locales && type-locales && mv locales.ts ../src/utils/locales.ts && cd .. && node build/utils/testLocales.js"
     },
     "author": "",
     "license": "ISC",

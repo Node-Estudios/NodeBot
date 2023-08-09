@@ -140,6 +140,11 @@
         "role_mention": "Mention will be made to {role}.",
         "now_live": "{streamer} is now live!"
     },
+    "loop": {
+        "queue": "Queue loop",
+        "song": "Song loop",
+        "disabled": "Loop disabled"
+    },
     "ERROREMBED": "Error",
     "SUCCESSEMBED": "Success",
     "PAUSE": "Pause",

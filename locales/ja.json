@@ -140,6 +140,11 @@
         "role_mention": "{role}について言及しなければならない。",
         "now_live": "今{streamer}はライブです！"
     },
+    "loop": {
+        "queue": "キューをループ",
+        "song": "現在の曲をループ",
+        "disabled": "ループ無効"
+    },
     "ERROREMBED": "Error",
     "SUCCESSEMBED": "Success",
     "PAUSE": "ポーズ",
