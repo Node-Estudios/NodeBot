@@ -1,7 +1,8 @@
-import * as Sentry from '@sentry/node'
-import { EmbedBuilder, WebhookClient } from 'discord.js'
 import Client from '#structures/Client.js'
 import Logger from '#utils/logger.js'
+import * as Sentry from '@sentry/node'
+import { ProfilingIntegration } from '@sentry/profiling-node'
+import { EmbedBuilder, WebhookClient } from 'discord.js'
 // TODO: se cmbiara a sentry
 
 class ErrorManager {
@@ -14,6 +15,12 @@ class ErrorManager {
         if (process.env.SENTRY_DSN && process.env.NODE_ENV === 'production') {
             Sentry.init({
                 dsn: process.env.SENTRY_DSN,
+                integrations: [
+                    new Sentry.Integrations.Console(),
+                    new ProfilingIntegration(),
+                    ...Sentry.autoDiscoverNodePerformanceMonitoringIntegrations(),
+
+                ],
                 environment: process.env.NODE_ENV,
                 tracesSampleRate: 0.5,
             })

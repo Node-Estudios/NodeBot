@@ -1,12 +1,12 @@
-import { AutocompleteInteraction, ButtonInteraction, ChatInputCommandInteraction, Interaction } from 'discord.js'
 import autocomplete from '#cache/autocomplete.js'
 import buttons from '#cache/buttons.js'
 import commands from '#cache/commands.js'
 import performanceMeters from '#cache/performanceMeters.js'
-import { Timer as PerformanceMeter } from '../../handlers/performanceMeter.js'
 import Client from '#structures/Client.js'
-import { BaseEvent } from '../../structures/Events.js'
 import logger from '#utils/logger.js'
+import { AutocompleteInteraction, ButtonInteraction, ChatInputCommandInteraction, Interaction } from 'discord.js'
+import { Timer as PerformanceMeter } from '../../handlers/performanceMeter.js'
+import { BaseEvent } from '../../structures/Events.js'
 
 export class interactionCreate extends BaseEvent {
     async run (client: Client, interaction: Interaction) {
@@ -15,7 +15,6 @@ export class interactionCreate extends BaseEvent {
             if (interaction.guild?.id !== process.env.TESTINGGUILD) return
         }
         if (interaction.member?.user.bot) return
-
         // return false if something went wrong, true if everything was okey
         if (client.settings.debug === 'true' && interaction.type !== 2) { logger.debug('Interaction, type: ' + interaction.type + ' | ' + interaction.guild?.name ?? 'No guild' + ' | ' + interaction.user.username) }
         if (!client.isReady()) return // <-- return statement here
