@@ -82,6 +82,6 @@ export default class shards extends Command {
                 ])
                 .setTimestamp(),
         )
-        return await interaction.reply({ embeds })
+        return await interaction.editReply({ embeds })
     }
 };
