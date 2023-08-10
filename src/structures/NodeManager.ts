@@ -101,11 +101,11 @@ export default class NodeManager extends ClusterManager {
 
                 // Uncomment and modify the following lines to add more clusters
                 // Node 2
-                if (process.env.TOKEN_NODE_2) this.createNodeCluster(2, process.env.TOKEN_NODE_2)
+                if (process.env.TOKEN_NODE_2) this.createNodeCluster(2, process.env.TOKEN_NODE_2, this.totalClusters)
                 // Node 3
-                if (process.env.TOKEN_NODE_3) this.createNodeCluster(3, process.env.TOKEN_NODE_3)
+                if (process.env.TOKEN_NODE_3) this.createNodeCluster(3, process.env.TOKEN_NODE_3, this.totalClusters)
                 // Node 4
-                if (process.env.TOKEN_NODE_4) this.createNodeCluster(4, process.env.TOKEN_NODE_4)
+                if (process.env.TOKEN_NODE_4) this.createNodeCluster(4, process.env.TOKEN_NODE_4, this.totalClusters)
             })
             .then(() => {
                 this.queue.start()
@@ -121,7 +121,7 @@ export default class NodeManager extends ClusterManager {
         })
     }
 
-    createNodeCluster (nodeNumber: number, token: string) {
+    createNodeCluster (nodeNumber: number, token: string, startingClusterIndex: number) {
         const chunk = (arr: any[], size: any): any[] =>
             Array.from({ length: Math.ceil(arr.length / size) }, (v, i) => arr.slice(i * size, i * size + size))
         let color
@@ -152,7 +152,6 @@ export default class NodeManager extends ClusterManager {
                 // * Divide los shards en bloques
                 const clusterList = chunk(shardList, 10)
 
-                const startingClusterIndex = this.totalClusters
                 for (let i = 0; i < clusterList.length; i++) {
                     const clusterIndex = startingClusterIndex + i
                     this.totalClusters = clusterIndex
