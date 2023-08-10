@@ -1,7 +1,6 @@
-import { ChatInputCommandInteraction, EmbedBuilder } from 'discord.js'
-import { MessageHelper } from '../../../handlers/messageHandler.js'
 import Client from '#structures/Client.js'
 import Command from '#structures/Command.js'
+import { ChatInputCommandInteraction, EmbedBuilder } from 'discord.js'
 
 export default class shards extends Command {
     constructor () {
@@ -18,7 +17,7 @@ export default class shards extends Command {
      * @param {String[]} args
      */
     override async run (interaction: ChatInputCommandInteraction<'cached'>) {
-        const message = new MessageHelper(interaction)
+        interaction.deferReply()
         const client = interaction.client as Client
         const embeds = []
         const membersCount = await client.cluster.broadcastEval(c => c.guilds.cache.reduce((prev, guild) => prev + guild.memberCount, 0))
@@ -83,8 +82,6 @@ export default class shards extends Command {
                 ])
                 .setTimestamp(),
         )
-        return await message.sendMessage({
-            embeds,
-        })
+        return await interaction.editReply({ embeds })
     }
 };
