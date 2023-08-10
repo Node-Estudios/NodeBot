@@ -17,7 +17,7 @@ export default class shards extends Command {
      * @param {String[]} args
      */
     override async run (interaction: ChatInputCommandInteraction<'cached'>) {
-        interaction.deferReply()
+        await interaction.deferReply()
         const client = interaction.client as Client
         const embeds = []
         const membersCount = await client.cluster.broadcastEval(c => c.guilds.cache.reduce((prev, guild) => prev + guild.memberCount, 0))
