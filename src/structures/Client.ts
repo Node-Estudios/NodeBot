@@ -59,8 +59,7 @@ export default class Client extends ClientBase<true> {
             }
         }
     } = {
-        // @ts-expect-error
-            color: JSON.parse(process.env.DATOS)?.typeData?.color as ColorResolvable || Colors.Green,
+            color: process.env.color as ColorResolvable ?? Colors.Green,
             mode: process.env.NODE_ENV,
             debug: process.env.DEBUG_MODE,
             emojis: {
@@ -151,6 +150,7 @@ export default class Client extends ClientBase<true> {
     async init () {
         try {
             // * Load Events (./handlers/events.js) ==> ./events/*/* ==> ./cache/events.ts (Collection)
+            console.log('color:', process.env.color)
             new EventHandler(this).load(events)
             return await super.login(process.env.DISCORD_TOKEN).then(() => logger.startUp(`${this.user.username} logged in | Cluster ${this.cluster.id}`))
         } catch (e) {

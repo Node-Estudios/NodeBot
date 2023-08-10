@@ -127,13 +127,13 @@ export default class NodeManager extends ClusterManager {
         let color
         switch (nodeNumber) {
             case 2:
-                color = 'PURPLE'
+                color = 'Purple'
                 break
             case 3:
-                color = 'ORANGE'
+                color = 'Orange'
                 break
             case 4:
-                color = 'BLUE'
+                color = 'Aqua'
                 break
         }
 
