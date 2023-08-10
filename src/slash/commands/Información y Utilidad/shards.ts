@@ -7,7 +7,7 @@ export default class shards extends Command {
         super({
             name: 'shards',
             description: 'Get information about shards.',
-            cooldown: 5,
+            cooldown: 30,
         })
     }
 
@@ -82,6 +82,6 @@ export default class shards extends Command {
                 ])
                 .setTimestamp(),
         )
-        return await interaction.editReply({ embeds })
+        return await interaction.reply({ embeds })
     }
 };
