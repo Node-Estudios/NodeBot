@@ -10,7 +10,6 @@ import { BaseEvent } from '../../structures/Events.js'
 
 export class interactionCreate extends BaseEvent {
     async run (client: Client, interaction: Interaction) {
-        console.log('interaction recibed')
         if (process.env.TESTINGGUILD) {
             if (interaction.guild?.id !== process.env.TESTINGGUILD) return
         }

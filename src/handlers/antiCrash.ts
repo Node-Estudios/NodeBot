@@ -57,7 +57,7 @@ class ErrorManager {
                     .setFields(
                         { name: 'Razón', value: '```' + (await reason) + '```' },
                         { name: 'Error', value: '```' + (await p) + '```' },
-                        { name: 'Bot', value: this.client.user.displayName },
+                        { name: 'Bot', value: this.client.user ? this.client.user.displayName : 'Unknown' },
                     ),
             ],
         })
@@ -79,7 +79,7 @@ class ErrorManager {
                         name: 'Error',
                         value: '```' + err + '```',
                     },
-                    { name: 'Bot', value: this.client.user.displayName },
+                    { name: 'Bot', value: this.client.user ? this.client.user.displayName : 'Unknown' },
                 ),
             ],
         })
@@ -101,7 +101,7 @@ class ErrorManager {
                         name: 'Error',
                         value: '```' + err + '```',
                     },
-                    { name: 'Bot', value: this.client.user.displayName },
+                    { name: 'Bot', value: this.client.user ? this.client.user.displayName : 'Unknown' },
                 ),
             ],
         })

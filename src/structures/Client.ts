@@ -1,10 +1,10 @@
+import logger from '#utils/logger.js'
 import { ClusterClient as HybridClient, getInfo } from 'discord-hybrid-sharding'
 import { Client as ClientBase, ColorResolvable, Colors, GatewayIntentBits, Options, Partials } from 'discord.js'
 import events from '../events/index.js'
 import ErrorManager from '../handlers/antiCrash.js'
 import '../handlers/commands.js'
 import { EventHandler } from '../handlers/events.js'
-import logger from '#utils/logger.js'
 import MusicManager from './MusicManager.js'
 interface emoji {
     full: String
@@ -59,7 +59,8 @@ export default class Client extends ClientBase<true> {
             }
         }
     } = {
-            color: Colors.Green,
+        // @ts-expect-error
+            color: JSON.parse(process.env.DATOS)?.typeData?.color as ColorResolvable || Colors.Green,
             mode: process.env.NODE_ENV,
             debug: process.env.DEBUG_MODE,
             emojis: {
@@ -151,7 +152,7 @@ export default class Client extends ClientBase<true> {
         try {
             // * Load Events (./handlers/events.js) ==> ./events/*/* ==> ./cache/events.ts (Collection)
             new EventHandler(this).load(events)
-            return await super.login(process.env.TOKEN).then(() => logger.startUp(`${this.user.username} logged in | Cluster ${this.cluster.id}`))
+            return await super.login(process.env.DISCORD_TOKEN).then(() => logger.startUp(`${this.user.username} logged in | Cluster ${this.cluster.id}`))
         } catch (e) {
             if ((e as any).code === 'TOKEN_INVALID') logger.error('Invalid token')
         }
