@@ -56,7 +56,7 @@ export default class NodeManager extends ClusterManager {
                 const shardList = [...Array(data).keys()]
 
                 // * Divide los shards en bloques
-                clusterList = chunk(shardList, 10)
+                clusterList = chunk(shardList, 6)
 
                 this.queue.queue.shift()
                 this.totalClusters = 0
@@ -101,11 +101,11 @@ export default class NodeManager extends ClusterManager {
 
                 // Uncomment and modify the following lines to add more clusters
                 // Node 2
-                if (process.env.TOKEN_NODE_2) this.createNodeCluster(2, process.env.TOKEN_NODE_2, this.totalClusters)
+                if (process.env.TOKEN_NODE_2) this.createNodeCluster(2, process.env.TOKEN_NODE_2)
                 // Node 3
-                if (process.env.TOKEN_NODE_3) this.createNodeCluster(3, process.env.TOKEN_NODE_3, this.totalClusters)
+                if (process.env.TOKEN_NODE_3) this.createNodeCluster(3, process.env.TOKEN_NODE_3)
                 // Node 4
-                if (process.env.TOKEN_NODE_4) this.createNodeCluster(4, process.env.TOKEN_NODE_4, this.totalClusters)
+                if (process.env.TOKEN_NODE_4) this.createNodeCluster(4, process.env.TOKEN_NODE_4)
             })
             .then(() => {
                 this.queue.start()
@@ -121,7 +121,7 @@ export default class NodeManager extends ClusterManager {
         })
     }
 
-    createNodeCluster (nodeNumber: number, token: string, startingClusterIndex: number) {
+    createNodeCluster (nodeNumber: number, token: string) {
         const chunk = (arr: any[], size: any): any[] =>
             Array.from({ length: Math.ceil(arr.length / size) }, (v, i) => arr.slice(i * size, i * size + size))
         let color
@@ -150,10 +150,10 @@ export default class NodeManager extends ClusterManager {
                 let shardList = [...Array(data).keys()]
                 if (data === 1) shardList = [0]
                 // * Divide los shards en bloques
-                const clusterList = chunk(shardList, 10)
+                const clusterList = chunk(shardList, 6)
 
                 for (let i = 0; i < clusterList.length; i++) {
-                    const clusterIndex = startingClusterIndex + i
+                    const clusterIndex = this.totalClusters + 1
                     this.totalClusters = clusterIndex
                     const cluster = this.createCluster(clusterIndex, clusterList[i], data);
 
