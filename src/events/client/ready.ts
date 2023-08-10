@@ -28,6 +28,8 @@ export default class Ready extends BaseEvent {
         if (process.env.TESTINGGUILD) {
             const guild = await client.guilds.fetch(process.env.TESTINGGUILD)
             guild.commands.set(arr).catch(logger.error)
+        } else if (!process.env.TESTINGUILD) {
+            client.application?.commands.set(arr).catch(logger.error)
         }
         client.cluster.on('message', async (message2: any) => {
             const message = (message2 as IPCMessage).raw
