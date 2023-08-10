@@ -1,24 +1,24 @@
 import { Collection } from 'discord.js'
-import Button from '../structures/Button'
+import Button from '#structures/Button.js'
 
-class buttonCache {
-    private static instance: buttonCache
-    private cache: Collection<string|RegExp, Button>
+class ButtonCache {
+    private static instance: ButtonCache
+    private readonly cache: Collection<string | RegExp, Button>
 
-    private constructor() {
+    private constructor () {
         this.cache = new Collection<string, Button>()
     }
 
-    public static getInstance(): buttonCache {
-        if (!buttonCache.instance) {
-            buttonCache.instance = new buttonCache()
+    public static getInstance (): ButtonCache {
+        if (!ButtonCache.instance) {
+            ButtonCache.instance = new ButtonCache()
         }
-        return buttonCache.instance
+        return ButtonCache.instance
     }
 
-    public getCache(): Collection<string|RegExp, Button> {
+    public getCache (): Collection<string | RegExp, Button> {
         return this.cache
     }
 }
 
-export default buttonCache.getInstance()
+export default ButtonCache.getInstance()

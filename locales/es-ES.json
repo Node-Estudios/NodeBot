@@ -22,7 +22,14 @@
         "was": "¿Fue el impostor",
         "was_not": "¿No era el impostor"
     },
-    "embed_successfully": "Incrustación creada y enviada correctamente.",
+    "embed": {
+        "successfully": "Embed creado y enviado correctamente.",
+        "missing_permissions": "No tengo permisos para enviar mensajes en este canal. Necesito {permisions}",
+        "modal": {
+            "title_label": "Título",
+            "description_label": "Descripción"
+        }
+    },
     "github": {
         "write_username": "Por favor, escriba un nombre de usuario.",
         "name": "🧑 Nombre:",

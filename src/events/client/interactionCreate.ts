@@ -1,4 +1,4 @@
-import { AutocompleteInteraction, ButtonInteraction, ChatInputCommandInteraction, Interaction } from 'discord.js'
+import { AutocompleteInteraction, ButtonInteraction, ChatInputCommandInteraction, Interaction, ModalSubmitInteraction } from 'discord.js'
 import autocomplete from '#cache/autocomplete.js'
 import buttons from '#cache/buttons.js'
 import commands from '#cache/commands.js'
@@ -7,10 +7,10 @@ import { Timer as PerformanceMeter } from '../../handlers/performanceMeter.js'
 import Client from '#structures/Client.js'
 import { BaseEvent } from '../../structures/Events.js'
 import logger from '#utils/logger.js'
+import modals from '#cache/modals.js'
 
 export class interactionCreate extends BaseEvent {
     async run (client: Client, interaction: Interaction) {
-        console.log('interaction recibed')
         if (process.env.TESTINGGUILD) {
             if (interaction.guild?.id !== process.env.TESTINGGUILD) return
         }
@@ -23,6 +23,7 @@ export class interactionCreate extends BaseEvent {
         if (interaction.isChatInputCommand()) return await this.processChatImputCommand(interaction)
         else if (interaction.isButton()) return await this.processButtonInteraction(interaction)
         else if (interaction.isAutocomplete()) return await this.processAutocompleteInteraction(interaction)
+        else if (interaction.isModalSubmit()) return await this.processModalSubmitInteraction(interaction)
     }
 
     async processChatImputCommand (interaction: ChatInputCommandInteraction) {
@@ -76,5 +77,9 @@ export class interactionCreate extends BaseEvent {
 
     async processAutocompleteInteraction (interaction: AutocompleteInteraction) {
         autocomplete.getCache().filter(b => b.match(interaction.commandName)).map(async i => await i.run(interaction))
+    }
+
+    async processModalSubmitInteraction (interaction: ModalSubmitInteraction) {
+        modals.getCache().filter(b => b.match(interaction.customId)).map(async i => await i.run(interaction))
     }
 }

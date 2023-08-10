@@ -22,7 +22,14 @@
         "was": "詐欺師だったのか？",
         "was_not": "詐欺師ではなかった"
     },
-    "embed_successfully": "エンベッドが作成され、正常に送信された。",
+    "embed": {
+        "successfully": "エンベッドが作成され、正常に送信された。",
+        "missing_permissions": "私はエンベッドを送信する権限がありません。 {permisions}つ必要だ",
+        "modal": {
+            "title_label": "タイトル",
+            "description_label": "記述"
+        }
+    },
     "github": {
         "write_username": "ユーザー名を書いてください。",
         "name": "🧑 名前：",
