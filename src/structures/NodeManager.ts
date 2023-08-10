@@ -155,6 +155,7 @@ export default class NodeManager extends ClusterManager {
                 const startingClusterIndex = this.totalClusters
                 for (let i = 0; i < clusterList.length; i++) {
                     const clusterIndex = startingClusterIndex + i
+                    this.totalClusters = clusterIndex
                     const cluster = this.createCluster(clusterIndex, clusterList[i], data);
 
                     (this.clustersArray.get(`node${nodeNumber}`) as any[]).push({
