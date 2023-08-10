@@ -1,5 +1,5 @@
 import { User as DiscordUser, GuildMember } from 'discord.js'
-import Usermodel, { User } from '../../models/user.js'
+import Usermodel, { User } from '#models/user.js'
 
 async function createUserInDB (input: User) {
     return await Usermodel.create(input)

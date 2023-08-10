@@ -1,7 +1,7 @@
 /* eslint-disable no-irregular-whitespace */
 import { ApplicationCommandOptionType, ChatInputCommandInteraction } from 'discord.js'
-import Command from '../../../structures/Command.js'
-import Translator, { keys } from '../../../utils/Translator.js'
+import Command from '#structures/Command.js'
+import Translator, { keys } from '#utils/Translator.js'
 
 export default class impostor extends Command {
     constructor () {

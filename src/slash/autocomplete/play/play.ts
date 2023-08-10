@@ -1,7 +1,7 @@
 import { AutocompleteInteraction } from 'discord.js'
 import Client from '../../../structures/Client'
-import logger from '../../../utils/logger.js'
-import Autocomplete from '../../../structures/Autocomplete.js'
+import logger from '#utils/logger.js'
+import Autocomplete from '#structures/Autocomplete.js'
 
 export default class Repeat extends Autocomplete {
     constructor () {

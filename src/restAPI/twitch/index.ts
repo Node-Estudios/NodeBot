@@ -1,8 +1,8 @@
 import express, { Router as router, Request } from 'express'
-import NodeManager from '../../structures/NodeManager.js'
-import TwitchModel from '../../models/twitch.js'
+import NodeManager from '#structures/NodeManager.js'
+import TwitchModel from '#models/twitch.js'
 import { LocaleString, REST, Routes } from 'discord.js'
-import Translator, { keys } from '../../utils/Translator.js'
+import Translator, { keys } from '#utils/Translator.js'
 
 const rest = new REST().setToken(process.env.TOKEN)
 

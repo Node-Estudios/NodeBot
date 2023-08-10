@@ -1,5 +1,5 @@
 import { ApplicationCommandOptionType, AttachmentBuilder, ChatInputCommandInteraction } from 'discord.js'
-import Command from '../../../structures/Command.js'
+import Command from '#structures/Command.js'
 export default class mcserver extends Command {
     constructor () {
         super({

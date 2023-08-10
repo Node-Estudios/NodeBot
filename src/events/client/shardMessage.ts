@@ -1,7 +1,6 @@
-const { setTimeout: sleep } = require('node:timers/promises')
 import { Cluster } from 'discord-hybrid-sharding'
-import NodeManager from '../../structures/NodeManager.js'
-import logger from '../../utils/logger.js'
+import NodeManager from '#structures/NodeManager.js'
+import logger from '#utils/logger.js'
 
 export default async function (
     originShard: Cluster,

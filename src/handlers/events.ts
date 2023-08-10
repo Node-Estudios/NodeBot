@@ -1,6 +1,6 @@
-import Client from '../structures/Client.js'
+import Client from '#structures/Client.js'
 import { BaseEvent } from '../structures/Events.js'
-import logger from '../utils/logger.js'
+import logger from '#utils/logger.js'
 export interface Event {
     [eventName: string]: new (client: Client) => BaseEvent
 }

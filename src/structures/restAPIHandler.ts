@@ -1,6 +1,6 @@
 import cors from 'cors'
 import express from 'express'
-import logger from '../utils/logger.js'
+import logger from '#utils/logger.js'
 import Manager from './NodeManager.js'
 
 // funcione logger:

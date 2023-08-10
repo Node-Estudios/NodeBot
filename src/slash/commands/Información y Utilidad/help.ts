@@ -1,7 +1,7 @@
 import { ChatInputCommandInteraction, EmbedBuilder } from 'discord.js'
-import Client from '../../../structures/Client.js'
-import Command from '../../../structures/Command.js'
-import Translator, { keys } from '../../../utils/Translator.js'
+import Client from '#structures/Client.js'
+import Command from '#structures/Command.js'
+import Translator, { keys } from '#utils/Translator.js'
 
 export default class help extends Command {
     constructor () {

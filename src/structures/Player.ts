@@ -1,6 +1,6 @@
 import { Guild, LocaleString, Message, VoiceChannel, User, Snowflake, TextChannel, PermissionFlagsBits } from 'discord.js'
 import MusicManager from './MusicManager.js'
-import logger from '../utils/logger.js'
+import logger from '#utils/logger.js'
 import { Innertube } from 'youtubei.js'
 import Queue from './Queue.js'
 import yasha from 'yasha'

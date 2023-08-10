@@ -1,4 +1,4 @@
-import Client from '../structures/Client.js'
+import Client from '#structures/Client.js'
 import { BaseEvent } from '../structures/Events.js'
 import debug from './client/debug.js'
 import { interactionCreate as interactioncreator } from './client/interactionCreate.js'

@@ -1,8 +1,8 @@
 import { EmbedBuilder, VoiceChannel, VoiceState } from 'discord.js'
-import Client from '../../structures/Client.js'
+import Client from '#structures/Client.js'
 import { BaseEvent } from '../../structures/Events.js'
-import Translator, { keys } from '../../utils/Translator.js'
-import logger from '../../utils/logger.js'
+import Translator, { keys } from '#utils/Translator.js'
+import logger from '#utils/logger.js'
 
 export default class voiceStateUpdate extends BaseEvent {
     async run (client: Client, oldState: VoiceState, newState: VoiceState): Promise<any> {

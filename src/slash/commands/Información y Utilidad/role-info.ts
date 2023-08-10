@@ -1,6 +1,6 @@
 import { ApplicationCommandOptionType, ChatInputCommandInteraction, EmbedBuilder } from 'discord.js'
-import Command from '../../../structures/Command.js'
-import Translator, { keys } from '../../../utils/Translator.js'
+import Command from '#structures/Command.js'
+import Translator, { keys } from '#utils/Translator.js'
 
 export default class roleinfo extends Command {
     constructor () {

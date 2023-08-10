@@ -2,11 +2,11 @@ import * as Sentry from '@sentry/node'
 import { IPCMessage } from 'discord-hybrid-sharding'
 import { ActivityType } from 'discord.js'
 import { connect } from 'mongoose'
-import commands from '../../cache/commands.js'
-import Client from '../../structures/Client.js'
-import Command from '../../structures/Command.js'
+import commands from '#cache/commands.js'
+import Client from '#structures/Client.js'
+import Command from '#structures/Command.js'
 import { BaseEvent } from '../../structures/Events.js'
-import logger from '../../utils/logger.js'
+import logger from '#utils/logger.js'
 
 export default class Ready extends BaseEvent {
     async run (client: Client): Promise<void> {

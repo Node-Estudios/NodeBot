@@ -1,5 +1,5 @@
 import { Event } from '../handlers/events.js'
-import logger from '../utils/logger.js'
+import logger from '#utils/logger.js'
 import Client from './Client.js'
 
 export class BaseEvent implements Event {

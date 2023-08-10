@@ -4,7 +4,7 @@ import events from '../events/index.js'
 import ErrorManager from '../handlers/antiCrash.js'
 import '../handlers/commands.js'
 import { EventHandler } from '../handlers/events.js'
-import logger from '../utils/logger.js'
+import logger from '#utils/logger.js'
 import MusicManager from './MusicManager.js'
 interface emoji {
     full: String

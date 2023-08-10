@@ -1,5 +1,5 @@
-import NodeManager from '../../structures/NodeManager.js'
-import logger from '../../utils/logger.js'
+import NodeManager from '#structures/NodeManager.js'
+import logger from '#utils/logger.js'
 
 import { Router as router } from 'express'
 // export default router

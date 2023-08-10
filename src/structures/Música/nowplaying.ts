@@ -1,6 +1,6 @@
 import { EmbedBuilder } from 'discord.js'
 
-import Command from '../../structures/Command.js'
+import Command from '#structures/Command.js'
 
 import simplestDiscordWebhook from 'simplest-discord-webhook'
 import getRandomPhrase from '../../utils/getRandomPhrase'

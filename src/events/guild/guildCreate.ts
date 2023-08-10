@@ -1,5 +1,5 @@
 import { ColorResolvable, EmbedBuilder, Guild, WebhookClient } from 'discord.js'
-import Client from '../../structures/Client.js'
+import Client from '#structures/Client.js'
 import { BaseEvent } from '../../structures/Events.js'
 
 export default class guildCreate extends BaseEvent {

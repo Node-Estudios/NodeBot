@@ -1,7 +1,7 @@
 import { Router } from 'express'
 // const auth = require("./auth");
 // const discord = require("./discord");
-import NodeManager from '../../structures/NodeManager.js'
+import NodeManager from '#structures/NodeManager.js'
 import Statistics from '../statistics/index.js'
 import Stripe from '../stripe/index.js'
 import Twitch from '../twitch/index.js'

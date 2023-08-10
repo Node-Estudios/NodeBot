@@ -1,9 +1,9 @@
 import { ChatInputCommandInteraction } from 'discord.js'
-import Command from '../../../structures/Command.js'
-// import Client from '../../../structures/Client.js'
-// import Translator, { keys } from '../../../utils/Translator.js'
+import Command from '#structures/Command.js'
+// import Client from '#structures/Client.js'
+// import Translator, { keys } from '#utils/Translator.js'
 // import { MessageHelper } from '../../../handlers/messageHandler.js'
-// import Player from '../../../structures/Player.js'
+// import Player from '#structures/Player.js'
 
 export default class NowPlaying extends Command {
     constructor () {

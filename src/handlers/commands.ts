@@ -1,10 +1,10 @@
-import Autocomplete from '../structures/Autocomplete.js'
-import autoCompleteCache from '../cache/autocomplete.js'
-import Button from '../structures/Button.js'
-import commands from '../cache/commands.js'
+import Autocomplete from '#structures/Autocomplete.js'
+import autoCompleteCache from '#cache/autocomplete.js'
+import Button from '#structures/Button.js'
+import commands from '#cache/commands.js'
 import { readdir } from 'node:fs/promises'
-import buttons from '../cache/buttons.js'
-import logger from '../utils/logger.js'
+import buttons from '#cache/buttons.js'
+import logger from '#utils/logger.js'
 
 // cache commands
 for (const dir of await readdir('./build/slash/commands')) {

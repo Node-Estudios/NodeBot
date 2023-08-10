@@ -2,8 +2,8 @@ import { Collection, EmbedBuilder, GuildMember, Message } from 'discord.js'
 import Music from 'youtubei.js/dist/src/core/clients/Music.js'
 import { SpamIntervalDB } from './spamInterval.js'
 import { Session, Innertube } from 'youtubei.js'
-import UserModel from '../models/user.js'
-import logger from '../utils/logger.js'
+import UserModel from '#models/user.js'
+import logger from '#utils/logger.js'
 const spamInterval = new SpamIntervalDB()
 type UserExtended = GuildMember & {
     youtubei: Youtubei
@@ -86,10 +86,10 @@ export default class Youtubei {
                 // Si se encuentra un documento, actualiza las credenciales y lo guarda
                 if (user2) {
                     user2.credentials = credentials
-                    return await user2.save()
+                    return user2.save()
                     // Si no se encuentra un documento, crea uno nuevo con el ID del usuario, las credenciales y algunas propiedades predeterminadas
                 } else {
-                    return await UserModel.create({
+                    return UserModel.create({
                         id: user.id,
                         executedCommands: 0,
                         roles: { Developer: { enabled: false }, Tester: { enabled: false }, credentials },
@@ -106,10 +106,10 @@ export default class Youtubei {
                 // Si se encuentra un documento, actualiza las credenciales y lo guarda
                 if (user2) {
                     user2.credentials = credentials
-                    return await user2.save()
+                    return user2.save()
                     // Si no se encuentra un documento, crea uno nuevo con el ID del usuario, las credenciales y algunas propiedades predeterminadas
                 } else {
-                    return await UserModel.create({
+                    return UserModel.create({
                         id: user.id,
                         executedCommands: 0,
                         roles: { Developer: { enabled: false }, Tester: { enabled: false }, credentials },
@@ -128,7 +128,7 @@ export default class Youtubei {
                 return await user.send({ embeds: [embed] }).catch(e => {
                     logger.error(e)
                 })
-            } else return
+            }
         })
     }
 }

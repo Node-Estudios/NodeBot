@@ -1,7 +1,7 @@
 import cors from 'cors'
 import express from 'express'
-import NodeManager from '../structures/NodeManager.js'
-import logger from '../utils/logger.js'
+import NodeManager from '#structures/NodeManager.js'
+import logger from '#utils/logger.js'
 import ApiModule from './api/app.js'
 
 export default class restApiBase {

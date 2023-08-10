@@ -1,8 +1,8 @@
 import { Cluster, ClusterManager, HeartbeatManager, ReClusterManager } from 'discord-hybrid-sharding'
 import pkg from 'figlet'
 import { ShardingClient } from 'statcord.js'
-import restApiBase from '../restAPI/index.js'
-import logger from '../utils/logger.js'
+import RestApiBase from '../restAPI/index.js'
+import logger from '#utils/logger.js'
 const { textSync } = pkg
 
 export default class NodeManager extends ClusterManager {
@@ -119,7 +119,7 @@ export default class NodeManager extends ClusterManager {
         this.on('debug', (input: any) => logger.debug(input))
         // if (numClustersReady == this.totalClusters)
         // (async () => {
-        new restApiBase(this).start()
+        new RestApiBase(this).start()
         // })
         this.on('clusterReady', (cluster: Cluster) => logger.startUp(`Cluster ${cluster.id} is ready!`))
         this.on('clusterCreate', (cluster: Cluster) => {

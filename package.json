@@ -74,6 +74,12 @@
         "bufferutil": "4.0.7",
         "utf-8-validate": "6.0.3"
     },
+    "imports": {
+        "#structures/*": "./build/structures/*",
+        "#utils/*": "./build/utils/*",
+        "#cache/*": "./build/cache/*",
+        "#models/*": "./build/models/*"
+    },
     "eslintConfig": {
         "extends": "./node_modules/ts-standard/eslintrc.json",
         "parserOptions": {

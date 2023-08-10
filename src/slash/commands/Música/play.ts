@@ -6,12 +6,12 @@ import {
     VoiceChannel,
 } from 'discord.js'
 import { MusicCarouselShelf } from 'youtubei.js/dist/src/parser/nodes.js'
-import performanceMeters from '../../../cache/performanceMeters.js'
-import Client from '../../../structures/Client.js'
-import Command from '../../../structures/Command.js'
-import Translator, { keys } from '../../../utils/Translator.js'
-import formatTime from '../../../utils/formatTime.js'
-import logger from '../../../utils/logger.js'
+import performanceMeters from '#cache/performanceMeters.js'
+import Client from '#structures/Client.js'
+import Command from '#structures/Command.js'
+import Translator, { keys } from '#utils/Translator.js'
+import formatTime from '#utils/formatTime.js'
+import logger from '#utils/logger.js'
 
 export default class play extends Command {
     constructor () {

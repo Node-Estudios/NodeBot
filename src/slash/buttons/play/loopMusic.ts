@@ -1,8 +1,8 @@
-import Translator, { keys } from '../../../utils/Translator.js'
+import Translator, { keys } from '#utils/Translator.js'
 import { APIMessageComponentEmoji, ButtonInteraction, ComponentType, EmbedBuilder } from 'discord.js'
-import Client from '../../../structures/Client.js'
-import Button from '../../../structures/Button.js'
-import logger from '../../../utils/logger.js'
+import Client from '#structures/Client.js'
+import Button from '#structures/Button.js'
+import logger from '#utils/logger.js'
 type Writeable<T extends { [x: string]: any }, K extends string> = {
     [P in K]: T[P];
 }

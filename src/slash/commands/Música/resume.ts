@@ -1,8 +1,8 @@
 import { ChatInputCommandInteraction, Colors, EmbedBuilder } from 'discord.js'
-import Client from '../../../structures/Client.js'
-import Command from '../../../structures/Command.js'
-import Translator, { keys } from '../../../utils/Translator.js'
-import logger from '../../../utils/logger.js'
+import Client from '#structures/Client.js'
+import Command from '#structures/Command.js'
+import Translator, { keys } from '#utils/Translator.js'
+import logger from '#utils/logger.js'
 
 export default class Resume extends Command {
     constructor () {

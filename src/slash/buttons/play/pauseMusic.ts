@@ -1,7 +1,7 @@
 import { ButtonInteraction, EmbedBuilder } from 'discord.js'
-import Translator, { keys } from '../../../utils/Translator.js'
-import Client from '../../../structures/Client.js'
-import Button from '../../../structures/Button.js'
+import Translator, { keys } from '#utils/Translator.js'
+import Client from '#structures/Client.js'
+import Button from '#structures/Button.js'
 
 export default class Pause extends Button {
     constructor () {

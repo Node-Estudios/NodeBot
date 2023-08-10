@@ -1,7 +1,7 @@
 import * as Sentry from '@sentry/node'
 import { EmbedBuilder, WebhookClient } from 'discord.js'
-import Client from '../structures/Client.js'
-import Logger from '../utils/logger.js'
+import Client from '#structures/Client.js'
+import Logger from '#utils/logger.js'
 // TODO: se cmbiara a sentry
 
 class ErrorManager {

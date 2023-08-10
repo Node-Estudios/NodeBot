@@ -1,7 +1,7 @@
 import { Client, CommandInteraction, EmbedBuilder } from 'discord.js'
 
 import simplestDiscordWebhook from 'simplest-discord-webhook'
-import Command from '../../structures/Command.js'
+import Command from '#structures/Command.js'
 import bot1missing from './functions/bot1missing.js'
 import bot2missing from './functions/bot2missing.js'
 import bot3missing from './functions/bot3missing.js'

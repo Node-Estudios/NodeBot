@@ -1,9 +1,9 @@
-import Translator, { keys } from '../../../utils/Translator.js'
+import Translator, { keys } from '#utils/Translator.js'
 import { ButtonInteraction, EmbedBuilder } from 'discord.js'
-import formatTime from '../../../utils/formatTime.js'
-import Client from '../../../structures/Client.js'
-import Button from '../../../structures/Button.js'
-import logger from '../../../utils/logger.js'
+import formatTime from '#utils/formatTime.js'
+import Client from '#structures/Client.js'
+import Button from '#structures/Button.js'
+import logger from '#utils/logger.js'
 
 export default class Queue extends Button {
     constructor () {

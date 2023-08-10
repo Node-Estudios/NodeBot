@@ -1,7 +1,7 @@
 import { ChatInputCommandInteraction, EmbedBuilder } from 'discord.js'
 import { MessageHelper } from '../../../handlers/messageHandler.js'
-import Client from '../../../structures/Client.js'
-import Command from '../../../structures/Command.js'
+import Client from '#structures/Client.js'
+import Command from '#structures/Command.js'
 
 export default class shards extends Command {
     constructor () {

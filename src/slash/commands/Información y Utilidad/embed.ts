@@ -6,8 +6,8 @@ import {
     EmbedBuilder,
     PermissionsBitField,
 } from 'discord.js'
-import Command from '../../../structures/Command.js'
-import Translator, { keys } from '../../../utils/Translator.js'
+import Command from '#structures/Command.js'
+import Translator, { keys } from '#utils/Translator.js'
 
 export default class embed extends Command {
     constructor () {

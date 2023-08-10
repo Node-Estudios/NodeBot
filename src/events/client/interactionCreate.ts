@@ -1,12 +1,12 @@
 import { AutocompleteInteraction, ButtonInteraction, ChatInputCommandInteraction, Interaction } from 'discord.js'
-import autocomplete from '../../cache/autocomplete.js'
-import buttons from '../../cache/buttons.js'
-import commands from '../../cache/commands.js'
-import performanceMeters from '../../cache/performanceMeters.js'
+import autocomplete from '#cache/autocomplete.js'
+import buttons from '#cache/buttons.js'
+import commands from '#cache/commands.js'
+import performanceMeters from '#cache/performanceMeters.js'
 import { Timer as PerformanceMeter } from '../../handlers/performanceMeter.js'
-import Client from '../../structures/Client.js'
+import Client from '#structures/Client.js'
 import { BaseEvent } from '../../structures/Events.js'
-import logger from '../../utils/logger.js'
+import logger from '#utils/logger.js'
 
 export class interactionCreate extends BaseEvent {
     async run (client: Client, interaction: Interaction) {
