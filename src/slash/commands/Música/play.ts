@@ -79,8 +79,21 @@ export default class play extends Command {
                 const songs2 = songs.filter((song: any) => song.item_type === 'song')
                 const randomIndex = Math.floor(Math.random() * songs2.length)
                 const song3 = songs2[randomIndex]
-                // @ts-expect-error
-                search = await client.music.search(song3.id, interaction.member, source)
+                try {
+                    // @ts-expect-error
+                    search = await client.music.search(song3.id, interaction.member, source)
+                    if (!search) throw new Error('No se ha encontrado la canción')
+                } catch (e) {
+                    logger.error(e)
+                    return await interaction.editReply({
+                        embeds: [
+                            new EmbedBuilder().setColor(15548997).setFooter({
+                                text: translate(keys.play.not_reproducible),
+                                iconURL: client.user?.displayAvatarURL(),
+                            }),
+                        ],
+                    })
+                }
                 // search = await client.music.search(song3.id, interaction.member, source)
                 // const playlist = await (await player.youtubei).getPlaylist()
                 // if(playlist) {
@@ -89,6 +102,7 @@ export default class play extends Command {
             } else {
                 try {
                     search = await client.music.search(song, interaction.member, source)
+                    if (!search) throw new Error('No se ha encontrado la canción')
                 } catch (e) {
                     logger.error(e)
                     return await interaction.editReply({
