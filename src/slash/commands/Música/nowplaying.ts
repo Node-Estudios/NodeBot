@@ -1,5 +1,5 @@
-import { ChatInputCommandInteraction } from 'discord.js'
 import Command from '#structures/Command.js'
+import { ChatInputCommandInteraction } from 'discord.js'
 // import Client from '#structures/Client.js'
 // import Translator, { keys } from '#utils/Translator.js'
 // import { MessageHelper } from '../../../handlers/messageHandler.js'
@@ -30,7 +30,7 @@ export default class NowPlaying extends Command {
                 ],
             }, true)
         } */
-        return true
+        return await interaction.reply({ content: 'En desarrollo, comando no disponible' })
         // const song = player.queue.current
         // const parsedCurrentDuration = moment
         //   .duration(player.position, 'milliseconds')

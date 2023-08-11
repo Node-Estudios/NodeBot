@@ -1,3 +1,6 @@
+import Translator, { keys } from '#utils/Translator.js'
+import formatTime from '#utils/formatTime.js'
+import logger from '#utils/logger.js'
 import {
     APIEmbed,
     APIMessageComponentEmoji,
@@ -18,9 +21,6 @@ import EventEmitter from 'events'
 import yasha from 'yasha'
 import { Innertube } from 'youtubei.js'
 import client from '../bot.js'
-import Translator, { keys } from '#utils/Translator.js'
-import formatTime from '#utils/formatTime.js'
-import logger from '#utils/logger.js'
 import Player from './Player.js'
 import { SpamIntervalDB } from './spamInterval.js'
 const spamIntervald = new SpamIntervalDB()
@@ -114,7 +114,22 @@ export default class MusicManager extends EventEmitter {
     async trackStart (player: Player) {
         // todo: Check if the song limit is the saçme as stablished for the admins
         // if(player.queue.current?.duration > player.guild.)
-        player.playing = true
+
+        const equalizerSettings = [
+            { band: 32, gain: 0 }, // Baja frecuencia
+            { band: 64, gain: 1 }, // Frecuencia baja-mid
+            { band: 125, gain: 2 }, // Frecuencia mid
+            { band: 250, gain: 3 }, // Frecuencia mid-high
+            { band: 500, gain: 1 }, // Frecuencia mid-high
+            { band: 1000, gain: 0 }, // Frecuencia media central
+            { band: 2000, gain: -1 }, // Frecuencia mid-high
+            { band: 4000, gain: -2 }, // Frecuencia mid-high
+            { band: 8000, gain: -3 }, // Frecuencia high
+            { band: 16000, gain: -4 }, // Frecuencia muy alta
+        ]
+        player.setEqualizer(equalizerSettings)
+        player
+            .player.playing = true
         player.paused = false
         const song = player.queue.current
         if (!song) return
