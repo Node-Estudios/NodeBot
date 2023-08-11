@@ -4,9 +4,10 @@ import commands from '#cache/commands.js'
 import performanceMeters from '#cache/performanceMeters.js'
 import Client from '#structures/Client.js'
 import logger from '#utils/logger.js'
-import { AutocompleteInteraction, ButtonInteraction, ChatInputCommandInteraction, Interaction } from 'discord.js'
+import { AutocompleteInteraction, ButtonInteraction, ChatInputCommandInteraction, Interaction, ModalSubmitInteraction } from 'discord.js'
 import { Timer as PerformanceMeter } from '../../handlers/performanceMeter.js'
 import { BaseEvent } from '../../structures/Events.js'
+import modals from '#cache/modals.js'
 
 export class interactionCreate extends BaseEvent {
     async run (client: Client, interaction: Interaction) {
@@ -21,6 +22,7 @@ export class interactionCreate extends BaseEvent {
         if (interaction.isChatInputCommand()) return await this.processChatImputCommand(interaction)
         else if (interaction.isButton()) return await this.processButtonInteraction(interaction)
         else if (interaction.isAutocomplete()) return await this.processAutocompleteInteraction(interaction)
+        else if (interaction.isModalSubmit()) return await this.processModalSubmitInteraction(interaction)
     }
 
     async processChatImputCommand (interaction: ChatInputCommandInteraction) {
@@ -69,10 +71,14 @@ export class interactionCreate extends BaseEvent {
 
     async processButtonInteraction (interaction: ButtonInteraction) {
         logger.debug(`Button ${interaction.customId} pressed | ${interaction.user.username}`)
-        buttons.getCache().filter(b => b.match(interaction.customId)).map(async i => await i.run(interaction))
+        buttons.getCache().filter(b => b.match(interaction.customId)).map(async i => await i.run(interaction).catch(logger.error))
     }
 
     async processAutocompleteInteraction (interaction: AutocompleteInteraction) {
-        autocomplete.getCache().filter(b => b.match(interaction.commandName)).map(async i => await i.run(interaction))
+        autocomplete.getCache().filter(b => b.match(interaction.commandName)).map(async i => await i.run(interaction).catch(logger.error))
+    }
+
+    async processModalSubmitInteraction (interaction: ModalSubmitInteraction) {
+        modals.getCache().filter(b => b.match(interaction.customId)).map(async i => await i.run(interaction).catch(logger.error))
     }
 }

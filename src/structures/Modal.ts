@@ -1,8 +1,8 @@
+import { ModalSubmitInteraction } from 'discord.js'
 import Translator, { keys } from '#utils/Translator.js'
-import { ButtonInteraction } from 'discord.js'
 import Client from './Client.js'
 
-export default class Button {
+export default class Modal {
     #pattern: string | RegExp
     constructor (pattern: string | RegExp) {
         this.#pattern = pattern
@@ -12,7 +12,7 @@ export default class Button {
         return this.#pattern
     }
 
-    async run (interaction: ButtonInteraction): Promise<any> {
+    async run (interaction: ModalSubmitInteraction): Promise<any> {
         const translate = Translator(interaction)
         const client = interaction.client as Client
         return await interaction.reply({

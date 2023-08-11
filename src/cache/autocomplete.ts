@@ -1,5 +1,5 @@
 import { Collection } from 'discord.js'
-import Autocomplete from '../structures/Autocomplete'
+import Autocomplete from '#structures/Autocomplete.js'
 
 class AutocompleteCache {
     private static instance: AutocompleteCache

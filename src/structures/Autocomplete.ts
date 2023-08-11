@@ -6,21 +6,22 @@ export default class Autocomplete {
         this.#pattern = pattern
     }
 
-    get pattern () {
+    get name () {
         return this.#pattern
     }
 
     async run (interaction: AutocompleteInteraction): Promise<any> {
+        const v = interaction.options.getFocused()
         return await interaction.respond([
             {
-                name: 'notImplemented',
-                value: 'This autocomplete is not yet implemented.',
+                name: v,
+                value: v,
             },
         ])
     }
 
     match (id: string) {
-        if (typeof this.pattern === 'string') return this.pattern === id
-        else return this.pattern.test(id)
+        if (typeof this.#pattern === 'string') return this.#pattern === id
+        else return this.#pattern.test(id)
     }
 }

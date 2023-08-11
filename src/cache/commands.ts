@@ -1,6 +1,6 @@
 // commands.ts
 import { Collection } from 'discord.js'
-import Command from '../structures/Command'
+import Command from '#structures/Command.js'
 
 class CommandCache {
     private static instance: CommandCache
