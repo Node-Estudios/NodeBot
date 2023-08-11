@@ -61,7 +61,24 @@ export class interactionCreate extends BaseEvent {
 
                 // TODO: Add COOLDOWN functionality
             }
-            await cmd.run(interaction)
+            await cmd.run(interaction).catch(e => {
+                logger.error(e, '\x1b[33mCommand Info\x1b[0m', {
+                    cmd: cmd.name,
+                    options: JSON.stringify(interaction.options.data, (key, value) => {
+                        if (key === 'client') return undefined
+                        if (key === 'channel') return undefined
+                        if (key === 'guild') return undefined
+                        if (key === 'user') return undefined
+                        if (key === 'member') return undefined
+                        if (key === 'role') return undefined
+                        return value
+                    }),
+                })
+                interaction.reply({
+                    content: 'Ha ocurrido un error al ejecutar el comando, por favor, intenta de nuevo más tarde',
+                    ephemeral: true,
+                })
+            })
             await performanceMeters.get('interaction_' + interaction.id)?.stop() // the ping command stop the process
             return performanceMeters.delete('interaction_' + interaction.id)
         } catch (e) {
