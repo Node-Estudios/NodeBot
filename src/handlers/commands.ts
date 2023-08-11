@@ -39,10 +39,10 @@ for (const dir of await readdir('./build/slash/buttons')) {
     }
 }
 // cache autocomplete
-for (const dir of await readdir('./build/slash/autocomplete')) {
-    for (const file of await readdir(`./build/slash/autocomplete/${dir}`)) {
+for (const dir of await readdir('./build/slash/autocompletes')) {
+    for (const file of await readdir(`./build/slash/autocompletes/${dir}`)) {
         if (file.endsWith('.js')) {
-            const { default: AutocompleteFile } = await import(`../../build/slash/autocomplete/${dir}/${file}`)
+            const { default: AutocompleteFile } = await import(`../../build/slash/autocompletes/${dir}/${file}`)
             if (typeof AutocompleteFile === 'function') {
                 try {
                     const autocomplete = new AutocompleteFile() as Autocomplete
