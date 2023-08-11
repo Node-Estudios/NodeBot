@@ -18,6 +18,8 @@ export default class VoiceStateUpdate extends BaseEvent {
             await player.destroy()
             return
         }
+        const vc = player.voiceChannel
+        if (newUserVoiceChannel.id !== vc.id) return
 
         // Check if there are more than 1 user in the voice channel, if not, pause the music
         if (newUserVoiceChannel.members.filter(member => !member.user.bot).size >= 1) {
