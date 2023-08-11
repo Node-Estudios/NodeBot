@@ -27,8 +27,10 @@
         "missing_permissions": "私はエンベッドを送信する権限がありません。 {permisions}つ必要だ",
         "modal": {
             "title_label": "タイトル",
-            "description_label": "記述"
-        }
+            "description_label": "記述",
+            "color_label": "色"
+        },
+        "invalid_input": "無効な入力"
     },
     "github": {
         "write_username": "ユーザー名を書いてください。",

@@ -1,4 +1,6 @@
 import Autocomplete from '#structures/Autocomplete.js'
+import Color from '#structures/Color.js'
+import Translator, { keys } from '#utils/Translator.js'
 import logger from '#utils/logger.js'
 import { AutocompleteInteraction, Colors } from 'discord.js'
 
@@ -8,8 +10,11 @@ export default class Embed extends Autocomplete {
     }
 
     override async run (interaction: AutocompleteInteraction) {
+        const translate = Translator(interaction)
+        const invalidInput = translate(keys.embed.invalid_input)
         const focused = interaction.options.getFocused()?.trim()
         const suggestions: Array<{ name: string, value: string }> = []
+        const values = Object.values(Colors)
         if (!focused) {
             return await interaction.respond([
                 { name: 'Default', value: `${Colors.Default}` },
@@ -34,27 +39,17 @@ export default class Embed extends Autocomplete {
                 { name: 'rgb 0 0 255', value: `${Colors.Blue}` },
             ]).catch(logger.error)
         } else if (focused.startsWith('#')) {
-            if (!/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/.test(focused)) { suggestions.push({ name: 'invalid input', value: '#000000' }) }
-            const values = Object.values(Colors)
+            if (!Color.isHex(focused)) { suggestions.push({ name: invalidInput, value: '#000000' }) }
             for (let i = 0, random = Math.floor(Math.random() * values.length); i < 24; i++, random = Math.floor(Math.random() * values.length)) { suggestions.push({ name: `#${values[random].toString(16)}`, value: `${values[random]}` }) }
         } else if (focused.startsWith('0x')) {
-            if (!/^0x([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/.test(focused)) { suggestions.push({ name: 'invalid input', value: '0x000000' }) }
-            const values = Object.values(Colors)
+            if (!Color.isHex0x(focused)) { suggestions.push({ name: invalidInput, value: '0x000000' }) }
             for (let i = 0, random = Math.floor(Math.random() * values.length); i < 24; i++, random = Math.floor(Math.random() * values.length)) { suggestions.push({ name: `0x${values[random].toString(16)}`, value: `${values[random]}` }) }
         } else if (focused.startsWith('rgb')) {
-            const rgbMatch = focused.match(/^rgb\(?\s?(?<r>\d{1,3}),?\s*(?<g>\d{1,3}),?\s*(?<b>\d{1,3})\)?$/)
-            if (!rgbMatch) { suggestions.push({ name: 'invalid input', value: 'rgb(0, 0, 0)' }) }
-            const matches = rgbMatch?.groups ?? {}
-            const r = parseInt(matches.r)
-            const g = parseInt(matches.g)
-            const b = parseInt(matches.b)
-            if (!(r >= 0 && r <= 255 && g >= 0 && g <= 255 && b >= 0 && b <= 255)) {
-                suggestions.push({ name: 'invalid RGB input', value: 'rgb(0, 0, 0)' })
-            }
-            const values = Object.values(Colors)
-            for (let i = 0, random = Math.floor(Math.random() * values.length); i < 24; i++, random = Math.floor(Math.random() * values.length)) {
-                const [r, g, b] = values[random].toString(16).match(/[0-9A-Za-z]{2}/g) ?? []
-                suggestions.push({ name: `rgb(${r ?? 0}, ${g ?? 0}, ${b ?? 0})`, value: `rgb(${r ?? 0}, ${g ?? 0}, ${b ?? 0})` })
+            if (!Color.isRGB(focused)) { suggestions.push({ name: invalidInput, value: 'rgb(0, 0, 0)' }) }
+            for (let i = 0; i < 24; i++) {
+                const random = Math.floor(Math.random() * values.length)
+                const [r, g, b] = new Color(`${values[random]}`).rgb
+                suggestions.push({ name: `rgb(${r}, ${g}, ${b})`, value: `rgb(${r ?? 0}, ${g ?? 0}, ${b ?? 0})` })
             }
         } else {
             const colors = Object.entries(Colors)

@@ -72,14 +72,14 @@ export class interactionCreate extends BaseEvent {
 
     async processButtonInteraction (interaction: ButtonInteraction) {
         logger.debug(`Button ${interaction.customId} pressed | ${interaction.user.username}`)
-        buttons.getCache().filter(b => b.match(interaction.customId)).map(async i => await i.run(interaction))
+        buttons.getCache().filter(b => b.match(interaction.customId)).map(async i => await i.run(interaction).catch(logger.error))
     }
 
     async processAutocompleteInteraction (interaction: AutocompleteInteraction) {
-        autocomplete.getCache().filter(b => b.match(interaction.commandName)).map(async i => await i.run(interaction))
+        autocomplete.getCache().filter(b => b.match(interaction.commandName)).map(async i => await i.run(interaction).catch(logger.error))
     }
 
     async processModalSubmitInteraction (interaction: ModalSubmitInteraction) {
-        modals.getCache().filter(b => b.match(interaction.customId)).map(async i => await i.run(interaction))
+        modals.getCache().filter(b => b.match(interaction.customId)).map(async i => await i.run(interaction).catch(logger.error))
     }
 }

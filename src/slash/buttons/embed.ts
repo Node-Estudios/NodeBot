@@ -1,5 +1,6 @@
 import Button from '#structures/Button.js'
 import Client from '#structures/Client.js'
+import Color from '#structures/Color.js'
 import Translator, { keys } from '#utils/Translator.js'
 
 import { ActionRowBuilder, ButtonInteraction, ModalBuilder, TextChannel, TextInputBuilder, TextInputStyle } from 'discord.js'
@@ -16,9 +17,10 @@ export default class Embed extends Button {
     }
 
     async edit (interaction: ButtonInteraction): Promise<any> {
+        const [,, channelId] = interaction.customId.split(':')
         const translate = Translator(interaction)
         const { data: embed } = interaction.message.embeds[0]
-        return await interaction.showModal(new ModalBuilder().setCustomId('embed:edit').setTitle('Embed').setComponents(
+        return await interaction.showModal(new ModalBuilder().setCustomId('embed:e:' + channelId).setTitle('Embed').setComponents(
             new ActionRowBuilder<TextInputBuilder>().setComponents(
                 new TextInputBuilder()
                     .setCustomId('title')
@@ -36,6 +38,15 @@ export default class Embed extends Button {
                     .setLabel(translate(keys.embed.modal.description_label))
                     .setStyle(TextInputStyle.Paragraph)
                     .setValue(embed.description ?? '')
+                    .setRequired(false),
+            ),
+            new ActionRowBuilder<TextInputBuilder>().setComponents(
+                new TextInputBuilder()
+                    .setCustomId('color')
+                    .setPlaceholder('#0F99A7')
+                    .setLabel(translate(keys.embed.modal.color_label))
+                    .setStyle(TextInputStyle.Short)
+                    .setValue(new Color(`${embed.color}` ?? '#000000').hex)
                     .setRequired(false),
             ),
         ))

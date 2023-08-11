@@ -27,8 +27,10 @@
         "missing_permissions": "No tengo permisos para enviar mensajes en este canal. Necesito {permisions}",
         "modal": {
             "title_label": "Título",
-            "description_label": "Descripción"
-        }
+            "description_label": "Descripción",
+            "color_label": "Color"
+        },
+        "invalid_input": "Entrada no válida"
     },
     "github": {
         "write_username": "Por favor, escriba un nombre de usuario.",

@@ -9,10 +9,12 @@ import {
     ModalBuilder,
     ChannelType,
     GuildMember,
+    Colors,
 } from 'discord.js'
 import Translator, { keys } from '#utils/Translator.js'
 import Command from '#structures/Command.js'
 import Client from '#structures/Client.js'
+import Color from '#structures/Color.js'
 
 export default class embed extends Command {
     constructor () {
@@ -41,18 +43,6 @@ export default class embed extends Command {
                     description: 'Color of the embed',
                     autocomplete: true,
                 },
-            // {
-            //     type: ApplicationCommandOptionType.String,
-            //     name: 'title',
-            //     description: 'Title of the embed',
-            //     required: true,
-            // },
-            // {
-            //     type: ApplicationCommandOptionType.String,
-            //     name: 'description',
-            //     description: 'Description of the embed',
-            //     required: true,
-            // },
             ],
         })
     }
@@ -80,6 +70,9 @@ export default class embed extends Command {
                 ephemeral: true,
             })
         }
+        const colorInput = interaction.options.getString('color')
+        let color = new Color(`${Colors.Default}`)
+        if (colorInput && Color.isColor(colorInput)) color = new Color(colorInput)
         return await interaction.showModal(
             new ModalBuilder()
                 .setCustomId('embed:n:' + channel.id)
@@ -101,6 +94,15 @@ export default class embed extends Command {
                             .setLabel(translate(keys.embed.modal.description_label))
                             .setStyle(TextInputStyle.Paragraph)
                             .setRequired(false),
+                    ),
+                    new ActionRowBuilder<TextInputBuilder>().setComponents(
+                        new TextInputBuilder()
+                            .setCustomId('color')
+                            .setPlaceholder('#0F99A7')
+                            .setLabel(translate(keys.embed.modal.color_label))
+                            .setStyle(TextInputStyle.Short)
+                            .setRequired(true)
+                            .setValue(color.hex),
                     ),
                 ))
     }

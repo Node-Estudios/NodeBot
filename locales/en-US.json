@@ -27,8 +27,10 @@
         "missing_permissions": "I don't have permissions to send messages in that channel. I need {permisions}",
         "modal": {
             "title_label": "Title",
-            "description_label": "Description"
-        }
+            "description_label": "Description",
+            "color_label": "Color"
+        },
+        "invalid_input": "Invalid input"
     },
     "github": {
         "write_username": "Please write an username.",

@@ -32,7 +32,9 @@ export default {
     'modal': {
       'title_label': "embed.modal.title_label",
       'description_label': "embed.modal.description_label",
+      'color_label': "embed.modal.color_label",
     },
+    'invalid_input': "embed.invalid_input",
   },
   'github': {
     'write_username': "github.write_username",
@@ -447,7 +449,9 @@ export default {
     'modal': {
       'title_label': string
       'description_label': string
+      'color_label': string
     }
+    'invalid_input': string
   }
   'github': {
     'write_username': string
