@@ -56,7 +56,7 @@ export default class NodeManager extends ClusterManager {
                 const shardList = [...Array(data).keys()]
 
                 // * Divide los shards en bloques
-                clusterList = chunk(shardList, 6)
+                clusterList = chunk(shardList, 2)
 
                 this.queue.queue.shift()
                 this.totalClusters = 0
@@ -150,7 +150,7 @@ export default class NodeManager extends ClusterManager {
                 let shardList = [...Array(data).keys()]
                 if (data === 1) shardList = [0]
                 // * Divide los shards en bloques
-                const clusterList = chunk(shardList, 6)
+                const clusterList = chunk(shardList, 2)
 
                 for (let i = 0; i < clusterList.length; i++) {
                     const clusterIndex = this.totalClusters + 1
