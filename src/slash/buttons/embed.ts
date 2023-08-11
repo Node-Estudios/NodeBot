@@ -20,36 +20,40 @@ export default class Embed extends Button {
         const [,, channelId] = interaction.customId.split(':')
         const translate = Translator(interaction)
         const { data: embed } = interaction.message.embeds[0]
-        return await interaction.showModal(new ModalBuilder().setCustomId('embed:e:' + channelId).setTitle('Embed').setComponents(
-            new ActionRowBuilder<TextInputBuilder>().setComponents(
-                new TextInputBuilder()
-                    .setCustomId('title')
-                    .setPlaceholder('My Awesome Embed')
-                    .setLabel(translate(keys.embed.modal.title_label))
-                    .setMaxLength(256)
-                    .setStyle(TextInputStyle.Short)
-                    .setValue(embed.title ?? '')
-                    .setRequired(false),
-            ),
-            new ActionRowBuilder<TextInputBuilder>().setComponents(
-                new TextInputBuilder()
-                    .setCustomId('description')
-                    .setPlaceholder('This is my awesome embed!')
-                    .setLabel(translate(keys.embed.modal.description_label))
-                    .setStyle(TextInputStyle.Paragraph)
-                    .setValue(embed.description ?? '')
-                    .setRequired(false),
-            ),
-            new ActionRowBuilder<TextInputBuilder>().setComponents(
-                new TextInputBuilder()
-                    .setCustomId('color')
-                    .setPlaceholder('#0F99A7')
-                    .setLabel(translate(keys.embed.modal.color_label))
-                    .setStyle(TextInputStyle.Short)
-                    .setValue(new Color(`${embed.color}` ?? '#000000').hex)
-                    .setRequired(false),
-            ),
-        ))
+        return await interaction.showModal(
+            new ModalBuilder()
+                .setCustomId('embed:e:' + channelId)
+                .setTitle(translate(keys.embed.modal.title))
+                .setComponents(
+                    new ActionRowBuilder<TextInputBuilder>().setComponents(
+                        new TextInputBuilder()
+                            .setCustomId('title')
+                            .setPlaceholder(translate(keys.embed.modal.title_placeholder))
+                            .setLabel(translate(keys.embed.modal.title_label))
+                            .setMaxLength(256)
+                            .setStyle(TextInputStyle.Short)
+                            .setValue(embed.title ?? '')
+                            .setRequired(false),
+                    ),
+                    new ActionRowBuilder<TextInputBuilder>().setComponents(
+                        new TextInputBuilder()
+                            .setCustomId('description')
+                            .setPlaceholder(translate(keys.embed.modal.description_placeholder))
+                            .setLabel(translate(keys.embed.modal.description_label))
+                            .setStyle(TextInputStyle.Paragraph)
+                            .setValue(embed.description ?? '')
+                            .setRequired(false),
+                    ),
+                    new ActionRowBuilder<TextInputBuilder>().setComponents(
+                        new TextInputBuilder()
+                            .setCustomId('color')
+                            .setPlaceholder('#0F99A7')
+                            .setLabel(translate(keys.embed.modal.color_label))
+                            .setStyle(TextInputStyle.Short)
+                            .setValue(new Color(`${embed.color}` ?? '#000000').hex)
+                            .setRequired(false),
+                    ),
+                ))
     }
 
     async publish (interaction: ButtonInteraction): Promise<any> {
@@ -59,7 +63,7 @@ export default class Embed extends Button {
         const { data: embed } = interaction.message.embeds[0]
         const channel = await client.channels.fetch(channelId) as TextChannel
         channel?.send({ embeds: [embed] })
-            .then(async () => await interaction.reply({ content: 'Embed published!', ephemeral: true }))
+            .then(async () => await interaction.reply({ content: translate(keys.embed.successfully), ephemeral: true }))
             .catch(async () => await interaction.reply({
                 content: translate(keys.GENERICERROR, {
                     inviteURL: client.officialServerURL,

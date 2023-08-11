@@ -26,9 +26,16 @@
         "successfully": "Embed creado y enviado correctamente.",
         "missing_permissions": "No tengo permisos para enviar mensajes en este canal. Necesito {permisions}",
         "modal": {
+            "title": "Creador de embed",
             "title_label": "Título",
+            "title_placeholder": "El mejor embed",
             "description_label": "Descripción",
+            "description_placeholder": "Este es el mejor embed del mundo",
             "color_label": "Color"
+        },
+        "buttons": {
+            "send": "Enviar",
+            "edit": "Editar"
         },
         "invalid_input": "Entrada no válida"
     },

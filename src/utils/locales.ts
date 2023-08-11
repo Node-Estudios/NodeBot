@@ -30,9 +30,16 @@ export default {
     'successfully': "embed.successfully",
     'missing_permissions': "embed.missing_permissions",
     'modal': {
+      'title': "embed.modal.title",
       'title_label': "embed.modal.title_label",
+      'title_placeholder': "embed.modal.title_placeholder",
       'description_label': "embed.modal.description_label",
+      'description_placeholder': "embed.modal.description_placeholder",
       'color_label': "embed.modal.color_label",
+    },
+    'buttons': {
+      'send': "embed.buttons.send",
+      'edit': "embed.buttons.edit",
     },
     'invalid_input': "embed.invalid_input",
   },
@@ -447,9 +454,16 @@ export default {
     'successfully': string
     'missing_permissions': string
     'modal': {
+      'title': string
       'title_label': string
+      'title_placeholder': string
       'description_label': string
+      'description_placeholder': string
       'color_label': string
+    }
+    'buttons': {
+      'send': string
+      'edit': string
     }
     'invalid_input': string
   }

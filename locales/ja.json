@@ -26,9 +26,16 @@
         "successfully": "エンベッドが作成され、正常に送信された。",
         "missing_permissions": "私はエンベッドを送信する権限がありません。 {permisions}つ必要だ",
         "modal": {
+            "title": "埋め込みを作成する",
             "title_label": "タイトル",
+            "title_placeholder": "私の素晴らしい埋め込み",
             "description_label": "記述",
+            "description_placeholder": "これは私の素晴らしい埋め込みだ！",
             "color_label": "色"
+        },
+        "buttons": {
+            "send": "送信",
+            "edit": "編集"
         },
         "invalid_input": "無効な入力"
     },

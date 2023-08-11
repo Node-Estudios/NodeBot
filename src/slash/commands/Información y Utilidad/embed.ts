@@ -76,12 +76,12 @@ export default class embed extends Command {
         return await interaction.showModal(
             new ModalBuilder()
                 .setCustomId('embed:n:' + channel.id)
-                .setTitle('Embed')
+                .setTitle(translate(keys.embed.modal.title))
                 .setComponents(
                     new ActionRowBuilder<TextInputBuilder>().setComponents(
                         new TextInputBuilder()
                             .setCustomId('title')
-                            .setPlaceholder('My Awesome Embed')
+                            .setPlaceholder(translate(keys.embed.modal.title_placeholder))
                             .setLabel(translate(keys.embed.modal.title_label))
                             .setMaxLength(256)
                             .setStyle(TextInputStyle.Short)
@@ -90,7 +90,7 @@ export default class embed extends Command {
                     new ActionRowBuilder<TextInputBuilder>().setComponents(
                         new TextInputBuilder()
                             .setCustomId('description')
-                            .setPlaceholder('This is my awesome embed!')
+                            .setPlaceholder(translate(keys.embed.modal.description_placeholder))
                             .setLabel(translate(keys.embed.modal.description_label))
                             .setStyle(TextInputStyle.Paragraph)
                             .setRequired(false),

@@ -26,9 +26,16 @@
         "successfully": "Embed created and sent successfully.",
         "missing_permissions": "I don't have permissions to send messages in that channel. I need {permisions}",
         "modal": {
+            "title": "Embed Creator",
             "title_label": "Title",
+            "title_placeholder": "My Awesome Embed",
             "description_label": "Description",
+            "description_placeholder": "This is my awesome embed!",
             "color_label": "Color"
+        },
+        "buttons": {
+            "send": "Send",
+            "edit": "Edit"
         },
         "invalid_input": "Invalid input"
     },
