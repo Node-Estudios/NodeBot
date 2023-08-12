@@ -3,19 +3,19 @@ import { Collection } from 'discord.js'
 import logger from '#utils/logger.js'
 import { join } from 'node:path'
 // caches
-import autocompletes from '#cache/autocomplete.js'
+import autocompletes from '#cache/autocompletes.js'
 import commands from '#cache/commands.js'
 import buttons from '#cache/buttons.js'
 import modals from '#cache/modals.js'
 
 // load commands
-await loadCache(commands.getCache(), join(process.cwd(), 'build', 'slash', 'commands'))
+await loadCache(commands.cache, join(process.cwd(), 'build', 'slash', 'commands'))
 // load buttons
-await loadCache(buttons.getCache(), join(process.cwd(), 'build', 'slash', 'buttons'))
+await loadCache(buttons.cache, join(process.cwd(), 'build', 'slash', 'buttons'))
 // load autocompletes
-await loadCache(autocompletes.getCache(), join(process.cwd(), 'build', 'slash', 'autocompletes'))
+await loadCache(autocompletes.cache, join(process.cwd(), 'build', 'slash', 'autocompletes'))
 // load modals
-await loadCache(modals.getCache(), join(process.cwd(), 'build', 'slash', 'modals'))
+await loadCache(modals.cache, join(process.cwd(), 'build', 'slash', 'modals'))
 
 // generic function to load cache
 async function loadCache (cache: Collection<any, { name: any }>, dir: string) {

@@ -1,4 +1,4 @@
-import autocomplete from '#cache/autocomplete.js'
+import autocomplete from '#cache/autocompletes.js'
 import buttons from '#cache/buttons.js'
 import commands from '#cache/commands.js'
 import performanceMeters from '#cache/performanceMeters.js'
@@ -29,7 +29,7 @@ export class interactionCreate extends BaseEvent {
         try {
             performanceMeters.set('interaction_' + interaction.id, new PerformanceMeter())
             performanceMeters.get('interaction_' + interaction.id).start()
-            const cmd = commands.getCache().find(c => c.name === interaction.commandName)
+            const cmd = commands.cache.find(c => c.name === interaction.commandName)
             if (!cmd) return
             if (interaction.guild && cmd?.only_dm) return // <-- return statement here
 
@@ -88,14 +88,16 @@ export class interactionCreate extends BaseEvent {
 
     async processButtonInteraction (interaction: ButtonInteraction) {
         logger.debug(`Button ${interaction.customId} pressed | ${interaction.user.username}`)
-        buttons.getCache().filter(b => b.match(interaction.customId)).map(async i => await i.run(interaction).catch(logger.error))
+        await buttons.cache.find(b => b.match(interaction.customId))?.run(interaction).catch(logger.error)
     }
 
     async processAutocompleteInteraction (interaction: AutocompleteInteraction) {
-        autocomplete.getCache().filter(b => b.match(interaction.commandName)).map(async i => await i.run(interaction).catch(logger.error))
+        autocomplete.registerInteraction(interaction.user.id, interaction.id)
+        const respond = await autocomplete.cache.find(b => b.match(interaction.commandName))?.run(interaction).catch(logger.error)
+        if (respond) autocomplete.removeInteraction(interaction.user.id)
     }
 
     async processModalSubmitInteraction (interaction: ModalSubmitInteraction) {
-        modals.getCache().filter(b => b.match(interaction.customId)).map(async i => await i.run(interaction).catch(logger.error))
+        await modals.cache.find(b => b.match(interaction.customId))?.run(interaction).catch(logger.error)
     }
 }

@@ -24,7 +24,7 @@ export default class Ready extends BaseEvent {
         // cluster
         // client.cluster.triggerReady()
         const arr: Command[] = []
-        for (const [,command] of commands.getCache()) arr.push(command)
+        for (const [,command] of commands.cache) arr.push(command)
         if (process.env.TESTINGGUILD) {
             const guild = await client.guilds.fetch(process.env.TESTINGGUILD)
             guild.commands.set(arr).catch(logger.error)

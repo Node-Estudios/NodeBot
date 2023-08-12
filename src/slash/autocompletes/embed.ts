@@ -16,7 +16,8 @@ export default class Embed extends Autocomplete {
         const suggestions: Array<{ name: string, value: string }> = []
         const values = Object.values(Colors)
         if (!focused) {
-            return await interaction.respond([
+            if (!this.canProced(interaction.user.id, interaction.id)) return false
+            await interaction.respond([
                 { name: 'Default', value: `${Colors.Default}` },
                 { name: '#000', value: `${Colors.Default}` },
                 { name: '0x000000', value: `${Colors.Default}` },
@@ -38,6 +39,7 @@ export default class Embed extends Autocomplete {
                 { name: '0x0000ff', value: `${Colors.Blue}` },
                 { name: 'rgb 0 0 255', value: `${Colors.Blue}` },
             ]).catch(logger.error)
+            return true
         } else if (focused.startsWith('#')) {
             if (!Color.isHex(focused)) { suggestions.push({ name: invalidInput, value: '#000000' }) }
             for (let i = 0, random = Math.floor(Math.random() * values.length); i < 24; i++, random = Math.floor(Math.random() * values.length)) { suggestions.push({ name: `#${values[random].toString(16)}`, value: `${values[random]}` }) }
@@ -57,6 +59,8 @@ export default class Embed extends Autocomplete {
             suggestions.push(...colors.filter(([key]) => suggestions.some(({ name }) => name !== key)).map(([name, value]) => ({ name, value: `${value}` })))
         }
         if (suggestions.length > 25) suggestions.length = 25
-        return await interaction.respond(suggestions).catch(logger.error)
+        if (!this.canProced(interaction.user.id, interaction.id)) return false
+        await interaction.respond(suggestions).catch(logger.error)
+        return true
     }
 }
