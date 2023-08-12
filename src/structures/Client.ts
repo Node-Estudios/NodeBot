@@ -143,7 +143,7 @@ export default class Client extends ClientBase<true> {
             shards: getInfo().SHARD_LIST,
             shardCount: getInfo().TOTAL_SHARDS,
         })
-        if (!process.env.DEVS) { throw new Error('Add developers to the .env file, expected input (example): devs=123456789,987654321 ') }
+        if (!process.env.DEVS) throw new Error('Add developers to the .env file, expected input (example): devs=123456789,987654321 ')
         this.devs = process.env.DEVS.split(',')
     }
 

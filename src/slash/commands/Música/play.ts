@@ -158,22 +158,25 @@ export default class play extends Command {
     }
 
     async getRecomended (player: Player) {
+        const client = player.guild.client as Client
         try {
             const home = await player.youtubei.music.getHomeFeed()
             const songs = home.sections?.[0] as MusicCarouselShelf
             return songs.contents?.[randomInt(songs.contents.length)] as MusicResponsiveListItem
         } catch (error) {
             logger.error(error)
+            client.errorHandler.captureException(error as Error)
             return undefined
         }
     }
 
     async search (query: string, member: GuildMember) {
+        const client = member.client as Client
         try {
-            const client = member.client as Client
             return await client.music.search(query, member, 'Youtube')
         } catch (error) {
             logger.error(error)
+            client.errorHandler.captureException(error as Error)
             return undefined
         }
     }

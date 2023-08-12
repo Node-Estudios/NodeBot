@@ -1,5 +1,4 @@
 import { ChatInputCommandInteraction, Colors, EmbedBuilder } from 'discord.js'
-import { MessageHelper } from '../../../handlers/messageHandler.js'
 import Client from '#structures/Client.js'
 import Command from '#structures/Command.js'
 import Translator, { keys } from '#utils/Translator.js'
@@ -19,60 +18,63 @@ export default class skip extends Command {
     override async run (interaction: ChatInputCommandInteraction<'cached'>) {
         const client = interaction.client as Client
         const translate = Translator(interaction)
-        const message = new MessageHelper(interaction)
         const player = client.music.players.get(interaction.guild.id)
-        if (!player) {
-            return await message.sendMessage({
+        if (!player)
+            return await interaction.reply({
                 embeds: [
-                    new EmbedBuilder().setColor(client.settings.color).setFooter({
-                        text: translate(keys.queue.no_queue),
+                    new EmbedBuilder()
+                        .setColor(client.settings.color)
+                        .setFooter({
+                            text: translate(keys.queue.no_queue),
+                            iconURL: interaction.user.displayAvatarURL(),
+                        }),
+                ],
+                ephemeral: true,
+            })
+                .catch(logger.error)
+
+        if (!interaction.member.voice)
+            return await interaction.reply({
+                embeds: [
+                    new EmbedBuilder()
+                        .setColor(Colors.Red)
+                        .setFooter({
+                            text: translate(keys.skip.no_same),
+                            iconURL: interaction.user.displayAvatarURL(),
+                        }),
+                ],
+                ephemeral: true,
+            })
+                .catch(console.error)
+
+        const vc = player.voiceChannel
+        if (interaction.member.voice.channelId !== vc.id)
+            return await interaction.reply({
+                embeds: [
+                    new EmbedBuilder().setColor(Colors.Red).setFooter({
+                        text: translate(keys.skip.no_same),
                         iconURL: interaction.user.displayAvatarURL(),
                     }),
                 ],
+                ephemeral: true,
             })
-        }
-
-        if (!interaction.member.voice) {
-            return await message
-                .sendMessage({
-                    embeds: [
-                        new EmbedBuilder().setColor(Colors.Red).setFooter({
-                            text: translate(keys.skip.no_same),
-                            iconURL: interaction.user.displayAvatarURL(),
-                        }),
-                    ],
-                })
-                .catch(e => logger.debug(e))
-        }
-
-        const vc = player.voiceChannel
-        if (interaction.member.voice.channelId !== vc.id) {
-            return await message
-                .sendMessage({
-                    embeds: [
-                        new EmbedBuilder().setColor(Colors.Red).setFooter({
-                            text: translate(keys.skip.no_same),
-                            iconURL: interaction.user.displayAvatarURL(),
-                        }),
-                    ],
-                })
-                .catch(e => logger.debug(e))
-        }
+                .catch(logger.error)
 
         if (!player.queue.current) return
         if (player.trackRepeat) player.setTrackRepeat(false)
         if (player.queueRepeat) player.setQueueRepeat(false)
-
-        const embed = new EmbedBuilder()
-            .setColor(client.settings.color)
-            .setTitle(translate(keys.SUCCESSEMBED))
-            .setDescription(
-                translate(keys.skip.skiped, {
-                    song: player.queue.current.title,
-                }),
-            )
-            .setFooter({ text: interaction.user.username, iconURL: interaction.user.displayAvatarURL() })
-        message.sendMessage({ embeds: [embed] }).catch(e => logger.debug(e))
+        interaction.reply({
+            embeds: [
+                new EmbedBuilder()
+                    .setColor(client.settings.color)
+                    .setTitle(translate(keys.SUCCESSEMBED))
+                    .setDescription(
+                        translate(keys.skip.skiped, {
+                            song: player.queue.current.title,
+                        }),
+                    )
+                    .setFooter({ text: interaction.user.username, iconURL: interaction.user.displayAvatarURL() })],
+        }).catch(logger.error)
         return player.skip()
     }
 }

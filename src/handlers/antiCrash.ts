@@ -7,7 +7,7 @@ import { EmbedBuilder, WebhookClient } from 'discord.js'
 
 class ErrorManager {
     client: Client
-    services: { sentry: { loggedIn: boolean } }
+    services = { sentry: { loggedIn: false } }
     webhookClient: WebhookClient
     constructor (client: Client) {
         this.client = client
@@ -24,20 +24,10 @@ class ErrorManager {
                 environment: process.env.NODE_ENV,
                 tracesSampleRate: 0.5,
             })
-            this.services = {
-                sentry: {
-                    loggedIn: true,
-                },
-            }
+            this.services.sentry.loggedIn = true
             Logger.log('Connected to Sentry')
-        } else {
-            this.services = {
-                sentry: {
-                    loggedIn: false,
-                },
-            }
+        } else
             Logger.warn('Sentry DSN missing or not in production environment.')
-        }
 
         this.webhookClient = new WebhookClient({
             id: process.env.ERROR_WEBHOOK_ID ?? '',
@@ -57,14 +47,13 @@ class ErrorManager {
                     .setFields(
                         { name: 'Razón', value: '```' + (await reason) + '```' },
                         { name: 'Error', value: '```' + (await p) + '```' },
-                        { name: 'Bot', value: this.client.user ? this.client.user.displayName : 'Unknown' },
+                        { name: 'Bot', value: this.client.user?.displayName ?? 'Unknown' },
                     ),
             ],
         })
 
-        if (this.services.sentry.loggedIn) {
+        if (this.services.sentry.loggedIn)
             Sentry.captureException(p)
-        }
 
         Logger.warn(' [antiCrash] :: Unhandled Rejection/Catch')
         Logger.error(reason, p)
@@ -79,14 +68,13 @@ class ErrorManager {
                         name: 'Error',
                         value: '```' + err + '```',
                     },
-                    { name: 'Bot', value: this.client.user ? this.client.user.displayName : 'Unknown' },
+                    { name: 'Bot', value: this.client.user?.displayName ?? 'Unknown' },
                 ),
             ],
         })
 
-        if (this.services.sentry.loggedIn) {
+        if (this.services.sentry.loggedIn)
             Sentry.captureException(err)
-        }
 
         Logger.warn(' [antiCrash] :: Uncaught Exception/Catch')
         Logger.error(err, origin)
@@ -101,14 +89,13 @@ class ErrorManager {
                         name: 'Error',
                         value: '```' + err + '```',
                     },
-                    { name: 'Bot', value: this.client.user ? this.client.user.displayName : 'Unknown' },
+                    { name: 'Bot', value: this.client.user?.displayName ?? 'Unknown' },
                 ),
             ],
         })
 
-        if (this.services.sentry.loggedIn) {
+        if (this.services.sentry.loggedIn)
             Sentry.captureException(err)
-        }
 
         Logger.warn(' [antiCrash] :: Uncaught Exception/Catch (MONITOR)')
         Logger.error(err, origin)
@@ -124,12 +111,32 @@ class ErrorManager {
             ],
         })
 
-        if (this.services.sentry.loggedIn) {
+        if (this.services.sentry.loggedIn)
             Sentry.captureMessage('Multiple Resolves: ' + reason)
-        }
 
         Logger.warn(' [antiCrash] :: Multiple Resolves')
         Logger.error(reason)
+    }
+
+    captureException (error: Error) {
+        if (this.services.sentry.loggedIn)
+            Sentry.captureException(error)
+        const origin = error.stack?.split('\n')[1].trim().split(' ')[1]
+        const reason = error.stack?.split('\n')[0].trim()
+        this.webhookClient.send({
+            embeds: [
+                new EmbedBuilder()
+                    .setColor(15548997)
+                    .setFields(
+                        { name: 'Origen', value: '```' + origin + '```' },
+                        {
+                            name: 'Razón',
+                            value: '```' + reason + '```',
+                        },
+                        { name: 'Bot', value: this.client.user?.displayName ?? 'Unknown' })
+                    .setDescription('```\n' + error.stack + '\n```'),
+            ],
+        })
     }
 }
 

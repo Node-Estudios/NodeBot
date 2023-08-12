@@ -1,9 +1,8 @@
-import { MessageHelper } from '../../../handlers/messageHandler.js'
-import Client from '#structures/Client.js'
-import Command from '#structures/Command.js'
-import Translator, { keys, randomMessage } from '../../../utils/Translator.js'
-
+import Translator, { keys, randomMessage } from '#utils/Translator.js'
 import { ChatInputCommandInteraction, EmbedBuilder } from 'discord.js'
+import Command from '#structures/Command.js'
+import Client from '#structures/Client.js'
+import logger from '#utils/logger.js'
 
 export default class stayinvoice extends Command {
     constructor () {
@@ -15,14 +14,14 @@ export default class stayinvoice extends Command {
         })
     }
 
-    override async run (interaction: ChatInputCommandInteraction<'cached'>) {
+    override async run (interaction: ChatInputCommandInteraction) {
+        if (!interaction.inCachedGuild()) return
         const client = interaction.client as Client
         const translate = Translator(interaction)
         const msgr = randomMessage(translate, keys.skip.messages)
-        const message = new MessageHelper(interaction)
         const player = client.music.players.get(interaction.guild.id)
-        if (!player) {
-            return await message.sendMessage(
+        if (!player)
+            return await interaction.reply(
                 {
                     embeds: [
                         new EmbedBuilder().setColor(client.settings.color).setFooter({
@@ -30,23 +29,33 @@ export default class stayinvoice extends Command {
                             iconURL: interaction.user.displayAvatarURL(),
                         }),
                     ],
+                    ephemeral: true,
                 },
             )
-        }
+                .catch(logger.error)
+
         if (player.stayInVc) {
             player.stayInVc = false
-            const embed = new EmbedBuilder()
-                .setColor(client.settings.color)
-                .setAuthor({ iconURL: interaction.user.displayAvatarURL(), name: interaction.user.displayName })
-                .setTitle(translate(keys[247].disabled))
-            return await message.sendMessage({ embeds: [embed] })
+            return await interaction.reply({
+                embeds: [
+                    new EmbedBuilder()
+                        .setColor(client.settings.color)
+                        .setAuthor({ iconURL: interaction.user.displayAvatarURL(), name: interaction.user.displayName })
+                        .setTitle(translate(keys[247].disabled)),
+                ],
+            })
+                .catch(logger.error)
         } else {
             player.stayInVc = true
-            const embed = new EmbedBuilder()
-                .setColor(client.settings.color)
-                .setAuthor({ iconURL: interaction.user.displayAvatarURL(), name: interaction.user.displayName })
-                .setTitle(translate(keys[247].enabled))
-            return await message.sendMessage({ embeds: [embed] })
+            return await interaction.reply({
+                embeds: [
+                    new EmbedBuilder()
+                        .setColor(client.settings.color)
+                        .setAuthor({ iconURL: interaction.user.displayAvatarURL(), name: interaction.user.displayName })
+                        .setTitle(translate(keys[247].enabled)),
+                ],
+            })
+                .catch(logger.error)
         }
     }
 }
