@@ -55,6 +55,8 @@ export default class Player extends yasha.TrackPlayer {
             if (this.guild.members.me?.permissionsIn(channel).has([PermissionFlagsBits.EmbedLinks, PermissionFlagsBits.SendMessages]) === false) return
             this.#textChannelId = options.textChannelId
         }).catch(() => null)
+        this.on('finish', () => (this.playing = false))
+        this.on('error', (error: any) => (this.playing = false && logger.error(error)))
     }
 
     async connect () {
@@ -72,6 +74,7 @@ export default class Player extends yasha.TrackPlayer {
     }
 
     override async play (track?: any) {
+        this.playing = true
         // TODO: Check if this code works
         if (!track && this.queue.current) super.play(this.queue.current)
         else super.play(track)
