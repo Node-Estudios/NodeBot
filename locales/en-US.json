@@ -127,7 +127,8 @@
         "same": "You need to be on the same voice channel as the bot to execute this command.",
         "not_voice": "You need to be on a voice channel to execute this command.",
         "not_reproducible": "The attached link does not contain reproducible content.",
-        "added": "{song} added to the list"
+        "added": "{song} added to the list",
+        "cant_join": "I can't join your voice channel, make sure I have the necessary permissions."
     },
     "reboot": {
         "all": "Rebooting all shards...",

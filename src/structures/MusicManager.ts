@@ -46,6 +46,7 @@ export default class MusicManager extends EventEmitter {
             voiceChannel: vc,
             textChannelId,
             volume,
+            innertube: await Innertube.create(),
         })
         // Imprime un mensaje de depuración
         // logger.debug('Sign in successful: ', credentials);
@@ -91,24 +92,23 @@ export default class MusicManager extends EventEmitter {
             const actionRowComponents = player.message.components[0]?.components
             if (actionRowComponents) {
                 const pauseButton = actionRowComponents.find((c) => c.customId === 'pauseMusic' && c.type === ComponentType.Button)
-                if (pauseButton && pauseButton.type === 2) { // Make sure it's a button component
-                    if (player.playing) {
+                if (pauseButton && pauseButton.type === 2) // Make sure it's a button component
+                    if (player.playing)
                         (pauseButton.data.emoji as Writeable<APIMessageComponentEmoji, keyof APIMessageComponentEmoji>) = {
                             name: client.settings.emojis.white.pause.name.toString(),
                             id: client.settings.emojis.white.pause.id.toString(),
                             animated: pauseButton.data.emoji?.animated,
                         }
-                    } else {
+                    else
                         (pauseButton.data.emoji as Writeable<APIMessageComponentEmoji, keyof APIMessageComponentEmoji>) = {
                             name: client.settings.emojis.white.play.name.toString(),
                             id: client.settings.emojis.white.play.id.toString(),
                             animated: pauseButton.data.emoji?.animated,
                         }
-                    }
-                }
             }
         }
-        if (player.message) { return await player.message.edit({ components: player.message.components, embeds: [updatedEmbed2] }) } else return false
+        if (player.message) return await player.message.edit({ components: player.message.components, embeds: [updatedEmbed2] })
+        else return false
     }
 
     async trackStart (player: Player) {
@@ -148,7 +148,7 @@ export default class MusicManager extends EventEmitter {
         )
 
         const embed = new EmbedBuilder().setColor(client.settings.color)
-        if (song.platform === 'Youtube') {
+        if (song.platform === 'Youtube')
             embed
                 .setImage(song.thumbnails[0].url)
                 .setDescription(
@@ -156,17 +156,17 @@ export default class MusicManager extends EventEmitter {
                         song.id
                     })** [${formatDuration(song.duration ?? 0)}] • ${song.requester.toString()}`,
                 )
-        } else if (song.platform === 'Spotify') {
+        else if (song.platform === 'Spotify')
             if (song.thumbnails?.[0]) {
                 embed.setDescription(
                     `**${translate(keys.PLAYING)}\n[${song.title}](https://open.spotify.com/track/${song.id})**`,
                 )
                 embed.setImage(song.thumbnails[0].url)
             }
-        }
+
         // ^ Si no tenemos un mensaje ya enviado, lo enviamos, y si lo tenemos, borramos el anterior y enviamos uno nuevo <3
         player.message?.delete()
-        if (client.settings.debug === 'true') {
+        if (client.settings.debug === 'true')
             logger.music(
                 'Playing | ' +
                 player.queue.current?.title +
@@ -175,7 +175,7 @@ export default class MusicManager extends EventEmitter {
                     ' | ' +
                     player.queue.current?.requester.displayName,
             )
-        }
+
         return (player.message = await (await player.getTextChannel())?.send({
             embeds: [embed],
             components: [row],
@@ -283,9 +283,8 @@ export default class MusicManager extends EventEmitter {
                 embeds: [e],
                 content: '',
             })
-        } else {
+        } else
             return await this.destroy(player.guild)
-        }
     }
 
     get (guild: Guild) {
@@ -306,7 +305,7 @@ export default class MusicManager extends EventEmitter {
 
     async search (query: any, requester: any, source: 'Spotify' | 'Youtube' | 'Soundcloud') {
         let track
-        if (requester.youtubei) {
+        if (requester.youtubei)
             if (requester.youtubei.session.logged_in) {
                 const rawData = await (await requester.youtubei.music.search(query, { limit: 1 })).sections[0]
                 track = rawData.contents[0].id
@@ -314,21 +313,21 @@ export default class MusicManager extends EventEmitter {
                 (await requester.youtubei)
                 track = await (await yasha.Source.Youtube.search(query))[0]
             }
-        } else track = await (await yasha.Source.Youtube.search(query))[0]
+        else track = await (await yasha.Source.Youtube.search(query))[0]
 
         track = await yasha.Source.resolve(
             track ? `https://www.youtube.com/watch?v=${track.id ? track.id : track}` : query,
         )
         if (!track) logger.debug('No track found')
-        else {
-            // logger.log('track: ', track)
-            // if (track instanceof TrackPlaylist) {
-            //     track.forEach(t => {
-            //         t.requester = requester;
-            //         t.icon = null;
-            //         t.thumbnail;
-            //     });
-            // } else {
+        else
+        // logger.log('track: ', track)
+        // if (track instanceof TrackPlaylist) {
+        //     track.forEach(t => {
+        //         t.requester = requester;
+        //         t.icon = null;
+        //         t.thumbnail;
+        //     });
+        // } else {
             /* if (track.streams) {
                 // console.log(track.streams)
                 const stream = getMax(track.streams, 'bitrate')
@@ -336,7 +335,7 @@ export default class MusicManager extends EventEmitter {
             } */
             track.requester = requester
             // track.icon = null
-        }
+
         return track
         // }
     }

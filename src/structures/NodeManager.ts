@@ -41,7 +41,7 @@ export default class NodeManager extends ClusterManager {
         this.players = new Collection<string, any[]>()
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         let clusterList: any[]
-        if (!process.env.TOKEN) { throw new Error('No pudimos encontrar tu token, asegurate de añadirlo al .env con el nombre de TOKEN!') }
+        if (!process.env.TOKEN) throw new Error('No pudimos encontrar tu token, asegurate de añadirlo al .env con el nombre de TOKEN!')
 
         // Inicializa las colecciones para los clusters de diferentes nodos
         this.clustersArray.set('node', [])

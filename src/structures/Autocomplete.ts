@@ -17,13 +17,6 @@ export default class Autocomplete {
      * @returns {Promise<boolean>}
      */
     async run (interaction: AutocompleteInteraction): Promise<boolean> {
-        const v = interaction.options.getFocused()
-        await interaction.respond([
-            {
-                name: v,
-                value: v,
-            },
-        ])
         return true
     }
 

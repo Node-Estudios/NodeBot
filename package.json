@@ -22,9 +22,9 @@
     "scripts": {
         "start": "doppler run -- node build/index.js",
         "run": "node build/index.js",
-        "build": "npm run type:locales && tsc && doppler run --",
-        "dev": "concurrently \"tsc -w\" \"nodemon doppler run -- node build/index.js\"",
-        "tsc:watch": "nodemon --watch src --exec tsc",
+        "build": "npm run type:locales && tsc",
+        "dev": "nodemon -e ts --exec \"npm start\"",
+        "tsc:watch": "nodemon -e ts --exec tsc",
         "type:locales": "cd locales && type-locales && mv locales.ts ../src/utils/locales.ts && cd .. && node build/utils/testLocales.js"
     },
     "author": "",
@@ -108,7 +108,8 @@
             "@typescript-eslint/no-floating-promises": "off",
             "@typescript-eslint/restrict-plus-operands": "off",
             "@typescript-eslint/restrict-template-expressions": "off",
-            "@typescript-eslint/no-base-to-string": "off"
+            "@typescript-eslint/no-base-to-string": "off",
+            "curly": ["error", "multi"]
         }
     },
     "prettier": {

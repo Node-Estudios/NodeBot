@@ -4,16 +4,12 @@ import Modal from '#structures/Modal.js'
 
 class ModalCache {
     private static instance: ModalCache
-    #cache: Collection<string, Modal>
-
-    private constructor () {
-        this.#cache = new Collection<string, Modal>()
-    }
+    #cache = new Collection<string, Modal>()
 
     static getInstance (): ModalCache {
-        if (!ModalCache.instance) {
+        if (!ModalCache.instance)
             ModalCache.instance = new ModalCache()
-        }
+
         return ModalCache.instance
     }
 

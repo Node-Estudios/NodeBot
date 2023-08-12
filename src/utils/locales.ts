@@ -128,6 +128,7 @@ export default {
     'not_voice': "play.not_voice",
     'not_reproducible': "play.not_reproducible",
     'added': "play.added",
+    'cant_join': "play.cant_join",
   },
   'reboot': {
     'all': "reboot.all",
@@ -552,6 +553,7 @@ export default {
     'not_voice': string
     'not_reproducible': string
     'added': string
+    'cant_join': string
   }
   'reboot': {
     'all': string

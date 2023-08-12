@@ -136,7 +136,8 @@
         "same": "Necesitas estar en el mismo canal de voz que el bot para ejecutar este comando.",
         "not_voice": "Necesitas estar en un canal de voz para ejecutar este comando.",
         "not_reproducible": "El enlace adjunto no contiene contenidos reproducibles.",
-        "added": "{song} añadido a la lista"
+        "added": "{song} añadido a la lista",
+        "cant_join": "No puedo unirme a tu canal de voz, ¿tengo permisos?"
     },
     "reboot": {
         "all": "Reiniciando todos los fragmentos...",

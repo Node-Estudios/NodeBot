@@ -28,7 +28,7 @@ export default class Player extends yasha.TrackPlayer {
     previouslyPaused = false
     pausedUser?: User
     resumedUser?: User
-    youtubei = Innertube.create()
+    youtubei: Innertube
     waitingMessage?: Message
     constructor (options: {
         musicManager: MusicManager
@@ -38,12 +38,14 @@ export default class Player extends yasha.TrackPlayer {
         voiceChannel: VoiceChannel
         textChannelId: Snowflake
         guild?: Guild
+        innertube: Innertube
     }) {
         super({
             external_packet_send: false,
             external_encrypt: false,
             normalize_volume: true,
         })
+        this.youtubei = options.innertube
         this.manager = options.musicManager
         this.bitrate = options.bitrate
         this.volume = options.volume ?? 100
