@@ -77,6 +77,15 @@
     "roleinfo": {
         "managed": "Gestionado por Discord"
     },
+    "nowplaying": {
+        "1": "Necesitas estar en un canal de voz para poder ejecutar este comando.",
+        "2": "No se están reproduciendo canciones en este momento.",
+        "3": "Reproduciendo ahora",
+        "4": "Pausado",
+        "5": "Autor",
+        "6": "Solicitada por",
+        "7": "Duración"
+    },
     "serverinfo": {
         "verification": {
             "no": "No hay verificación.",
