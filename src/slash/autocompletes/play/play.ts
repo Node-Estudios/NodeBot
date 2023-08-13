@@ -12,7 +12,7 @@ export default class Repeat extends Autocomplete {
         const query = interaction.options.getFocused()
         const search = await yasha.Source.Youtube.search(query)
         if (search.length > 25) search.length = 25
-        if (this.canProced(interaction.user.id, interaction.id)) return false
+        if (!this.canProced(interaction.user.id, interaction.id)) return false
         interaction.respond(search.map(r => ({ name: r.title ?? '', value: r.url ?? '' }))).catch(logger.error)
         return true
     }
