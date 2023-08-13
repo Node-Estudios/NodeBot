@@ -37,16 +37,20 @@ export default class play extends Command {
 
     override async run (interaction: ChatInputCommandInteraction<'cached'>) {
         const client = interaction.client as Client
+        try {
+            await interaction.deferReply()
+        } catch (error) {
+            return client.errorHandler.captureException(error as Error)
+        }
         const translate = Translator(interaction)
         if (!interaction.member.voice.channelId)
-            return await interaction.reply({
+            return await interaction.editReply({
                 embeds: [
                     new EmbedBuilder().setColor(Colors.Red).setFooter({
                         text: translate(keys.play.not_voice),
                         iconURL: client.user?.displayAvatarURL(),
                     }),
                 ],
-                ephemeral: true,
             })
         let player = client.music.players.get(interaction.guildId)
         if (!player) {
@@ -57,33 +61,30 @@ export default class play extends Command {
             try {
                 await player.connect()
             } catch (error) {
-                return await interaction.reply({
+                return await interaction.editReply({
                     embeds: [
                         new EmbedBuilder().setColor(Colors.Red).setFooter({
                             text: translate(keys.play.cant_join),
                             iconURL: client.user?.displayAvatarURL(),
                         }),
                     ],
-                    ephemeral: true,
                 })
             }
         }
         if (player.voiceChannel.id !== interaction.member.voice.channelId)
-            return await interaction.reply({
+            return await interaction.editReply({
                 embeds: [
                     new EmbedBuilder().setColor(Colors.Red).setFooter({
                         text: translate(keys.play.same),
                         iconURL: client.user?.displayAvatarURL(),
                     }),
                 ],
-                ephemeral: true,
             }).catch(logger.error)
 
         player.textChannelId = interaction.channelId
 
         // Si el usuario está en el mismo canal de voz que el bot
         try {
-            await interaction.deferReply()
             const song = interaction.options.getString('song', false)
             const search = song ? await this.search(song, interaction.member) : await this.getRecomended(player)
             if (!search) return await interaction.editReply({
