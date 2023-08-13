@@ -1,5 +1,6 @@
 import Translator, { keys, randomMessage } from '#utils/Translator.js'
-import { ChatInputCommandInteraction, EmbedBuilder } from 'discord.js'
+import { ChatInputCommandInteraction } from 'discord.js'
+import EmbedBuilder from '#structures/EmbedBuilder.js'
 import Command from '#structures/Command.js'
 import Client from '#structures/Client.js'
 import logger from '#utils/logger.js'

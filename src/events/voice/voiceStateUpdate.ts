@@ -1,7 +1,8 @@
 import Client from '#structures/Client.js'
 import Translator, { keys } from '#utils/Translator.js'
 import logger from '#utils/logger.js'
-import { EmbedBuilder, VoiceChannel, VoiceState } from 'discord.js'
+import { VoiceChannel, VoiceState } from 'discord.js'
+import EmbedBuilder from '#structures/EmbedBuilder.js'
 import { BaseEvent } from '../../structures/Events.js'
 
 export default class VoiceStateUpdate extends BaseEvent {
@@ -23,9 +24,9 @@ export default class VoiceStateUpdate extends BaseEvent {
 
         // Check if there are more than 1 user in the voice channel, if not, pause the music
         if (newUserVoiceChannel.members.filter(member => !member.user.bot).size >= 1) {
-            if (!player.waitingMessage && player.stayInVc) {
+            if (!player.waitingMessage && player.stayInVc)
                 player.pause(false)
-            } else if (player.waitingMessage) {
+            else if (player.waitingMessage) {
                 await player.waitingMessage.delete()
                 delete player.waitingMessage
                 player.pause(false)
@@ -37,11 +38,10 @@ export default class VoiceStateUpdate extends BaseEvent {
 
         if (player.stayInVc) {
             player.pause(true)
-            if (client.settings.debug === 'true') {
+            if (client.settings.debug === 'true')
                 logger.debug(
                     'AutoPaused (24/7) | ' + player.guild.name + ' | ' + player.queue.current?.requester.displayName,
                 )
-            }
         } else {
             const embed = new EmbedBuilder()
                 .setDescription(
@@ -59,17 +59,15 @@ export default class VoiceStateUpdate extends BaseEvent {
             player.previouslyPaused = player.paused
             player.pause(true)
 
-            if (client.settings.debug === 'true') {
+            if (client.settings.debug === 'true')
                 logger.debug('AutoPaused | ' + player.guild.name + ' | ' + player.queue.current?.requester.displayName)
-            }
         }
 
         // Delay for 5 minutes
         await new Promise(resolve => setTimeout(resolve, 300000))
 
-        if (!player.waitingMessage || !newUserVoiceChannel) {
+        if (!player.waitingMessage || !newUserVoiceChannel)
             return
-        }
 
         const voiceMembers = newUserVoiceChannel.members.filter(member => !member.user.bot).size
         if (!voiceMembers || voiceMembers < 1) {
@@ -81,7 +79,7 @@ export default class VoiceStateUpdate extends BaseEvent {
             await newPlayer?.connect()
             await newPlayer?.destroy()
 
-            if (player.waitingMessage) {
+            if (player.waitingMessage)
                 player.waitingMessage.edit({
                     embeds: [
                         new EmbedBuilder()
@@ -93,7 +91,6 @@ export default class VoiceStateUpdate extends BaseEvent {
                             .setColor(client.settings.color),
                     ],
                 })
-            }
         }
     }
 }

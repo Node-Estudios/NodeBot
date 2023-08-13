@@ -1,4 +1,5 @@
-import { ChatInputCommandInteraction, EmbedBuilder } from 'discord.js'
+import { ChatInputCommandInteraction } from 'discord.js'
+import EmbedBuilder from '#structures/EmbedBuilder.js'
 import Translator, { keys } from '#utils/Translator.js'
 import formatTime from '#utils/formatTime.js'
 import Command from '#structures/Command.js'

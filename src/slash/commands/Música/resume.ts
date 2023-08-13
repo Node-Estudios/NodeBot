@@ -1,4 +1,5 @@
-import { ChatInputCommandInteraction, Colors, EmbedBuilder } from 'discord.js'
+import { ChatInputCommandInteraction, Colors } from 'discord.js'
+import EmbedBuilder from '#structures/EmbedBuilder.js'
 import Client from '#structures/Client.js'
 import Command from '#structures/Command.js'
 import Translator, { keys } from '#utils/Translator.js'

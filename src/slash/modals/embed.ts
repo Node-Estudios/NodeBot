@@ -1,4 +1,5 @@
-import { ModalSubmitInteraction, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js'
+import {  ModalSubmitInteraction, ActionRowBuilder, ButtonBuilder, ButtonStyle  } from 'discord.js'
+import EmbedBuilder from '#structures/EmbedBuilder.js'
 import Translator, { keys } from '#utils/Translator.js'
 import Modal from '#structures/Modal.js'
 import Color from '#structures/Color.js'

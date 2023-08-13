@@ -2,7 +2,8 @@ import Client from '#structures/Client.js'
 import Logger from '#utils/logger.js'
 import * as Sentry from '@sentry/node'
 import { ProfilingIntegration } from '@sentry/profiling-node'
-import { EmbedBuilder, WebhookClient } from 'discord.js'
+import { WebhookClient  } from 'discord.js'
+import EmbedBuilder from '#structures/EmbedBuilder.js'
 // TODO: se cmbiara a sentry
 
 class ErrorManager {

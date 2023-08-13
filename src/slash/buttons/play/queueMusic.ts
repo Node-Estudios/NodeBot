@@ -1,5 +1,6 @@
 import Translator, { keys } from '#utils/Translator.js'
-import { ButtonInteraction, EmbedBuilder } from 'discord.js'
+import { ButtonInteraction } from 'discord.js'
+import EmbedBuilder from '#structures/EmbedBuilder.js'
 import formatTime from '#utils/formatTime.js'
 import Client from '#structures/Client.js'
 import Button from '#structures/Button.js'
@@ -16,7 +17,7 @@ export default class Queue extends Button {
             const translate = Translator(interaction)
             const client = interaction.client as Client
             const player = client.music.players.get(interaction.guild.id)
-            if (!player?.queue.current) {
+            if (!player?.queue.current)
                 return await interaction.reply({
                     embeds: [
                         new EmbedBuilder().setColor(client.settings.color).setFooter({
@@ -25,9 +26,8 @@ export default class Queue extends Button {
                         }),
                     ],
                 })
-            }
 
-            if (interaction.member.voice.channelId !== (player.voiceChannel.id ?? '')) {
+            if (interaction.member.voice.channelId !== (player.voiceChannel.id ?? ''))
                 return await interaction.reply({
                     embeds: [
                         new EmbedBuilder().setColor(client.settings.color).setFooter({
@@ -36,14 +36,13 @@ export default class Queue extends Button {
                         }),
                     ],
                 })
-            }
 
             const { title } = player.queue.current
             const { queue } = player
 
             player.queue.retrieve(1)
 
-            if (!player.queue[0] && player.queue.current) {
+            if (!player.queue[0] && player.queue.current)
                 return await interaction.reply({
                     embeds: [
                         new EmbedBuilder()
@@ -65,7 +64,6 @@ export default class Queue extends Button {
                             .setColor(client.settings.color),
                     ],
                 })
-            }
 
             const x = 10
             let i = -1
@@ -83,7 +81,7 @@ export default class Queue extends Button {
                 )
                 .join('\n')
 
-            if (!queuelist) {
+            if (!queuelist)
                 return await interaction.reply({
                     embeds: [
                         new EmbedBuilder().setColor(client.settings.color).setFooter({
@@ -92,7 +90,6 @@ export default class Queue extends Button {
                         }),
                     ],
                 })
-            }
 
             return await interaction.reply({
                 embeds: [

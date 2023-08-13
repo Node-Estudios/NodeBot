@@ -1,4 +1,5 @@
-import { Collection, EmbedBuilder, GuildMember, Message } from 'discord.js'
+import {  Collection, GuildMember, Message  } from 'discord.js'
+import EmbedBuilder from '#structures/EmbedBuilder.js'
 import Music from 'youtubei.js/dist/src/core/clients/Music.js'
 import { SpamIntervalDB } from './spamInterval.js'
 import { Session, Innertube } from 'youtubei.js'

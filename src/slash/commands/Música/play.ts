@@ -120,10 +120,12 @@ export default class play extends Command {
                     value: `${interaction.user}`,
                     inline: true,
                 })
-                .addFields(
+            const duration = formatTime(Math.trunc(search.duration ?? 0), false)
+            if (duration)
+                embed.addFields(
                     {
                         name: translate(keys.DURATION),
-                        value: formatTime(Math.trunc(search.duration ?? 0), false),
+                        value: duration,
                         inline: true,
                     },
                 )
