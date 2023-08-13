@@ -1,0 +1,417 @@
+{
+    "question_ball": {
+        "no_question": "No veo ninguna pregunta a la que responder...",
+        "question": "A su pregunta",
+        "response": "Mi respuesta es",
+        "possibles": {
+            "0": "Yes",
+            "1": "No",
+            "2": "Maybe",
+            "3": "Obviously",
+            "4": "I say yes",
+            "5": "I say no",
+            "6": "Probably",
+            "7": "I have my doubts...",
+            "8": "Do not even doubt it",
+            "9": "You didn't even need to ask ;)",
+            "10": "Not at all...",
+            "11": "I don `t believe..."
+        }
+    },
+    "impostor": {
+        "was": "Was the impostor",
+        "was_not": "Was not the impostor"
+    },
+    "embed": {
+        "successfully": "Embed created and sent successfully.",
+        "missing_permissions": "I don't have permissions to send messages in that channel. I need {permisions}",
+        "modal": {
+            "title": "Embed Creator",
+            "title_label": "Title",
+            "title_placeholder": "My Awesome Embed",
+            "description_label": "Description",
+            "description_placeholder": "This is my awesome embed!",
+            "color_label": "Color"
+        },
+        "buttons": {
+            "send": "Send",
+            "edit": "Edit"
+        },
+        "invalid_input": "Invalid input"
+    },
+    "github": {
+        "write_username": "Please write an username.",
+        "name": "🧑 Name:",
+        "account": " Account Type:",
+        "organization": "🏢 Organization:",
+        "link": "☁️ Link",
+        "location": "🗺 Location:",
+        "email": "📩 Email",
+        "biography": "📃 Biography",
+        "twitter": "🐦 Twitter:",
+        "repositories": "📂 Public Repositories",
+        "followers": "🧍 Followers",
+        "analizing": "Analizando cuenta, por favor espera...",
+        "unknow": "El usuario no se encontró"
+    },
+    "help": {
+        "presentation": "<a:pin:893553168259121172> Hello, I am Node an all-in-one, multifunctional bot with innovative commands.",
+        "how_use": "How do I see the commands?",
+        "how_use_answer": "Easy, you just have to write",
+        "need_support": "If I need support, how can I contact with the support team",
+        "need_support_answer": "You can ask in our [support server!]({inviteURL})",
+        "how_vote": "How can I vote for the bot?",
+        "how_vote_answer": "u can do it using the command <a:arrowright:970388686816550912> `/vote` or [Clicking Here](https://vote.nodebot.xyz) 'We are waiting your vote :)'",
+        "title": "✨ - Help menu"
+    },
+    "avatar": "here you have the avatar of {user}",
+    "mchistory": {
+        "dont": "The username doesn't exist",
+        "names": "Name's historical",
+        "first": "First Name"
+    },
+    "ping": {
+        "global": "Global ping",
+        "internal": "Internal Processing (database + processing)"
+    },
+    "roleinfo": {
+        "managed": "Managed by Discord"
+    },
+    "serverinfo": {
+        "verification": {
+            "no": "No verification.",
+            "low": "Low (Verified account).",
+            "medium": "Medium (Verified account for +5 minutes).",
+            "high": "High (Verified account for +10 minutes).",
+            "extreme": "Extreme (Verified account y verified phone number linked)."
+        },
+        "explicit": {
+            "disabled": "No messages are scanned.",
+            "members_without_role": "Scan users without a role.",
+            "all_members": "Scan every message."
+        },
+        "emoji_count": "Emoji Count",
+        "tier_level": "Tier Level",
+        "verification_level": "Verification Level",
+        "explicit_filter": "Explicit Content Filter Level"
+    },
+    "ban": {
+        "not_found": "Member not found",
+        "self": "You can't ban yourself",
+        "owner": "You can't ban the owner",
+        "higher": "You can't ban a member with a higher role than you",
+        "ban": "Banned successfully",
+        "unbannable": "I can't ban this member"
+    },
+    "skip": {
+        "messages": {
+            "0": "There are no songs playing on your voice channel. Why don't you add one? <:pepeblink:967941236029788160>",
+            "1": "It sounds like you're not listening to music, how about we do it? <:pepeblink:967941236029788160>",
+            "2": "What are you doing that you don't listen to music? Add a song now :)"
+        },
+        "no_same": "You are not within my voice channel.",
+        "skiped": "{song} has been skipped"
+    },
+    "queue": {
+        "no_queue": "There aren't songs being played on this server. Why don't you add one?",
+        "current": "Currently playing:",
+        "queue": "{name}'s queue",
+        "no_page": "¡The page does not exist!",
+        "total": "Total songs queue:"
+    },
+    "247": {
+        "enabled": "24/7 mode is enabled <a:DJPeepo:969757766744944700>",
+        "disabled": "24/7 mode is disabled"
+    },
+    "play": {
+        "same": "You need to be on the same voice channel as the bot to execute this command.",
+        "not_voice": "You need to be on a voice channel to execute this command.",
+        "not_reproducible": "The attached link does not contain reproducible content.",
+        "added": "{song} added to the list",
+        "cant_join": "I can't join your voice channel, make sure I have the necessary permissions."
+    },
+    "reboot": {
+        "all": "Rebooting all shards...",
+        "shard": "Rebooting shard {shard}..."
+    },
+    "stop": {
+        "resumed": "Music resumed by {user}",
+        "paused": "Music paused by {user}",
+        "success": "Music stopped"
+    },
+    "paused": "Music paused",
+    "resumed": "Music resumed",
+    "voice_update": {
+        "leaving": "Leaving {channel} in {time} minutes",
+        "alone": "I was alone, and I left {channel}"
+    },
+    "automix": {
+        "generated": "Auto-Mix has been generated!",
+        "disabled": "AutoMix disabled"
+    },
+    "twitch": {
+        "no_streamer_found": "The streamer was not found",
+        "already_following": "You are already following this streamer",
+        "now_following": "You are now following {streamer}. Notifications will be sent to {channel}.",
+        "unfollowed": "You have stopped following {streamer}.",
+        "role_mention": "Mention will be made to {role}.",
+        "now_live": "{streamer} is now live!"
+    },
+    "loop": {
+        "queue": "Queue loop",
+        "song": "Song loop",
+        "disabled": "Loop disabled"
+    },
+    "ERROREMBED": "Error",
+    "SUCCESSEMBED": "Success",
+    "PAUSE": "Pause",
+    "RESUME": "Resume",
+    "STOP": "Stop",
+    "SKIP": "Skip",
+    "NEXT": "Next",
+    "QUEUE": "Queue",
+    "TITLE": "Title",
+    "MEMBERS": "Members",
+    "REGULAR": "Regular",
+    "ANIMATED": "Animated",
+    "CHANNELS": "Channels",
+    "ROLES": "Roles",
+    "CATEGORIES": "Categories",
+    "SONGS": "Songs",
+    "TEXT": "Text",
+    "VOICE": "Voice",
+    "BOOSTERS": "Boosters",
+    "REGION": "Region",
+    "TIER": "Tier",
+    "CREATED_AT": "Created at",
+    "OWNER": "Owner",
+    "AUTHOR": "Author",
+    "REQUESTER": "Requester",
+    "DURATION": "Duration",
+    "NO": "No",
+    "API": "API",
+    "PING": "Ping",
+    "NAME": "Name",
+    "ID": "ID",
+    "POSITION": "Position",
+    "COLOR": "Color",
+    "MENTIONABLE": "Mentionable",
+    "SEPARATED": "Separated",
+    "YES": "Yes",
+    "PLAYING": "Playing",
+    "GENERICERROR": "Oops, there seems to have been an error.\nYou can contact the developer to let him know at [The Official Discord]({inviteURL})",
+    "commands": {
+        "reboot": {
+            "name": "reboot",
+            "description": "Reboot a shard or all shards",
+            "options": {
+                "shard": {
+                    "name": "shard",
+                    "description": "Shard to reboot"
+                }
+            }
+        },
+        "8ball": {
+            "name": "8ball",
+            "description": "Ask a question to the magic ball",
+            "options": {
+                "question": {
+                    "name": "question",
+                    "description": "What do you want to ask?"
+                }
+            }
+        },
+        "impostor": {
+            "name": "impostor",
+            "description": "Are you the impostor? SUS",
+            "options": {
+                "user": {
+                    "name": "user",
+                    "description": "Are this user the impostor? SUS na na na na na na na"
+                }
+            }
+        },
+        "avatar": {
+            "name": "avatar",
+            "description": "Send your avatar or the other user one!",
+            "options": {
+                "user": {
+                    "name": "user",
+                    "description": "User to get the avatar"
+                }
+            }
+        },
+        "twitch": {
+            "name": "twitch",
+            "description": "Set a notification for when a streamer goes live!",
+            "options": {
+                "add": {
+                    "name": "add",
+                    "description": "Add a streamer to the notification list",
+                    "options": {
+                        "streamer": {
+                            "name": "streamer",
+                            "description": "Streamer to add"
+                        },
+                        "channel": {
+                            "name": "channel",
+                            "description": "Channel to send the notification"
+                        },
+                        "role": {
+                            "name": "role",
+                            "description": "Role to mention"
+                        }
+                    }
+                },
+                "remove": {
+                    "name": "remove",
+                    "description": "Remove a streamer from the notification list",
+                    "options": {
+                        "streamer": {
+                            "name": "streamer",
+                            "description": "Streamer to remove"
+                        }
+                    }
+                }
+            }
+        },
+        "shards": {
+            "name": "shards",
+            "description": "Get information about shards"
+        },
+        "serverinfo": {
+            "name": "serverinfo",
+            "description": "Get information about the server"
+        },
+        "roleinfo": {
+            "name": "roleinfo",
+            "description": "Get information about a role",
+            "options": {
+                "role": {
+                    "name": "role",
+                    "description": "Role to get information"
+                }
+            }
+        },
+        "ping": {
+            "name": "ping",
+            "description": "Shows the bot latency"
+        },
+        "mcserver": {
+            "name": "mcserver",
+            "description": "Send a image of a Minecraft server",
+            "options": {
+                "server": {
+                    "name": "server",
+                    "description": "Server to get information"
+                }
+            }
+        },
+        "mchistory": {
+            "name": "mchistory",
+            "description": "Show the history of a Minecraft account",
+            "options": {
+                "account": {
+                    "name": "account",
+                    "description": "Account to get information"
+                }
+            }
+        },
+        "help": {
+            "name": "help",
+            "description": "Show information about me"
+        },
+        "github": {
+            "name": "github",
+            "description": "Show information about a GitHub account",
+            "options": {
+                "account": {
+                    "name": "account",
+                    "description": "Account to get information"
+                }
+            }
+        },
+        "embed": {
+            "name": "embed",
+            "description": "Send a embed",
+            "options": {
+                "channel": {
+                    "name": "channel",
+                    "description": "Channel to send the embed"
+                },
+                "color": {
+                    "name": "color",
+                    "description": "Color of the embed"
+                },
+                "title": {
+                    "name": "title",
+                    "description": "Title of the embed"
+                },
+                "description": {
+                    "name": "description",
+                    "description": "Description of the embed"
+                }
+            }
+        },
+        "ban": {
+            "name": "ban",
+            "description": "Ban a member",
+            "options": {
+                "user": {
+                    "name": "usuario",
+                    "description": "Usuario a banear"
+                },
+                "reason": {
+                    "name": "razon",
+                    "description": "Razon del ban"
+                },
+                "days": {
+                    "name": "dias",
+                    "description": "Días para borrar mensajes del usuario"
+                }
+            }
+        },
+        "play": {
+            "name": "play",
+            "description": "Play the song that you want with the name or a youtube/spotify link",
+            "options": {
+                "song": {
+                    "name": "song",
+                    "description": "Song to play"
+                }
+            }
+        },
+        "stop": {
+            "name": "stop",
+            "description": "Stop the player"
+        },
+        "skip": {
+            "name": "skip",
+            "description": "Skip the current song"
+        },
+        "resume": {
+            "name": "resume",
+            "description": "Resume the current song!"
+        },
+        "queue": {
+            "name": "queue",
+            "description": "Show the queue"
+        },
+        "pause": {
+            "name": "pause",
+            "description": "Pause the current song"
+        },
+        "nowplaying": {
+            "name": "nowplaying",
+            "description": "Show the current song"
+        },
+        "loop": {
+            "name": "loop",
+            "description": "Repeats the current queue/song"
+        },
+        "247": {
+            "name": "247",
+            "description": "Stay 24/7 in a voice channel"
+        }
+    }
+}
