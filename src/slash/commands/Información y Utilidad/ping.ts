@@ -26,11 +26,11 @@ export default class ping extends Command {
                 { cluster: client.cluster.id },
             )
             .then(async (results: any) => {
-                let performance = await performanceMeters.get('interaction_' + interaction.id)
-                if (performance) {
-                    performance = await performance.stop()
+                const performance = performanceMeters.get('interaction_' + interaction.id)
+                const time = performance?.stop() ?? 0
+                if (performance)
                     performanceMeters.delete('interaction_' + interaction.id)
-                }
+
                 // Todo: process.env.mode === 'development'
                 return await interaction
                     .reply({
@@ -39,7 +39,7 @@ export default class ping extends Command {
                                 .setColor(Colors.Green)
                                 .setFields(
                                     { name: translate(keys.API), value: `${results[0].ping}ms`, inline: true },
-                                    { name: translate(keys.ping.internal), value: performance + 'ms' },
+                                    { name: translate(keys.ping.internal), value: time + 'ms' },
                                     { name: translate(keys.ping.global), value: `${ping}ms`, inline: true },
                                 )
                                 .setTitle(translate(keys.PING))
