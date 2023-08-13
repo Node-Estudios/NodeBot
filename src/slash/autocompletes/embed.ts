@@ -41,13 +41,13 @@ export default class Embed extends Autocomplete {
             ]).catch(logger.error)
             return true
         } else if (focused.startsWith('#')) {
-            if (!Color.isHex(focused)) { suggestions.push({ name: invalidInput, value: '#000000' }) }
-            for (let i = 0, random = Math.floor(Math.random() * values.length); i < 24; i++, random = Math.floor(Math.random() * values.length)) { suggestions.push({ name: `#${values[random].toString(16)}`, value: `${values[random]}` }) }
+            if (!Color.isHex(focused)) suggestions.push({ name: invalidInput, value: '#000000' })
+            for (let i = 0, random = Math.floor(Math.random() * values.length); i < 24; i++, random = Math.floor(Math.random() * values.length)) suggestions.push({ name: `#${values[random].toString(16)}`, value: `${values[random]}` })
         } else if (focused.startsWith('0x')) {
-            if (!Color.isHex0x(focused)) { suggestions.push({ name: invalidInput, value: '0x000000' }) }
-            for (let i = 0, random = Math.floor(Math.random() * values.length); i < 24; i++, random = Math.floor(Math.random() * values.length)) { suggestions.push({ name: `0x${values[random].toString(16)}`, value: `${values[random]}` }) }
+            if (!Color.isHex0x(focused)) suggestions.push({ name: invalidInput, value: '0x000000' })
+            for (let i = 0, random = Math.floor(Math.random() * values.length); i < 24; i++, random = Math.floor(Math.random() * values.length)) suggestions.push({ name: `0x${values[random].toString(16)}`, value: `${values[random]}` })
         } else if (focused.startsWith('rgb')) {
-            if (!Color.isRGB(focused)) { suggestions.push({ name: invalidInput, value: 'rgb(0, 0, 0)' }) }
+            if (!Color.isRGB(focused)) suggestions.push({ name: invalidInput, value: 'rgb(0, 0, 0)' })
             for (let i = 0; i < 24; i++) {
                 const random = Math.floor(Math.random() * values.length)
                 const [r, g, b] = new Color(`${values[random]}`).rgb

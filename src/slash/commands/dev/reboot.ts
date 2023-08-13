@@ -2,6 +2,7 @@ import { ApplicationCommandOptionType, ChatInputCommandInteraction } from 'disco
 import Client from '#structures/Client.js'
 import Command from '#structures/Command.js'
 import Translator, { keys } from '#utils/Translator.js'
+import logger from '#utils/logger.js'
 
 export default class reboot extends Command {
     constructor () {
@@ -24,14 +25,19 @@ export default class reboot extends Command {
 
     override async run (interaction: ChatInputCommandInteraction) {
         // TODO: Change reboot system
-        const translate = Translator(interaction)
         const client = interaction.client as Client
-        const shard = interaction.options.getNumber('shard')
-        if (!shard) {
-            await interaction.reply(translate(keys.reboot.all))
-            return await client.cluster.send({ type: 'reboot', shard: 'all' })
+        try {
+            const translate = Translator(interaction)
+            const shard = interaction.options.getNumber('shard')
+            if (!shard) {
+                await interaction.reply(translate(keys.reboot.all))
+                return await client.cluster.send({ type: 'reboot', shard: 'all' })
+            }
+            await interaction.reply(translate(keys.reboot.shard, { shard }))
+            await client.cluster.send({ type: 'reboot', shard })
+        } catch (error) {
+            logger.error(error)
+            client.errorHandler.captureException(error as Error)
         }
-        await interaction.reply(translate(keys.reboot.shard, { shard }))
-        client.cluster.send({ type: 'reboot', shard })
     }
 }

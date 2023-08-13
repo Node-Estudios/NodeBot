@@ -2,6 +2,7 @@ import { ApplicationCommandOptionType, ChatInputCommandInteraction, Colors, Embe
 import Client from '#structures/Client.js'
 import Command from '#structures/Command.js'
 import Translator, { keys } from '#utils/Translator.js'
+import logger from '#utils/logger.js'
 
 export default class ball extends Command {
     constructor () {
@@ -24,7 +25,7 @@ export default class ball extends Command {
         const translate = Translator(interaction)
         const client = interaction.client as Client
         const question = interaction.options.getString('question', true)
-        if (!question.endsWith('?')) {
+        if (!question.endsWith('?'))
             return await interaction.reply({
                 embeds: [
                     new EmbedBuilder()
@@ -36,8 +37,7 @@ export default class ball extends Command {
                             iconURL: interaction.user.displayAvatarURL({ extension: 'png' }),
                         }),
                 ],
-            })
-        }
+            }).catch(logger.error)
 
         return await interaction.reply({
             embeds: [
@@ -54,6 +54,6 @@ export default class ball extends Command {
                     )
                     .setColor(client.settings.color),
             ],
-        })
+        }).catch(logger.error)
     }
 }

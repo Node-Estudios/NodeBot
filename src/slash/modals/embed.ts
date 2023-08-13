@@ -1,7 +1,7 @@
 import { ModalSubmitInteraction, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js'
+import Translator, { keys } from '#utils/Translator.js'
 import Modal from '#structures/Modal.js'
 import Color from '#structures/Color.js'
-import Translator, { keys } from '#utils/Translator.js'
 import logger from '#utils/logger.js'
 
 export default class Embed extends Modal {
@@ -20,7 +20,7 @@ export default class Embed extends Modal {
         if (title) embed.setTitle(title)
         if (description) embed.setDescription(description)
         if (color && Color.isColor(color)) embed.setColor(new Color(color).hex)
-        if (option === 'n') {
+        if (option === 'n')
             return await interaction.reply({
                 content: !Color.isColor(color) ? translate(keys.embed.invalid_input) : undefined,
                 embeds: [embed],
@@ -32,8 +32,8 @@ export default class Embed extends Modal {
                     ),
                 ],
             }).catch(logger.error)
-        }
+
         if (interaction.isFromMessage()) return await interaction.update({ embeds: [embed], components: interaction.message?.components }).catch(logger.error)
-        interaction.deferUpdate()
+        await interaction.deferUpdate().catch(logger.error)
     }
 }
