@@ -5,7 +5,7 @@ import performanceMeters from '#cache/performanceMeters.js'
 import Client from '#structures/Client.js'
 import logger from '#utils/logger.js'
 import { AutocompleteInteraction, ButtonInteraction, ChatInputCommandInteraction, Interaction, ModalSubmitInteraction } from 'discord.js'
-import { PerformanceMeter as PerformanceMeter } from '../../handlers/performanceMeter.js'
+import { PerformanceMeter } from '../../handlers/performanceMeter.js'
 import { BaseEvent } from '../../structures/Events.js'
 import modals from '#cache/modals.js'
 import cooldowns from '#cache/cooldowns.js'
@@ -29,7 +29,7 @@ export class interactionCreate extends BaseEvent {
     async processChatImputCommand (interaction: ChatInputCommandInteraction) {
         try {
             performanceMeters.set('interaction_' + interaction.id, new PerformanceMeter())
-            performanceMeters.get('interaction_' + interaction.id).start()
+            performanceMeters.get('interaction_' + interaction.id)?.start()
             const cmd = commands.cache.find(c => c.name === interaction.commandName)
             if (!cmd) return
             if (interaction.guild && cmd?.only_dm) return // <-- return statement here
