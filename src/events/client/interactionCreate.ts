@@ -68,10 +68,6 @@ export class interactionCreate extends BaseEvent {
                         cmd: cmd.name,
                         options: JSON.stringify(interaction.options.data, (key, value) => !['client', 'channel', 'guild', 'user', 'member', 'role'].includes(key) ? value : undefined, 4),
                     })
-                    interaction.reply({
-                        content: 'Ha ocurrido un error al ejecutar el comando, por favor, intenta de nuevo más tarde',
-                        ephemeral: true,
-                    })
                 })
                 .finally(() => {
                     cooldowns.registerInteraction(interaction.user.id, interaction.commandName)

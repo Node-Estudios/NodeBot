@@ -90,10 +90,12 @@ export default class play extends Command {
             const search = song ? await this.search(song, interaction.member) : await this.getRecomended(player)
             if (!search) return await interaction.editReply({
                 embeds: [
-                    new EmbedBuilder().setColor(Colors.Red).setFooter({
-                        text: translate(keys.play.not_reproducible),
-                        iconURL: client.user?.displayAvatarURL(),
-                    }),
+                    new EmbedBuilder()
+                        .setColor(Colors.Red)
+                        .setFooter({
+                            text: translate(keys.play.not_reproducible),
+                            iconURL: client.user?.displayAvatarURL(),
+                        }),
                 ],
             }).catch(logger.error)
             // TODO: Add streaming support
@@ -106,17 +108,19 @@ export default class play extends Command {
             if (!player.playing || player.paused) player.play()
             const embed = new EmbedBuilder()
                 .setColor(client.settings.color)
-                .setFields(
+                .addFields(
                     {
                         name: translate(keys.AUTHOR),
-                        value: search.author ?? '',
+                        value: search.author ?? 'unknown',
                         inline: true,
                     },
-                    {
-                        name: translate(keys.REQUESTER),
-                        value: interaction.user.toString(),
-                        inline: true,
-                    },
+                )
+                .addFields({
+                    name: translate(keys.REQUESTER),
+                    value: `${interaction.user}`,
+                    inline: true,
+                })
+                .addFields(
                     {
                         name: translate(keys.DURATION),
                         value: formatTime(Math.trunc(search.duration ?? 0), false),
@@ -150,6 +154,8 @@ export default class play extends Command {
             await interaction.editReply({ embeds: [embed] }).catch(logger.error)
         } catch (e) {
             logger.error(e)
+            // @ts-expect-error
+            if (e.errors) logger.error(e.errors)
             interaction.editReply({
                 content: translate(keys.GENERICERROR, {
                     inviteURL: client.officialServerURL,
