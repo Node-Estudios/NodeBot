@@ -1,417 +1,426 @@
 {
     "question_ball": {
-        "no_question": "答えるべき質問はないのか？",
-        "question": "ご質問の件",
-        "response": "私の答えはこうだ。",
+        "no_question": "No veo ninguna pregunta a la que responder...",
+        "question": "A su pregunta",
+        "response": "Mi respuesta es",
         "possibles": {
-            "0": "はい",
-            "1": "いいえ",
-            "2": "たぶん",
-            "3": "明らかに",
-            "4": "はい",
-            "5": "断る",
-            "6": "おそらく",
-            "7": "私は疑問を持っている...。",
-            "8": "疑ってはいけない",
-            "9": "聞くまでもないだろう;)",
-            "10": "全然違うよ...。",
-            "11": "私は信じない..."
+            "0": "Sí",
+            "1": "No",
+            "2": "Tal vez",
+            "3": "Obviamente",
+            "4": "Yo digo que sí.",
+            "5": "Yo digo que no.",
+            "6": "Probablemente",
+            "7": "Tengo mis dudas...",
+            "8": "Ni lo dudes",
+            "9": "Ni siquiera tenías que preguntar ;)",
+            "10": "En absoluto...",
+            "11": "No creo..."
         }
     },
     "impostor": {
-        "was": "詐欺師だったのか？",
-        "was_not": "詐欺師ではなかった"
+        "was": "¿Fue el impostor",
+        "was_not": "¿No era el impostor"
     },
     "embed": {
-        "successfully": "エンベッドが作成され、正常に送信された。",
-        "missing_permissions": "私はエンベッドを送信する権限がありません。 {permisions}つ必要だ",
+        "successfully": "Embed creado y enviado correctamente.",
+        "missing_permissions": "No tengo permisos para enviar mensajes en este canal. Necesito {permisions}",
         "modal": {
-            "title": "埋め込みを作成する",
-            "title_label": "タイトル",
-            "title_placeholder": "私の素晴らしい埋め込み",
-            "description_label": "記述",
-            "description_placeholder": "これは私の素晴らしい埋め込みだ！",
-            "color_label": "色"
+            "title": "Creador de embed",
+            "title_label": "Título",
+            "title_placeholder": "El mejor embed",
+            "description_label": "Descripción",
+            "description_placeholder": "Este es el mejor embed del mundo",
+            "color_label": "Color"
         },
         "buttons": {
-            "send": "送信",
-            "edit": "編集"
+            "send": "Enviar",
+            "edit": "Editar"
         },
-        "invalid_input": "無効な入力"
+        "invalid_input": "Entrada no válida"
     },
     "github": {
-        "write_username": "ユーザー名を書いてください。",
-        "name": "🧑 名前：",
-        "account": "アカウントの種類",
-        "organization": "🏢 組織：",
-        "link": "☁️ リンク",
-        "location": "🗺 場所：",
-        "email": "📩 Eメール",
-        "biography": "バイオグラフィー",
-        "twitter": "ツイッター🐦：",
-        "repositories": "📂 公開リポジトリ",
-        "followers": "🧍 フォロワー",
-        "analizing": "アカウントを分析中です。",
-        "unknow": "ユーザーが見つかりません"
+        "write_username": "Por favor, escriba un nombre de usuario.",
+        "name": "🧑 Nombre:",
+        "account": " Tipo de cuenta:",
+        "organization": "🏢 Organización:",
+        "link": "☁️ Enlace",
+        "location": "🗺 Ubicación:",
+        "email": "Correo electrónico",
+        "biography": "📃 Biografía",
+        "twitter": "🐦 Twitter:",
+        "repositories": "📂 Repositorios públicos",
+        "followers": "🧍 Seguidores",
+        "analizing": "Analizando cuenta, por favor espera...",
+        "unknow": "El usuario no se encontró"
     },
     "help": {
-        "presentation": "<a:pin:893553168259121172>こんにちは、私は革新的なコマンドを持つオールインワンの多機能ボット、ノードです。",
-        "how_use": "コマンドはどうやって見るのですか？",
-        "how_use_answer": "簡単だ。",
-        "need_support": "サポートが必要な場合、どのようにサポートチームと連絡を取ればよいですか？",
-        "need_support_answer": "サポートサーバー！]({inviteURL})でお尋ねください。",
-        "how_vote": "ボットに投票するには？",
-        "how_vote_answer": "<a:arrowright:970388686816550912> `/vote`コマンドか、[ここをクリック](https://vote.nodebot.xyz) 'We are waiting your vote :)' コマンドで実行できる。",
-        "title": "ヘルプメニュー"
+        "presentation": "<a:pin:893553168259121172> Hola, soy Node un bot todo en uno, multifuncional y con comandos innovadores.",
+        "how_use": "¿Cómo puedo ver los comandos?",
+        "how_use_answer": "Fácil, sólo tienes que escribir",
+        "need_support": "Si necesito ayuda, ¿cómo puedo ponerme en contacto con el equipo de asistencia?",
+        "need_support_answer": "Puede preguntar en nuestro [servidor de soporte]({inviteURL})",
+        "how_vote": "¿Cómo puedo votar al robot?",
+        "how_vote_answer": "u puede hacerlo utilizando el comando <a:arrowright:970388686816550912> `/vote` o [Clicando Aquí](https://vote.nodebot.xyz) 'Estamos esperando su voto :)'",
+        "title": "✨ - Menú Ayuda"
     },
-    "avatar": "ここには{user}のアバターがある。",
+    "avatar": "aquí tienes el avatar de {user}",
     "mchistory": {
-        "dont": "ユーザー名が存在しない",
-        "names": "名前の歴史",
-        "first": "名前"
+        "dont": "El nombre de usuario no existe",
+        "names": "Historial del nombre",
+        "first": "Nombre"
     },
     "ping": {
-        "global": "グローバル・ピン",
-        "internal": "内部処理（データベース＋処理）"
+        "global": "Ping global",
+        "internal": "Procesamiento interno (base de datos + procesamiento)"
     },
     "roleinfo": {
-        "managed": "Discordによる管理"
+        "managed": "Gestionado por Discord"
+    },
+    "nowplaying": {
+        "1": "Necesitas estar en un canal de voz para poder ejecutar este comando.",
+        "2": "No se están reproduciendo canciones en este momento.",
+        "3": "Reproduciendo ahora",
+        "4": "Pausado",
+        "5": "Autor",
+        "6": "Solicitada por",
+        "7": "Duración"
     },
     "serverinfo": {
         "verification": {
-            "no": "検証はしていない。",
-            "low": "ロー（認証済みアカウント）。",
-            "medium": "ミディアム（+5分の認証済みアカウント）。",
-            "high": "高い（+10分間、認証済みアカウント）。",
-            "extreme": "エクストリーム（認証済みアカウントと認証済み電話番号のリンク）。"
+            "no": "No hay verificación.",
+            "low": "Baja (Cuenta verificada).",
+            "medium": "Medium (cuenta verificada durante +5 minutos).",
+            "high": "Alta (cuenta verificada durante +10 minutos).",
+            "extreme": "Extreme (Cuenta verificada y número de teléfono verificado vinculados)."
         },
         "explicit": {
-            "disabled": "メッセージはスキャンされない。",
-            "members_without_role": "ロールのないユーザーをスキャンします。",
-            "all_members": "すべてのメッセージをスキャンする。"
+            "disabled": "No se escanea ningún mensaje.",
+            "members_without_role": "Escanear usuarios sin rol.",
+            "all_members": "Escanea cada mensaje."
         },
-        "emoji_count": "絵文字数",
-        "tier_level": "ティアレベル",
-        "verification_level": "検証レベル",
-        "explicit_filter": "明示的コンテンツフィルターレベル"
+        "emoji_count": "Cuenta Emoji",
+        "tier_level": "Nivel",
+        "verification_level": "Nivel de verificación",
+        "explicit_filter": "Nivel de filtro de contenido explícito"
     },
     "ban": {
-        "not_found": "メンバーが見つかりません",
-        "self": "自分自身を禁止することはできない",
-        "owner": "オーナーを追放することはできない",
-        "higher": "自分より上位の役割を持つメンバーを追放することはできない",
-        "ban": "出入り禁止に成功",
-        "unbannable": "このメンバーを追放することはできない"
+        "not_found": "Miembro no encontrado",
+        "self": "No puedes prohibirte a ti mismo",
+        "owner": "No se puede prohibir al propietario",
+        "higher": "No puedes banear a un miembro con un rol superior al tuyo",
+        "ban": "Prohibido con éxito",
+        "unbannable": "No puedo expulsar a este miembro"
     },
     "skip": {
         "messages": {
-            "0": "ボイスチャンネルに曲がありません。追加したらどうですか？<:pepeblink:967941236029788160>",
-            "1": "音楽聴いてないみたいだし、どうする？<:pepeblink:967941236029788160>",
-            "2": "音楽を聴かずに何をしている？今すぐ曲を追加してください :)"
+            "0": "No hay canciones sonando en tu canal de voz. ¿Por qué no añades una? <:pepeblink:967941236029788160>",
+            "1": "Parece que no estás escuchando música, ¿qué tal si lo hacemos? <:pepeblink:967941236029788160>",
+            "2": "¿Qué haces que no escuchas música? Añade una canción ahora :)"
         },
-        "no_same": "私の音声チャンネルには入っていない。",
-        "skiped": "{song}はスキップされた"
+        "no_same": "No estás en mi canal de voz.",
+        "skiped": "{song} se ha omitido"
     },
     "queue": {
-        "no_queue": "このサーバーで演奏されている曲がありません。追加してみては？",
-        "current": "現在プレー中：",
-        "queue": "{name}のキュー",
-        "no_page": "ページが存在しません！",
-        "total": "全曲キュー："
+        "no_queue": "No se están reproduciendo canciones en este servidor. ¿Por qué no añades una?",
+        "current": "Actualmente jugando:",
+        "queue": "{name}'s queue",
+        "no_page": "¡La página no existe!",
+        "total": "Cola total de canciones:"
     },
     "247": {
-        "enabled": "24時間365日モードが有効 <a:DJPeepo:969757766744944700>",
-        "disabled": "24/7モードは無効"
+        "enabled": "El modo 24/7 está activado <a:DJPeepo:969757766744944700>",
+        "disabled": "El modo 24/7 está desactivado"
     },
     "play": {
-        "same": "このコマンドを実行するには、ボットと同じ音声チャンネルにいる必要があります。",
-        "not_voice": "音声チャンネルに入ってください。",
-        "not_reproducible": "添付のリンク先には再現可能なコンテンツは含まれていません。",
-        "added": "リストに{song}を追加",
-        "cant_join": "私はあなたのボイスチャンネルに参加できません。権限を確認してください。"
+        "same": "Necesitas estar en el mismo canal de voz que el bot para ejecutar este comando.",
+        "not_voice": "Necesitas estar en un canal de voz para ejecutar este comando.",
+        "not_reproducible": "El enlace adjunto no contiene contenidos reproducibles.",
+        "added": "{song} añadido a la lista",
+        "cant_join": "No puedo unirme a tu canal de voz, ¿tengo permisos?"
     },
     "reboot": {
-        "all": "すべてのシャードを再起動...",
-        "shard": "シャード{shard}を再起動中..."
+        "all": "Reiniciando todos los fragmentos...",
+        "shard": "Reiniciando shard {shard}..."
     },
     "stop": {
-        "resumed": "音楽は{user}によって再開された。",
-        "paused": "音楽は{user}で一時停止。",
-        "success": "音楽は停止された。"
+        "resumed": "Música reanudada por {user}",
+        "paused": "Música pausada por {user}",
+        "success": "Música detenida"
     },
-    "paused": "スローミュージック",
-    "resumed": "音楽は再開された",
+    "paused": "Música pausada",
+    "resumed": "Música reanudada",
     "voice_update": {
-        "leaving": "分後に{channel}を発つ{time}。",
-        "alone": "私は一人で、{channel}を後にした。"
+        "leaving": "Saliendo de {channel} en {time} minutos",
+        "alone": "Estaba solo, y me fui {channel}"
     },
     "automix": {
-        "generated": "オートミックスが生成された！",
-        "disabled": "オートミックス無効"
+        "generated": "¡Se ha generado Auto-Mix!",
+        "disabled": "AutoMix desactivado"
     },
     "twitch": {
-        "no_streamer_found": "ストリーマーが見つかりません",
-        "already_following": "すでにこのストリーマーをフォローしています。",
-        "now_following": "あなたは今{streamer}をフォローしています。通知は{channel}に送信されます。",
-        "unfollowed": "あなたは{streamer}をフォローしていません。",
-        "role_mention": "{role}について言及しなければならない。",
-        "now_live": "今{streamer}はライブです！"
+        "no_streamer_found": "No se encontró ningún canal con ese nombre.",
+        "already_following": "Ya estás siguiendo a este streamer.",
+        "now_following": "Ahora estás siguiendo a {streamer}. Las notificaciones se enviarán a {channel}.",
+        "unfollowed": "Ya no estás siguiendo a {streamer}.",
+        "role_mention": "Se mencionara a {role}.",
+        "now_live": "¡{streamer} está en vivo!"
     },
     "loop": {
-        "queue": "キューをループ",
-        "song": "現在の曲をループ",
-        "disabled": "ループ無効"
+        "queue": "Bucle de cola",
+        "song": "Bucle de canción",
+        "disabled": "Bucle desactivado"
     },
     "ERROREMBED": "Error",
     "SUCCESSEMBED": "Success",
-    "PAUSE": "ポーズ",
-    "RESUME": "履歴書",
-    "STOP": "ストップ",
-    "SKIP": "スキップ",
-    "NEXT": "次のページ",
-    "QUEUE": "テール",
-    "TITLE": "タイトル",
-    "MEMBERS": "メンバー",
-    "REGULAR": "レギュラー",
-    "ANIMATED": "アニメーション",
-    "CHANNELS": "チャンネル",
-    "ROLES": "役割",
-    "CATEGORIES": "カテゴリー",
-    "SONGS": "曲目",
-    "TEXT": "テキスト",
-    "VOICE": "声",
-    "BOOSTERS": "ブースター",
-    "REGION": "地域",
-    "TIER": "動物",
-    "CREATED_AT": "で作成された。",
-    "OWNER": "オーナー",
-    "AUTHOR": "著者",
-    "REQUESTER": "要求者",
-    "DURATION": "期間",
-    "NO": "いいえ",
+    "PAUSE": "Pausa",
+    "RESUME": "Currículum",
+    "STOP": "Stop",
+    "SKIP": "Saltar",
+    "NEXT": "Siguiente",
+    "QUEUE": "Cola",
+    "TITLE": "Título",
+    "MEMBERS": "Miembros",
+    "REGULAR": "Regular",
+    "ANIMATED": "Animación",
+    "CHANNELS": "Canales",
+    "ROLES": "Funciones",
+    "CATEGORIES": "Categorías",
+    "SONGS": "Canciones",
+    "TEXT": "Texto",
+    "VOICE": "Voz",
+    "BOOSTERS": "Boosters",
+    "REGION": "Región",
+    "TIER": "Animales",
+    "CREATED_AT": "Creado en",
+    "OWNER": "Propietario",
+    "AUTHOR": "Autor",
+    "REQUESTER": "Solicitante",
+    "DURATION": "Duración",
+    "NO": "No",
     "API": "API",
-    "PING": "ピン",
-    "NAME": "名称",
-    "ID": "身分証明書",
-    "POSITION": "ポジション",
-    "COLOR": "カラー",
-    "MENTIONABLE": "言及可能",
-    "SEPARATED": "分離",
-    "YES": "はい",
-    "PLAYING": "プレー",
-    "GENERICERROR": "おっと、エラーがあったようだ。\n公式Discord]({inviteURL})で開発者に連絡してください。",
+    "PING": "Ping",
+    "NAME": "Nombre",
+    "ID": "ID",
+    "POSITION": "Posición",
+    "COLOR": "Color",
+    "MENTIONABLE": "Mencionable",
+    "SEPARATED": "Separado",
+    "YES": "Sí",
+    "PLAYING": "Jugando a",
+    "GENERICERROR": "Oops, parece que ha habido un error.\nPuedes ponerte en contacto con el desarrollador para hacérselo saber en [The Official Discord]({inviteURL})",
     "commands": {
         "reboot": {
-            "name": "再起動",
-            "description": "1つまたはすべてのシャードをリセットする",
+            "name": "reiniciar",
+            "description": "Reinicia una o todas las shards",
             "options": {
                 "shard": {
-                    "name": "破片",
-                    "description": "再起動するシャード"
+                    "name": "fragmento",
+                    "description": "El fragmento que quieres reiniciar"
                 }
             }
         },
         "8ball": {
-            "name": "ボール8",
-            "description": "魔球に質問する",
+            "name": "bola8",
+            "description": "Pregúntale algo a la bola mágica",
             "options": {
                 "question": {
-                    "name": "質問",
-                    "description": "質問を書いてください。"
+                    "name": "pregunta",
+                    "description": "¿Qué quieres preguntarle a la bola mágica?"
                 }
             }
         },
         "impostor": {
-            "name": "食わせ物",
-            "description": "あなたは詐欺師？ SUS",
+            "name": "impostor",
+            "description": "Eres el impostor? SUS",
             "options": {
                 "user": {
-                    "name": "ユーザー",
-                    "description": "このユーザーは偽者なのか？ SUS na na na na na na na"
+                    "name": "usuario",
+                    "description": "¿Es este usuario un impostor? SUS na na na na na na na"
                 }
             }
         },
         "avatar": {
-            "name": "アバター",
-            "description": "あなたのプロフィール写真または他のユーザーの写真を送信します！",
+            "name": "avatar",
+            "description": "Envia tu foto de perfil o de otro usuario!",
             "options": {
                 "user": {
-                    "name": "ユーザー",
-                    "description": "アバターを表示するユーザー"
+                    "name": "usuario",
+                    "description": "El usuario del que quieres obtener el avatar"
                 }
             }
         },
         "twitch": {
             "name": "twitch",
-            "description": "ストリーマーがライブを開始したときの通知を設定します！",
+            "description": "Establece una notificación para cuando un streamer se ponga en directo!",
             "options": {
                 "add": {
-                    "name": "追加",
-                    "description": "ストリーマーを追加する",
+                    "name": "añadir",
+                    "description": "Añade una notificación para un streamer",
                     "options": {
                         "streamer": {
-                            "name": "ストリーマー",
-                            "description": "通知を受け取るストリーマー"
+                            "name": "streamer",
+                            "description": "El nombre del streamer"
                         },
                         "channel": {
-                            "name": "チャンネル",
-                            "description": "通知を受け取るチャンネル"
+                            "name": "canal",
+                            "description": "El canal donde se enviarán las notificaciones"
                         },
                         "role": {
-                            "name": "役割",
-                            "description": "通知を受け取る役割"
+                            "name": "rol",
+                            "description": "El rol que se mencionará cuando el streamer se ponga en directo"
                         }
                     }
                 },
                 "remove": {
-                    "name": "削除",
-                    "description": "ストリーマーを削除する",
+                    "name": "eliminar",
+                    "description": "Elimina una notificación para un streamer",
                     "options": {
                         "streamer": {
-                            "name": "ストリーマー",
-                            "description": "通知を受け取るストリーマー"
+                            "name": "streamer",
+                            "description": "El nombre del streamer"
                         }
                     }
                 }
             }
         },
         "shards": {
-            "name": "破片",
-            "description": "ボットのシャードを表示します。"
+            "name": "fragmentos",
+            "description": "Muestra información sobre los fragmentos"
         },
         "serverinfo": {
-            "name": "サーバー情報",
-            "description": "サーバーの情報を表示します。"
+            "name": "infoservidor",
+            "description": "Muestra información sobre el servidor"
         },
         "roleinfo": {
-            "name": "役割情報",
-            "description": "役割の情報を表示します。",
+            "name": "inforol",
+            "description": "Muestra información sobre un rol",
             "options": {
                 "role": {
-                    "name": "役割",
-                    "description": "役割の情報を表示します。"
+                    "name": "rol",
+                    "description": "El rol del que quieres obtener información"
                 }
             }
         },
         "ping": {
-            "name": "ピン",
-            "description": "ボットの待ち時間を表示"
+            "name": "ping",
+            "description": "Muestra la latencia del bot"
         },
         "mcserver": {
-            "name": "マインクラフトサーバー",
-            "description": "Minecraftサーバーから画像を送信する",
+            "name": "servidormc",
+            "description": "Envía una imagen de un servidor de Minecraft",
             "options": {
                 "server": {
-                    "name": "サーバー",
-                    "description": "サーバーのIPまたはドメイン"
+                    "name": "servidor",
+                    "description": "El servidor del que quieres obtener información"
                 }
             }
         },
         "mchistory": {
-            "name": "マインクラフトの歴史",
-            "description": "Minecraftユーザーの名前の歴史を表示します。",
+            "name": "historialmc",
+            "description": "Muestra el historial de nombres de un jugador de Minecraft",
             "options": {
                 "account": {
-                    "name": "アカウント",
-                    "description": "アカウントの名前"
+                    "name": "cuenta",
+                    "description": "La cuenta de la que quieres obtener información"
                 }
             }
         },
         "help": {
-            "name": "助けて",
-            "description": "私に関する情報を表示する"
+            "name": "ayuda",
+            "description": "Muestra información sobre mi"
         },
         "github": {
-            "name": "ギットハブ",
-            "description": "GitHubユーザーの情報を表示します。",
+            "name": "github",
+            "description": "Muestra información sobre un usuario de GitHub",
             "options": {
                 "account": {
-                    "name": "アカウント",
-                    "description": "アカウントの名前"
+                    "name": "cuenta",
+                    "description": "La cuenta de la que quieres obtener información"
                 }
             }
         },
         "embed": {
-            "name": "埋め込み",
-            "description": "埋め込みを作成する",
+            "name": "embed",
+            "description": "Crea un embed personalizado",
             "options": {
                 "channel": {
-                    "name": "チャンネル",
-                    "description": "埋め込みを送信するチャンネル"
+                    "name": "canal",
+                    "description": "El canal donde se enviará el embed"
                 },
                 "color": {
-                    "name": "カラー",
-                    "description": "埋め込みの色"
+                    "name": "color",
+                    "description": "El color del embed"
                 },
                 "title": {
-                    "name": "タイトル",
-                    "description": "埋め込みのタイトル"
+                    "name": "título",
+                    "description": "El título del embed"
                 },
                 "description": {
-                    "name": "説明",
-                    "description": "埋め込みの説明"
+                    "name": "descripción",
+                    "description": "La descripción del embed"
                 }
             }
         },
         "ban": {
-            "name": "禁止",
-            "description": "ユーザーを禁止する",
+            "name": "ban",
+            "description": "Banea a un usuario",
             "options": {
                 "user": {
-                    "name": "ユーザー",
-                    "description": "禁止するユーザー"
+                    "name": "user",
+                    "description": "User to ban"
                 },
                 "reason": {
-                    "name": "理由",
-                    "description": "追放の理由"
+                    "name": "reason",
+                    "description": "Reason of the ban"
                 },
                 "days": {
-                    "name": "ディアス",
-                    "description": "ユーザーメッセージの削除日数"
+                    "name": "days",
+                    "description": "Days to delete messages from the user"
                 }
             }
         },
         "play": {
-            "name": "演奏",
-            "description": "好きな曲を、その曲名またはyoutube/spotifyのリンクとともに流す。",
+            "name": "reproducir",
+            "description": "Reproduce la canción que desees con su nombre o un link de youtube/spotify",
             "options": {
                 "song": {
-                    "name": "曲",
-                    "description": "演奏する曲"
+                    "name": "canción",
+                    "description": "El nombre de la canción o el link de youtube/spotify"
                 }
             }
         },
         "stop": {
-            "name": "停止",
-            "description": "選手を止める！"
+            "name": "detener",
+            "description": "Detiene el reproductor de música"
         },
         "skip": {
-            "name": "スキップ",
-            "description": "現在の曲をスキップする"
+            "name": "saltar",
+            "description": "Salta la canción que se está reproduciendo"
         },
         "resume": {
-            "name": "履歴書",
-            "description": "現在の曲を再開する！"
+            "name": "reanudar",
+            "description": "Reanuda la canción actual"
         },
         "queue": {
-            "name": "キュー",
-            "description": "現在のキューを表示する"
+            "name": "cola",
+            "description": "Muestra la cola de canciones"
         },
         "pause": {
-            "name": "ポーズ",
-            "description": "現在の曲を一時停止する"
+            "name": "pausa",
+            "description": "Pausa la canción actual"
         },
         "nowplaying": {
-            "name": "再生中",
-            "description": "現在の曲を表示する"
+            "name": "reproduciendo",
+            "description": "Muestra la canción que se está reproduciendo actualmente"
         },
         "loop": {
-            "name": "ループ",
-            "description": "現在のキュー/曲を繰り返す"
+            "name": "bucle",
+            "description": "Repite la cola/canción actual"
         },
         "247": {
             "name": "247",
-            "description": "年中無休の音声チャンネル"
+            "description": "Mantente 24/7 en un canal de voz"
         }
     }
 }
