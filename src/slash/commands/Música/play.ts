@@ -40,6 +40,7 @@ export default class play extends Command {
         try {
             await interaction.deferReply()
         } catch (error) {
+            logger.error(error)
             return client.errorHandler.captureException(error as Error)
         }
         const translate = Translator(interaction)
