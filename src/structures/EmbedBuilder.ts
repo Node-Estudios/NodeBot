@@ -39,4 +39,11 @@ export default class EmbedBuilder extends EmbedBuilderBase {
             description = description.slice(0, 4092) + '...'
         return super.setDescription(description)
     }
+
+    override setTitle (title: string | null): this {
+        if (!title) return this
+        if (title.length > 256)
+            title = title.slice(0, 253) + '...'
+        return super.setTitle(title)
+    }
 }
