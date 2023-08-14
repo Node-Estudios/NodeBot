@@ -10,11 +10,12 @@ import {
     ButtonStyle,
     ChatInputCommandInteraction,
     Collection,
+    Colors,
     ComponentType,
-    EmbedBuilder,
     Guild,
     GuildMember,
     Message,
+    User,
     VoiceChannel,
 } from 'discord.js'
 import EventEmitter from 'events'
@@ -23,8 +24,10 @@ import { Innertube } from 'youtubei.js'
 import client from '../bot.js'
 import Player from './Player.js'
 import { SpamIntervalDB } from './spamInterval.js'
+import EmbedBuilder from '#structures/EmbedBuilder.js'
 const spamIntervald = new SpamIntervalDB()
 type UserExtended = GuildMember & {}
+type YoutubeInjecter<T> = T & { youtubei?: Innertube }
 
 export default class MusicManager extends EventEmitter {
     players = new Collection<string, Player>()
@@ -33,7 +36,7 @@ export default class MusicManager extends EventEmitter {
     youtubeCodes = new Collection<string, UserExtended>()
 
     private async sendSpamMSG (user: UserExtended, player: Player) {
-        await (await player.youtubei).session.signIn(undefined)
+        await player.youtubei.session.signIn(undefined)
         // if (!this.spamInterval.checkUser(user.id)) {
 
         //     this.spamInterval.addUser(user.id, 30 * 60 * 1000);
@@ -48,24 +51,14 @@ export default class MusicManager extends EventEmitter {
             volume,
             innertube: await Innertube.create(),
         })
-        // Imprime un mensaje de depuración
-        // logger.debug('Sign in successful: ', credentials);
-        // Crea un objeto "EmbedBuilder" y establece la descripción del mensaje
         this.players.set(vc.guild.id, player)
-        // console.log(player.youtubei)
         player.on('ready', async () => await this.trackStart(player))
-
         player.on('finish', () => this.trackEnd(player, true))
         player.on('debug', (debug: any) => logger.log(debug))
-        // player.on('packet', (buffer: Buffer, frame_size: number) => {
-        //     console.log(`Packet: ${frame_size} samples`);
-        // });
-        // TODO: update ts-yasha and pull request
         player.on(yasha.VoiceConnection.Status.Destroyed, async () => await player.destroy())
-
         player.on('error', err => {
+            client.errorHandler.captureException(err)
             logger.error(err)
-            // console.log(err)
             player.skip()
             player.play()
         })
@@ -87,7 +80,9 @@ export default class MusicManager extends EventEmitter {
             ...player.message?.embeds[0], // Spread the existing embed properties
             description: newDesc,
         }
-        const updatedEmbed2 = new EmbedBuilder(updatedEmbed).setImage(player.message?.embeds[0].data.image?.url ?? null).setColor(player.message?.embeds[0].data.color ?? null)
+        const updatedEmbed2 = new EmbedBuilder(updatedEmbed)
+            .setImage(player.message?.embeds[0].data.image?.url ?? null)
+            .setColor(player.message?.embeds[0].data.color ?? null)
         if (player.message?.components) {
             const actionRowComponents = player.message.components[0]?.components
             if (actionRowComponents) {
@@ -112,7 +107,7 @@ export default class MusicManager extends EventEmitter {
     }
 
     async trackStart (player: Player) {
-        // todo: Check if the song limit is the saçme as stablished for the admins
+        // TODO: Check if the song limit is the saçme as stablished for the admins
         // if(player.queue.current?.duration > player.guild.)
 
         const equalizerSettings = [
@@ -128,26 +123,38 @@ export default class MusicManager extends EventEmitter {
             { band: 16000, gain: -4 }, // Frecuencia muy alta
         ]
         player.setEqualizer(equalizerSettings)
-        player
-            .player.playing = true
+        player.player.playing = true
         player.paused = false
         const song = player.queue.current
         if (!song) return
         const translate = Translator(player.guild)
         const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
             /* new ButtonBuilder().setStyle(ButtonStyle.Secondary).setCustomId('likeMusic').setEmoji('<:grey_heart:1133326993694392401>'), */ // TODO: Change to blue if user already liked music
-            new ButtonBuilder().setStyle(ButtonStyle.Secondary).setCustomId('shuffleMusic').setEmoji(`${client.settings.emojis.white.shuffle.full}`),
+            new ButtonBuilder()
+                .setStyle(ButtonStyle.Secondary)
+                .setCustomId('shuffleMusic')
+                .setEmoji(`${client.settings.emojis.white.shuffle.full}`),
             /* new ButtonBuilder().setStyle(ButtonStyle.Secondary).setCustomId('previousMusic').setEmoji('<:grey_previous:1133320744089178132>'), */
             new ButtonBuilder()
                 .setStyle(ButtonStyle.Secondary)
                 .setCustomId('pauseMusic')
                 .setEmoji(`${client.settings.emojis.white.pause.full}`),
-            new ButtonBuilder().setStyle(ButtonStyle.Secondary).setCustomId('nextMusic').setEmoji(`${client.settings.emojis.white.next.full}`),
-            new ButtonBuilder().setStyle(ButtonStyle.Secondary).setCustomId('repeatMusic').setEmoji(`${client.settings.emojis.white.repeat_off.full}`),
-            new ButtonBuilder().setStyle(ButtonStyle.Secondary).setCustomId('queueMusic').setEmoji(`${client.settings.emojis.white.library.full}`),
+            new ButtonBuilder()
+                .setStyle(ButtonStyle.Secondary)
+                .setCustomId('nextMusic')
+                .setEmoji(`${client.settings.emojis.white.next.full}`),
+            new ButtonBuilder()
+                .setStyle(ButtonStyle.Secondary)
+                .setCustomId('repeatMusic')
+                .setEmoji(`${client.settings.emojis.white.repeat_off.full}`),
+            new ButtonBuilder()
+                .setStyle(ButtonStyle.Secondary)
+                .setCustomId('queueMusic')
+                .setEmoji(`${client.settings.emojis.white.library.full}`),
         )
 
-        const embed = new EmbedBuilder().setColor(client.settings.color)
+        const embed = new EmbedBuilder()
+            .setColor(client.settings.color)
         if (song.platform === 'Youtube')
             embed
                 .setImage(song.thumbnails[0].url)
@@ -176,10 +183,15 @@ export default class MusicManager extends EventEmitter {
                     player.queue.current?.requester.displayName,
             )
 
-        return (player.message = await (await player.getTextChannel())?.send({
-            embeds: [embed],
-            components: [row],
-        }))
+        try {
+            return (player.message = await (await player.getTextChannel())?.send({
+                embeds: [embed],
+                components: [row],
+            }))
+        } catch (error) {
+            client.errorHandler.captureException(error as Error)
+            logger.error(error)
+        }
     }
 
     trackEnd (player: Player, finished: boolean) {
@@ -218,73 +230,82 @@ export default class MusicManager extends EventEmitter {
 
     async queueEnd (player: Player) {
         const translate = Translator(player.guild)
-        const embed = new EmbedBuilder()
-            .setColor(client.settings.color)
-            .setDescription(
-                'Ha terminado ' +
-                    `**[${player.queue.current?.title}](https://music.youtube.com/watch?v=${
-                        player.queue.current?.id
-                    })** [${formatDuration(player.queue.current?.duration ?? 0)}] • <@${
+        if (player.queue.current) {
+            const embed = new EmbedBuilder()
+                .setColor(client.settings.color)
+                .setDescription(
+                    'Ha terminado ' +
+                    `**[${player.queue.current.title}](https://music.youtube.com/watch?v=${
+                        player.queue.current.id
+                    })** [${formatDuration(player.queue.current.duration ?? 0)}] • <@${
                         player.queue.current?.requester.id
                     }>`,
+                )
+                .setThumbnail(`https://img.youtube.com/vi/${player.queue.current.id}/maxresdefault.jpg`)
+            player.message?.edit({
+                components: [],
+                embeds: [embed],
+            })
+        }
+        try {
+            if (!player.stayInVc) return await this.destroy(player.guild)
+        } catch (error) {
+            client.errorHandler.captureException(error as Error)
+        }
+        const playlist = await player.youtubei.music.getUpNext(player.queue.current?.id ?? '', true)
+        this.ejecutarAccionesEnParalelo(playlist.contents, 5, player).then(() => {
+            player.skip()
+            player.play()
+        }).catch((err) => client.errorHandler.captureException(err))
+        const e = new EmbedBuilder()
+            .setTitle(translate(keys.automix.generated))
+            .setColor(Colors.Green)
+            .addFields(
+                {
+                    name: translate(keys.TITLE),
+                    value: 'a',
+                    inline: true,
+                },
+                {
+                    name: translate(keys.SONGS),
+                    value: '5',
+                    inline: true,
+                },
+                {
+                    name: translate(keys.REQUESTER),
+                    value: `${player.queue.current?.requester.user}`,
+                    inline: true,
+                },
             )
             .setThumbnail(`https://img.youtube.com/vi/${player.queue.current?.id}/maxresdefault.jpg`)
-        player.message?.edit({
-            components: [],
-            embeds: [embed],
-        })
-        if (player.stayInVc) {
-            const playlist = await (await player.youtubei)?.music.getUpNext(player.queue.current?.id ?? '', true)
-            // const veces = 6
-            async function ejecutarAccionesEnParalelo (contents: any[], maxVeces: number): Promise<void> {
-                const cantidadEjecuciones = Math.min(maxVeces, contents.length)
-                const promesas: Array<Promise<void>> = []
-
-                for (let i = 0; i < cantidadEjecuciones; i++) {
-                    const indiceAleatorio = Math.floor(Math.random() * contents.length)
-                    const elementoAleatorio = contents[indiceAleatorio]
-                    promesas.push(ejecutarAccion(elementoAleatorio)) // Llamada a tu función de acción
-                }
-
-                await Promise.all(promesas)
-            }
-            async function ejecutarAccion (elemento: any) {
-                // Lógica de tu acción
-                const track = await client.music.search(elemento.video_id, client.user, 'Youtube')
-                // TODO extends track
-                player.queue.add(track)
-            }
-            ejecutarAccionesEnParalelo(playlist.contents, 5).then(() => {
-                player.skip()
-                player.play()
-            })
-            const e = new EmbedBuilder()
-                .setTitle(translate(keys.automix.generated))
-                .setColor('Green')
-                .addFields(
-                    {
-                        name: translate(keys.TITLE),
-                        value: 'a',
-                        inline: true,
-                    },
-                    {
-                        name: translate(keys.SONGS),
-                        value: '5',
-                        inline: true,
-                    },
-                    {
-                        name: translate(keys.REQUESTER),
-                        value: `${player.queue.current?.requester.user}`,
-                        inline: true,
-                    },
-                )
-                .setThumbnail(`https://img.youtube.com/vi/${player.queue.current?.id}/maxresdefault.jpg`)
+        try {
             await (await player.getTextChannel())?.send({
                 embeds: [e],
                 content: '',
             })
-        } else
-            return await this.destroy(player.guild)
+        } catch (error) {
+            client.errorHandler.captureException(error as Error)
+        }
+    }
+
+    async ejecutarAccionesEnParalelo (contents: any[], maxVeces: number, player: Player): Promise<void> {
+        const cantidadEjecuciones = Math.min(maxVeces, contents.length)
+        const promesas: Array<Promise<void>> = []
+
+        for (let i = 0; i < cantidadEjecuciones; i++) {
+            const indiceAleatorio = Math.floor(Math.random() * contents.length)
+            const elementoAleatorio = contents[indiceAleatorio]
+            promesas.push(this.ejecutarAccion(elementoAleatorio, player)) // Llamada a tu función de acción
+        }
+
+        await Promise.all(promesas)
+    }
+
+    async ejecutarAccion (elemento: any, player: Player) {
+        // Lógica de tu acción
+        const track = await client.music.search(elemento.video_id, client.user, 'Youtube')
+        // TODO extends track
+        player.queue.add(track)
     }
 
     get (guild: Guild) {
@@ -303,41 +324,46 @@ export default class MusicManager extends EventEmitter {
         return array
     }
 
-    async search (query: any, requester: any, source: 'Spotify' | 'Youtube' | 'Soundcloud') {
-        let track
-        if (requester.youtubei)
-            if (requester.youtubei.session.logged_in) {
-                const rawData = await (await requester.youtubei.music.search(query, { limit: 1 })).sections[0]
-                track = rawData.contents[0].id
-            } else {
-                (await requester.youtubei)
-                track = await (await yasha.Source.Youtube.search(query))[0]
-            }
-        else track = await (await yasha.Source.Youtube.search(query))[0]
+    async search (query: any, requester: YoutubeInjecter<User>, source: 'Spotify' | 'Youtube' | 'Soundcloud') {
+        // let track
+        // if (requester.youtubei)
+        //     if (requester.youtubei.session.logged_in) {
+        //         const rawData = (await requester.youtubei.music.search(query)).contents?.[0]
+        //         // @ts-expect-error
+        //         track = rawData?.contents?.[0]?.id
+        //     } else {
+        //         (await requester.youtubei)
+        //         track = await (await yasha.Source.Youtube.search(query))[0]
+        //     }
+        // else track = await (await yasha.Source.Youtube.search(query))[0]
 
-        track = await yasha.Source.resolve(
-            track ? `https://www.youtube.com/watch?v=${track.id ? track.id : track}` : query,
-        )
-        if (!track) logger.debug('No track found')
-        else
-        // logger.log('track: ', track)
-        // if (track instanceof TrackPlaylist) {
-        //     track.forEach(t => {
-        //         t.requester = requester;
-        //         t.icon = null;
-        //         t.thumbnail;
-        //     });
-        // } else {
+        try {
+            const track = await yasha.Source.resolve(
+                /* track ? `https://www.youtube.com/watch?v=${track.id ? track.id : track}` : */query,
+            )
+            if (!track) logger.debug('No track found')
+            else logger.log('track: ', track)
+            if (track.platform !== 'Youtube') return undefined
+            // if (track instanceof TrackPlaylist) {
+            //     track.forEach(t => {
+            //         t.requester = requester;
+            //         t.icon = null;
+            //         t.thumbnail;
+            //     });
+            // } else {
             /* if (track.streams) {
-                // console.log(track.streams)
-                const stream = getMax(track.streams, 'bitrate')
-                track.streams = [stream.object]
-            } */
+                    // console.log(track.streams)
+                    const stream = getMax(track.streams, 'bitrate')
+                    track.streams = [stream.object]
+                } */
             track.requester = requester
             // track.icon = null
 
-        return track
-        // }
+            return track
+            // }
+        } catch (error) {
+            client.errorHandler.captureException(error as Error)
+        }
     }
 
     getPlayingPlayers () {

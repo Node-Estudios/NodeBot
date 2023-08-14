@@ -1,9 +1,9 @@
 import Client from '#structures/Client.js'
-import Logger from '#utils/logger.js'
 import * as Sentry from '@sentry/node'
 import { ProfilingIntegration } from '@sentry/profiling-node'
-import { WebhookClient  } from 'discord.js'
+import { WebhookClient } from 'discord.js'
 import EmbedBuilder from '#structures/EmbedBuilder.js'
+import logger from '#utils/logger.js'
 // TODO: se cmbiara a sentry
 
 class ErrorManager {
@@ -26,9 +26,9 @@ class ErrorManager {
                 tracesSampleRate: 0.5,
             })
             this.services.sentry.loggedIn = true
-            Logger.log('Connected to Sentry')
+            logger.log('Connected to Sentry')
         } else
-            Logger.warn('Sentry DSN missing or not in production environment.')
+            logger.warn('Sentry DSN missing or not in production environment.')
 
         this.webhookClient = new WebhookClient({
             id: process.env.ERROR_WEBHOOK_ID ?? '',
@@ -56,8 +56,8 @@ class ErrorManager {
         if (this.services.sentry.loggedIn)
             Sentry.captureException(p)
 
-        Logger.warn(' [antiCrash] :: Unhandled Rejection/Catch')
-        Logger.error(reason, p)
+        logger.warn(' [antiCrash] :: Unhandled Rejection/Catch')
+        logger.error(reason, p)
     }
 
     handleUncaughtException (err: string, origin: string) {
@@ -77,8 +77,8 @@ class ErrorManager {
         if (this.services.sentry.loggedIn)
             Sentry.captureException(err)
 
-        Logger.warn(' [antiCrash] :: Uncaught Exception/Catch')
-        Logger.error(err, origin)
+        logger.warn(' [antiCrash] :: Uncaught Exception/Catch')
+        logger.error(err, origin)
     }
 
     handleUncaughtExceptionMonitor (err: string, origin: string) {
@@ -98,8 +98,8 @@ class ErrorManager {
         if (this.services.sentry.loggedIn)
             Sentry.captureException(err)
 
-        Logger.warn(' [antiCrash] :: Uncaught Exception/Catch (MONITOR)')
-        Logger.error(err, origin)
+        logger.warn(' [antiCrash] :: Uncaught Exception/Catch (MONITOR)')
+        logger.error(err, origin)
     }
 
     handleMultipleResolves (type: any, promise: any, reason: string) {
@@ -115,11 +115,12 @@ class ErrorManager {
         if (this.services.sentry.loggedIn)
             Sentry.captureMessage('Multiple Resolves: ' + reason)
 
-        Logger.warn(' [antiCrash] :: Multiple Resolves')
-        Logger.error(reason)
+        logger.warn(' [antiCrash] :: Multiple Resolves')
+        logger.error(reason)
     }
 
     captureException (error: Error) {
+        logger.error(error)
         if (this.services.sentry.loggedIn)
             Sentry.captureException(error)
         const origin = error.stack?.split('\n')[1].trim().split(' ')[1]
