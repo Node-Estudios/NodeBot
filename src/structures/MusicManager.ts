@@ -338,12 +338,15 @@ export default class MusicManager extends EventEmitter {
         // else track = await (await yasha.Source.Youtube.search(query))[0]
 
         try {
-            const track = await yasha.Source.resolve(
+            let track = await yasha.Source.resolve(
                 /* track ? `https://www.youtube.com/watch?v=${track.id ? track.id : track}` : */query,
             )
-            if (!track) logger.debug('No track found')
-            else logger.log('track: ', track)
-            if (track.platform !== 'Youtube') return undefined
+            if (!track) {
+                logger.debug('No track found')
+                track = await yasha.Source.Youtube.search(query)
+            }
+            logger.log('track: ', track)
+            if (track?.platform !== 'Youtube') return undefined
             // if (track instanceof TrackPlaylist) {
             //     track.forEach(t => {
             //         t.requester = requester;
