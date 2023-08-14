@@ -21,7 +21,6 @@ export default class Player extends yasha.TrackPlayer {
     guild: Guild
     leaveTimeout?: NodeJS.Timeout
     bitrate?: number
-    // @ts-expect-error
     connection?: yasha.VoiceConnection
     subscription?: any
     stayInVc = false
@@ -88,6 +87,7 @@ export default class Player extends yasha.TrackPlayer {
     override async destroy () {
         try {
             if (this.connection) this.disconnect()
+            // @ts-expect-error
             if (this.player) super.destroy()
 
             return this.manager.players.delete(this.guild.id)
@@ -142,7 +142,7 @@ export default class Player extends yasha.TrackPlayer {
 
         this.playing = !pause
         this.paused = pause
-
+        // @ts-expect-error
         if (this.player) this.setPaused(pause)
 
         return this

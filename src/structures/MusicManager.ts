@@ -28,6 +28,7 @@ import EmbedBuilder from '#structures/EmbedBuilder.js'
 const spamIntervald = new SpamIntervalDB()
 type UserExtended = GuildMember & {}
 type YoutubeInjecter<T> = T & { youtubei?: Innertube }
+type RequesterInjecter<T> = T & { requester: User }
 
 export default class MusicManager extends EventEmitter {
     players = new Collection<string, Player>()
@@ -54,7 +55,10 @@ export default class MusicManager extends EventEmitter {
         this.players.set(vc.guild.id, player)
         player.on('ready', async () => await this.trackStart(player))
         player.on('finish', () => this.trackEnd(player, true))
+        // TODO: yasha update
+        // @ts-expect-error
         player.on('debug', (debug: any) => logger.log(debug))
+        // @ts-expect-error
         player.on(yasha.VoiceConnection.Status.Destroyed, async () => await player.destroy())
         player.on('error', err => {
             client.errorHandler.captureException(err)
@@ -106,7 +110,7 @@ export default class MusicManager extends EventEmitter {
         else return false
     }
 
-    async trackStart (player: Player) {
+    async trackStart (player: Player): Promise<void> {
         // TODO: Check if the song limit is the saçme as stablished for the admins
         // if(player.queue.current?.duration > player.guild.)
 
@@ -123,6 +127,7 @@ export default class MusicManager extends EventEmitter {
             { band: 16000, gain: -4 }, // Frecuencia muy alta
         ]
         player.setEqualizer(equalizerSettings)
+        // @ts-expect-error
         player.player.playing = true
         player.paused = false
         const song = player.queue.current
@@ -157,7 +162,7 @@ export default class MusicManager extends EventEmitter {
             .setColor(client.settings.color)
         if (song.platform === 'Youtube')
             embed
-                .setImage(song.thumbnails[0].url)
+                .setImage(song.thumbnails?.[0].url ?? null)
                 .setDescription(
                     `${translate(keys.PLAYING)} **[${song.title}](https://music.youtube.com/watch?v=${
                         song.id
@@ -184,7 +189,7 @@ export default class MusicManager extends EventEmitter {
             )
 
         try {
-            return (player.message = await (await player.getTextChannel())?.send({
+            (player.message = await (await player.getTextChannel())?.send({
                 embeds: [embed],
                 components: [row],
             }))
@@ -206,8 +211,7 @@ export default class MusicManager extends EventEmitter {
         }
 
         if (player.queueRepeat) {
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            player.queue.add(player.queue.current)
+            player.queue.add(track)
             player.queue.current = player.queue.shift() ?? null
             player.play()
             return this
@@ -273,7 +277,7 @@ export default class MusicManager extends EventEmitter {
                 },
                 {
                     name: translate(keys.REQUESTER),
-                    value: `${player.queue.current?.requester.user}`,
+                    value: `${player.queue.current?.requester}`,
                     inline: true,
                 },
             )
@@ -304,7 +308,7 @@ export default class MusicManager extends EventEmitter {
     async ejecutarAccion (elemento: any, player: Player) {
         // Lógica de tu acción
         const track = await client.music.search(elemento.video_id, client.user, 'Youtube')
-        // TODO extends track
+        if (!track) return
         player.queue.add(track)
     }
 
@@ -324,7 +328,7 @@ export default class MusicManager extends EventEmitter {
         return array
     }
 
-    async search (query: any, requester: YoutubeInjecter<User>, source: 'Spotify' | 'Youtube' | 'Soundcloud') {
+    async search (query: any, requester: YoutubeInjecter<User>, source: 'Spotify' | 'Youtube' | 'Soundcloud'): Promise<RequesterInjecter<yasha.Track> | undefined> {
         // let track
         // if (requester.youtubei)
         //     if (requester.youtubei.session.logged_in) {
@@ -343,9 +347,13 @@ export default class MusicManager extends EventEmitter {
             )
             if (!track) {
                 logger.debug('No track found')
-                track = await yasha.Source.Youtube.search(query)
+                const search = await yasha.Source.Youtube.search(query)
+                if (!search.length) return undefined
+                const tracks = search.filter(t => t instanceof yasha.Track)
+                if (!tracks.length) return undefined
+                track = tracks[0]
             }
-            logger.log('track: ', track)
+            if (!(track instanceof yasha.Track)) return undefined
             if (track?.platform !== 'Youtube') return undefined
             // if (track instanceof TrackPlaylist) {
             //     track.forEach(t => {
@@ -359,14 +367,16 @@ export default class MusicManager extends EventEmitter {
                     const stream = getMax(track.streams, 'bitrate')
                     track.streams = [stream.object]
                 } */
+            // @ts-expect-error
             track.requester = requester
-            // track.icon = null
-
+            // @ts-expect-error
             return track
             // }
         } catch (error) {
+            if ((error as Error).message === 'Video is age restricted') return undefined
             client.errorHandler.captureException(error as Error)
         }
+        return undefined
     }
 
     getPlayingPlayers () {

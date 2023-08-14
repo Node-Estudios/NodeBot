@@ -3,8 +3,8 @@ import {
     ChatInputCommandInteraction,
     EmbedBuilder,
     VoiceChannel,
-    GuildMember,
     Colors,
+    User,
 } from 'discord.js'
 import { MusicCarouselShelf, MusicResponsiveListItem } from 'youtubei.js/dist/src/parser/nodes.js'
 import performanceMeters from '#cache/performanceMeters.js'
@@ -87,7 +87,7 @@ export default class play extends Command {
         // Si el usuario está en el mismo canal de voz que el bot
         try {
             const song = interaction.options.getString('song', false)
-            const search = song ? await this.search(song, interaction.member) : await this.getRecomended(player)
+            const search = song ? await this.search(song, interaction.user) : await this.getRecomended(player, interaction.user)
             if (!search) return await interaction.editReply({
                 embeds: [
                     new EmbedBuilder()
@@ -167,12 +167,13 @@ export default class play extends Command {
         return true
     }
 
-    async getRecomended (player: Player) {
+    async getRecomended (player: Player, user: User) {
         const client = player.guild.client as Client
         try {
             const home = await player.youtubei.music.getHomeFeed()
             const songs = home.sections?.[0] as MusicCarouselShelf
-            return songs.contents?.[randomInt(songs.contents.length)] as MusicResponsiveListItem
+            const song = songs.contents?.[randomInt(songs.contents.length)] as MusicResponsiveListItem
+            return await this.search(song.name ?? 'music', user)
         } catch (error) {
             logger.error(error)
             client.errorHandler.captureException(error as Error)
@@ -180,10 +181,10 @@ export default class play extends Command {
         }
     }
 
-    async search (query: string, member: GuildMember) {
-        const client = member.client as Client
+    async search (query: string, user: User) {
+        const client = user.client as Client
         try {
-            return await client.music.search(query, member, 'Youtube')
+            return await client.music.search(query, user, 'Youtube')
         } catch (error) {
             logger.error(error)
             client.errorHandler.captureException(error as Error)
