@@ -1,9 +1,10 @@
-import { ChatInputCommandInteraction, EmbedBuilder } from 'discord.js'
-import { MessageHelper } from '../../../handlers/messageHandler.js'
-import Client from '#structures/Client.js'
-import Command from '#structures/Command.js'
+import { ChatInputCommandInteraction } from 'discord.js'
+import EmbedBuilder from '#structures/EmbedBuilder.js'
 import Translator, { keys } from '#utils/Translator.js'
 import formatTime from '#utils/formatTime.js'
+import Command from '#structures/Command.js'
+import Client from '#structures/Client.js'
+import logger from '#utils/logger.js'
 
 export default class Queue extends Command {
     constructor () {
@@ -18,35 +19,39 @@ export default class Queue extends Command {
     override async run (interaction: ChatInputCommandInteraction<'cached'>) {
         const client = interaction.client as Client
         const translate = Translator(interaction)
-        const message = new MessageHelper(interaction)
         const player = client.music.players.get(interaction.guild.id)
-        if (!player) {
-            return await message.sendMessage({
-                embeds: [
-                    new EmbedBuilder().setColor(client.settings.color).setFooter({
-                        text: translate(keys.queue.no_queue),
-                        iconURL: interaction.user.displayAvatarURL(),
-                    }),
-                ],
-            })
-        }
-        if (!player.queue.current) {
+        if (!player)
             return await interaction.reply({
                 embeds: [
-                    new EmbedBuilder().setColor(client.settings.color).setFooter({
-                        text: translate(keys.queue.no_queue),
-                        iconURL: interaction.user.displayAvatarURL(),
-                    }),
+                    new EmbedBuilder()
+                        .setColor(client.settings.color)
+                        .setFooter({
+                            text: translate(keys.queue.no_queue),
+                            iconURL: interaction.user.displayAvatarURL(),
+                        }),
                 ],
+                ephemeral: true,
+            }).catch(logger.error)
+
+        if (!player.queue.current)
+            return await interaction.reply({
+                embeds: [
+                    new EmbedBuilder()
+                        .setColor(client.settings.color)
+                        .setFooter({
+                            text: translate(keys.queue.no_queue),
+                            iconURL: interaction.user.displayAvatarURL(),
+                        }),
+                ],
+                ephemeral: true,
             })
-        }
 
         const { title } = player.queue.current
         const { queue } = player
 
         player.queue.retrieve(1)
 
-        if (!player.queue[0] && player.queue.current) {
+        if (!player.queue[0] && player.queue.current)
             return await interaction.reply({
                 embeds: [
                     new EmbedBuilder()
@@ -68,7 +73,7 @@ export default class Queue extends Command {
                         .setColor(client.settings.color),
                 ],
             })
-        }
+                .catch(logger.error)
 
         const x = 10
         let i = -1
@@ -86,16 +91,18 @@ export default class Queue extends Command {
             )
             .join('\n')
 
-        if (!queuelist) {
+        if (!queuelist)
             return await interaction.reply({
                 embeds: [
-                    new EmbedBuilder().setColor(client.settings.color).setFooter({
-                        text: translate(keys.queue.no_page),
-                        iconURL: interaction.user.displayAvatarURL(),
-                    }),
+                    new EmbedBuilder()
+                        .setColor(client.settings.color)
+                        .setFooter({
+                            text: translate(keys.queue.no_page),
+                            iconURL: interaction.user.displayAvatarURL(),
+                        }),
                 ],
             })
-        }
+                .catch(logger.error)
 
         return await interaction.reply({
             embeds: [
@@ -113,7 +120,7 @@ export default class Queue extends Command {
                     .setThumbnail(client.user.displayAvatarURL())
                     .setAuthor({
                         name: `${translate(keys.queue.queue, {
-                            name: interaction.user.username ?? 'Unknown',
+                            name: interaction.user.username,
                         })} (${Math.floor(x / 10)} / ${Math.floor((player.queue.slice(1).length + 10) / 10)})`,
                         iconURL: 'https://i.imgur.com/CCqeomm.gif',
                     })
@@ -124,5 +131,6 @@ export default class Queue extends Command {
                     .setColor(client.settings.color),
             ],
         })
+            .catch(logger.error)
     }
 }

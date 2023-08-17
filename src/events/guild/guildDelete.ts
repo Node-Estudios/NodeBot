@@ -1,4 +1,5 @@
-import { ColorResolvable, EmbedBuilder, Guild, WebhookClient } from 'discord.js'
+import {  ColorResolvable, Guild, WebhookClient  } from 'discord.js'
+import EmbedBuilder from '#structures/EmbedBuilder.js'
 import Client from '#structures/Client.js'
 import { BaseEvent } from '../../structures/Events.js'
 

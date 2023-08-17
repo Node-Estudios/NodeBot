@@ -1,16 +1,19 @@
 import {
     ApplicationCommandOptionType,
     ChatInputCommandInteraction,
-    Colors,
     EmbedBuilder,
     VoiceChannel,
+    GuildMember,
+    Colors,
 } from 'discord.js'
-import { MusicCarouselShelf } from 'youtubei.js/dist/src/parser/nodes.js'
+import { MusicCarouselShelf, MusicResponsiveListItem } from 'youtubei.js/dist/src/parser/nodes.js'
 import performanceMeters from '#cache/performanceMeters.js'
-import Client from '#structures/Client.js'
-import Command from '#structures/Command.js'
 import Translator, { keys } from '#utils/Translator.js'
 import formatTime from '#utils/formatTime.js'
+import Command from '#structures/Command.js'
+import Client from '#structures/Client.js'
+import Player from '#structures/Player.js'
+import { randomInt } from 'node:crypto'
 import logger from '#utils/logger.js'
 
 export default class play extends Command {
@@ -34,187 +37,127 @@ export default class play extends Command {
 
     override async run (interaction: ChatInputCommandInteraction<'cached'>) {
         const client = interaction.client as Client
+        try {
+            await interaction.deferReply()
+        } catch (error) {
+            logger.error(error)
+            return client.errorHandler.captureException(error as Error)
+        }
         const translate = Translator(interaction)
-        let player = client.music.players.get(interaction.guildId)
-        if (!interaction.member.voice.channelId) {
-            return await interaction.reply({
+        if (!interaction.member.voice.channelId)
+            return await interaction.editReply({
                 embeds: [
                     new EmbedBuilder().setColor(Colors.Red).setFooter({
                         text: translate(keys.play.not_voice),
                         iconURL: client.user?.displayAvatarURL(),
                     }),
                 ],
-                ephemeral: true,
             })
-        }
+        let player = client.music.players.get(interaction.guildId)
         if (!player) {
             player = await client.music.createNewPlayer(
                 interaction.member.voice.channel as VoiceChannel,
                 interaction.channelId,
             )
-            await player.connect()
+            try {
+                await player.connect()
+            } catch (error) {
+                return await interaction.editReply({
+                    embeds: [
+                        new EmbedBuilder().setColor(Colors.Red).setFooter({
+                            text: translate(keys.play.cant_join),
+                            iconURL: client.user?.displayAvatarURL(),
+                        }),
+                    ],
+                })
+            }
         }
-        if (player.voiceChannel.id !== interaction.member.voice.channelId) {
-            return await interaction.reply({
+        if (player.voiceChannel.id !== interaction.member.voice.channelId)
+            return await interaction.editReply({
                 embeds: [
                     new EmbedBuilder().setColor(Colors.Red).setFooter({
                         text: translate(keys.play.same),
                         iconURL: client.user?.displayAvatarURL(),
                     }),
                 ],
-                ephemeral: true,
-            })
-        }
+            }).catch(logger.error)
+
         player.textChannelId = interaction.channelId
 
         // Si el usuario está en el mismo canal de voz que el bot
         try {
-            await interaction.deferReply()
-            let search
-            const source = 'Youtube'
             const song = interaction.options.getString('song', false)
-            if (!song) {
-                const songs = ((await (await player.youtubei).music.getHomeFeed()).sections?.[0] as MusicCarouselShelf)
-                    .contents
-                const songs2 = songs.filter((song: any) => song.item_type === 'song')
-                const randomIndex = Math.floor(Math.random() * songs2.length)
-                const song3 = songs2[randomIndex]
-                // @ts-expect-error
-                search = await client.music.search(song3.id, interaction.member, source)
-                // search = await client.music.search(song3.id, interaction.member, source)
-                // const playlist = await (await player.youtubei).getPlaylist()
-                // if(playlist) {
-                //     search = playlist
-                // }
-            } else {
-                try {
-                    search = await client.music.search(song, interaction.member, source)
-                } catch (e) {
-                    logger.error(e)
-                    return await interaction.editReply({
-                        embeds: [
-                            new EmbedBuilder().setColor(15548997).setFooter({
-                                text: translate(keys.play.not_reproducible),
-                                iconURL: client.user?.displayAvatarURL(),
-                            }),
-                        ],
-                    })
-                }
-            }
-            // console.log(typeof search)
-
-            // if (search instanceof TrackPlaylist) {
-            //     const firstTrack = search.first_track;
-            //     let list = [];
-
-            //     if (firstTrack) list.push
-
-            //     while (search && search.length) {
-            //         if (firstTrack) {
-            //             for (let i = 0; i < search.length; i++) {
-            //                 if (search[i].equals(firstTrack)) {
-            //                     search.splice(i, 1);
-            //                     break;
-            //                 }
-            //             }
-            //         }
-            //         list = list.concat(search);
-            //         try {
-            //             search = await search.next();
-            //         }
-            //         catch (e) {
-            //             logger.error(e);
-            //             throw e;
-            //         }
-            //     }
-
-            //     if (list.length) {
-            //         for (const track of list) {
-            //             if (!track.requester) track.requester = interaction.member;
-            //             player.queue.add(track);
-            //         }
-            //     }
-
-            //     const totalDuration = list.reduce((acc, cur) => acc + cur.duration, 0);
-
-            //     if (!player.playing && !player.paused) player.play();
-
-            //     const e = new MessageEmbed()
-            //         .setTitle(interaction.language.PLAY[11])
-            //         .setColor("GREEN")
-            //         .addField(interaction.language.PLAY[12], `${search.title}`, true)
-            //         .addField(
-            //             interaction.language.PLAY[13],
-            //             `\`${list.length}\``,
-            //             true
-            //         )
-            //         .addField(
-            //             interaction.language.PLAY[5],
-            //             interaction.user.tag,
-            //             true
-            //         )
-            //         .addField(interaction.language.PLAY[6], `${totalDuration}`, true)
-            //     if (search.platform === 'Youtube') {
-            //         e.setThumbnail(
-            //             `https://img.youtube.com/vi/${search.id}/maxresdefault.jpg`
-            //         )
-            //     } else if (search.platform === 'Spotify') {
-            //         if (search.thumbnails[0])
-            //             e.setThumbnail(search.thumbnails[0])
-            //     }
-            //     interaction.reply({ embeds: [e], content: '' })
-            // }
+            const search = song ? await this.search(song, interaction.member) : await this.getRecomended(player)
+            if (!search) return await interaction.editReply({
+                embeds: [
+                    new EmbedBuilder()
+                        .setColor(Colors.Red)
+                        .setFooter({
+                            text: translate(keys.play.not_reproducible),
+                            iconURL: client.user?.displayAvatarURL(),
+                        }),
+                ],
+            }).catch(logger.error)
             // TODO: Add streaming support
-            if (search.streams?.live) {
+            if (search.streams?.live)
                 return await interaction.editReply({
                     content: 'We are currently working on supporting Live Streaming videos. :D',
-                })
-            }
+                }).catch(logger.error)
+
             player.queue.add(search)
-            if (!player.playing && !player.paused) player.play()
-            const embed = new EmbedBuilder().setColor(client.settings.color).setFields(
-                {
-                    name: translate(keys.AUTHOR),
-                    value: search.author ?? '',
-                    inline: true,
-                },
-                {
+            if (!player.playing || player.paused) player.play()
+            const embed = new EmbedBuilder()
+                .setColor(client.settings.color)
+                .addFields(
+                    {
+                        name: translate(keys.AUTHOR),
+                        value: search.author ?? 'unknown',
+                        inline: true,
+                    },
+                )
+                .addFields({
                     name: translate(keys.REQUESTER),
-                    value: interaction.user.toString(),
+                    value: `${interaction.user}`,
                     inline: true,
-                },
-                {
-                    name: translate(keys.DURATION),
-                    value: formatTime(Math.trunc(search.duration ?? 0), false),
-                    inline: true,
-                },
-            )
+                })
+            const duration = formatTime(Math.trunc(search.duration ?? 0), false)
+            if (duration)
+                embed.addFields(
+                    {
+                        name: translate(keys.DURATION),
+                        value: duration,
+                        inline: true,
+                    },
+                )
             if (client.settings.mode === 'development') {
-                let executionTime = await performanceMeters.get('interaction_' + interaction.id)
-                executionTime = executionTime?.stop()
+                const execution = performanceMeters.get('interaction_' + interaction.id)
+                const executionTime = execution?.stop()
                 const finaltext = 'Internal execution time: ' + executionTime + 'ms'
                 embed.setFooter({ text: finaltext })
             }
-            if (source === 'Youtube') {
-                embed.setThumbnail(`https://img.youtube.com/vi/${search.id}/maxresdefault.jpg`)
-                embed.setDescription(
-                    `**${translate(keys.play.added, {
-                        song: `[${search.title}](https://www.youtube.com/watch?v=${search.id})`,
-                    })}** <:pepeblink:967941236029788160>`,
-                )
-            } else if (source === 'Spotify') {
-                if (search.thumbnails?.[0]) {
-                    embed.setDescription(
-                        `**${translate(keys.play.added, {
-                            song: `[${search.title}](https://open.spotify.com/track/${search.id})`,
-                        })}** <:pepeblink:967941236029788160>`,
-                    )
-                }
-                embed.setThumbnail(search.thumbnails?.[0].url ?? null)
-            }
-            interaction.editReply({ embeds: [embed] })
+            // if (source === 'Youtube') {
+            embed.setThumbnail(`https://img.youtube.com/vi/${search.id}/maxresdefault.jpg`)
+            embed.setDescription(
+                `**${translate(keys.play.added, {
+                    song: `[${search.title}](https://www.youtube.com/watch?v=${search.id})`,
+                })}** <:pepeblink:967941236029788160>`,
+            )
+            // }
+            // else if (source === 'Spotify') {
+            //     if (search.thumbnails?.[0])
+            //         embed.setDescription(
+            //             `**${translate(keys.play.added, {
+            //                 song: `[${search.title}](https://open.spotify.com/track/${search.id})`,
+            //             })}** <:pepeblink:967941236029788160>`,
+            //         )
+
+            //     embed.setThumbnail(search.thumbnails?.[0].url ?? null)
+            // }
+            await interaction.editReply({ embeds: [embed] }).catch(logger.error)
         } catch (e) {
             logger.error(e)
+            // @ts-expect-error
+            if (e.errors) logger.error(e.errors)
             interaction.editReply({
                 content: translate(keys.GENERICERROR, {
                     inviteURL: client.officialServerURL,
@@ -222,6 +165,30 @@ export default class play extends Command {
             })
         }
         return true
+    }
+
+    async getRecomended (player: Player) {
+        const client = player.guild.client as Client
+        try {
+            const home = await player.youtubei.music.getHomeFeed()
+            const songs = home.sections?.[0] as MusicCarouselShelf
+            return songs.contents?.[randomInt(songs.contents.length)] as MusicResponsiveListItem
+        } catch (error) {
+            logger.error(error)
+            client.errorHandler.captureException(error as Error)
+            return undefined
+        }
+    }
+
+    async search (query: string, member: GuildMember) {
+        const client = member.client as Client
+        try {
+            return await client.music.search(query, member, 'Youtube')
+        } catch (error) {
+            logger.error(error)
+            client.errorHandler.captureException(error as Error)
+            return undefined
+        }
     }
 
     // override async autocomplete (interaction: AutocompleteInteraction): Promise<any> {

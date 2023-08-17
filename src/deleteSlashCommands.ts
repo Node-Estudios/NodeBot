@@ -1,5 +1,5 @@
 import cachedCommands from './cache/commands.js'
-let body = cachedCommands.getCache().each((command) => { return command })
+const body = cachedCommands.cache.each((command) => { return command })
 console.log(body)
 fetch('https://discord.com/api/v9/applications/834164602694139985/guilds/862635336165097483/commands', {
     method: 'PUT',

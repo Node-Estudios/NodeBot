@@ -1,4 +1,5 @@
-import { ColorResolvable, CommandInteraction, EmbedBuilder } from 'discord.js'
+import {  ColorResolvable, CommandInteraction } from 'discord.js'
+import EmbedBuilder from '#structures/EmbedBuilder.js'
 import simplestDiscordWebhook from 'simplest-discord-webhook'
 import Command from '#structures/Command.js'
 import getRandomPhrase from '#utils/getRandomPhrase.js'

@@ -1,5 +1,5 @@
-import { ChatInputCommandInteraction, EmbedBuilder } from 'discord.js'
-import { MessageHelper } from '../../../handlers/messageHandler.js'
+import { ChatInputCommandInteraction } from 'discord.js'
+import EmbedBuilder from '#structures/EmbedBuilder.js'
 import Client from '#structures/Client.js'
 import Command from '#structures/Command.js'
 import Translator, { keys } from '#utils/Translator.js'
@@ -18,20 +18,8 @@ export default class Stop extends Command {
     override async run (interaction: ChatInputCommandInteraction<'cached'>) {
         const client = interaction.client as Client
         const translate = Translator(interaction)
-        const message = new MessageHelper(interaction)
         const player = client.music.players.get(interaction.guild.id)
-        if (!player) {
-            return await message.sendMessage({
-                embeds: [
-                    new EmbedBuilder().setColor(client.settings.color).setFooter({
-                        text: translate(keys.queue.no_queue),
-                        iconURL: interaction.user.displayAvatarURL(),
-                    }),
-                ],
-            })
-        }
-
-        if (!player?.queue.current) {
+        if (!player)
             return await interaction.reply({
                 embeds: [
                     new EmbedBuilder().setColor(client.settings.color).setFooter({
@@ -39,13 +27,27 @@ export default class Stop extends Command {
                         iconURL: interaction.user.displayAvatarURL(),
                     }),
                 ],
-                ephemeral: true,
             })
-        }
+                .catch(logger.error)
+
+        if (!player?.queue.current)
+            return await interaction.reply({
+                embeds: [
+                    new EmbedBuilder().setColor(client.settings.color).setFooter({
+                        text: translate(keys.queue.no_queue),
+                        iconURL: interaction.user.displayAvatarURL(),
+                    }),
+                ],
+            })
+                .catch(logger.error)
 
         if (player.trackRepeat) player.setTrackRepeat(false)
         if (player.queueRepeat) player.setQueueRepeat(false)
-        await client.music.queueEnd(player)
+        try {
+            await client.music.queueEnd(player)
+        } catch (error) {
+            client.errorHandler.captureException(error as Error)
+        }
 
         return await interaction.reply({
             embeds: [
@@ -57,6 +59,7 @@ export default class Stop extends Command {
                     )
                     .setFooter({ text: interaction.user.username, iconURL: interaction.user.displayAvatarURL() }),
             ],
-        }).catch(e => logger.debug(e))
+        })
+            .catch(logger.error)
     }
 }

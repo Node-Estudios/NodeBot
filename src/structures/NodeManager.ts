@@ -41,7 +41,7 @@ export default class NodeManager extends ClusterManager {
         this.players = new Collection<string, any[]>()
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         let clusterList: any[]
-        if (!process.env.TOKEN) { throw new Error('No pudimos encontrar tu token, asegurate de añadirlo al .env con el nombre de TOKEN!') }
+        if (!process.env.TOKEN) throw new Error('No pudimos encontrar tu token, asegurate de añadirlo al .env con el nombre de TOKEN!')
 
         // Inicializa las colecciones para los clusters de diferentes nodos
         this.clustersArray.set('node', [])
@@ -56,7 +56,7 @@ export default class NodeManager extends ClusterManager {
                 const shardList = [...Array(data).keys()]
 
                 // * Divide los shards en bloques
-                clusterList = chunk(shardList, 6)
+                clusterList = chunk(shardList, 2)
 
                 this.queue.queue.shift()
                 this.totalClusters = 0
@@ -150,7 +150,7 @@ export default class NodeManager extends ClusterManager {
                 let shardList = [...Array(data).keys()]
                 if (data === 1) shardList = [0]
                 // * Divide los shards en bloques
-                const clusterList = chunk(shardList, 6)
+                const clusterList = chunk(shardList, 2)
 
                 for (let i = 0; i < clusterList.length; i++) {
                     const clusterIndex = this.totalClusters + 1

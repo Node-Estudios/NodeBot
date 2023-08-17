@@ -22,7 +22,23 @@
         "was": "Was the impostor",
         "was_not": "Was not the impostor"
     },
-    "embed_successfully": "Embed created and sent successfully.",
+    "embed": {
+        "successfully": "Embed created and sent successfully.",
+        "missing_permissions": "I don't have permissions to send messages in that channel. I need {permisions}",
+        "modal": {
+            "title": "Embed Creator",
+            "title_label": "Title",
+            "title_placeholder": "My Awesome Embed",
+            "description_label": "Description",
+            "description_placeholder": "This is my awesome embed!",
+            "color_label": "Color"
+        },
+        "buttons": {
+            "send": "Send",
+            "edit": "Edit"
+        },
+        "invalid_input": "Invalid input"
+    },
     "github": {
         "write_username": "Please write an username.",
         "name": "🧑 Name:",
@@ -111,7 +127,8 @@
         "same": "You need to be on the same voice channel as the bot to execute this command.",
         "not_voice": "You need to be on a voice channel to execute this command.",
         "not_reproducible": "The attached link does not contain reproducible content.",
-        "added": "{song} added to the list"
+        "added": "{song} added to the list",
+        "cant_join": "I can't join your voice channel, make sure I have the necessary permissions."
     },
     "reboot": {
         "all": "Rebooting all shards...",
@@ -395,6 +412,16 @@
         "247": {
             "name": "247",
             "description": "Stay 24/7 in a voice channel"
+        },
+        "eval": {
+            "name": "eval",
+            "description": "Eval a code",
+            "options": {
+                "code": {
+                    "name": "code",
+                    "description": "Code to eval"
+                }
+            }
         }
     }
 }

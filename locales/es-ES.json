@@ -22,7 +22,23 @@
         "was": "¿Fue el impostor",
         "was_not": "¿No era el impostor"
     },
-    "embed_successfully": "Incrustación creada y enviada correctamente.",
+    "embed": {
+        "successfully": "Embed creado y enviado correctamente.",
+        "missing_permissions": "No tengo permisos para enviar mensajes en este canal. Necesito {permisions}",
+        "modal": {
+            "title": "Creador de embed",
+            "title_label": "Título",
+            "title_placeholder": "El mejor embed",
+            "description_label": "Descripción",
+            "description_placeholder": "Este es el mejor embed del mundo",
+            "color_label": "Color"
+        },
+        "buttons": {
+            "send": "Enviar",
+            "edit": "Editar"
+        },
+        "invalid_input": "Entrada no válida"
+    },
     "github": {
         "write_username": "Por favor, escriba un nombre de usuario.",
         "name": "🧑 Nombre:",
@@ -120,7 +136,8 @@
         "same": "Necesitas estar en el mismo canal de voz que el bot para ejecutar este comando.",
         "not_voice": "Necesitas estar en un canal de voz para ejecutar este comando.",
         "not_reproducible": "El enlace adjunto no contiene contenidos reproducibles.",
-        "added": "{song} añadido a la lista"
+        "added": "{song} añadido a la lista",
+        "cant_join": "No puedo unirme a tu canal de voz, ¿tengo permisos?"
     },
     "reboot": {
         "all": "Reiniciando todos los fragmentos...",
@@ -404,6 +421,16 @@
         "247": {
             "name": "247",
             "description": "Mantente 24/7 en un canal de voz"
+        },
+        "eval": {
+            "name": "eval",
+            "description": "Evalúa un código",
+            "options": {
+                "code": {
+                    "name": "código",
+                    "description": "El código que quieres evaluar"
+                }
+            }
         }
     }
 }

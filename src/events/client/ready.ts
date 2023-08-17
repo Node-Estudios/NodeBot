@@ -14,26 +14,26 @@ export default class Ready extends BaseEvent {
         // ...
 
         //* ADD DATABASE CONNECTION
-        if (process.env.MONGOURL) {
+        if (process.env.MONGOURL)
             connect(process.env.MONGOURL.toString(), {
             // @ts-expect-error
                 useUnifiedTopology: true,
                 useNewUrlParser: true,
             }).then(() => logger.db('Se ha conectado la base de datos correctamente.'))
-        }
+
         // cluster
         // client.cluster.triggerReady()
         const arr: Command[] = []
-        for (const [,command] of commands.getCache()) arr.push(command)
+        for (const [,command] of commands.cache) arr.push(command)
         if (process.env.TESTINGGUILD) {
             const guild = await client.guilds.fetch(process.env.TESTINGGUILD)
             guild.commands.set(arr).catch(logger.error)
-        } else if (!process.env.TESTINGUILD) {
+        } else if (!process.env.TESTINGUILD)
             client.application?.commands.set(arr).catch(logger.error)
-        }
+
         client.cluster.on('message', async (message2: any) => {
             const message = (message2 as IPCMessage).raw
-            if (message.content === 'statistics') {
+            if (message.content === 'statistics')
                 try {
                     // logger.debug(`Cluster's ${client.cluster.id} received statistics`)
                     client.cluster
@@ -72,13 +72,11 @@ export default class Ready extends BaseEvent {
                         status: 500,
                     })
                 }
-            }
         })
-        if (!process.env.TESTINGUILD) {
+        if (!process.env.TESTINGUILD)
             setInterval(() => {
                 updateStatus()
             }, 300000)
-        }
 
         async function updateStatus () {
             const promises = [

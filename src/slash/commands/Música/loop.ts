@@ -1,4 +1,5 @@
-import { ChatInputCommandInteraction, Colors, EmbedBuilder } from 'discord.js'
+import { ChatInputCommandInteraction, Colors } from 'discord.js'
+import EmbedBuilder from '#structures/EmbedBuilder.js'
 import Client from '#structures/Client.js'
 import Command from '#structures/Command.js'
 import Translator, { keys } from '#utils/Translator.js'
@@ -13,11 +14,12 @@ export default class Loop extends Command {
         })
     }
 
-    override async run (interaction: ChatInputCommandInteraction<'cached'>) {
+    override async run (interaction: ChatInputCommandInteraction) {
+        if (!interaction.inCachedGuild()) return
         const client = interaction.client as Client
         const translate = Translator(interaction)
         const player = client.music.players.get(interaction.guild.id)
-        if (!player) {
+        if (!player)
             return await interaction.reply({
                 embeds: [
                     new EmbedBuilder().setColor(client.settings.color).setFooter({
@@ -27,10 +29,9 @@ export default class Loop extends Command {
                 ],
                 ephemeral: true,
             })
-        }
-        await interaction.deferReply()
+                .catch(logger.error)
 
-        if (!interaction.member.voice) {
+        if (!interaction.member.voice)
             return await interaction.reply({
                 embeds: [
                     new EmbedBuilder().setColor(Colors.Red).setFooter({
@@ -40,9 +41,9 @@ export default class Loop extends Command {
                 ],
                 ephemeral: true,
             })
-                .catch(e => logger.debug(e))
-        }
-        if (interaction.member.voice.channelId !== player.voiceChannel.id) {
+                .catch(logger.error)
+
+        if (interaction.member.voice.channelId !== player.voiceChannel.id)
             return await interaction.reply({
                 embeds: [
                     new EmbedBuilder().setColor(Colors.Red).setFooter({
@@ -52,9 +53,9 @@ export default class Loop extends Command {
                 ],
                 ephemeral: true,
             })
-                .catch(e => logger.debug(e))
-        }
-        if (!player.queue.current) {
+                .catch(logger.error)
+
+        if (!player.queue.current)
             return await interaction.reply({
                 embeds: [
                     new EmbedBuilder().setColor(client.settings.color).setFooter({
@@ -64,7 +65,8 @@ export default class Loop extends Command {
                 ],
                 ephemeral: true,
             })
-        }
+                .catch(logger.error)
+
         if (!player.trackRepeat) {
             player.setQueueRepeat(true)
             player.setTrackRepeat(false)
@@ -79,5 +81,6 @@ export default class Loop extends Command {
                     }),
             ],
         })
+            .catch(logger.error)
     }
 }

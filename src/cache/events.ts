@@ -1,24 +1,24 @@
 // commands.ts
 import { Collection } from 'discord.js'
-import { BaseEvent } from '../structures/Events'
-class eventCache {
-    private static instance: eventCache
-    private cache: Collection<string, BaseEvent>
+import { BaseEvent } from '#structures/Events.js'
+class EventCache {
+    private static instance: EventCache
+    #cache: Collection<string, BaseEvent>
 
-    private constructor() {
-        this.cache = new Collection<string, BaseEvent>()
+    private constructor () {
+        this.#cache = new Collection<string, BaseEvent>()
     }
 
-    public static getInstance(): eventCache {
-        if (!eventCache.instance) {
-            eventCache.instance = new eventCache()
+    static getInstance (): EventCache {
+        if (!EventCache.instance) {
+            EventCache.instance = new EventCache()
         }
-        return eventCache.instance
+        return EventCache.instance
     }
 
-    public getCache(): Collection<string, BaseEvent> {
-        return this.cache
+    get cache (): Collection<string, BaseEvent> {
+        return this.#cache
     }
 }
 
-export default eventCache.getInstance()
+export default EventCache.getInstance()

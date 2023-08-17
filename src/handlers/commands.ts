@@ -1,56 +1,33 @@
-import Autocomplete from '#structures/Autocomplete.js'
-import autoCompleteCache from '#cache/autocomplete.js'
-import Button from '#structures/Button.js'
-import commands from '#cache/commands.js'
 import { readdir } from 'node:fs/promises'
-import buttons from '#cache/buttons.js'
+import { Collection } from 'discord.js'
 import logger from '#utils/logger.js'
+import { join } from 'node:path'
+// caches
+import autocompletes from '#cache/autocompletes.js'
+import commands from '#cache/commands.js'
+import buttons from '#cache/buttons.js'
+import modals from '#cache/modals.js'
 
-// cache commands
-for (const dir of await readdir('./build/slash/commands')) {
-    for (const file of await readdir(`./build/slash/commands/${dir}`)) {
-        if (file.endsWith('.js')) {
-            const { default: CommandFile } = await import(`../../build/slash/commands/${dir}/${file}`)
-            if (typeof CommandFile === 'function') {
-                try {
-                    const command = new CommandFile()
-                    if (!commands.getCache().has(command.name)) commands.getCache().set(command.name, command)
-                } catch (e) {
-                    logger.error(CommandFile, e)
-                }
-            }
-        }
-    }
-}
-// cache buttons
-for (const dir of await readdir('./build/slash/buttons')) {
-    for (const file of await readdir(`./build/slash/buttons/${dir}`)) {
-        if (file.endsWith('.js')) {
-            const { default: ButtonFile } = await import(`../../build/slash/buttons/${dir}/${file}`)
-            if (typeof ButtonFile === 'function') {
-                try {
-                    const button = new ButtonFile() as Button
-                    if (!buttons.getCache().has(button.pattern)) buttons.getCache().set(button.pattern, button)
-                } catch (e) {
-                    logger.error(ButtonFile, e)
-                }
-            }
-        }
-    }
-}
-// cache autocomplete
-for (const dir of await readdir('./build/slash/autocomplete')) {
-    for (const file of await readdir(`./build/slash/autocomplete/${dir}`)) {
-        if (file.endsWith('.js')) {
-            const { default: AutocompleteFile } = await import(`../../build/slash/autocomplete/${dir}/${file}`)
-            if (typeof AutocompleteFile === 'function') {
-                try {
-                    const autocomplete = new AutocompleteFile() as Autocomplete
-                    if (!autoCompleteCache.getCache().has(autocomplete.pattern)) autoCompleteCache.getCache().set(autocomplete.pattern, autocomplete)
-                } catch (e) {
-                    logger.error(AutocompleteFile, e)
-                }
-            }
+// load commands
+await loadCache(commands.cache, join(process.cwd(), 'build', 'slash', 'commands'))
+// load buttons
+await loadCache(buttons.cache, join(process.cwd(), 'build', 'slash', 'buttons'))
+// load autocompletes
+await loadCache(autocompletes.cache, join(process.cwd(), 'build', 'slash', 'autocompletes'))
+// load modals
+await loadCache(modals.cache, join(process.cwd(), 'build', 'slash', 'modals'))
+
+// generic function to load cache
+async function loadCache (cache: Collection<any, { name: any }>, dir: string) {
+    const files = await readdir(join(dir), { recursive: true, withFileTypes: true })
+    for (const file of files.filter(f => f.isFile() && f.name.endsWith('.js'))) {
+        const { default: File } = await import(join(file.path, file.name))
+        if (typeof File !== 'function') continue
+        try {
+            const instance = new File()
+            if (!cache.has(instance.name)) cache.set(instance.name, instance)
+        } catch (error) {
+            logger.error(join(file.path, file.name), error)
         }
     }
 }

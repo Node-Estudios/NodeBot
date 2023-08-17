@@ -1,4 +1,5 @@
-import { ButtonInteraction, EmbedBuilder } from 'discord.js'
+import { ButtonInteraction } from 'discord.js'
+import EmbedBuilder from '#structures/EmbedBuilder.js'
 import Translator, { keys } from '#utils/Translator.js'
 import Client from '#structures/Client.js'
 import Button from '#structures/Button.js'
@@ -14,7 +15,7 @@ export default class Pause extends Button {
         const translate = Translator(interaction)
 
         const player = client.music.players.get(interaction.guild.id)
-        if (!player?.queue.current) {
+        if (!player?.queue.current)
             return await interaction.reply({
                 embeds: [
                     new EmbedBuilder().setColor(15548997).setFooter({
@@ -23,7 +24,7 @@ export default class Pause extends Button {
                     }),
                 ],
             })
-        }
+
         interaction.deferUpdate()
 
         return await client.music.trackPause(player, interaction)

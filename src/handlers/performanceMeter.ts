@@ -1,5 +1,5 @@
 
-export class Timer {
+export class PerformanceMeter {
     private startTime!: number
     private readonly endTime!: number
 

@@ -1,5 +1,6 @@
 import Translator, { keys } from '#utils/Translator.js'
-import { APIMessageComponentEmoji, ButtonInteraction, ComponentType, EmbedBuilder } from 'discord.js'
+import { APIMessageComponentEmoji, ButtonInteraction, ComponentType } from 'discord.js'
+import EmbedBuilder from '#structures/EmbedBuilder.js'
 import Client from '#structures/Client.js'
 import Button from '#structures/Button.js'
 import logger from '#utils/logger.js'
@@ -7,13 +8,12 @@ type Writeable<T extends { [x: string]: any }, K extends string> = {
     [P in K]: T[P];
 }
 function getBlueRepeatEmoji (repeatMode: string, client: Client) {
-    if (repeatMode === 'queue') {
+    if (repeatMode === 'queue')
         return client.settings.emojis.blue.repeat_all
-    } else if (repeatMode === 'track') {
+    else if (repeatMode === 'track')
         return client.settings.emojis.blue.repeat_one
-    } else {
+    else
         return client.settings.emojis.white.repeat_off
-    }
 }
 
 export default class Repeat extends Button {
@@ -27,7 +27,7 @@ export default class Repeat extends Button {
             const translate = Translator(interaction)
             const client = interaction.client as Client
             const player = client.music.players.get(interaction.guild.id)
-            if (!player?.queue.current) {
+            if (!player?.queue.current)
                 return await interaction.reply({
                     embeds: [
                         new EmbedBuilder().setColor(client.settings.color).setFooter({
@@ -36,9 +36,8 @@ export default class Repeat extends Button {
                         }),
                     ],
                 })
-            }
 
-            if (interaction.member.voice.channelId !== (player.voiceChannel.id ?? '')) {
+            if (interaction.member.voice.channelId !== (player.voiceChannel.id ?? ''))
                 return await interaction.reply({
                     embeds: [
                         new EmbedBuilder().setColor(client.settings.color).setFooter({
@@ -47,7 +46,6 @@ export default class Repeat extends Button {
                         }),
                     ],
                 })
-            }
 
             // Determine the queueRepeatMode based on currentTrackRepeat and currentQueueRepeat
             let queueRepeatMode
@@ -70,7 +68,7 @@ export default class Repeat extends Button {
             const repeatButton = player.message?.components[0].components.find(
                 (c) => c.customId === 'repeatMusic' && c.type === ComponentType.Button,
             )
-            if (repeatButton && repeatButton.type === ComponentType.Button) {
+            if (repeatButton && repeatButton.type === ComponentType.Button)
                 (repeatButton.data.emoji as Writeable<
                 APIMessageComponentEmoji,
                 keyof APIMessageComponentEmoji
@@ -79,11 +77,9 @@ export default class Repeat extends Button {
                     id: blueRepeatEmoji.id.toString(),
                     animated: repeatButton.data.emoji?.animated,
                 }
-            }
 
-            if (player.message) {
+            if (player.message)
                 await player.message.edit({ components: player.message.components, embeds: player.message.embeds })
-            }
 
             await interaction.deferUpdate()
         } catch (e) {

@@ -1,4 +1,5 @@
-import { EmbedBuilder, ButtonInteraction } from 'discord.js'
+import { ButtonInteraction  } from 'discord.js'
+import EmbedBuilder from '#structures/EmbedBuilder.js'
 import Translator, { keys } from '#utils/Translator.js'
 import Client from '#structures/Client.js'
 import Button from '#structures/Button.js'

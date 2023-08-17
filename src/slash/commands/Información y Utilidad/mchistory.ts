@@ -1,4 +1,5 @@
-import { ApplicationCommandOptionType, ChatInputCommandInteraction, EmbedBuilder } from 'discord.js'
+import { ApplicationCommandOptionType, ChatInputCommandInteraction } from 'discord.js'
+import EmbedBuilder from '#structures/EmbedBuilder.js'
 import Client from '#structures/Client.js'
 import Command from '#structures/Command.js'
 import Translator, { keys } from '#utils/Translator.js'
@@ -28,7 +29,7 @@ export default class mchistory extends Command {
         )
             .then(async r => await r.json())
             .catch(() => null)
-        if (!res) {
+        if (!res)
             return await interaction.reply({
                 embeds: [
                     new EmbedBuilder()
@@ -41,7 +42,6 @@ export default class mchistory extends Command {
                         }),
                 ],
             })
-        }
 
         return await interaction.reply({
             embeds: [

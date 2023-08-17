@@ -22,7 +22,23 @@
         "was": "詐欺師だったのか？",
         "was_not": "詐欺師ではなかった"
     },
-    "embed_successfully": "エンベッドが作成され、正常に送信された。",
+    "embed": {
+        "successfully": "エンベッドが作成され、正常に送信された。",
+        "missing_permissions": "私はエンベッドを送信する権限がありません。 {permisions}つ必要だ",
+        "modal": {
+            "title": "埋め込みを作成する",
+            "title_label": "タイトル",
+            "title_placeholder": "私の素晴らしい埋め込み",
+            "description_label": "記述",
+            "description_placeholder": "これは私の素晴らしい埋め込みだ！",
+            "color_label": "色"
+        },
+        "buttons": {
+            "send": "送信",
+            "edit": "編集"
+        },
+        "invalid_input": "無効な入力"
+    },
     "github": {
         "write_username": "ユーザー名を書いてください。",
         "name": "🧑 名前：",
@@ -111,7 +127,8 @@
         "same": "このコマンドを実行するには、ボットと同じ音声チャンネルにいる必要があります。",
         "not_voice": "音声チャンネルに入ってください。",
         "not_reproducible": "添付のリンク先には再現可能なコンテンツは含まれていません。",
-        "added": "リストに{song}を追加"
+        "added": "リストに{song}を追加",
+        "cant_join": "私はあなたのボイスチャンネルに参加できません。権限を確認してください。"
     },
     "reboot": {
         "all": "すべてのシャードを再起動...",
@@ -395,6 +412,16 @@
         "247": {
             "name": "247",
             "description": "年中無休の音声チャンネル"
+        },
+        "eval": {
+            "name": "評価",
+            "description": "コードを評価する",
+            "options": {
+                "code": {
+                    "name": "コード",
+                    "description": "評価するコード"
+                }
+            }
         }
     }
 }

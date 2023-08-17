@@ -2,6 +2,7 @@
 import { ApplicationCommandOptionType, ChatInputCommandInteraction } from 'discord.js'
 import Command from '#structures/Command.js'
 import Translator, { keys } from '#utils/Translator.js'
+import logger from '#utils/logger.js'
 
 export default class impostor extends Command {
     constructor () {
@@ -36,6 +37,6 @@ export default class impostor extends Command {
 
         　　'　　　  　 　　。     ,         ﾟ             ,   ﾟ      .       ,        .             ,
 
-        　　ﾟ　　　.　　　. ,　　　　.　 .`)
+        　　ﾟ　　　.　　　. ,　　　　.　 .`).catch(logger.error)
     }
 }

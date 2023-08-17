@@ -28,7 +28,7 @@ export default class Player extends yasha.TrackPlayer {
     previouslyPaused = false
     pausedUser?: User
     resumedUser?: User
-    youtubei = Innertube.create()
+    youtubei: Innertube
     waitingMessage?: Message
     constructor (options: {
         musicManager: MusicManager
@@ -38,12 +38,14 @@ export default class Player extends yasha.TrackPlayer {
         voiceChannel: VoiceChannel
         textChannelId: Snowflake
         guild?: Guild
+        innertube: Innertube
     }) {
         super({
             external_packet_send: false,
             external_encrypt: false,
             normalize_volume: true,
         })
+        this.youtubei = options.innertube
         this.manager = options.musicManager
         this.bitrate = options.bitrate
         this.volume = options.volume ?? 100
@@ -55,6 +57,8 @@ export default class Player extends yasha.TrackPlayer {
             if (this.guild.members.me?.permissionsIn(channel).has([PermissionFlagsBits.EmbedLinks, PermissionFlagsBits.SendMessages]) === false) return
             this.#textChannelId = options.textChannelId
         }).catch(() => null)
+        this.on('finish', () => (this.playing = false))
+        this.on('error', (error: any) => (this.playing = false && logger.error(error)))
     }
 
     async connect () {
@@ -72,6 +76,7 @@ export default class Player extends yasha.TrackPlayer {
     }
 
     override async play (track?: any) {
+        this.playing = true
         // TODO: Check if this code works
         if (!track && this.queue.current) super.play(this.queue.current)
         else super.play(track)
