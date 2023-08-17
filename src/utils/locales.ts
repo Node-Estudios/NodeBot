@@ -413,6 +413,16 @@ export default {
       'name': "commands.loop.name",
       'description': "commands.loop.description",
     },
+    'eval': {
+      'name': "commands.eval.name",
+      'description': "commands.eval.description",
+      'options': {
+        'code': {
+          'name': "commands.eval.options.code.name",
+          'description': "commands.eval.options.code.description",
+        },
+      },
+    },
   },
   'nowplaying': {
     '1': "nowplaying.1",
@@ -837,6 +847,16 @@ export default {
     'loop': {
       'name': string
       'description': string
+    }
+    'eval': {
+      'name': string
+      'description': string
+      'options': {
+        'code': {
+          'name': string
+          'description': string
+        }
+      }
     }
   }
   'nowplaying'?: {

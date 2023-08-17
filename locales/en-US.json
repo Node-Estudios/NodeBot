@@ -412,6 +412,16 @@
         "247": {
             "name": "247",
             "description": "Stay 24/7 in a voice channel"
+        },
+        "eval": {
+            "name": "eval",
+            "description": "Eval a code",
+            "options": {
+                "code": {
+                    "name": "code",
+                    "description": "Code to eval"
+                }
+            }
         }
     }
 }

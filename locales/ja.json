@@ -412,6 +412,16 @@
         "247": {
             "name": "247",
             "description": "年中無休の音声チャンネル"
+        },
+        "eval": {
+            "name": "評価",
+            "description": "コードを評価する",
+            "options": {
+                "code": {
+                    "name": "コード",
+                    "description": "評価するコード"
+                }
+            }
         }
     }
 }

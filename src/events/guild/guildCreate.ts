@@ -5,11 +5,11 @@ import EmbedBuilder from '#structures/EmbedBuilder.js'
 
 export default class guildCreate extends BaseEvent {
     async run (client: Client, guild: Guild): Promise<void> {
-        if (!process.env.GuildWebhookURL) return
-        new WebhookClient({ url: process.env.GuildWebhookURL }).send({
+        if (!process.env.GUILDWEBHOOKURL) return
+        new WebhookClient({ url: process.env.GUILDWEBHOOKURL }).send({
             embeds: [
                 new EmbedBuilder()
-                    .setColor(process.env.bot1Embed_Color as ColorResolvable)
+                    .setColor(client.settings.color)
                     .setDescription(`<a:greenarrow:969929468607090758> **${guild.name}** (+${guild.memberCount})`),
             ],
         })

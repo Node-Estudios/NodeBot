@@ -421,6 +421,16 @@
         "247": {
             "name": "247",
             "description": "Mantente 24/7 en un canal de voz"
+        },
+        "eval": {
+            "name": "eval",
+            "description": "Evalúa un código",
+            "options": {
+                "code": {
+                    "name": "código",
+                    "description": "El código que quieres evaluar"
+                }
+            }
         }
     }
 }

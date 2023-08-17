@@ -289,6 +289,7 @@ export default class MusicManager extends EventEmitter {
             })
         } catch (error) {
             client.errorHandler.captureException(error as Error)
+            this.destroy(player.guild)
         }
     }
 
