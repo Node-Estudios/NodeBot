@@ -30,16 +30,14 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
-        "@discordjs/voice": "^0.16.1",
         "@sentry/node": "7.61.0",
         "@sentry/profiling-node": "1.1.2",
         "bindings": "1.5.0",
-        "canvas": "2.11.2",
         "cors": "2.8.5",
         "datadog-metrics": "0.11.0",
         "dd-trace": "4.11.1",
-        "discord-hybrid-sharding": "github:meister03/discord-hybrid-sharding",
-        "discord.js": "14.12.1",
+        "discord-hybrid-sharding": "github:meister03/discord-hybrid-sharding#caaae4a",
+        "discord.js": "14.13.0",
         "dotenv": "16.3.1",
         "express": "4.18.2",
         "figlet": "1.6.0",
@@ -51,7 +49,7 @@
         "signale": "1.4.0",
         "statcord.js": "3.4.3",
         "stripe": "12.18.0",
-        "yasha": "github:eliyya/ts-yasha#1637c64",
+        "yasha": "github:eliyya/ts-yasha#960a4e2",
         "youtubei.js": "5.8.0"
     },
     "devDependencies": {
@@ -67,7 +65,7 @@
         "nodemon": "3.0.1",
         "transjson": "github:OnekiDevs/transjson#1187c4b",
         "ts-standard": "12.0.2",
-        "type-locales": "github:OnekiDevs/type-locales",
+        "type-locales": "github:OnekiDevs/type-locales#ab4ea48",
         "typescript": "5.1.6"
     },
     "optionalDependencies": {

@@ -35,7 +35,8 @@ export default class play extends Command {
         })
     }
 
-    override async run (interaction: ChatInputCommandInteraction<'cached'>) {
+    override async run (interaction: ChatInputCommandInteraction) {
+        if (!interaction.inCacheGuild()) return
         const client = interaction.client as Client
         try {
             await interaction.deferReply()
@@ -87,17 +88,52 @@ export default class play extends Command {
         // Si el usuario está en el mismo canal de voz que el bot
         try {
             const song = interaction.options.getString('song', false)
-            const search = song ? await this.search(song, interaction.user) : await this.getRecomended(player, interaction.user)
-            if (!search) return await interaction.editReply({
-                embeds: [
-                    new EmbedBuilder()
-                        .setColor(Colors.Red)
-                        .setFooter({
-                            text: translate(keys.play.not_reproducible),
-                            iconURL: client.user?.displayAvatarURL(),
-                        }),
-                ],
-            }).catch(logger.error)
+            const search = !song ? await this.getRecomended(player, interaction.user)
+            .then(t => {
+                if (!t) {
+                    interaction.editReply({
+                    embeds: [
+                        new EmbedBuilder()
+                            .setColor(Colors.Red)
+                            .setFooter({
+                                text: translate(keys.play.not_reproducible),
+                                iconURL: client.user?.displayAvatarURL(),
+                            }),
+                    ],
+                }).catch(logger.error)
+                return undefined
+            }
+                return t
+            })
+            .catch(logger.error) 
+            : await client.music.search(song, interaction.member, 'Youtube')
+            .then(t => {
+                if (!t) return interaction.editReply({
+                    embeds: [
+                        new EmbedBuilder()
+                            .setColor(Colors.Red)
+                            .setFooter({
+                                text: translate(keys.play.not_reproducible),
+                                iconURL: client.user?.displayAvatarURL(),
+                            }),
+                    ],
+                }).catch(logger.error)
+                return t
+            })
+            .catch(e => {
+                logger.error(e)
+                return interaction.editReply({
+                    embeds: [
+                        new EmbedBuilder()
+                            .setColor(Colors.Red)
+                            .setFooter({
+                                text: translate(keys.play.not_reproducible),
+                                iconURL: client.user?.displayAvatarURL(),
+                            }),
+                    ],
+                }).catch(logger.error)
+            })
+            if (!search) return
             // TODO: Add streaming support
             if (search.streams?.live)
                 return await interaction.editReply({
@@ -173,32 +209,11 @@ export default class play extends Command {
             const home = await player.youtubei.music.getHomeFeed()
             const songs = home.sections?.[0] as MusicCarouselShelf
             const song = songs.contents?.[randomInt(songs.contents.length)] as MusicResponsiveListItem
-            return await this.search(song.name ?? 'music', user)
+            return await client.music.search(song.name ?? 'music', user, 'Youtube')
         } catch (error) {
             logger.error(error)
             client.errorHandler.captureException(error as Error)
             return undefined
         }
     }
-
-    async search (query: string, user: User) {
-        const client = user.client as Client
-        try {
-            return await client.music.search(query, user, 'Youtube')
-        } catch (error) {
-            logger.error(error)
-            client.errorHandler.captureException(error as Error)
-            return undefined
-        }
-    }
-
-    // override async autocomplete (interaction: AutocompleteInteraction): Promise<any> {
-    //     const query = interaction.options.getFocused()
-    //     const search = await Source.Youtube.search(query)
-    //     if (search.length > 25) search.length = 25
-    //     interaction.respond(search.map(r => ({
-    //         name: r.title ?? '',
-    //         value: r.author ?? '',
-    //     })))
-    // }
 }
