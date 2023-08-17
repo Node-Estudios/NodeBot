@@ -1,8 +1,9 @@
-import { ChatInputCommandInteraction } from 'discord.js'
-import EmbedBuilder from '#structures/EmbedBuilder.js'
-import Command from '#structures/Command.js'
 import Client from '#structures/Client.js'
+import Command from '#structures/Command.js'
+import EmbedBuilder from '#structures/EmbedBuilder.js'
 import logger from '#utils/logger.js'
+import Sentry from '@sentry/node'
+import { ChatInputCommandInteraction } from 'discord.js'
 
 export default class shards extends Command {
     constructor () {
@@ -26,15 +27,22 @@ export default class shards extends Command {
         const totalChannels = shardInfo.reduce((prev, s) => prev + s.channels, 0)
         const avgLatency = Math.round(shardInfo.reduce((prev, s) => prev + s.ping, 0) / shardInfo.length)
 
-        for (let n = 0; n < shardInfo.length / 15; n++) {
-            const shardArray = shardInfo.slice(n * 15, n * 15 + 15)
+        const embedsPerMessage = 10
+
+        const defaultEmbed = new EmbedBuilder()
+            .setColor(client.settings.color)
+            .setDescription(`This guild is currently on **Cluster ${client.cluster.id}**.`)
+            .setAuthor({ name: 'NodeBot', iconURL: client.user.displayAvatarURL({ forceStatic: false }) })
+
+        interaction.editReply({ embeds: [defaultEmbed] }) // Edit the initial reply with the default embed
+
+        for (let n = 0; n < Math.ceil(shardInfo.length / embedsPerMessage); n++) {
+            const startIndex = n * embedsPerMessage
+            const endIndex = startIndex + embedsPerMessage
+            const shardArray = shardInfo.slice(startIndex, endIndex)
 
             const embed = new EmbedBuilder()
                 .setColor(client.settings.color)
-
-            embed
-                .setDescription(`This guild is currently on **Cluster ${client.cluster.id}**.`)
-                .setAuthor({ name: 'NodeBot', iconURL: client.user.displayAvatarURL({ forceStatic: false }) })
 
             for (const shard of shardArray) {
                 const status = shard.status === 'online' ? '<:greendot:894171595365560340>' : '<:RedSmallDot:969759818569093172>'
@@ -49,11 +57,8 @@ export default class shards extends Command {
                 totalPlayers += shard.players
                 totalPlayingPlayers += shard.playingPlayers
             }
-            embeds.push(embed)
-        }
 
-        embeds.push(
-            new EmbedBuilder()
+            const totalStatsEmbed = new EmbedBuilder()
                 .setColor(client.settings.color)
                 .addFields([
                     {
@@ -61,13 +66,19 @@ export default class shards extends Command {
                         value: `\`\`\`Total Servers: ${totalGuilds.toLocaleString()}\nTotal Channels: ${totalChannels.toLocaleString()}\nTotal Users: ${totalMembers.toLocaleString()}\nTotal Memory: ${totalMemory.toFixed(2)}\nMB Avg API Latency: ${avgLatency} ms\nTotal Players: ${totalPlayingPlayers}/${totalPlayers}\`\`\``,
                     },
                 ])
-                .setTimestamp(),
-        )
-        try {
-            await interaction.editReply({ embeds })
-        } catch (error) {
-            logger.error(error)
+                .setTimestamp()
+
+            embeds.push(embed)
+            embeds.push(totalStatsEmbed)
         }
+
+        for (const embedToSend of embeds)
+            try {
+                await interaction.channel?.send({ embeds: [embedToSend] })
+            } catch (error) {
+                logger.error(error)
+                Sentry.captureException(error)
+            }
     }
 
     async getMembersCount (client: Client) {
