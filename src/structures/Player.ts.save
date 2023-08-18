@@ -21,7 +21,7 @@ export default class Player extends yasha.TrackPlayer {
     guild: Guild
     leaveTimeout?: NodeJS.Timeout
     bitrate?: number
-    connection?: any
+    connection?: typeof yasha.VoiceConnection
     subscription?: any
     stayInVc = false
     previouslyPaused = false
@@ -99,6 +99,15 @@ export default class Player extends yasha.TrackPlayer {
         this.manager.trackEnd(this, false)
     }
 
+    get (key: string): any {
+        return this[key] as any
+    }
+
+    set (key: string, value: any) {
+        // @ts-expect-error
+        this[key] = value
+    }
+
     override setEqualizer (equalizer: any) {
         super.setEqualizer(equalizer)
     }
@@ -131,6 +140,7 @@ export default class Player extends yasha.TrackPlayer {
 
         this.playing = !pause
         this.paused = pause
+        // @ts-expect-error
         if (this.player) this.setPaused(pause)
 
         return this

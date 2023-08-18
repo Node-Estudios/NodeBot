@@ -1,9 +1,8 @@
-import { GuildMember } from 'discord.js'
+import { User } from 'discord.js'
 import { formatDuration } from './MusicManager.js'
-import { type Track as yashaTrack } from 'yasha'
+import yasha from 'yasha'
 
-// @ts-expect-error
-type Track = yashaTrack & { requester: GuildMember, streams: any[] | null }
+type Track = any
 export default class Queue extends Array<Track> {
     current: Track | null
     previous: Track | null

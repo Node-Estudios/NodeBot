@@ -1,9 +1,9 @@
-import Client from '#structures/Client.js'
-import Command from '#structures/Command.js'
+import { ChatInputCommandInteraction } from 'discord.js'
 import EmbedBuilder from '#structures/EmbedBuilder.js'
+import Command from '#structures/Command.js'
 import logger from '#utils/logger.js'
 import Sentry from '@sentry/node'
-import { ChatInputCommandInteraction } from 'discord.js'
+import Client from '#structures/Client.js'
 
 export default class shards extends Command {
     constructor () {

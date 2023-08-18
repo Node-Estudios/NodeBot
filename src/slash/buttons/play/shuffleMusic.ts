@@ -1,4 +1,4 @@
-import { ButtonInteraction  } from 'discord.js'
+import { ButtonInteraction } from 'discord.js'
 import EmbedBuilder from '#structures/EmbedBuilder.js'
 import Translator, { keys } from '#utils/Translator.js'
 import Client from '#structures/Client.js'
@@ -18,7 +18,7 @@ export default class Skip extends Button {
             const translate = Translator(interaction)
             const player = client.music.players.get(interaction.guild.id)
 
-            if (!player?.queue.current) {
+            if (!player?.queue.current)
                 return await interaction.reply({
                     embeds: [
                         new EmbedBuilder().setColor(client.settings.color).setFooter({
@@ -27,9 +27,8 @@ export default class Skip extends Button {
                         }),
                     ],
                 })
-            }
 
-            if (interaction.member.voice.channelId !== (player.voiceChannel.id ?? '')) {
+            if (interaction.member.voice.channelId !== (player.voiceChannel.id ?? ''))
                 return await interaction.reply({
                     embeds: [
                         new EmbedBuilder().setColor(client.settings.color).setFooter({
@@ -38,7 +37,6 @@ export default class Skip extends Button {
                         }),
                     ],
                 })
-            }
 
             if (!player.queue.current) return
             player.queue.shuffle()

@@ -4,7 +4,7 @@
     "description": "",
     "main": "build/index.js",
     "engines": {
-        "node": ">=18.12.0"
+        "node": ">=18.17.0"
     },
     "signale": {
         "displayScope": true,
@@ -30,15 +30,15 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
+        "@sentry/cli": "^2.20.5",
         "@sentry/node": "7.61.0",
         "@sentry/profiling-node": "1.1.2",
         "bindings": "1.5.0",
-        "canvas": "2.11.2",
         "cors": "2.8.5",
         "datadog-metrics": "0.11.0",
         "dd-trace": "4.11.1",
-        "discord-hybrid-sharding": "github:meister03/discord-hybrid-sharding",
-        "discord.js": "14.12.1",
+        "discord-hybrid-sharding": "github:meister03/discord-hybrid-sharding#caaae4a",
+        "discord.js": "14.13.0",
         "dotenv": "16.3.1",
         "express": "4.18.2",
         "figlet": "1.6.0",
@@ -48,14 +48,14 @@
         "mongoose": "7.4.3",
         "mongoose-encryption": "2.1.2",
         "signale": "1.4.0",
+        "sodium": "^3.0.2",
         "statcord.js": "3.4.3",
         "stripe": "12.18.0",
-        "yasha": "github:eliyya/ts-yasha#node",
+        "yasha": "github:eliyya/ts-yasha#master",
         "youtubei.js": "5.8.0"
     },
     "devDependencies": {
         "@types/cors": "2.8.13",
-        "@types/dd-trace": "^0.9.0",
         "@types/express": "4.17.17",
         "@types/figlet": "1.5.6",
         "@types/i18n": "0.13.6",
@@ -65,9 +65,9 @@
         "concurrently": "8.2.0",
         "eslint": "8.46.0",
         "nodemon": "3.0.1",
-        "transjson": "github:OnekiDevs/transjson#jspkg",
+        "transjson": "github:OnekiDevs/transjson#1187c4b",
         "ts-standard": "12.0.2",
-        "type-locales": "github:OnekiDevs/type-locales",
+        "type-locales": "github:OnekiDevs/type-locales#ab4ea48",
         "typescript": "5.1.6"
     },
     "optionalDependencies": {
@@ -109,11 +109,14 @@
             "@typescript-eslint/restrict-plus-operands": "off",
             "@typescript-eslint/restrict-template-expressions": "off",
             "@typescript-eslint/no-base-to-string": "off",
-            "curly": ["error", "multi"]
+            "curly": [
+                "error",
+                "multi"
+            ]
         }
     },
     "prettier": {
-        "printWidth": 120,
+        "printWidth": 80,
         "tabWidth": 4,
         "useTabs": false,
         "semi": false,
