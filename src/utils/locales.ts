@@ -129,6 +129,7 @@ export default {
     'not_reproducible': "play.not_reproducible",
     'added': "play.added",
     'cant_join': "play.cant_join",
+    'age_restricted': "play.age_restricted",
   },
   'reboot': {
     'all': "reboot.all",
@@ -564,6 +565,7 @@ export default {
     'not_reproducible': string
     'added': string
     'cant_join': string
+    'age_restricted': string
   }
   'reboot': {
     'all': string

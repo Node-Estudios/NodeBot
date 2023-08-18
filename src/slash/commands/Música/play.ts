@@ -126,6 +126,12 @@ export default class play extends Command {
                     })
                     .catch(async e => {
                         logger.error(e)
+                        if ((e as Error).message.includes('Video is age restricted')) {
+                            interaction.editReply({
+                                content: translate(keys.play.age_restricted),
+                            })
+                            return undefined
+                        }
                         interaction.editReply({
                             embeds: [
                                 new EmbedBuilder()

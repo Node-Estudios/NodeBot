@@ -25,7 +25,7 @@
         "build": "npm run type:locales && tsc",
         "dev": "nodemon -e ts --exec \"npm start\"",
         "tsc:watch": "nodemon -e ts --exec tsc",
-        "type:locales": "cd locales && type-locales && mv locales.ts ../src/utils/locales.ts && cd .. && node build/utils/testLocales.js"
+        "type:locales": "cd locales && type-locales && mv locales.ts ../src/utils/locales.ts && cd .. && if [ -f \"build/utils/testLocales.js\" ]; then node build/utils/testLocales.js; fi"
     },
     "author": "",
     "license": "ISC",

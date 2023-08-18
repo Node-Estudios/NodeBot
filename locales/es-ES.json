@@ -137,7 +137,8 @@
         "not_voice": "Necesitas estar en un canal de voz para ejecutar este comando.",
         "not_reproducible": "El enlace adjunto no contiene contenidos reproducibles.",
         "added": "{song} añadido a la lista",
-        "cant_join": "No puedo unirme a tu canal de voz, ¿tengo permisos?"
+        "cant_join": "No puedo unirme a tu canal de voz, ¿tengo permisos?",
+        "age_restricted": "No puedo reproducir canciones restringidas por edad."
     },
     "reboot": {
         "all": "Reiniciando todos los fragmentos...",
