@@ -1,0 +1,437 @@
+{
+    "question_ball": {
+        "no_question": "Não vejo nenhuma pergunta para responder?",
+        "question": "À sua pergunta",
+        "response": "A minha resposta é",
+        "possibles": {
+            "0": "Sí",
+            "1": "Não",
+            "2": "Talvez",
+            "3": "Obviamente",
+            "4": "Eu digo que sim.",
+            "5": "Eu digo que não.",
+            "6": "Provavelmente",
+            "7": "Tenho as minhas dúvidas...",
+            "8": "Sem dúvida",
+            "9": "Nem precisavas de perguntar ;)",
+            "10": "De modo algum...",
+            "11": "Não me parece..."
+        }
+    },
+    "impostor": {
+        "was": "Era o impostor",
+        "was_not": "Não era o impostor"
+    },
+    "embed": {
+        "successfully": "Embed criado e enviado com sucesso.",
+        "missing_permissions": "Não tenho permissões para publicar mensagens neste canal. Preciso de {permisions}",
+        "modal": {
+            "title": "Criador de incorporações",
+            "title_label": "Título",
+            "title_placeholder": "A melhor incorporação",
+            "description_label": "Descrição",
+            "description_placeholder": "Este é o melhor embutido do mundo",
+            "color_label": "Cor"
+        },
+        "buttons": {
+            "send": "Enviar",
+            "edit": "Editar"
+        },
+        "invalid_input": "Entrada no válida"
+    },
+    "github": {
+        "write_username": "Introduza um nome de utilizador.",
+        "name": "🧑 Nome:",
+        "account": " Tipo de conta:",
+        "organization": "🏢 Organização:",
+        "link": "☁️ Ligação",
+        "location": "🗺 Localização:",
+        "email": "Endereço eletrónico",
+        "biography": "📃 Biografia",
+        "twitter": "🐦 Twitter:",
+        "repositories": "📂 Repositórios públicos",
+        "followers": "🧍 Seguidores",
+        "analizing": "A analisar a conta, por favor aguarde...",
+        "unknow": "Utilizador não encontrado"
+    },
+    "help": {
+        "presentation": "<a:pin:893553168259121172> Olá, eu sou o Node, um bot multifuncional tudo-em-um com comandos inovadores.",
+        "how_use": "Como é que posso ver os comandos?",
+        "how_use_answer": "Fácil, basta digitar",
+        "need_support": "Se precisar de ajuda, como posso contactar a equipa de apoio?",
+        "need_support_answer": "Pode perguntar no nosso [servidor de apoio]({inviteURL})",
+        "how_vote": "Como é que posso votar no robô?",
+        "how_vote_answer": "Pode fazê-lo utilizando o comando <a:arrowright:97038868686816550912> `/vote` ou [Clicando Aqui](https://vote.nodebot.xyz) 'Estamos à espera do seu voto :)'.",
+        "title": "✨ - Menú Ayuda"
+    },
+    "avatar": "aqui tem o avatar de {user}",
+    "mchistory": {
+        "dont": "O nome de utilizador não existe",
+        "names": "História do nome",
+        "first": "Número"
+    },
+    "ping": {
+        "global": "Ping global",
+        "internal": "Processamento interno (base de dados + processamento)"
+    },
+    "roleinfo": {
+        "managed": "Gestionado por Discord"
+    },
+    "nowplaying": {
+        "1": "É necessário estar num canal de voz para poder executar este comando.",
+        "2": "Nenhuma música está a ser reproduzida atualmente.",
+        "3": "Reproduzir agora",
+        "4": "Pausado",
+        "5": "Autor",
+        "6": "Solicitada por",
+        "7": "Duração"
+    },
+    "serverinfo": {
+        "verification": {
+            "no": "Não há verificação.",
+            "low": "Low (Conta verificada).",
+            "medium": "Média (conta verificada durante +5 minutos).",
+            "high": "Registo (conta verificada durante +10 minutos).",
+            "extreme": "Extreme (conta verificada e número de telefone verificado associados)."
+        },
+        "explicit": {
+            "disabled": "Não é digitalizada qualquer mensagem.",
+            "members_without_role": "Verificar utilizadores sem uma função.",
+            "all_members": "Verificar todas as mensagens."
+        },
+        "emoji_count": "Conta Emoji",
+        "tier_level": "Nível",
+        "verification_level": "Nível de verificação",
+        "explicit_filter": "Nível de filtro de conteúdo explícito"
+    },
+    "ban": {
+        "not_found": "Membro não encontrado",
+        "self": "Não se pode proibir a si próprio",
+        "owner": "O proprietário não pode ser proibido de",
+        "higher": "Não podes banir um membro com um papel superior ao teu",
+        "ban": "Banido com sucesso",
+        "unbannable": "Não posso expulsar este membro"
+    },
+    "skip": {
+        "messages": {
+            "0": "Não há músicas a tocar no teu canal de voz, porque não adicionas uma? <:pepeblink:967941236029788160>",
+            "1": "Não parece estar a ouvir música, que tal fazermos isso <:pepeblink:96794121236029788160>?",
+            "2": "O que é que faz sem ouvir música? Adicione uma música agora :)"
+        },
+        "no_same": "Não estás no meu canal de voz.",
+        "skiped": "{song} foi omitido"
+    },
+    "queue": {
+        "no_queue": "Não há músicas a tocar neste servidor, porque não adiciona uma?",
+        "current": "Atualmente a jogar:",
+        "queue": "A fila de espera de {name}",
+        "no_page": "A página não existe!",
+        "total": "Fila total de canções:"
+    },
+    "247": {
+        "enabled": "O modo 24/7 está ativado <a:DJPeepo:969757766744944700>.",
+        "disabled": "O modo 24/7 está desativado"
+    },
+    "play": {
+        "same": "É necessário estar no mesmo canal de voz que o bot para executar este comando.",
+        "not_voice": "É necessário estar num canal de voz para executar este comando.",
+        "not_reproducible": "A ligação em anexo não contém conteúdos reproduzíveis.",
+        "added": "{song} adicionado à lista",
+        "cant_join": "Não consigo entrar no vosso canal de voz, tenho permissões?",
+        "age_restricted": "Não posso tocar músicas com restrições de idade."
+    },
+    "reboot": {
+        "all": "Reiniciar todos os fragmentos...",
+        "shard": "Reiniciar o fragmento {shard}..."
+    },
+    "stop": {
+        "resumed": "Música retomada por {user}",
+        "paused": "Música pausada por {user}",
+        "success": "Paragem de música"
+    },
+    "paused": "Música pausada",
+    "resumed": "Retomada da música",
+    "voice_update": {
+        "leaving": "Partida de {channel} em {time} minutos",
+        "alone": "Eu estava sozinho, e saí"
+    },
+    "automix": {
+        "generated": "A mistura automática foi gerada!",
+        "disabled": "AutoMix desativado"
+    },
+    "twitch": {
+        "no_streamer_found": "Não foi encontrado nenhum canal com este nome.",
+        "already_following": "Já está a seguir este streamer.",
+        "now_following": "Está agora a seguir {streamer}. As notificações serão enviadas para {channel}.",
+        "unfollowed": "Já não está a seguir {streamer}.",
+        "role_mention": "Será feita menção a {role}.",
+        "now_live": "{streamer} está em direto!"
+    },
+    "loop": {
+        "queue": "Bucle de cola",
+        "song": "Loop de canções",
+        "disabled": "Loop desativado"
+    },
+    "ERROREMBED": "Erro",
+    "SUCCESSEMBED": "Sucesso",
+    "PAUSE": "Intervalo",
+    "RESUME": "Currículo",
+    "STOP": "Parar",
+    "SKIP": "Saltar",
+    "NEXT": "Seguinte",
+    "QUEUE": "Cola",
+    "TITLE": "Título",
+    "MEMBERS": "Membros",
+    "REGULAR": "Regular",
+    "ANIMATED": "Animação",
+    "CHANNELS": "Canais",
+    "ROLES": "Funções",
+    "CATEGORIES": "Categorias",
+    "SONGS": "Canções",
+    "TEXT": "Texto",
+    "VOICE": "Voz",
+    "BOOSTERS": "Reforços",
+    "REGION": "Região",
+    "TIER": "Animais",
+    "CREATED_AT": "Criado em",
+    "OWNER": "Proprietário",
+    "AUTHOR": "Autor",
+    "REQUESTER": "Solicitação",
+    "DURATION": "Duração",
+    "NO": "Não",
+    "API": "API",
+    "PING": "Ping",
+    "NAME": "Número",
+    "ID": "ID",
+    "POSITION": "Posição",
+    "COLOR": "Cor",
+    "MENTIONABLE": "Mencionável",
+    "SEPARATED": "Separado",
+    "YES": "Sí",
+    "PLAYING": "Jogar",
+    "GENERICERROR": "Oops, parece ter havido um erro.\nPodes contactar o programador para o informar em [The Official Discord]({inviteURL})",
+    "commands": {
+        "reboot": {
+            "name": "reiniciar",
+            "description": "Repor um ou todos os fragmentos",
+            "options": {
+                "shard": {
+                    "name": "excerto",
+                    "description": "O fragmento que pretende reiniciar"
+                }
+            }
+        },
+        "8ball": {
+            "name": "bola8",
+            "description": "Fazer uma pergunta à bola mágica",
+            "options": {
+                "question": {
+                    "name": "pregunta",
+                    "description": "O que queres perguntar à bola mágica?"
+                }
+            }
+        },
+        "impostor": {
+            "name": "impostor",
+            "description": "É você o impostor? SEU",
+            "options": {
+                "user": {
+                    "name": "utilizador",
+                    "description": "Este utilizador é um impostor? SUS na na na na na na na na na na na na na na"
+                }
+            }
+        },
+        "avatar": {
+            "name": "avatar",
+            "description": "Envie a sua fotografia de perfil ou a fotografia de outro utilizador!",
+            "options": {
+                "user": {
+                    "name": "utilizador",
+                    "description": "O utilizador do qual pretende obter o avatar"
+                }
+            }
+        },
+        "twitch": {
+            "name": "contrair-se",
+            "description": "Definir uma notificação para quando um streamer entra em direto!",
+            "options": {
+                "add": {
+                    "name": "adicionar",
+                    "description": "Adicionar uma notificação para um streamer",
+                    "options": {
+                        "streamer": {
+                            "name": "serpentina",
+                            "description": "O nome do streamer"
+                        },
+                        "channel": {
+                            "name": "canal",
+                            "description": "O canal para onde as notificações serão enviadas"
+                        },
+                        "role": {
+                            "name": "rolar",
+                            "description": "A função a mencionar quando o streamer entra em direto."
+                        }
+                    }
+                },
+                "remove": {
+                    "name": "apagar",
+                    "description": "Remover uma notificação para um streamer",
+                    "options": {
+                        "streamer": {
+                            "name": "serpentina",
+                            "description": "O nome do streamer"
+                        }
+                    }
+                }
+            }
+        },
+        "shards": {
+            "name": "fragmentos",
+            "description": "Apresenta informações sobre os fragmentos"
+        },
+        "serverinfo": {
+            "name": "infoservidor",
+            "description": "Apresenta informações sobre o servidor"
+        },
+        "roleinfo": {
+            "name": "inforol",
+            "description": "Apresenta informações sobre uma função",
+            "options": {
+                "role": {
+                    "name": "rolar",
+                    "description": "A função sobre a qual pretende obter informações"
+                }
+            }
+        },
+        "ping": {
+            "name": "ping",
+            "description": "Apresenta a latência do bot"
+        },
+        "mcserver": {
+            "name": "servidormc",
+            "description": "Enviar uma imagem de um servidor do Minecraft",
+            "options": {
+                "server": {
+                    "name": "servidor",
+                    "description": "O servidor do qual pretende obter informações"
+                }
+            }
+        },
+        "mchistory": {
+            "name": "historymc",
+            "description": "Mostra o histórico de nomes de um jogador do Minecraft",
+            "options": {
+                "account": {
+                    "name": "conta",
+                    "description": "A conta da qual se pretende obter informações"
+                }
+            }
+        },
+        "help": {
+            "name": "ajuda",
+            "description": "Apresenta informações sobre mim"
+        },
+        "github": {
+            "name": "github",
+            "description": "Apresenta informações sobre um utilizador de GitHub",
+            "options": {
+                "account": {
+                    "name": "conta",
+                    "description": "A conta da qual se pretende obter informações"
+                }
+            }
+        },
+        "embed": {
+            "name": "incorporar",
+            "description": "Criar uma incorporação personalizada",
+            "options": {
+                "channel": {
+                    "name": "canal",
+                    "description": "O canal para onde a incorporação será enviada"
+                },
+                "color": {
+                    "name": "cor",
+                    "description": "A cor do embutido"
+                },
+                "title": {
+                    "name": "título",
+                    "description": "O título da incorporação"
+                },
+                "description": {
+                    "name": "descrição",
+                    "description": "A descrição da incorporação"
+                }
+            }
+        },
+        "ban": {
+            "name": "proibição",
+            "description": "Banir um utilizador",
+            "options": {
+                "user": {
+                    "name": "utilizador",
+                    "description": "Utilizador a banir"
+                },
+                "reason": {
+                    "name": "razão",
+                    "description": "Motivo da proibição"
+                },
+                "days": {
+                    "name": "dias",
+                    "description": "Dias para apagar mensagens do utilizador"
+                }
+            }
+        },
+        "play": {
+            "name": "reproduzir",
+            "description": "Reproduzir a canção da sua escolha com o seu nome ou uma ligação para o youtube/spotify.",
+            "options": {
+                "song": {
+                    "name": "canção",
+                    "description": "O nome da música ou a hiperligação para o youtube/spotify"
+                }
+            }
+        },
+        "stop": {
+            "name": "paragem",
+            "description": "Pára o leitor de música"
+        },
+        "skip": {
+            "name": "saltar",
+            "description": "Salta a música que está a ser reproduzida"
+        },
+        "resume": {
+            "name": "currículo",
+            "description": "Retomar a música atual"
+        },
+        "queue": {
+            "name": "cola",
+            "description": "Mostrar a fila de canções"
+        },
+        "pause": {
+            "name": "pausa",
+            "description": "Pausa na música atual"
+        },
+        "nowplaying": {
+            "name": "reprodução",
+            "description": "Apresenta a música atualmente em reprodução"
+        },
+        "loop": {
+            "name": "laço",
+            "description": "Repete a fila/canção atual"
+        },
+        "247": {
+            "name": "247",
+            "description": "Permanecer 24/7 num único canal de voz"
+        },
+        "eval": {
+            "name": "avaliação",
+            "description": "Avalia um código",
+            "options": {
+                "code": {
+                    "name": "código",
+                    "description": "O código que pretende avaliar"
+                }
+            }
+        }
+    }
+}
