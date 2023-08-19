@@ -128,7 +128,7 @@ export default class play extends Command {
                         if ((e as Error).message.includes('Video is age restricted')) {
                             interaction.editReply({
                                 content: translate(keys.play.age_restricted),
-                            })
+                            }).catch(logger.error)
                             return undefined
                         }
                         logger.error(e)
@@ -152,7 +152,17 @@ export default class play extends Command {
                 }).catch(logger.error)
 
             player.queue.add(search)
-            if (!player.playing || player.paused) player.play()
+            try {
+                if (!player.playing || player.paused) await player.play()
+            } catch (error) {
+                if ((error as Error).message.includes('Video is age restricted')) {
+                    interaction.editReply({
+                        content: translate(keys.play.age_restricted),
+                    }).catch(logger.error)
+                    return
+                }
+                logger.error(error)
+            }
             const embed = new EmbedBuilder()
                 .setColor(client.settings.color)
                 .addFields(
