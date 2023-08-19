@@ -3,7 +3,6 @@ node-ts.rar
 dist
 .vs
 .env
-build
 FFmpeg/
 testing.js
 test.txt

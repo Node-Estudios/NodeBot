@@ -1,0 +1,1 @@
+{"version":3,"file":"index.js","sourceRoot":"","sources":["../src/index.ts"],"names":[],"mappings":"AAAA,OAAO,eAAe,CAAA;AACtB,OAAO,WAAW,MAAM,6BAA6B,CAAA;AACrD,IAAI,WAAW,EAAE,CAAC,KAAK,EAAE,CAAA","sourcesContent":["import 'dotenv/config'\nimport NodeManager from './structures/NodeManager.js'\nnew NodeManager().spawn()\n"]}
