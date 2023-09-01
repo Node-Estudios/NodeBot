@@ -351,6 +351,10 @@
                 "description": {
                     "name": "説明",
                     "description": "埋め込みの説明"
+                },
+                "image": {
+                    "name": "画像",
+                    "description": "埋め込み画像はpng, jpg, jpeg, gif, webp, bmp, tiff, tif形式です。"
                 }
             }
         },

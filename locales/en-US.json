@@ -351,6 +351,10 @@
                 "description": {
                     "name": "description",
                     "description": "Description of the embed"
+                },
+                "image": {
+                    "name": "image",
+                    "description": "Image of the embed in format png, jpg, jpeg, gif, webp, bmp, tiff, tif"
                 }
             }
         },

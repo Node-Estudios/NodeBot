@@ -31,7 +31,7 @@
             "title_placeholder": "El mejor embed",
             "description_label": "Descripción",
             "description_placeholder": "Este es el mejor embed del mundo",
-            "color_label": "Color"
+            "color_label": "Color",
         },
         "buttons": {
             "send": "Enviar",
@@ -360,6 +360,10 @@
                 "description": {
                     "name": "descripción",
                     "description": "La descripción del embed"
+                },
+                "image": {
+                    "name": "imagen",
+                    "description": "La imagen del embed en formato png, jpg, jpeg, gif, webp, bmp, tiff o tif"
                 }
             }
         },

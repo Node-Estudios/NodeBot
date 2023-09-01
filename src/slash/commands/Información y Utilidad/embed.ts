@@ -43,6 +43,11 @@ export default class embed extends Command {
                     description: 'Color of the embed',
                     autocomplete: true,
                 },
+                {
+                    type: ApplicationCommandOptionType.Attachment,
+                    name: 'image',
+                    description: 'Image of the embed in format png, jpg, jpeg, gif, webp, bmp, tiff, tif',
+                },
             ],
         })
     }
@@ -50,16 +55,16 @@ export default class embed extends Command {
     override async run (interaction: ChatInputCommandInteraction) {
         const translate = Translator(interaction)
         const client = interaction.client as Client
-        if (!interaction.inCachedGuild()) {
+        if (!interaction.inCachedGuild())
             return await interaction.reply({
                 content: translate(keys.GENERICERROR, {
                     inviteURL: client.officialServerURL,
                 }),
                 ephemeral: true,
             })
-        }
+
         const channel = interaction.options.getChannel('channel', false, [ChannelType.GuildText]) ?? interaction.channel
-        if (!channel?.permissionsFor(interaction.guild.members.me as GuildMember).has([PermissionFlagsBits.SendMessages, PermissionFlagsBits.EmbedLinks])) {
+        if (!channel?.permissionsFor(interaction.guild.members.me as GuildMember).has([PermissionFlagsBits.SendMessages, PermissionFlagsBits.EmbedLinks]))
             return await interaction.reply({
                 content: Translator(interaction)(keys.embed.missing_permissions, {
                     permisions: new PermissionsBitField([PermissionFlagsBits.SendMessages, PermissionFlagsBits.EmbedLinks])
@@ -69,10 +74,12 @@ export default class embed extends Command {
                 }),
                 ephemeral: true,
             })
-        }
+
         const colorInput = interaction.options.getString('color')
         let color = new Color(`${Colors.Default}`)
         if (colorInput && Color.isColor(colorInput)) color = new Color(colorInput)
+        const immage = interaction.options.getAttachment('image')
+        console.log(immage?.url)
         return await interaction.showModal(
             new ModalBuilder()
                 .setCustomId('embed:n:' + channel.id)
@@ -103,6 +110,11 @@ export default class embed extends Command {
                             .setStyle(TextInputStyle.Short)
                             .setRequired(true)
                             .setValue(color.hex),
+                    ),
+                    new ActionRowBuilder<TextInputBuilder>().setComponents(
+                        new TextInputBuilder()
+                            .setCustomId('image')
+                            .setPlaceholder('https://imgur.com/Vicmk2N'),
                     ),
                 ))
     }

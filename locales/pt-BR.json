@@ -360,6 +360,10 @@
                 "description": {
                     "name": "descrição",
                     "description": "A descrição da incorporação"
+                },
+                "image": {
+                    "name": "imagem",
+                    "description": "A imagem da incorporação em formato png, jpg, jpeg, gif, webp, bmp, tiff ou tif"
                 }
             }
         },
