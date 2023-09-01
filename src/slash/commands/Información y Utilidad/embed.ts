@@ -69,7 +69,7 @@ export default class embed extends Command {
                 content: Translator(interaction)(keys.embed.missing_permissions, {
                     permisions: new PermissionsBitField([PermissionFlagsBits.SendMessages, PermissionFlagsBits.EmbedLinks])
                         .toArray()
-                        .map(p => p.replace(/([A-Z])/g, ' $&').trim())
+                        .map(p => p.replace(/([A-Z])/g, ' $&')?.trim())
                         .join(', '),
                 }),
                 ephemeral: true,
