@@ -4,6 +4,7 @@ import logger from '#utils/logger.js'
 import { Innertube } from 'youtubei.js'
 import Queue from './Queue.js'
 import yasha from 'yasha'
+import Translator, { keys } from '#utils/Translator.js'
 
 export default class Player extends yasha.TrackPlayer {
     trackRepeat = false
@@ -81,7 +82,17 @@ export default class Player extends yasha.TrackPlayer {
         else super.play(track)
         clearTimeout(this.leaveTimeout)
         this.leaveTimeout = undefined
-        this.start()
+        try {
+            this.start()
+        } catch (error) {
+            if (`${error}`.includes('Video is age restricted'))
+                this.getTextChannel().then(c => {
+                    const translate = Translator(this.guild)
+                    c?.send({
+                        content: translate(keys.play.age_restricted),
+                    })
+                }).catch(e => undefined)
+        }
     }
 
     override async destroy () {
