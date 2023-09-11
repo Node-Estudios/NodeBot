@@ -19,8 +19,8 @@
         }
     },
     "impostor": {
-        "was": "Era o impostor",
-        "was_not": "Não era o impostor"
+        "was": "{user} era o impostor",
+        "was_not": "{user} Não era o impostor"
     },
     "embed": {
         "successfully": "Embed criado e enviado com sucesso.",
