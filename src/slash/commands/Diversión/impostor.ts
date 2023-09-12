@@ -29,9 +29,9 @@ export default class impostor extends Command {
 
         .　　 。　　　　　 ඞ 。 . 　　 • 　　　　•
 
-        　　ﾟ　　 ${ trnaslate(keys.impostor[Math.random() < 0.7 ? 'was' : 'was_not'], {
-            user: String(interaction.options.getUser('user') ?? interaction.user)
-        })} 　 。　.  　 。　.
+        　　ﾟ　　 ${trnaslate(keys.impostor[Math.random() < 0.7 ? 'was' : 'was_not'], {
+        user: String(interaction.options.getUser('user') ?? interaction.user),
+    })} 　 。　.  　 。　.
 
         　　'　　　  　 　　。     ,         ﾟ             ,   ﾟ      .       ,        .             ,
 
