@@ -137,6 +137,12 @@ export default class play extends Command {
                             }).catch(logger.error)
                             return undefined
                         }
+                        if ((e as Error).message.includes('This video is not available')) {
+                            interaction.editReply({
+                                content: translate(keys.play.not_available),
+                            }).catch(logger.error)
+                            return undefined
+                        }
                         logger.error(e)
                         interaction.editReply({
                             embeds: [

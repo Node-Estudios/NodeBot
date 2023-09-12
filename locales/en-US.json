@@ -130,7 +130,8 @@
         "added": "{song} added to the list",
         "cant_join": "I can't join your voice channel, make sure I have the necessary permissions.",
         "age_restricted": "The attached link contains age-restricted content.",
-        "playlist_not_found": ""
+        "playlist_not_found": "Playlist not found",
+        "not_available": "This video is not available"
     },
     "reboot": {
         "all": "Rebooting all shards...",

@@ -139,7 +139,8 @@
         "added": "{song} adicionado à lista",
         "cant_join": "Não consigo entrar no vosso canal de voz, tenho permissões?",
         "age_restricted": "Não posso tocar músicas com restrições de idade.",
-        "playlist_not_found": "Lista de reprodução não encontrada"
+        "playlist_not_found": "Lista de reprodução não encontrada",
+        "not_available": "Este vídeo não está disponível"
     },
     "reboot": {
         "all": "Reiniciar todos os fragmentos...",

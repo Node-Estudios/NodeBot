@@ -367,8 +367,12 @@ export default class MusicManager extends EventEmitter {
             return track
             // }
         } catch (error) {
-            if ((error as Error).message === 'Video is age restricted') throw new Error('Video is age restricted')
-            if ((error as Error).message === 'Playlist not found') throw new Error('Playlist not found')
+            if ([
+                'Video is age restricted',
+                'Playlist not found',
+                'This video is not available',
+            ].includes((error as Error).message))
+                throw new Error((error as Error).message)
             client.errorHandler.captureException(error as Error)
         }
         return undefined

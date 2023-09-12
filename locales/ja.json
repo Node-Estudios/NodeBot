@@ -130,7 +130,8 @@
         "added": "リストに{song}を追加",
         "cant_join": "私はあなたのボイスチャンネルに参加できません。権限を確認してください。",
         "age_restricted": "年齢制限付きの曲は再生できません。",
-        "playlist_not_found": "プレイリストが見つかりません"
+        "playlist_not_found": "プレイリストが見つかりません",
+        "not_available": "このビデオは使用できません"
     },
     "reboot": {
         "all": "すべてのシャードを再起動...",

@@ -131,6 +131,7 @@ export default {
     'cant_join': "play.cant_join",
     'age_restricted': "play.age_restricted",
     'playlist_not_found': "play.playlist_not_found",
+    'not_available': "play.not_available",
   },
   'reboot': {
     'all': "reboot.all",
@@ -571,7 +572,8 @@ export default {
     'added': string
     'cant_join': string
     'age_restricted': string
-    'playlist_not_found'?: string
+    'playlist_not_found': string
+    'not_available': string
   }
   'reboot': {
     'all': string
