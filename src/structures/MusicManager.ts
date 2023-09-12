@@ -348,7 +348,7 @@ export default class MusicManager extends EventEmitter {
                 }
                 const tracks = search.filter(t => t.platform === 'Youtube')
                 if (!tracks.length) return undefined
-                track = tracks[0] as any
+                track = tracks[0]
             }
             if (track?.platform !== 'Youtube') return undefined
             // if (track instanceof TrackPlaylist) {
@@ -367,7 +367,9 @@ export default class MusicManager extends EventEmitter {
             return track
             // }
         } catch (error) {
+            // TODO: throws error
             if ((error as Error).message === 'Video is age restricted') return undefined
+            if ((error as Error).message === 'Playlist not found') return undefined
             client.errorHandler.captureException(error as Error)
         }
         return undefined
