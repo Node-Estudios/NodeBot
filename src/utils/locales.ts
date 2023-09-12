@@ -130,6 +130,7 @@ export default {
     'added': "play.added",
     'cant_join': "play.cant_join",
     'age_restricted': "play.age_restricted",
+    'playlist_not_found': "play.playlist_not_found",
   },
   'reboot': {
     'all': "reboot.all",
@@ -356,6 +357,10 @@ export default {
           'name': "commands.embed.options.description.name",
           'description': "commands.embed.options.description.description",
         },
+        'image': {
+          'name': "commands.embed.options.image.name",
+          'description': "commands.embed.options.image.description",
+        },
       },
     },
     'ban': {
@@ -566,6 +571,7 @@ export default {
     'added': string
     'cant_join': string
     'age_restricted': string
+    'playlist_not_found'?: string
   }
   'reboot': {
     'all': string
@@ -789,6 +795,10 @@ export default {
           'description': string
         }
         'description': {
+          'name': string
+          'description': string
+        }
+        'image': {
           'name': string
           'description': string
         }

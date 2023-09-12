@@ -138,7 +138,8 @@
         "not_reproducible": "El enlace adjunto no contiene contenidos reproducibles.",
         "added": "{song} añadido a la lista",
         "cant_join": "No puedo unirme a tu canal de voz, ¿tengo permisos?",
-        "age_restricted": "No puedo reproducir canciones restringidas por edad."
+        "age_restricted": "No puedo reproducir canciones restringidas por edad.",
+        "playlist_not_found": "Playlist not found"
     },
     "reboot": {
         "all": "Reiniciando todos los fragmentos...",

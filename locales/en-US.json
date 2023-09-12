@@ -129,7 +129,8 @@
         "not_reproducible": "The attached link does not contain reproducible content.",
         "added": "{song} added to the list",
         "cant_join": "I can't join your voice channel, make sure I have the necessary permissions.",
-        "age_restricted": "The attached link contains age-restricted content."
+        "age_restricted": "The attached link contains age-restricted content.",
+        "playlist_not_found": ""
     },
     "reboot": {
         "all": "Rebooting all shards...",

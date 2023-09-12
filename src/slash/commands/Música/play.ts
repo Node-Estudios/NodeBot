@@ -131,6 +131,12 @@ export default class play extends Command {
                             }).catch(logger.error)
                             return undefined
                         }
+                        if ((e as Error).message.includes('Playlist not found')) {
+                            interaction.editReply({
+                                content: translate(keys.play.playlist_not_found),
+                            }).catch(logger.error)
+                            return undefined
+                        }
                         logger.error(e)
                         interaction.editReply({
                             embeds: [
