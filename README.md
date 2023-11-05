@@ -2,6 +2,7 @@
 > No damos ningñun tipo de soporte para su uso comercial o personal, puedes visitar su antigua versión [aqui](https://github.com/Node-Estudios/NodeBot)
 > Este es la continuacion de un [proyecto original por los mismo screadores](https://github.com/LyricalString/Node-Discord-Bot), actualmente operativo y muy optimizado.
 
+
 <img width="150" height="150" align="left" style="float: left; margin: 0 10px 0 0;" alt="🤖 Node" src="https://i.goopics.net/52j27r.jpg">
 
 # Node
@@ -12,6 +13,7 @@
 [![DevServer](https://discordapp.com/api/guilds/834440041010561074/widget.png?style=shield)](https://discord.gg/SbsFVV5dNG)
 [![](https://img.shields.io/github/languages/top/Node-Estudios/NodeBot)]()
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/J3J1N9LEG)
+
 
 > Este bot ha sido usado por más de 3.000.000 usuarios de Discord y más de 28.000 servidores.
 
