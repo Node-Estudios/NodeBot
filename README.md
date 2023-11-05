@@ -10,7 +10,7 @@
 [![⭐ GitHub](https://img.shields.io/github/stars/Node-Estudios/NodeBot.svg?style=social&label=Stars&style=flat)](https://github.com/Node-Estudios/NodeBot/stargazers)
 [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=Node-Estudios_NodeBot&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=Node-Estudios_NodeBot)
 [![](https://img.shields.io/badge/discord.js-v14.0.0--dev-blue.svg?logo=npm)](https://github.com/discordjs)
-[![DevServer](https://discordapp.com/api/guilds/834440041010561074/widget.png?style=shield)](https://discord.gg/SbsFVV5dNG)
+[![DevServer](https://discordapp.com/api/guilds/834440041010561074/widget.png?style=shield)](https://discord.gg/node-server-834440041010561074)
 [![](https://img.shields.io/github/languages/top/Node-Estudios/NodeBot)]()
 [![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/J3J1N9LEG)
 
