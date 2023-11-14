@@ -5,7 +5,7 @@ import { Stripe } from 'stripe'
 import logger from '#utils/logger.js'
 
 const stripeAcces = new Stripe(process.env.STRIPE, { apiVersion: '2022-11-15', typescript: true })
-const endpointSecret = 'whsec_49455f433220997b19b1470c119bfa10304a72f4638e02eca17d06636bea7ab3'
+const endpointSecret = ''
 // export default router
 export default class StripeApi {
     manager: NodeManager
