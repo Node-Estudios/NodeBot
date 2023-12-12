@@ -75,7 +75,7 @@ export default class Player extends yasha.TrackPlayer {
         if (this.connection) this.connection.destroy()
     }
 
-    override async play (track?: any) {
+    async play (track?: any) {
         this.playing = true
         // TODO: Check if this code works
         if (!track && this.queue.current) super.play(this.queue.current)
@@ -98,7 +98,8 @@ export default class Player extends yasha.TrackPlayer {
     override async destroy () {
         try {
             if (this.connection) this.disconnect()
-            if (this.player) super.destroy()
+            // TODO: FIX
+            //if (this.player) super.destroy()
 
             return this.manager.players.delete(this.guild.id)
         } catch (e) {
@@ -142,7 +143,7 @@ export default class Player extends yasha.TrackPlayer {
 
         this.playing = !pause
         this.paused = pause
-        if (this.player) this.setPaused(pause)
+        this.setPaused(pause)
 
         return this
     }
