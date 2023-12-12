@@ -55,9 +55,8 @@ export default class MusicManager extends EventEmitter {
         this.players.set(vc.guild.id, player)
         player.on('ready', async () => await this.trackStart(player))
         player.on('finish', () => this.trackEnd(player, true))
-        // TODO: yasha update
-        player.on('debug', (debug: any) => logger.log(debug))
-        player.on(yasha.VoiceConnection.Status.Destroyed, async () => await player.destroy())
+        // TODO: FIX
+        // player.on(yasha.VoiceConnection.Status.Destroyed, async () => await player.destroy())
         player.on('error', err => {
             client.errorHandler.captureException(err)
             logger.error(err)
@@ -125,7 +124,7 @@ export default class MusicManager extends EventEmitter {
             { band: 16000, gain: -4 }, // Frecuencia muy alta
         ]
         player.setEqualizer(equalizerSettings)
-        player.player.playing = true
+        player.playing = true
         player.paused = false
         const song = player.queue.current
         if (!song) return
@@ -363,7 +362,8 @@ export default class MusicManager extends EventEmitter {
                     const stream = getMax(track.streams, 'bitrate')
                     track.streams = [stream.object]
                 } */
-            track.requester = requester
+            // todo: fix
+            // track.requester = requester
             return track
             // }
         } catch (error) {
