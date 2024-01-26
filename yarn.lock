@@ -1230,7 +1230,7 @@ cliui@^8.0.1:
 
 cmake-js@^6.2.1:
   version "6.3.2"
-  resolved "https://registry.npmjs.org/cmake-js/-/cmake-js-6.3.2.tgz"
+  resolved "https://registry.yarnpkg.com/cmake-js/-/cmake-js-6.3.2.tgz#4ee827bea99205e1bfda86f5883994873af357b6"
   integrity sha512-7MfiQ/ijzeE2kO+WFB9bv4QP5Dn2yVaAP2acFJr4NIFy2hT4w6O4EpOTLNcohR5IPX7M4wNf/5taIqMj7UA9ug==
   dependencies:
     axios "^0.21.1"
