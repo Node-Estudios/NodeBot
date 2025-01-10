@@ -40,7 +40,7 @@
         "discord-hybrid-sharding": "github:Node-Estudios/discord-hybrid-sharding#ts-rewrite",
         "discord.js": "14.14.1",
         "dotenv": "16.3.1",
-        "express": "4.19.2",
+        "express": "4.21.2",
         "figlet": "1.6.0",
         "i18n": "0.15.1",
         "jsonwebtoken": "9.0.1",
