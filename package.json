@@ -22,7 +22,7 @@
     "scripts": {
         "start": "doppler run -- node build/index.js",
         "run": "node build/index.js",
-        "build": "npm run type:locales && tsc",
+        "build": "npm run type:locales && npx tsc",
         "dev": "nodemon -e ts --exec \"npm start\"",
         "tsc:watch": "nodemon -e ts --exec tsc",
         "type:locales": "cd locales && type-locales && mv locales.ts ../src/utils/locales.ts && cd .. && if [ -f \"build/utils/testLocales.js\" ]; then node build/utils/testLocales.js; fi"
@@ -30,6 +30,7 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
+        "@discordjs/voice": "^0.18.0",
         "@sentry/cli": "^2.20.5",
         "@sentry/node": "7.120.3",
         "@sentry/profiling-node": "1.1.2",
@@ -42,11 +43,13 @@
         "dotenv": "16.3.1",
         "express": "4.21.2",
         "figlet": "1.6.0",
+        "i": "^0.3.7",
         "i18n": "0.15.1",
         "jsonwebtoken": "9.0.1",
         "moment": "2.29.4",
         "mongoose": "7.8.6",
         "mongoose-encryption": "2.1.2",
+        "npm": "^11.3.0",
         "signale": "1.4.0",
         "sodium": "^3.0.2",
         "statcord.js": "3.4.3",

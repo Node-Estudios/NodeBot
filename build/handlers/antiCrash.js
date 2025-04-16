@@ -92,8 +92,8 @@ class ErrorManager {
         logger.error(error);
         if (this.services.sentry.loggedIn)
             Sentry.captureException(error);
-        const origin = error.stack?.split('\n')[1].trim().split(' ')[1];
-        const reason = error.stack?.split('\n')[0].trim();
+        const origin = error.stack?.split('\n')[1]?.trim().split(' ')[1];
+        const reason = error.stack?.split('\n')[0]?.trim();
         this.webhookClient.send({
             embeds: [
                 new EmbedBuilder()

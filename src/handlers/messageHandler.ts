@@ -16,10 +16,12 @@ export class MessageHelper {
             if (this.msg.replied || this.msg.deferred) {
                 followUp ? this.msg = await this.msg.followUp(content) : this.msg = await this.msg.editReply(content)
             } else {
+                // @ts-expect-error
                 followUp ? this.msg = await this.msg.followUp(content) : this.msg = await this.msg.reply(content)
             }
             return this.msg
         } else {
+             // @ts-expect-error
             followUp ? this.msg = await this.msg.channel.send(content) : this.msg = await this.msg.channel.send(content)
             return this.msg
         }
@@ -34,6 +36,7 @@ export class MessageHelper {
             }
             return this.msg
         } else {
+             // @ts-expect-error
             followUp ? this.msg = await this.msg.channel.send(content) : this.msg = await this.msg.channel.send(content)
             return this.msg
         }

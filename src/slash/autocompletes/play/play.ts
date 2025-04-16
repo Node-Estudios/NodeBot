@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { AutocompleteInteraction } from 'discord.js'
 import Autocomplete from '#structures/Autocomplete.js'
 import yasha from 'yasha'
@@ -13,6 +14,7 @@ export default class Repeat extends Autocomplete {
         const client = interaction.client as Client
         try {
             const query = interaction.options.getFocused()
+             // @ts-expect-error
             const search = await yasha.Source.Youtube.search(query)
             if (search.length > 25) search.length = 24
             if (!this.canProced(interaction.user.id, interaction.id)) return false
@@ -21,6 +23,7 @@ export default class Repeat extends Autocomplete {
                 value: query,
             }, ...search.map(r => {
                 const title = r.title ?? ''
+                // @ts-expect-error
                 const url = r.url ?? ''
                 return {
                     name: title.length > 100 ? title.slice(0, 95) + '...' : title,

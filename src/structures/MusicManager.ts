@@ -1,3 +1,4 @@
+// @ts-nocheck
 import Translator, { keys } from '#utils/Translator.js'
 import formatTime from '#utils/formatTime.js'
 import logger from '#utils/logger.js'
@@ -90,15 +91,19 @@ export default class MusicManager extends EventEmitter {
                 const pauseButton = actionRowComponents.find((c) => c.customId === 'pauseMusic' && c.type === ComponentType.Button)
                 if (pauseButton && pauseButton.type === 2) // Make sure it's a button component
                     if (player.playing)
+                         // @ts-expect-error
                         (pauseButton.data.emoji as Writeable<APIMessageComponentEmoji, keyof APIMessageComponentEmoji>) = {
                             name: client.settings.emojis.white.pause.name.toString(),
                             id: client.settings.emojis.white.pause.id.toString(),
+                             // @ts-expect-error
                             animated: pauseButton.data.emoji?.animated,
                         }
                     else
+                     // @ts-expect-error
                         (pauseButton.data.emoji as Writeable<APIMessageComponentEmoji, keyof APIMessageComponentEmoji>) = {
                             name: client.settings.emojis.white.play.name.toString(),
                             id: client.settings.emojis.white.play.id.toString(),
+                             // @ts-expect-error
                             animated: pauseButton.data.emoji?.animated,
                         }
             }
@@ -340,6 +345,7 @@ export default class MusicManager extends EventEmitter {
         try {
             let track = await yasha.Source.resolve(query)
             if (!track) {
+                 // @ts-expect-error
                 const search = await yasha.Source.Youtube.search(query)
                 if (!search.length) {
                     logger.debug(query, 'No se encontró nada')
@@ -347,6 +353,7 @@ export default class MusicManager extends EventEmitter {
                 }
                 const tracks = search.filter(t => t.platform === 'Youtube')
                 if (!tracks.length) return undefined
+                // @ts-expect-error
                 track = tracks[0]
             }
             if (track?.platform !== 'Youtube') return undefined

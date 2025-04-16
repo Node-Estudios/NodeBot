@@ -29,8 +29,6 @@ export default class MusicManager extends EventEmitter {
         this.players.set(vc.guild.id, player);
         player.on('ready', async () => await this.trackStart(player));
         player.on('finish', () => this.trackEnd(player, true));
-        player.on('debug', (debug) => logger.log(debug));
-        player.on(yasha.VoiceConnection.Status.Destroyed, async () => await player.destroy());
         player.on('error', err => {
             client.errorHandler.captureException(err);
             logger.error(err);
@@ -91,7 +89,7 @@ export default class MusicManager extends EventEmitter {
             { band: 16000, gain: -4 },
         ];
         player.setEqualizer(equalizerSettings);
-        player.player.playing = true;
+        player.playing = true;
         player.paused = false;
         const song = player.queue.current;
         if (!song)
@@ -270,12 +268,15 @@ export default class MusicManager extends EventEmitter {
             }
             if (track?.platform !== 'Youtube')
                 return undefined;
-            track.requester = requester;
             return track;
         }
         catch (error) {
-            if (error.message === 'Video is age restricted')
-                return undefined;
+            if ([
+                'Video is age restricted',
+                'Playlist not found',
+                'This video is not available',
+            ].includes(error.message))
+                throw new Error(error.message);
             client.errorHandler.captureException(error);
         }
         return undefined;

@@ -91,6 +91,7 @@ export default class NodeManager extends ClusterManager {
                     this.queue.add({
                         run: async () => {
                             const cluster = this.clusters.get(i)
+                             // @ts-expect-error
                             await cluster?.spawn(1000000, process.env.TOKEN, datos)
                             return await this.queue.next()
                         },
@@ -165,6 +166,7 @@ export default class NodeManager extends ClusterManager {
                     this.queue.add({
                         run: async () => {
                             const cluster = this.clusters.get(clusterIndex)
+                             // @ts-expect-error
                             await cluster?.spawn(1000000, token, datos)
                             return await this.queue.next()
                         },

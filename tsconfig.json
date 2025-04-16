@@ -1,5 +1,5 @@
 {
-    "exclude": [ "src/structures/Música/*" ],
+    "exclude": [ "src/structures/Música/*", "node_modules" ],
     "compilerOptions": {
         "target": "esnext",
         "module": "ESNext",

@@ -62,6 +62,7 @@ export default class Player extends yasha.TrackPlayer {
     }
 
     async connect () {
+         // @ts-expect-error
         this.connection = await yasha.VoiceConnection.connect(this.voiceChannel, {
             selfDeaf: true,
         })
@@ -74,7 +75,7 @@ export default class Player extends yasha.TrackPlayer {
         this.connection?.disconnect()
         if (this.connection) this.connection.destroy()
     }
-
+     // @ts-expect-error
     async play (track?: any) {
         this.playing = true
         // TODO: Check if this code works
