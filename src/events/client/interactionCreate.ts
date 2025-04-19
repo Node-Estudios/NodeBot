@@ -18,20 +18,24 @@ import { PerformanceMeter } from '../../handlers/performanceMeter.js'
 import { BaseEvent } from '../../structures/Events.js'
 
 export class interactionCreate extends BaseEvent {
-    async run(client: Client, interaction: Interaction) {
+    // Added space after run
+    async run (client: Client, interaction: Interaction) {
         if (process.env.TESTINGGUILD)
             if (interaction.guild?.id !== process.env.TESTINGGUILD) return
 
         if (interaction.member?.user.bot) return
         // return false if something went wrong, true if everything was okey
         if (client.settings.debug === 'true' && interaction.type !== 2)
+            // Corrected logger.debug call with parentheses for ?? and proper default
             logger.debug(
                 'Interaction, type: ' +
-                    interaction.type +
-                    ' | ' +
-                    interaction.guild?.name ??
-                    'No guild' + ' | ' + interaction.user.username,
-            )
+                interaction.type +
+                ' | ' +
+                (interaction.guild?.name ?? 'DM') + // Correct: Use parentheses and a default
+                ' | ' +
+                interaction.user.username,
+            ) // End of logger.debug call
+
         if (!client.isReady()) return // <-- return statement here
 
         if (interaction.isChatInputCommand())
@@ -44,7 +48,8 @@ export class interactionCreate extends BaseEvent {
             return await this.processModalSubmitInteraction(interaction)
     }
 
-    async processChatImputCommand(interaction: ChatInputCommandInteraction) {
+    // Added space after processChatImputCommand
+    async processChatImputCommand (interaction: ChatInputCommandInteraction) {
         try {
             performanceMeters.set(
                 'interaction_' + interaction.id,
@@ -114,6 +119,7 @@ export class interactionCreate extends BaseEvent {
             return await cmd
                 .run(interaction)
                 .catch(e => {
+                    // Note: Consider adding the comma-dangle fix here if needed
                     logger.error(e, '\x1b[33mCommand Info\x1b[0m', {
                         cmd: cmd.name,
                         options: JSON.stringify(
@@ -130,7 +136,7 @@ export class interactionCreate extends BaseEvent {
                                     ? value
                                     : undefined,
                             4,
-                        ),
+                        ), // Consider adding trailing comma here if your eslint rule requires it
                     })
                 })
                 .finally(() => {
@@ -149,7 +155,8 @@ export class interactionCreate extends BaseEvent {
         }
     }
 
-    async processButtonInteraction(interaction: ButtonInteraction) {
+    // Added space after processButtonInteraction
+    async processButtonInteraction (interaction: ButtonInteraction) {
         logger.debug(
             `Button ${interaction.customId} pressed | ${interaction.user.username}`,
         )
@@ -159,7 +166,8 @@ export class interactionCreate extends BaseEvent {
             .catch(logger.error)
     }
 
-    async processAutocompleteInteraction(interaction: AutocompleteInteraction) {
+    // Added space after processAutocompleteInteraction
+    async processAutocompleteInteraction (interaction: AutocompleteInteraction) {
         autocomplete.registerInteraction(interaction.user.id, interaction.id)
         const respond = await autocomplete.cache
             .find(b => b.match(interaction.commandName))
@@ -168,7 +176,8 @@ export class interactionCreate extends BaseEvent {
         if (respond) autocomplete.removeInteraction(interaction.user.id)
     }
 
-    async processModalSubmitInteraction(interaction: ModalSubmitInteraction) {
+    // Added space after processModalSubmitInteraction
+    async processModalSubmitInteraction (interaction: ModalSubmitInteraction) {
         await modals.cache
             .find(b => b.match(interaction.customId))
             ?.run(interaction)

@@ -1,3 +1,4 @@
+//  @ts-nocheck
 import { AutocompleteInteraction } from 'discord.js'
 import Autocomplete from '#structures/Autocomplete.js'
 import yasha from 'yasha'

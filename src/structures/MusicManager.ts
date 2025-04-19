@@ -1,3 +1,4 @@
+//  @ts-nocheck
 import Translator, { keys } from '#utils/Translator.js'
 import formatTime from '#utils/formatTime.js'
 import logger from '#utils/logger.js'

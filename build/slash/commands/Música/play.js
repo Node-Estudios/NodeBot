@@ -110,6 +110,24 @@ export default class play extends Command {
                     return t;
                 })
                     .catch(async (e) => {
+                    if (e.message.includes('Video is age restricted')) {
+                        interaction.editReply({
+                            content: translate(keys.play.age_restricted),
+                        }).catch(logger.error);
+                        return undefined;
+                    }
+                    if (e.message.includes('Playlist not found')) {
+                        interaction.editReply({
+                            content: translate(keys.play.playlist_not_found),
+                        }).catch(logger.error);
+                        return undefined;
+                    }
+                    if (e.message.includes('This video is not available')) {
+                        interaction.editReply({
+                            content: translate(keys.play.not_available),
+                        }).catch(logger.error);
+                        return undefined;
+                    }
                     logger.error(e);
                     interaction.editReply({
                         embeds: [
@@ -130,8 +148,19 @@ export default class play extends Command {
                     content: 'We are currently working on supporting Live Streaming videos. :D',
                 }).catch(logger.error);
             player.queue.add(search);
-            if (!player.playing || player.paused)
-                player.play();
+            try {
+                if (!player.playing || player.paused)
+                    await player.play();
+            }
+            catch (error) {
+                if (error.message.includes('Video is age restricted')) {
+                    interaction.editReply({
+                        content: translate(keys.play.age_restricted),
+                    }).catch(logger.error);
+                    return;
+                }
+                logger.error(error);
+            }
             const embed = new EmbedBuilder()
                 .setColor(client.settings.color)
                 .addFields({

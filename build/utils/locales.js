@@ -129,6 +129,9 @@ export default {
         'not_reproducible': "play.not_reproducible",
         'added': "play.added",
         'cant_join': "play.cant_join",
+        'age_restricted': "play.age_restricted",
+        'playlist_not_found': "play.playlist_not_found",
+        'not_available': "play.not_available",
     },
     'reboot': {
         'all': "reboot.all",
@@ -354,6 +357,10 @@ export default {
                 'description': {
                     'name': "commands.embed.options.description.name",
                     'description': "commands.embed.options.description.description",
+                },
+                'image': {
+                    'name': "commands.embed.options.image.name",
+                    'description': "commands.embed.options.image.description",
                 },
             },
         },

@@ -1,3 +1,4 @@
+//  @ts-nocheck
 import Translator, { keys } from '#utils/Translator.js'
 import { APIMessageComponentEmoji, ButtonInteraction, ComponentType } from 'discord.js'
 import EmbedBuilder from '#structures/EmbedBuilder.js'

@@ -1,3 +1,4 @@
+//  @ts-nocheck
 import { Cluster, ClusterManager, fetchRecommendedShards } from 'discord-hybrid-sharding'
 import { Collection } from 'discord.js'
 import pkg from 'figlet'

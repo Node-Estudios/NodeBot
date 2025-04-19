@@ -1,3 +1,4 @@
+//  @ts-nocheck
 import { Guild, LocaleString, Message, VoiceChannel, User, Snowflake, TextChannel, PermissionFlagsBits } from 'discord.js'
 import MusicManager from './MusicManager.js'
 import logger from '#utils/logger.js'

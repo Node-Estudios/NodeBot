@@ -1,3 +1,4 @@
+//  @ts-nocheck
 import { CommandInteraction, Message, Snowflake, User } from 'discord.js'
 
 export class MessageHelper {

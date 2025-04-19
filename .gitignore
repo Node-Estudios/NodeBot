@@ -11,3 +11,5 @@ testing.ts
 .fleet
 .idea
 .vscode/launch.json
+.python-version
+install.sh

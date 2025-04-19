@@ -19,8 +19,9 @@ export class interactionCreate extends BaseEvent {
             logger.debug('Interaction, type: ' +
                 interaction.type +
                 ' | ' +
-                interaction.guild?.name ??
-                'No guild' + ' | ' + interaction.user.username);
+                (interaction.guild?.name ?? 'DM') +
+                ' | ' +
+                interaction.user.username);
         if (!client.isReady())
             return;
         if (interaction.isChatInputCommand())

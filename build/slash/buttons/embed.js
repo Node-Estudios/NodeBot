@@ -38,7 +38,7 @@ export default class Embed extends Button {
             .setPlaceholder('#0F99A7')
             .setLabel(translate(keys.embed.modal.color_label))
             .setStyle(TextInputStyle.Short)
-            .setValue(new Color(`${embed.color}` ?? '#000000').hex)
+            .setValue(new Color((typeof embed.color === 'number' ? `#${embed.color.toString(16).padStart(6, '0')}` : (embed.color ?? '#000000'))).hex)
             .setRequired(false))));
     }
     async publish(interaction) {
