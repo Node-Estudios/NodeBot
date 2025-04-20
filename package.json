@@ -31,7 +31,6 @@
     "license": "ISC",
     "dependencies": {
         "@discordjs/voice": "^0.18.0",
-        "@prisma/client": "^6.6.0",
         "@sentry/cli": "^2.20.5",
         "@sentry/node": "7.120.3",
         "@sentry/profiling-node": "1.1.2",
@@ -49,7 +48,6 @@
         "moment": "2.29.4",
         "mongoose": "7.8.6",
         "mongoose-encryption": "2.1.2",
-        "prisma": "^6.6.0",
         "signale": "1.4.0",
         "sodium": "^3.0.2",
         "statcord.js": "3.4.3",
