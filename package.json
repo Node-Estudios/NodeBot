@@ -128,5 +128,9 @@
         "arrowParens": "avoid",
         "endOfLine": "auto"
     },
+    "primsa": {
+        "schema":"src/prisma/schema.prisma",
+        "seed": "node --experimental-strip-types src/prisma/seed.ts"
+    },
     "type": "module"
 }
