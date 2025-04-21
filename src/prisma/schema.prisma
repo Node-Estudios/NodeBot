@@ -13,3 +13,34 @@ datasource db {
   provider = "sqlite"
   url      = "file:./database.db"
 }
+
+model Twitch {
+  id          Int     @id @default(autoincrement())
+  streamer_id String
+  guild_id    String
+  channel_id  String
+  role_id     String?
+}
+
+model User {
+  id                String            @id
+  executed_commands Int               @default(0)
+  banned            Boolean           @default(false)
+  roles             BigInt
+
+  user_credentials   UserCredentials[]
+
+  @@map("users")
+}
+
+model UserCredentials {
+  id            Int      @id @default(autoincrement())
+  user_id       String
+  access_token  String
+  refresh_token String
+  expires       DateTime
+
+  user User @relation(fields: [user_id], references: [id])
+
+  @@map("users_credentials")
+}
