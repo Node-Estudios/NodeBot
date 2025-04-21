@@ -3,12 +3,11 @@ import {
     ChannelType,
     ChatInputCommandInteraction,
 } from 'discord.js'
-// import TwitchModel from '#models/twitch.js'
 import Client from '#structures/Client.js'
 import Command from '#structures/Command.js'
 import Translator, { keys } from '#utils/Translator.js'
 import logger from '#utils/logger.js'
-import { Twitch as TwitchModel } from 'src/prisma/client'
+import { db } from 'src/prisma/db'
 
 const headers = {
     'Client-ID': process.env.TWITCH_CLIENT_ID,
@@ -146,21 +145,26 @@ export default class Twitch extends Command {
             `TWITCH: ${subData.total} subs creadas | ${subData.total_cost}/${subData.max_total_cost}`,
         )
 
-        await TwitchModel.findOneAndUpdate(
-            {
-                streamerId: streamerData.data[0].id,
-                guildId: interaction.guild.id,
+        await db.twitch.upsert({
+            where: {
+                streamer_id_guild_id: {
+                    streamer_id: streamerData.data[0].id,
+                    guild_id: interaction.guild.id,
+                },
             },
-            {
-                streamerId: streamerData.data[0].id,
-                guildId: interaction.guild.id,
-                channelId: channel.id,
-                roleId: role?.id,
+            update: {
+                streamer_id: streamerData.data[0].id,
+                guild_id: interaction.guild.id,
+                channel_id: channel.id,
+                role_id: role?.id,
             },
-            {
-                upsert: true,
+            create: {
+                streamer_id: streamerData.data[0].id,
+                guild_id: interaction.guild.id,
+                channel_id: channel.id,
+                role_id: role?.id,
             },
-        )
+        })
 
         return await interaction.reply({
             content:
@@ -205,9 +209,13 @@ export default class Twitch extends Command {
             })
         }
 
-        await TwitchModel.findOneAndDelete({
-            streamerId: streamerData.data[0].id,
-            guildId: interaction.guild.id,
+        await db.twitch.delete({
+            where: {
+                streamer_id_guild_id: {
+                    streamer_id: streamerData.data[0].id,
+                    guild_id: interaction.guild.id,
+                },
+            },
         })
 
         return await interaction.reply({

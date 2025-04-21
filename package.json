@@ -90,5 +90,8 @@
         "#cache/*": "./build/cache/*",
         "#models/*": "./build/models/*"
     },
+    "prisma": {
+        "schema": "src/prisma/schema.prisma"
+    },
     "type": "module"
 }

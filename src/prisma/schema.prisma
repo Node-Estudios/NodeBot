@@ -15,20 +15,21 @@ datasource db {
 }
 
 model Twitch {
-  id          Int     @id @default(autoincrement())
   streamer_id String
   guild_id    String
   channel_id  String
   role_id     String?
+
+  @@id([streamer_id, guild_id])
 }
 
 model User {
-  id                String            @id
-  executed_commands Int               @default(0)
-  banned            Boolean           @default(false)
+  id                String  @id
+  executed_commands Int     @default(0)
+  banned            Boolean @default(false)
   roles             BigInt
 
-  user_credentials   UserCredentials[]
+  user_credentials UserCredentials[]
 
   @@map("users")
 }

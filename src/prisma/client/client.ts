@@ -75,8 +75,8 @@ const config: runtime.GetPrismaClientConfig = {
       }
     }
   },
-  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider = \"prisma-client\"\n  output   = \"./client\"\n}\n\ndatasource db {\n  provider = \"sqlite\"\n  url      = \"file:./database.db\"\n}\n\nmodel Twitch {\n  id          Int     @id @default(autoincrement())\n  streamer_id String\n  guild_id    String\n  channel_id  String\n  role_id     String?\n}\n\nmodel User {\n  id                String  @id\n  executed_commands Int     @default(0)\n  banned            Boolean @default(false)\n  roles             BigInt\n\n  user_credentials UserCredentials[]\n\n  @@map(\"users\")\n}\n\nmodel UserCredentials {\n  id            Int      @id @default(autoincrement())\n  user_id       String\n  access_token  String\n  refresh_token String\n  expires       DateTime\n\n  user User @relation(fields: [user_id], references: [id])\n\n  @@map(\"users_credentials\")\n}\n",
-  "inlineSchemaHash": "9624f6204cdbe571a0c359ce613592c8d117b26c28f3d1500675e30910a52fdf",
+  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider = \"prisma-client\"\n  output   = \"./client\"\n}\n\ndatasource db {\n  provider = \"sqlite\"\n  url      = \"file:./database.db\"\n}\n\nmodel Twitch {\n  streamer_id String\n  guild_id    String\n  channel_id  String\n  role_id     String?\n\n  @@id([streamer_id, guild_id])\n}\n\nmodel User {\n  id                String  @id\n  executed_commands Int     @default(0)\n  banned            Boolean @default(false)\n  roles             BigInt\n\n  user_credentials UserCredentials[]\n\n  @@map(\"users\")\n}\n\nmodel UserCredentials {\n  id            Int      @id @default(autoincrement())\n  user_id       String\n  access_token  String\n  refresh_token String\n  expires       DateTime\n\n  user User @relation(fields: [user_id], references: [id])\n\n  @@map(\"users_credentials\")\n}\n",
+  "inlineSchemaHash": "eb935a94a2b627b568a0e78718371ed4f6088f75d8153335763cc35ece48fdba",
   "copyEngine": true,
   "runtimeDataModel": {
     "models": {},
@@ -87,7 +87,7 @@ const config: runtime.GetPrismaClientConfig = {
 }
 config.dirname = __dirname
 
-config.runtimeDataModel = JSON.parse("{\"models\":{\"Twitch\":{\"dbName\":null,\"schema\":null,\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":true,\"isReadOnly\":false,\"hasDefaultValue\":true,\"type\":\"Int\",\"nativeType\":null,\"default\":{\"name\":\"autoincrement\",\"args\":[]},\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"streamer_id\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"guild_id\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"channel_id\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"role_id\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":false,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false}],\"primaryKey\":null,\"uniqueFields\":[],\"uniqueIndexes\":[],\"isGenerated\":false},\"User\":{\"dbName\":\"users\",\"schema\":null,\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":true,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"executed_commands\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":true,\"type\":\"Int\",\"nativeType\":null,\"default\":0,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"banned\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":true,\"type\":\"Boolean\",\"nativeType\":null,\"default\":false,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"roles\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"BigInt\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"user_credentials\",\"kind\":\"object\",\"isList\":true,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"UserCredentials\",\"nativeType\":null,\"relationName\":\"UserToUserCredentials\",\"relationFromFields\":[],\"relationToFields\":[],\"isGenerated\":false,\"isUpdatedAt\":false}],\"primaryKey\":null,\"uniqueFields\":[],\"uniqueIndexes\":[],\"isGenerated\":false},\"UserCredentials\":{\"dbName\":\"users_credentials\",\"schema\":null,\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":true,\"isReadOnly\":false,\"hasDefaultValue\":true,\"type\":\"Int\",\"nativeType\":null,\"default\":{\"name\":\"autoincrement\",\"args\":[]},\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"user_id\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":true,\"hasDefaultValue\":false,\"type\":\"String\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"access_token\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"refresh_token\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"expires\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"DateTime\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"user\",\"kind\":\"object\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"User\",\"nativeType\":null,\"relationName\":\"UserToUserCredentials\",\"relationFromFields\":[\"user_id\"],\"relationToFields\":[\"id\"],\"isGenerated\":false,\"isUpdatedAt\":false}],\"primaryKey\":null,\"uniqueFields\":[],\"uniqueIndexes\":[],\"isGenerated\":false}},\"enums\":{},\"types\":{}}")
+config.runtimeDataModel = JSON.parse("{\"models\":{\"Twitch\":{\"dbName\":null,\"schema\":null,\"fields\":[{\"name\":\"streamer_id\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"guild_id\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"channel_id\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"role_id\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":false,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false}],\"primaryKey\":{\"name\":null,\"fields\":[\"streamer_id\",\"guild_id\"]},\"uniqueFields\":[],\"uniqueIndexes\":[],\"isGenerated\":false},\"User\":{\"dbName\":\"users\",\"schema\":null,\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":true,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"executed_commands\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":true,\"type\":\"Int\",\"nativeType\":null,\"default\":0,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"banned\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":true,\"type\":\"Boolean\",\"nativeType\":null,\"default\":false,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"roles\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"BigInt\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"user_credentials\",\"kind\":\"object\",\"isList\":true,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"UserCredentials\",\"nativeType\":null,\"relationName\":\"UserToUserCredentials\",\"relationFromFields\":[],\"relationToFields\":[],\"isGenerated\":false,\"isUpdatedAt\":false}],\"primaryKey\":null,\"uniqueFields\":[],\"uniqueIndexes\":[],\"isGenerated\":false},\"UserCredentials\":{\"dbName\":\"users_credentials\",\"schema\":null,\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":true,\"isReadOnly\":false,\"hasDefaultValue\":true,\"type\":\"Int\",\"nativeType\":null,\"default\":{\"name\":\"autoincrement\",\"args\":[]},\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"user_id\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":true,\"hasDefaultValue\":false,\"type\":\"String\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"access_token\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"refresh_token\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"expires\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"DateTime\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"user\",\"kind\":\"object\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"User\",\"nativeType\":null,\"relationName\":\"UserToUserCredentials\",\"relationFromFields\":[\"user_id\"],\"relationToFields\":[\"id\"],\"isGenerated\":false,\"isUpdatedAt\":false}],\"primaryKey\":null,\"uniqueFields\":[],\"uniqueIndexes\":[],\"isGenerated\":false}},\"enums\":{},\"types\":{}}")
 config.engineWasm = undefined
 config.compilerWasm = undefined
 
@@ -1100,22 +1100,11 @@ export namespace Prisma {
 
   export type AggregateTwitch = {
     _count: TwitchCountAggregateOutputType | null
-    _avg: TwitchAvgAggregateOutputType | null
-    _sum: TwitchSumAggregateOutputType | null
     _min: TwitchMinAggregateOutputType | null
     _max: TwitchMaxAggregateOutputType | null
   }
 
-  export type TwitchAvgAggregateOutputType = {
-    id: number | null
-  }
-
-  export type TwitchSumAggregateOutputType = {
-    id: number | null
-  }
-
   export type TwitchMinAggregateOutputType = {
-    id: number | null
     streamer_id: string | null
     guild_id: string | null
     channel_id: string | null
@@ -1123,7 +1112,6 @@ export namespace Prisma {
   }
 
   export type TwitchMaxAggregateOutputType = {
-    id: number | null
     streamer_id: string | null
     guild_id: string | null
     channel_id: string | null
@@ -1131,7 +1119,6 @@ export namespace Prisma {
   }
 
   export type TwitchCountAggregateOutputType = {
-    id: number
     streamer_id: number
     guild_id: number
     channel_id: number
@@ -1140,16 +1127,7 @@ export namespace Prisma {
   }
 
 
-  export type TwitchAvgAggregateInputType = {
-    id?: true
-  }
-
-  export type TwitchSumAggregateInputType = {
-    id?: true
-  }
-
   export type TwitchMinAggregateInputType = {
-    id?: true
     streamer_id?: true
     guild_id?: true
     channel_id?: true
@@ -1157,7 +1135,6 @@ export namespace Prisma {
   }
 
   export type TwitchMaxAggregateInputType = {
-    id?: true
     streamer_id?: true
     guild_id?: true
     channel_id?: true
@@ -1165,7 +1142,6 @@ export namespace Prisma {
   }
 
   export type TwitchCountAggregateInputType = {
-    id?: true
     streamer_id?: true
     guild_id?: true
     channel_id?: true
@@ -1211,18 +1187,6 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
-     * Select which fields to average
-    **/
-    _avg?: TwitchAvgAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to sum
-    **/
-    _sum?: TwitchSumAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
      * Select which fields to find the minimum value
     **/
     _min?: TwitchMinAggregateInputType
@@ -1253,21 +1217,16 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: TwitchCountAggregateInputType | true
-    _avg?: TwitchAvgAggregateInputType
-    _sum?: TwitchSumAggregateInputType
     _min?: TwitchMinAggregateInputType
     _max?: TwitchMaxAggregateInputType
   }
 
   export type TwitchGroupByOutputType = {
-    id: number
     streamer_id: string
     guild_id: string
     channel_id: string
     role_id: string | null
     _count: TwitchCountAggregateOutputType | null
-    _avg: TwitchAvgAggregateOutputType | null
-    _sum: TwitchSumAggregateOutputType | null
     _min: TwitchMinAggregateOutputType | null
     _max: TwitchMaxAggregateOutputType | null
   }
@@ -1287,7 +1246,6 @@ export namespace Prisma {
 
 
   export type TwitchSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
-    id?: boolean
     streamer_id?: boolean
     guild_id?: boolean
     channel_id?: boolean
@@ -1295,7 +1253,6 @@ export namespace Prisma {
   }, ExtArgs["result"]["twitch"]>
 
   export type TwitchSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
-    id?: boolean
     streamer_id?: boolean
     guild_id?: boolean
     channel_id?: boolean
@@ -1303,7 +1260,6 @@ export namespace Prisma {
   }, ExtArgs["result"]["twitch"]>
 
   export type TwitchSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
-    id?: boolean
     streamer_id?: boolean
     guild_id?: boolean
     channel_id?: boolean
@@ -1311,20 +1267,18 @@ export namespace Prisma {
   }, ExtArgs["result"]["twitch"]>
 
   export type TwitchSelectScalar = {
-    id?: boolean
     streamer_id?: boolean
     guild_id?: boolean
     channel_id?: boolean
     role_id?: boolean
   }
 
-  export type TwitchOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "streamer_id" | "guild_id" | "channel_id" | "role_id", ExtArgs["result"]["twitch"]>
+  export type TwitchOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"streamer_id" | "guild_id" | "channel_id" | "role_id", ExtArgs["result"]["twitch"]>
 
   export type $TwitchPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     name: "Twitch"
     objects: {}
     scalars: runtime.Types.Extensions.GetPayloadResult<{
-      id: number
       streamer_id: string
       guild_id: string
       channel_id: string
@@ -1412,8 +1366,8 @@ export namespace Prisma {
      * // Get first 10 Twitches
      * const twitches = await prisma.twitch.findMany({ take: 10 })
      * 
-     * // Only select the `id`
-     * const twitchWithIdOnly = await prisma.twitch.findMany({ select: { id: true } })
+     * // Only select the `streamer_id`
+     * const twitchWithStreamer_idOnly = await prisma.twitch.findMany({ select: { streamer_id: true } })
      * 
      */
     findMany<T extends TwitchFindManyArgs>(args?: SelectSubset<T, TwitchFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TwitchPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
@@ -1457,9 +1411,9 @@ export namespace Prisma {
      *   ]
      * })
      * 
-     * // Create many Twitches and only return the `id`
-     * const twitchWithIdOnly = await prisma.twitch.createManyAndReturn({
-     *   select: { id: true },
+     * // Create many Twitches and only return the `streamer_id`
+     * const twitchWithStreamer_idOnly = await prisma.twitch.createManyAndReturn({
+     *   select: { streamer_id: true },
      *   data: [
      *     // ... provide data here
      *   ]
@@ -1548,9 +1502,9 @@ export namespace Prisma {
      *   ]
      * })
      * 
-     * // Update zero or more Twitches and only return the `id`
-     * const twitchWithIdOnly = await prisma.twitch.updateManyAndReturn({
-     *   select: { id: true },
+     * // Update zero or more Twitches and only return the `streamer_id`
+     * const twitchWithStreamer_idOnly = await prisma.twitch.updateManyAndReturn({
+     *   select: { streamer_id: true },
      *   where: {
      *     // ... provide filter here
      *   },
@@ -1752,7 +1706,6 @@ export namespace Prisma {
    * Fields of the Twitch model
    */
   export interface TwitchFieldRefs {
-    readonly id: FieldRef<"Twitch", 'Int'>
     readonly streamer_id: FieldRef<"Twitch", 'String'>
     readonly guild_id: FieldRef<"Twitch", 'String'>
     readonly channel_id: FieldRef<"Twitch", 'String'>
@@ -4316,7 +4269,6 @@ export namespace Prisma {
 
 
   export const TwitchScalarFieldEnum = {
-    id: 'id',
     streamer_id: 'streamer_id',
     guild_id: 'guild_id',
     channel_id: 'channel_id',
@@ -4369,16 +4321,16 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'Int'
+   * Reference to a field of type 'String'
    */
-  export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
+  export type StringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'String'>
     
 
 
   /**
-   * Reference to a field of type 'String'
+   * Reference to a field of type 'Int'
    */
-  export type StringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'String'>
+  export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
     
 
 
@@ -4417,7 +4369,6 @@ export namespace Prisma {
     AND?: TwitchWhereInput | TwitchWhereInput[]
     OR?: TwitchWhereInput[]
     NOT?: TwitchWhereInput | TwitchWhereInput[]
-    id?: IntFilter<"Twitch"> | number
     streamer_id?: StringFilter<"Twitch"> | string
     guild_id?: StringFilter<"Twitch"> | string
     channel_id?: StringFilter<"Twitch"> | string
@@ -4425,7 +4376,6 @@ export namespace Prisma {
   }
 
   export type TwitchOrderByWithRelationInput = {
-    id?: SortOrder
     streamer_id?: SortOrder
     guild_id?: SortOrder
     channel_id?: SortOrder
@@ -4433,7 +4383,7 @@ export namespace Prisma {
   }
 
   export type TwitchWhereUniqueInput = Prisma.AtLeast<{
-    id?: number
+    streamer_id_guild_id?: TwitchStreamer_idGuild_idCompoundUniqueInput
     AND?: TwitchWhereInput | TwitchWhereInput[]
     OR?: TwitchWhereInput[]
     NOT?: TwitchWhereInput | TwitchWhereInput[]
@@ -4441,26 +4391,22 @@ export namespace Prisma {
     guild_id?: StringFilter<"Twitch"> | string
     channel_id?: StringFilter<"Twitch"> | string
     role_id?: StringNullableFilter<"Twitch"> | string | null
-  }, "id">
+  }, "streamer_id_guild_id">
 
   export type TwitchOrderByWithAggregationInput = {
-    id?: SortOrder
     streamer_id?: SortOrder
     guild_id?: SortOrder
     channel_id?: SortOrder
     role_id?: SortOrderInput | SortOrder
     _count?: TwitchCountOrderByAggregateInput
-    _avg?: TwitchAvgOrderByAggregateInput
     _max?: TwitchMaxOrderByAggregateInput
     _min?: TwitchMinOrderByAggregateInput
-    _sum?: TwitchSumOrderByAggregateInput
   }
 
   export type TwitchScalarWhereWithAggregatesInput = {
     AND?: TwitchScalarWhereWithAggregatesInput | TwitchScalarWhereWithAggregatesInput[]
     OR?: TwitchScalarWhereWithAggregatesInput[]
     NOT?: TwitchScalarWhereWithAggregatesInput | TwitchScalarWhereWithAggregatesInput[]
-    id?: IntWithAggregatesFilter<"Twitch"> | number
     streamer_id?: StringWithAggregatesFilter<"Twitch"> | string
     guild_id?: StringWithAggregatesFilter<"Twitch"> | string
     channel_id?: StringWithAggregatesFilter<"Twitch"> | string
@@ -4584,7 +4530,6 @@ export namespace Prisma {
   }
 
   export type TwitchUncheckedCreateInput = {
-    id?: number
     streamer_id: string
     guild_id: string
     channel_id: string
@@ -4599,7 +4544,6 @@ export namespace Prisma {
   }
 
   export type TwitchUncheckedUpdateInput = {
-    id?: IntFieldUpdateOperationsInput | number
     streamer_id?: StringFieldUpdateOperationsInput | string
     guild_id?: StringFieldUpdateOperationsInput | string
     channel_id?: StringFieldUpdateOperationsInput | string
@@ -4607,7 +4551,6 @@ export namespace Prisma {
   }
 
   export type TwitchCreateManyInput = {
-    id?: number
     streamer_id: string
     guild_id: string
     channel_id: string
@@ -4622,7 +4565,6 @@ export namespace Prisma {
   }
 
   export type TwitchUncheckedUpdateManyInput = {
-    id?: IntFieldUpdateOperationsInput | number
     streamer_id?: StringFieldUpdateOperationsInput | string
     guild_id?: StringFieldUpdateOperationsInput | string
     channel_id?: StringFieldUpdateOperationsInput | string
@@ -4734,17 +4676,6 @@ export namespace Prisma {
     expires?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type IntFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[]
-    notIn?: number[]
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntFilter<$PrismaModel> | number
-  }
-
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[]
@@ -4778,20 +4709,19 @@ export namespace Prisma {
     nulls?: NullsOrder
   }
 
+  export type TwitchStreamer_idGuild_idCompoundUniqueInput = {
+    streamer_id: string
+    guild_id: string
+  }
+
   export type TwitchCountOrderByAggregateInput = {
-    id?: SortOrder
     streamer_id?: SortOrder
     guild_id?: SortOrder
     channel_id?: SortOrder
     role_id?: SortOrder
   }
 
-  export type TwitchAvgOrderByAggregateInput = {
-    id?: SortOrder
-  }
-
   export type TwitchMaxOrderByAggregateInput = {
-    id?: SortOrder
     streamer_id?: SortOrder
     guild_id?: SortOrder
     channel_id?: SortOrder
@@ -4799,31 +4729,10 @@ export namespace Prisma {
   }
 
   export type TwitchMinOrderByAggregateInput = {
-    id?: SortOrder
     streamer_id?: SortOrder
     guild_id?: SortOrder
     channel_id?: SortOrder
     role_id?: SortOrder
-  }
-
-  export type TwitchSumOrderByAggregateInput = {
-    id?: SortOrder
-  }
-
-  export type IntWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[]
-    notIn?: number[]
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedIntFilter<$PrismaModel>
-    _min?: NestedIntFilter<$PrismaModel>
-    _max?: NestedIntFilter<$PrismaModel>
   }
 
   export type StringWithAggregatesFilter<$PrismaModel = never> = {
@@ -4858,6 +4767,17 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedStringNullableFilter<$PrismaModel>
     _max?: NestedStringNullableFilter<$PrismaModel>
+  }
+
+  export type IntFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[]
+    notIn?: number[]
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntFilter<$PrismaModel> | number
   }
 
   export type BoolFilter<$PrismaModel = never> = {
@@ -4915,6 +4835,22 @@ export namespace Prisma {
   export type UserSumOrderByAggregateInput = {
     executed_commands?: SortOrder
     roles?: SortOrder
+  }
+
+  export type IntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[]
+    notIn?: number[]
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
   }
 
   export type BoolWithAggregatesFilter<$PrismaModel = never> = {
@@ -5011,14 +4947,6 @@ export namespace Prisma {
     set?: string | null
   }
 
-  export type IntFieldUpdateOperationsInput = {
-    set?: number
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
-  }
-
   export type UserCredentialsCreateNestedManyWithoutUserInput = {
     create?: XOR<UserCredentialsCreateWithoutUserInput, UserCredentialsUncheckedCreateWithoutUserInput> | UserCredentialsCreateWithoutUserInput[] | UserCredentialsUncheckedCreateWithoutUserInput[]
     connectOrCreate?: UserCredentialsCreateOrConnectWithoutUserInput | UserCredentialsCreateOrConnectWithoutUserInput[]
@@ -5031,6 +4959,14 @@ export namespace Prisma {
     connectOrCreate?: UserCredentialsCreateOrConnectWithoutUserInput | UserCredentialsCreateOrConnectWithoutUserInput[]
     createMany?: UserCredentialsCreateManyUserInputEnvelope
     connect?: UserCredentialsWhereUniqueInput | UserCredentialsWhereUniqueInput[]
+  }
+
+  export type IntFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
   }
 
   export type BoolFieldUpdateOperationsInput = {
@@ -5091,17 +5027,6 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutUser_credentialsInput, UserUpdateWithoutUser_credentialsInput>, UserUncheckedUpdateWithoutUser_credentialsInput>
   }
 
-  export type NestedIntFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[]
-    notIn?: number[]
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntFilter<$PrismaModel> | number
-  }
-
   export type NestedStringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[]
@@ -5130,33 +5055,6 @@ export namespace Prisma {
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
-  export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[]
-    notIn?: number[]
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedIntFilter<$PrismaModel>
-    _min?: NestedIntFilter<$PrismaModel>
-    _max?: NestedIntFilter<$PrismaModel>
-  }
-
-  export type NestedFloatFilter<$PrismaModel = never> = {
-    equals?: number | FloatFieldRefInput<$PrismaModel>
-    in?: number[]
-    notIn?: number[]
-    lt?: number | FloatFieldRefInput<$PrismaModel>
-    lte?: number | FloatFieldRefInput<$PrismaModel>
-    gt?: number | FloatFieldRefInput<$PrismaModel>
-    gte?: number | FloatFieldRefInput<$PrismaModel>
-    not?: NestedFloatFilter<$PrismaModel> | number
-  }
-
   export type NestedStringWithAggregatesFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[]
@@ -5172,6 +5070,17 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedStringFilter<$PrismaModel>
     _max?: NestedStringFilter<$PrismaModel>
+  }
+
+  export type NestedIntFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[]
+    notIn?: number[]
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntFilter<$PrismaModel> | number
   }
 
   export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -5216,6 +5125,33 @@ export namespace Prisma {
     gt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
     gte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
     not?: NestedBigIntFilter<$PrismaModel> | bigint | number
+  }
+
+  export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[]
+    notIn?: number[]
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
+  }
+
+  export type NestedFloatFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[]
+    notIn?: number[]
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatFilter<$PrismaModel> | number
   }
 
   export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
