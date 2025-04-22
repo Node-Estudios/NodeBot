@@ -1,0 +1,47 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "./client"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./database.db"
+}
+
+model Twitch {
+  streamer_id String
+  guild_id    String
+  channel_id  String
+  role_id     String?
+
+  @@id([streamer_id, guild_id])
+}
+
+model User {
+  id                String  @id
+  executed_commands Int     @default(0)
+  banned            Boolean @default(false)
+  roles             BigInt  @default(0)
+
+  user_credentials UserCredentials?
+
+  @@map("users")
+}
+
+model UserCredentials {
+  id            Int      @id @default(autoincrement())
+  user_id       String   @unique
+  access_token  String
+  refresh_token String
+  expires       DateTime
+
+  user User @relation(fields: [user_id], references: [id])
+
+  @@map("users_credentials")
+}

@@ -1,17 +1,20 @@
 {
-    "exclude": [ "src/structures/Música/*", "node_modules" ],
+    "exclude": ["src/structures/Música/*", "node_modules"],
     "compilerOptions": {
         "target": "esnext",
         "module": "ESNext",
         "rootDir": "./src",
         "moduleResolution": "node",
-        "baseUrl": ".",                                 
+        "baseUrl": ".",
         "paths": {
             "#structures/*": ["./src/structures/*"],
             "#utils/*": ["./src/utils/*"],
             "#cache/*": ["./src/cache/*"],
-            "#models/*": ["./src/models/*"]
-        },                                     
+            "#prisma/client": ["./src/prisma/client/index.ts"],
+            "#prisma/*": ["./src/prisma/*"],
+            "#env": ["./src/env.ts"],
+            "#constants": ["./src/constants.ts"]
+        },
         "outDir": "./build",
         "sourceMap": true,
         "removeComments": true,

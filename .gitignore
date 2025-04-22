@@ -11,3 +11,6 @@ testing.ts
 .fleet
 .idea
 .vscode/launch.json
+**/*.db
+**/*.db-journal
+src/prisma/client
