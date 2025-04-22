@@ -9,7 +9,9 @@
         "paths": {
             "#structures/*": ["./src/structures/*"],
             "#utils/*": ["./src/utils/*"],
-            "#cache/*": ["./src/cache/*"]
+            "#cache/*": ["./src/cache/*"],
+            "#prisma/client": ["./src/prisma/client/index.ts"],
+            "#prisma/*": ["./src/prisma/*"]
         },
         "outDir": "./build",
         "sourceMap": true,

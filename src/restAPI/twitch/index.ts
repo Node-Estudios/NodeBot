@@ -2,7 +2,7 @@ import express, { Router as router, Request } from 'express'
 import NodeManager from '#structures/NodeManager.js'
 import { LocaleString, REST, Routes } from 'discord.js'
 import Translator, { keys } from '#utils/Translator.js'
-import { db } from 'src/prisma/db'
+import { db } from '#prisma/db.js'
 
 const rest = new REST().setToken(process.env.TOKEN)
 

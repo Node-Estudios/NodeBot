@@ -7,7 +7,7 @@ import Client from '#structures/Client.js'
 import Command from '#structures/Command.js'
 import Translator, { keys } from '#utils/Translator.js'
 import logger from '#utils/logger.js'
-import { db } from 'src/prisma/db'
+import { db } from '#prisma/db.js'
 
 const headers = {
     'Client-ID': process.env.TWITCH_CLIENT_ID,

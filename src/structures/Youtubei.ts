@@ -57,7 +57,8 @@ export default class Youtubei {
     async upsertCredentials({ credentials }: { credentials: Credentials }) {
         const user = await db.user.findFirst({
             where: { id: this.user.id },
-            include: { user_credentials: true },
+            // Only get users.credentials.id for check if exist
+            select: { user_credentials: { select: { id: true } } },
         })
 
         if (!user) await db.user.create({ data: { id: this.user.id } })
