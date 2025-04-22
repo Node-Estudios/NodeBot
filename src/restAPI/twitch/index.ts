@@ -56,12 +56,12 @@ export default class Twitch {
                     )
                     await rest.post(Routes.channelMessages(sub.channel_id), {
                         body: {
-                            content: `${sub.role_id ? `<@&${sub.role_id}> ` : ''}${translate(
-                                keys.twitch.now_live,
-                                {
+                            // TODO: refactor this string
+                            content:
+                                (sub.role_id ? `<@&${sub.role_id}> ` : '') +
+                                translate(keys.twitch.now_live, {
                                     streamer: body.event.broadcaster_user_name,
-                                },
-                            )}`,
+                                }),
                         },
                     })
                 }
