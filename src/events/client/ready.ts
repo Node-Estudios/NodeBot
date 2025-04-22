@@ -5,26 +5,17 @@ import logger from '#utils/logger.js'
 import * as Sentry from '@sentry/node'
 import { IPCMessage } from 'discord-hybrid-sharding'
 import { ActivityType } from 'discord.js'
-import { connect } from 'mongoose'
 import { BaseEvent } from '../../structures/Events.js'
 
 export default class Ready extends BaseEvent {
-    async run (client: Client): Promise<void> {
+    async run(client: Client): Promise<void> {
         // console.log('client: \n', client.cluster)
         // ...
-
-        //* ADD DATABASE CONNECTION
-        if (process.env.MONGOURL)
-            connect(process.env.MONGOURL.toString(), {
-            // @ts-expect-error
-                useUnifiedTopology: true,
-                useNewUrlParser: true,
-            }).then(() => logger.db('Se ha conectado la base de datos correctamente.'))
 
         // cluster
         // client.cluster.triggerReady()
         const arr: Command[] = []
-        for (const [,command] of commands.cache) arr.push(command)
+        for (const [, command] of commands.cache) arr.push(command)
         if (process.env.TESTINGGUILD) {
             const guild = await client.guilds.fetch(process.env.TESTINGGUILD)
             guild.commands.set(arr).catch(logger.error)
@@ -42,10 +33,19 @@ export default class Ready extends BaseEvent {
                                 guilds: c.guilds.cache.size,
                                 ping: c.ws.ping,
                                 channels: c.channels.cache.size,
-                                members: c.guilds.cache.reduce((prev, guild) => prev + guild.memberCount, 0),
-                                memoryUsage: (process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2),
+                                members: c.guilds.cache.reduce(
+                                    (prev, guild) => prev + guild.memberCount,
+                                    0,
+                                ),
+                                memoryUsage: (
+                                    process.memoryUsage().heapUsed /
+                                    1024 /
+                                    1024
+                                ).toFixed(2),
                                 players: c.music.players.size,
-                                playingPlayers: c.music.players.filter(p => p.playing).size,
+                                playingPlayers: c.music.players.filter(
+                                    p => p.playing,
+                                ).size,
                             }),
                             { cluster: client.cluster.id },
                         )
@@ -78,18 +78,18 @@ export default class Ready extends BaseEvent {
                 updateStatus()
             }, 300000)
 
-        async function updateStatus () {
+        async function updateStatus() {
             const promises = [
                 client.cluster.fetchClientValues('guilds.cache.size'),
                 // client.shard.broadcastEval((c) =>
                 //   c.guilds.cache.reduce((acc, guild) => acc + guild.memberCount, 0),
                 // ),
-                client.cluster.broadcastEval((c) => {
+                client.cluster.broadcastEval(c => {
                     return c.music?.players?.size ?? 0
                 }),
             ]
             Promise.all(promises)
-                .then((results) => {
+                .then(results => {
                     const guildNum = results[0].reduce(
                         (acc: any, guildCount: any) => acc + guildCount,
                         0,
@@ -109,6 +109,8 @@ export default class Ready extends BaseEvent {
                 })
                 .catch(logger.error)
         }
-        logger.debug(`${client.user.username} ✅ | Cluster: ${client.cluster.id}`)
+        logger.debug(
+            `${client.user.username} ✅ | Cluster: ${client.cluster.id}`,
+        )
     }
 }

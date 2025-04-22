@@ -5,6 +5,7 @@ import { SpamIntervalDB } from './spamInterval.js'
 import { Session, Innertube, Credentials } from 'youtubei.js'
 import logger from '#utils/logger.js'
 import { db } from 'src/prisma/db.js'
+import { encrypt } from '#utils/encrypt.js'
 
 const spamInterval = new SpamIntervalDB()
 type UserExtended = GuildMember & {
@@ -62,24 +63,24 @@ export default class Youtubei {
         })
 
         if (!user) await db.user.create({ data: { id: this.user.id } })
-        else if (!user.user_credentials)
-            await db.userCredentials.create({
+        if (!user?.user_credentials)
+            return await db.userCredentials.create({
                 data: {
-                    access_token: credentials.access_token,
+                    access_token: await encrypt(credentials.access_token),
                     expires: credentials.expires,
-                    refresh_token: credentials.refresh_token,
+                    refresh_token: await encrypt(credentials.refresh_token),
                     user_id: this.user.id,
                 },
             })
-        else
-            await db.userCredentials.update({
-                where: { user_id: this.user.id },
-                data: {
-                    access_token: credentials.access_token,
-                    expires: credentials.expires,
-                    refresh_token: credentials.refresh_token,
-                },
-            })
+
+        return await db.userCredentials.update({
+            where: { user_id: this.user.id },
+            data: {
+                access_token: await encrypt(credentials.access_token),
+                expires: credentials.expires,
+                refresh_token: await encrypt(credentials.refresh_token),
+            },
+        })
     }
 
     async startListeners() {
@@ -126,7 +127,8 @@ export default class Youtubei {
             // Busca un documento en la base de datos que coincida con el ID del usuario
             this.upsertCredentials({
                 credentials: {
-                    ...credentials,
+                    access_token: await encrypt(credentials.access_token),
+                    refresh_token: await encrypt(credentials.refresh_token),
                     expires: new Date(
                         Date.now() + credentials.expires.getTime(),
                     ),

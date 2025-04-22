@@ -11,7 +11,9 @@
             "#utils/*": ["./src/utils/*"],
             "#cache/*": ["./src/cache/*"],
             "#prisma/client": ["./src/prisma/client/index.ts"],
-            "#prisma/*": ["./src/prisma/*"]
+            "#prisma/*": ["./src/prisma/*"],
+            "#env": ["./src/env.ts"],
+            "#constants": ["./src/constants.ts"]
         },
         "outDir": "./build",
         "sourceMap": true,
