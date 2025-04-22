@@ -1,17 +1,16 @@
 {
-    "exclude": [ "src/structures/Música/*", "node_modules" ],
+    "exclude": ["src/structures/Música/*", "node_modules"],
     "compilerOptions": {
         "target": "esnext",
         "module": "ESNext",
         "rootDir": "./src",
         "moduleResolution": "node",
-        "baseUrl": ".",                                 
+        "baseUrl": ".",
         "paths": {
             "#structures/*": ["./src/structures/*"],
             "#utils/*": ["./src/utils/*"],
-            "#cache/*": ["./src/cache/*"],
-            "#models/*": ["./src/models/*"]
-        },                                     
+            "#cache/*": ["./src/cache/*"]
+        },
         "outDir": "./build",
         "sourceMap": true,
         "removeComments": true,

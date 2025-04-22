@@ -6,7 +6,11 @@ export default model(
         {
             guildId: { type: String, required: true },
             name: { type: String, required: true },
-            description: { type: String, required: true, default: 'No hay descripción' },
+            description: {
+                type: String,
+                required: true,
+                default: 'No hay descripción',
+            },
             response: { type: String, required: true },
         },
         {

@@ -87,8 +87,7 @@
     "imports": {
         "#structures/*": "./build/structures/*",
         "#utils/*": "./build/utils/*",
-        "#cache/*": "./build/cache/*",
-        "#models/*": "./build/models/*"
+        "#cache/*": "./build/cache/*"
     },
     "prisma": {
         "schema": "src/prisma/schema.prisma"

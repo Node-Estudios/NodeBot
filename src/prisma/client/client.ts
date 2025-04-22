@@ -75,8 +75,8 @@ const config: runtime.GetPrismaClientConfig = {
       }
     }
   },
-  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider = \"prisma-client\"\n  output   = \"./client\"\n}\n\ndatasource db {\n  provider = \"sqlite\"\n  url      = \"file:./database.db\"\n}\n\nmodel Twitch {\n  streamer_id String\n  guild_id    String\n  channel_id  String\n  role_id     String?\n\n  @@id([streamer_id, guild_id])\n}\n\nmodel User {\n  id                String  @id\n  executed_commands Int     @default(0)\n  banned            Boolean @default(false)\n  roles             BigInt\n\n  user_credentials UserCredentials[]\n\n  @@map(\"users\")\n}\n\nmodel UserCredentials {\n  id            Int      @id @default(autoincrement())\n  user_id       String\n  access_token  String\n  refresh_token String\n  expires       DateTime\n\n  user User @relation(fields: [user_id], references: [id])\n\n  @@map(\"users_credentials\")\n}\n",
-  "inlineSchemaHash": "eb935a94a2b627b568a0e78718371ed4f6088f75d8153335763cc35ece48fdba",
+  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider = \"prisma-client\"\n  output   = \"./client\"\n}\n\ndatasource db {\n  provider = \"sqlite\"\n  url      = \"file:./database.db\"\n}\n\nmodel Twitch {\n  streamer_id String\n  guild_id    String\n  channel_id  String\n  role_id     String?\n\n  @@id([streamer_id, guild_id])\n}\n\nmodel User {\n  id                String  @id\n  executed_commands Int     @default(0)\n  banned            Boolean @default(false)\n  roles             BigInt  @default(0)\n\n  user_credentials UserCredentials?\n\n  @@map(\"users\")\n}\n\nmodel UserCredentials {\n  id            Int      @id @default(autoincrement())\n  user_id       String   @unique\n  access_token  String\n  refresh_token String\n  expires       DateTime\n\n  user User @relation(fields: [user_id], references: [id])\n\n  @@map(\"users_credentials\")\n}\n",
+  "inlineSchemaHash": "50d5305111c47ea814c758c5b7ff0ea9c9197d365362303be8009d564d5a6033",
   "copyEngine": true,
   "runtimeDataModel": {
     "models": {},
@@ -87,7 +87,7 @@ const config: runtime.GetPrismaClientConfig = {
 }
 config.dirname = __dirname
 
-config.runtimeDataModel = JSON.parse("{\"models\":{\"Twitch\":{\"dbName\":null,\"schema\":null,\"fields\":[{\"name\":\"streamer_id\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"guild_id\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"channel_id\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"role_id\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":false,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false}],\"primaryKey\":{\"name\":null,\"fields\":[\"streamer_id\",\"guild_id\"]},\"uniqueFields\":[],\"uniqueIndexes\":[],\"isGenerated\":false},\"User\":{\"dbName\":\"users\",\"schema\":null,\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":true,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"executed_commands\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":true,\"type\":\"Int\",\"nativeType\":null,\"default\":0,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"banned\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":true,\"type\":\"Boolean\",\"nativeType\":null,\"default\":false,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"roles\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"BigInt\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"user_credentials\",\"kind\":\"object\",\"isList\":true,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"UserCredentials\",\"nativeType\":null,\"relationName\":\"UserToUserCredentials\",\"relationFromFields\":[],\"relationToFields\":[],\"isGenerated\":false,\"isUpdatedAt\":false}],\"primaryKey\":null,\"uniqueFields\":[],\"uniqueIndexes\":[],\"isGenerated\":false},\"UserCredentials\":{\"dbName\":\"users_credentials\",\"schema\":null,\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":true,\"isReadOnly\":false,\"hasDefaultValue\":true,\"type\":\"Int\",\"nativeType\":null,\"default\":{\"name\":\"autoincrement\",\"args\":[]},\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"user_id\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":true,\"hasDefaultValue\":false,\"type\":\"String\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"access_token\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"refresh_token\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"expires\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"DateTime\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"user\",\"kind\":\"object\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"User\",\"nativeType\":null,\"relationName\":\"UserToUserCredentials\",\"relationFromFields\":[\"user_id\"],\"relationToFields\":[\"id\"],\"isGenerated\":false,\"isUpdatedAt\":false}],\"primaryKey\":null,\"uniqueFields\":[],\"uniqueIndexes\":[],\"isGenerated\":false}},\"enums\":{},\"types\":{}}")
+config.runtimeDataModel = JSON.parse("{\"models\":{\"Twitch\":{\"dbName\":null,\"schema\":null,\"fields\":[{\"name\":\"streamer_id\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"guild_id\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"channel_id\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"role_id\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":false,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false}],\"primaryKey\":{\"name\":null,\"fields\":[\"streamer_id\",\"guild_id\"]},\"uniqueFields\":[],\"uniqueIndexes\":[],\"isGenerated\":false},\"User\":{\"dbName\":\"users\",\"schema\":null,\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":true,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"executed_commands\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":true,\"type\":\"Int\",\"nativeType\":null,\"default\":0,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"banned\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":true,\"type\":\"Boolean\",\"nativeType\":null,\"default\":false,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"roles\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":true,\"type\":\"BigInt\",\"nativeType\":null,\"default\":\"0\",\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"user_credentials\",\"kind\":\"object\",\"isList\":false,\"isRequired\":false,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"UserCredentials\",\"nativeType\":null,\"relationName\":\"UserToUserCredentials\",\"relationFromFields\":[],\"relationToFields\":[],\"isGenerated\":false,\"isUpdatedAt\":false}],\"primaryKey\":null,\"uniqueFields\":[],\"uniqueIndexes\":[],\"isGenerated\":false},\"UserCredentials\":{\"dbName\":\"users_credentials\",\"schema\":null,\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":true,\"isReadOnly\":false,\"hasDefaultValue\":true,\"type\":\"Int\",\"nativeType\":null,\"default\":{\"name\":\"autoincrement\",\"args\":[]},\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"user_id\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":true,\"isId\":false,\"isReadOnly\":true,\"hasDefaultValue\":false,\"type\":\"String\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"access_token\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"refresh_token\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"expires\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"DateTime\",\"nativeType\":null,\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"user\",\"kind\":\"object\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"User\",\"nativeType\":null,\"relationName\":\"UserToUserCredentials\",\"relationFromFields\":[\"user_id\"],\"relationToFields\":[\"id\"],\"isGenerated\":false,\"isUpdatedAt\":false}],\"primaryKey\":null,\"uniqueFields\":[],\"uniqueIndexes\":[],\"isGenerated\":false}},\"enums\":{},\"types\":{}}")
 config.engineWasm = undefined
 config.compilerWasm = undefined
 
@@ -1058,36 +1058,6 @@ export namespace Prisma {
    * Count Types
    */
 
-
-  /**
-   * Count Type UserCountOutputType
-   */
-
-  export type UserCountOutputType = {
-    user_credentials: number
-  }
-
-  export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    user_credentials?: boolean | UserCountOutputTypeCountUser_credentialsArgs
-  }
-
-  // Custom InputTypes
-  /**
-   * UserCountOutputType without action
-   */
-  export type UserCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the UserCountOutputType
-     */
-    select?: UserCountOutputTypeSelect<ExtArgs> | null
-  }
-
-  /**
-   * UserCountOutputType without action
-   */
-  export type UserCountOutputTypeCountUser_credentialsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-    where?: UserCredentialsWhereInput
-  }
 
 
   /**
@@ -2269,7 +2239,6 @@ export namespace Prisma {
     banned?: boolean
     roles?: boolean
     user_credentials?: boolean | User$user_credentialsArgs<ExtArgs>
-    _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
   export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -2296,7 +2265,6 @@ export namespace Prisma {
   export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "executed_commands" | "banned" | "roles", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     user_credentials?: boolean | User$user_credentialsArgs<ExtArgs>
-    _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
   export type UserIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -2304,7 +2272,7 @@ export namespace Prisma {
   export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
     name: "User"
     objects: {
-      user_credentials: Prisma.$UserCredentialsPayload<ExtArgs>[]
+      user_credentials: Prisma.$UserCredentialsPayload<ExtArgs> | null
     }
     scalars: runtime.Types.Extensions.GetPayloadResult<{
       id: string
@@ -2705,7 +2673,7 @@ export namespace Prisma {
    */
   export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    user_credentials<T extends User$user_credentialsArgs<ExtArgs> = {}>(args?: Subset<T, User$user_credentialsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$UserCredentialsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    user_credentials<T extends User$user_credentialsArgs<ExtArgs> = {}>(args?: Subset<T, User$user_credentialsArgs<ExtArgs>>): Prisma__UserCredentialsClient<runtime.Types.Result.GetResult<Prisma.$UserCredentialsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3141,11 +3109,6 @@ export namespace Prisma {
      */
     include?: UserCredentialsInclude<ExtArgs> | null
     where?: UserCredentialsWhereInput
-    orderBy?: UserCredentialsOrderByWithRelationInput | UserCredentialsOrderByWithRelationInput[]
-    cursor?: UserCredentialsWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: UserCredentialsScalarFieldEnum | UserCredentialsScalarFieldEnum[]
   }
 
   /**
@@ -4421,7 +4384,7 @@ export namespace Prisma {
     executed_commands?: IntFilter<"User"> | number
     banned?: BoolFilter<"User"> | boolean
     roles?: BigIntFilter<"User"> | bigint | number
-    user_credentials?: UserCredentialsListRelationFilter
+    user_credentials?: XOR<UserCredentialsNullableScalarRelationFilter, UserCredentialsWhereInput> | null
   }
 
   export type UserOrderByWithRelationInput = {
@@ -4429,7 +4392,7 @@ export namespace Prisma {
     executed_commands?: SortOrder
     banned?: SortOrder
     roles?: SortOrder
-    user_credentials?: UserCredentialsOrderByRelationAggregateInput
+    user_credentials?: UserCredentialsOrderByWithRelationInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -4440,7 +4403,7 @@ export namespace Prisma {
     executed_commands?: IntFilter<"User"> | number
     banned?: BoolFilter<"User"> | boolean
     roles?: BigIntFilter<"User"> | bigint | number
-    user_credentials?: UserCredentialsListRelationFilter
+    user_credentials?: XOR<UserCredentialsNullableScalarRelationFilter, UserCredentialsWhereInput> | null
   }, "id">
 
   export type UserOrderByWithAggregationInput = {
@@ -4488,15 +4451,15 @@ export namespace Prisma {
 
   export type UserCredentialsWhereUniqueInput = Prisma.AtLeast<{
     id?: number
+    user_id?: string
     AND?: UserCredentialsWhereInput | UserCredentialsWhereInput[]
     OR?: UserCredentialsWhereInput[]
     NOT?: UserCredentialsWhereInput | UserCredentialsWhereInput[]
-    user_id?: StringFilter<"UserCredentials"> | string
     access_token?: StringFilter<"UserCredentials"> | string
     refresh_token?: StringFilter<"UserCredentials"> | string
     expires?: DateTimeFilter<"UserCredentials"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
-  }, "id">
+  }, "id" | "user_id">
 
   export type UserCredentialsOrderByWithAggregationInput = {
     id?: SortOrder
@@ -4575,16 +4538,16 @@ export namespace Prisma {
     id: string
     executed_commands?: number
     banned?: boolean
-    roles: bigint | number
-    user_credentials?: UserCredentialsCreateNestedManyWithoutUserInput
+    roles?: bigint | number
+    user_credentials?: UserCredentialsCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
     id: string
     executed_commands?: number
     banned?: boolean
-    roles: bigint | number
-    user_credentials?: UserCredentialsUncheckedCreateNestedManyWithoutUserInput
+    roles?: bigint | number
+    user_credentials?: UserCredentialsUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -4592,7 +4555,7 @@ export namespace Prisma {
     executed_commands?: IntFieldUpdateOperationsInput | number
     banned?: BoolFieldUpdateOperationsInput | boolean
     roles?: BigIntFieldUpdateOperationsInput | bigint | number
-    user_credentials?: UserCredentialsUpdateManyWithoutUserNestedInput
+    user_credentials?: UserCredentialsUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -4600,14 +4563,14 @@ export namespace Prisma {
     executed_commands?: IntFieldUpdateOperationsInput | number
     banned?: BoolFieldUpdateOperationsInput | boolean
     roles?: BigIntFieldUpdateOperationsInput | bigint | number
-    user_credentials?: UserCredentialsUncheckedUpdateManyWithoutUserNestedInput
+    user_credentials?: UserCredentialsUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
     id: string
     executed_commands?: number
     banned?: boolean
-    roles: bigint | number
+    roles?: bigint | number
   }
 
   export type UserUpdateManyMutationInput = {
@@ -4796,14 +4759,9 @@ export namespace Prisma {
     not?: NestedBigIntFilter<$PrismaModel> | bigint | number
   }
 
-  export type UserCredentialsListRelationFilter = {
-    every?: UserCredentialsWhereInput
-    some?: UserCredentialsWhereInput
-    none?: UserCredentialsWhereInput
-  }
-
-  export type UserCredentialsOrderByRelationAggregateInput = {
-    _count?: SortOrder
+  export type UserCredentialsNullableScalarRelationFilter = {
+    is?: UserCredentialsWhereInput | null
+    isNot?: UserCredentialsWhereInput | null
   }
 
   export type UserCountOrderByAggregateInput = {
@@ -4947,18 +4905,16 @@ export namespace Prisma {
     set?: string | null
   }
 
-  export type UserCredentialsCreateNestedManyWithoutUserInput = {
-    create?: XOR<UserCredentialsCreateWithoutUserInput, UserCredentialsUncheckedCreateWithoutUserInput> | UserCredentialsCreateWithoutUserInput[] | UserCredentialsUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: UserCredentialsCreateOrConnectWithoutUserInput | UserCredentialsCreateOrConnectWithoutUserInput[]
-    createMany?: UserCredentialsCreateManyUserInputEnvelope
-    connect?: UserCredentialsWhereUniqueInput | UserCredentialsWhereUniqueInput[]
+  export type UserCredentialsCreateNestedOneWithoutUserInput = {
+    create?: XOR<UserCredentialsCreateWithoutUserInput, UserCredentialsUncheckedCreateWithoutUserInput>
+    connectOrCreate?: UserCredentialsCreateOrConnectWithoutUserInput
+    connect?: UserCredentialsWhereUniqueInput
   }
 
-  export type UserCredentialsUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<UserCredentialsCreateWithoutUserInput, UserCredentialsUncheckedCreateWithoutUserInput> | UserCredentialsCreateWithoutUserInput[] | UserCredentialsUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: UserCredentialsCreateOrConnectWithoutUserInput | UserCredentialsCreateOrConnectWithoutUserInput[]
-    createMany?: UserCredentialsCreateManyUserInputEnvelope
-    connect?: UserCredentialsWhereUniqueInput | UserCredentialsWhereUniqueInput[]
+  export type UserCredentialsUncheckedCreateNestedOneWithoutUserInput = {
+    create?: XOR<UserCredentialsCreateWithoutUserInput, UserCredentialsUncheckedCreateWithoutUserInput>
+    connectOrCreate?: UserCredentialsCreateOrConnectWithoutUserInput
+    connect?: UserCredentialsWhereUniqueInput
   }
 
   export type IntFieldUpdateOperationsInput = {
@@ -4981,32 +4937,24 @@ export namespace Prisma {
     divide?: bigint | number
   }
 
-  export type UserCredentialsUpdateManyWithoutUserNestedInput = {
-    create?: XOR<UserCredentialsCreateWithoutUserInput, UserCredentialsUncheckedCreateWithoutUserInput> | UserCredentialsCreateWithoutUserInput[] | UserCredentialsUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: UserCredentialsCreateOrConnectWithoutUserInput | UserCredentialsCreateOrConnectWithoutUserInput[]
-    upsert?: UserCredentialsUpsertWithWhereUniqueWithoutUserInput | UserCredentialsUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: UserCredentialsCreateManyUserInputEnvelope
-    set?: UserCredentialsWhereUniqueInput | UserCredentialsWhereUniqueInput[]
-    disconnect?: UserCredentialsWhereUniqueInput | UserCredentialsWhereUniqueInput[]
-    delete?: UserCredentialsWhereUniqueInput | UserCredentialsWhereUniqueInput[]
-    connect?: UserCredentialsWhereUniqueInput | UserCredentialsWhereUniqueInput[]
-    update?: UserCredentialsUpdateWithWhereUniqueWithoutUserInput | UserCredentialsUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: UserCredentialsUpdateManyWithWhereWithoutUserInput | UserCredentialsUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: UserCredentialsScalarWhereInput | UserCredentialsScalarWhereInput[]
+  export type UserCredentialsUpdateOneWithoutUserNestedInput = {
+    create?: XOR<UserCredentialsCreateWithoutUserInput, UserCredentialsUncheckedCreateWithoutUserInput>
+    connectOrCreate?: UserCredentialsCreateOrConnectWithoutUserInput
+    upsert?: UserCredentialsUpsertWithoutUserInput
+    disconnect?: UserCredentialsWhereInput | boolean
+    delete?: UserCredentialsWhereInput | boolean
+    connect?: UserCredentialsWhereUniqueInput
+    update?: XOR<XOR<UserCredentialsUpdateToOneWithWhereWithoutUserInput, UserCredentialsUpdateWithoutUserInput>, UserCredentialsUncheckedUpdateWithoutUserInput>
   }
 
-  export type UserCredentialsUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<UserCredentialsCreateWithoutUserInput, UserCredentialsUncheckedCreateWithoutUserInput> | UserCredentialsCreateWithoutUserInput[] | UserCredentialsUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: UserCredentialsCreateOrConnectWithoutUserInput | UserCredentialsCreateOrConnectWithoutUserInput[]
-    upsert?: UserCredentialsUpsertWithWhereUniqueWithoutUserInput | UserCredentialsUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: UserCredentialsCreateManyUserInputEnvelope
-    set?: UserCredentialsWhereUniqueInput | UserCredentialsWhereUniqueInput[]
-    disconnect?: UserCredentialsWhereUniqueInput | UserCredentialsWhereUniqueInput[]
-    delete?: UserCredentialsWhereUniqueInput | UserCredentialsWhereUniqueInput[]
-    connect?: UserCredentialsWhereUniqueInput | UserCredentialsWhereUniqueInput[]
-    update?: UserCredentialsUpdateWithWhereUniqueWithoutUserInput | UserCredentialsUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: UserCredentialsUpdateManyWithWhereWithoutUserInput | UserCredentialsUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: UserCredentialsScalarWhereInput | UserCredentialsScalarWhereInput[]
+  export type UserCredentialsUncheckedUpdateOneWithoutUserNestedInput = {
+    create?: XOR<UserCredentialsCreateWithoutUserInput, UserCredentialsUncheckedCreateWithoutUserInput>
+    connectOrCreate?: UserCredentialsCreateOrConnectWithoutUserInput
+    upsert?: UserCredentialsUpsertWithoutUserInput
+    disconnect?: UserCredentialsWhereInput | boolean
+    delete?: UserCredentialsWhereInput | boolean
+    connect?: UserCredentialsWhereUniqueInput
+    update?: XOR<XOR<UserCredentialsUpdateToOneWithWhereWithoutUserInput, UserCredentialsUpdateWithoutUserInput>, UserCredentialsUncheckedUpdateWithoutUserInput>
   }
 
   export type UserCreateNestedOneWithoutUser_credentialsInput = {
@@ -5221,49 +5169,42 @@ export namespace Prisma {
     create: XOR<UserCredentialsCreateWithoutUserInput, UserCredentialsUncheckedCreateWithoutUserInput>
   }
 
-  export type UserCredentialsCreateManyUserInputEnvelope = {
-    data: UserCredentialsCreateManyUserInput | UserCredentialsCreateManyUserInput[]
-  }
-
-  export type UserCredentialsUpsertWithWhereUniqueWithoutUserInput = {
-    where: UserCredentialsWhereUniqueInput
+  export type UserCredentialsUpsertWithoutUserInput = {
     update: XOR<UserCredentialsUpdateWithoutUserInput, UserCredentialsUncheckedUpdateWithoutUserInput>
     create: XOR<UserCredentialsCreateWithoutUserInput, UserCredentialsUncheckedCreateWithoutUserInput>
+    where?: UserCredentialsWhereInput
   }
 
-  export type UserCredentialsUpdateWithWhereUniqueWithoutUserInput = {
-    where: UserCredentialsWhereUniqueInput
+  export type UserCredentialsUpdateToOneWithWhereWithoutUserInput = {
+    where?: UserCredentialsWhereInput
     data: XOR<UserCredentialsUpdateWithoutUserInput, UserCredentialsUncheckedUpdateWithoutUserInput>
   }
 
-  export type UserCredentialsUpdateManyWithWhereWithoutUserInput = {
-    where: UserCredentialsScalarWhereInput
-    data: XOR<UserCredentialsUpdateManyMutationInput, UserCredentialsUncheckedUpdateManyWithoutUserInput>
+  export type UserCredentialsUpdateWithoutUserInput = {
+    access_token?: StringFieldUpdateOperationsInput | string
+    refresh_token?: StringFieldUpdateOperationsInput | string
+    expires?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type UserCredentialsScalarWhereInput = {
-    AND?: UserCredentialsScalarWhereInput | UserCredentialsScalarWhereInput[]
-    OR?: UserCredentialsScalarWhereInput[]
-    NOT?: UserCredentialsScalarWhereInput | UserCredentialsScalarWhereInput[]
-    id?: IntFilter<"UserCredentials"> | number
-    user_id?: StringFilter<"UserCredentials"> | string
-    access_token?: StringFilter<"UserCredentials"> | string
-    refresh_token?: StringFilter<"UserCredentials"> | string
-    expires?: DateTimeFilter<"UserCredentials"> | Date | string
+  export type UserCredentialsUncheckedUpdateWithoutUserInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    access_token?: StringFieldUpdateOperationsInput | string
+    refresh_token?: StringFieldUpdateOperationsInput | string
+    expires?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type UserCreateWithoutUser_credentialsInput = {
     id: string
     executed_commands?: number
     banned?: boolean
-    roles: bigint | number
+    roles?: bigint | number
   }
 
   export type UserUncheckedCreateWithoutUser_credentialsInput = {
     id: string
     executed_commands?: number
     banned?: boolean
-    roles: bigint | number
+    roles?: bigint | number
   }
 
   export type UserCreateOrConnectWithoutUser_credentialsInput = {
@@ -5294,33 +5235,6 @@ export namespace Prisma {
     executed_commands?: IntFieldUpdateOperationsInput | number
     banned?: BoolFieldUpdateOperationsInput | boolean
     roles?: BigIntFieldUpdateOperationsInput | bigint | number
-  }
-
-  export type UserCredentialsCreateManyUserInput = {
-    id?: number
-    access_token: string
-    refresh_token: string
-    expires: Date | string
-  }
-
-  export type UserCredentialsUpdateWithoutUserInput = {
-    access_token?: StringFieldUpdateOperationsInput | string
-    refresh_token?: StringFieldUpdateOperationsInput | string
-    expires?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type UserCredentialsUncheckedUpdateWithoutUserInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    access_token?: StringFieldUpdateOperationsInput | string
-    refresh_token?: StringFieldUpdateOperationsInput | string
-    expires?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type UserCredentialsUncheckedUpdateManyWithoutUserInput = {
-    id?: IntFieldUpdateOperationsInput | number
-    access_token?: StringFieldUpdateOperationsInput | string
-    refresh_token?: StringFieldUpdateOperationsInput | string
-    expires?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
 
