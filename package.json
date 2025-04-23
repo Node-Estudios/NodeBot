@@ -22,11 +22,12 @@
     "scripts": {
         "start": "doppler run -- node build/index.js",
         "run": "node build/index.js",
-        "build": "npm run db:migrate && npm run type:locales && npx tsc",
+        "build": "npm run db:generate && npm run type:locales && npx tsc",
         "dev": "nodemon -e ts --exec \"npm start\"",
         "tsc:watch": "nodemon -e ts --exec tsc",
         "type:locales": "cd locales && type-locales && mv locales.ts ../src/utils/locales.ts && cd .. && if [ -f \"build/utils/testLocales.js\" ]; then node build/utils/testLocales.js; fi",
-        "db:migrate": "prisma migrate dev"
+        "db:migrate": "prisma migrate dev",
+        "db:generate": "prisma generate"
     },
     "author": "",
     "license": "ISC",
