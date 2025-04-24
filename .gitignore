@@ -14,3 +14,4 @@ testing.ts
 **/*.db
 **/*.db-journal
 src/prisma/client
+build
