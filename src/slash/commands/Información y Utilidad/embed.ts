@@ -17,7 +17,7 @@ import Client from '#structures/Client.js'
 import Color from '#structures/Color.js'
 
 export default class embed extends Command {
-    constructor () {
+    constructor() {
         super({
             name: 'embed',
             description: 'Sends a embed.',
@@ -46,13 +46,14 @@ export default class embed extends Command {
                 {
                     type: ApplicationCommandOptionType.Attachment,
                     name: 'image',
-                    description: 'Image of the embed in format png, jpg, jpeg, gif, webp, bmp, tiff, tif',
+                    description:
+                        'Image of the embed in format png, jpg, jpeg, gif, webp, bmp, tiff, tif',
                 },
             ],
         })
     }
 
-    override async run (interaction: ChatInputCommandInteraction) {
+    override async run(interaction: ChatInputCommandInteraction) {
         const translate = Translator(interaction)
         const client = interaction.client as Client
         if (!interaction.inCachedGuild())
@@ -63,21 +64,38 @@ export default class embed extends Command {
                 ephemeral: true,
             })
 
-        const channel = interaction.options.getChannel('channel', false, [ChannelType.GuildText]) ?? interaction.channel
-        if (!channel?.permissionsFor(interaction.guild.members.me as GuildMember).has([PermissionFlagsBits.SendMessages, PermissionFlagsBits.EmbedLinks]))
+        const channel =
+            interaction.options.getChannel('channel', false, [
+                ChannelType.GuildText,
+            ]) ?? interaction.channel
+        if (
+            !channel
+                ?.permissionsFor(interaction.guild.members.me as GuildMember)
+                .has([
+                    PermissionFlagsBits.SendMessages,
+                    PermissionFlagsBits.EmbedLinks,
+                ])
+        )
             return await interaction.reply({
-                content: Translator(interaction)(keys.embed.missing_permissions, {
-                    permisions: new PermissionsBitField([PermissionFlagsBits.SendMessages, PermissionFlagsBits.EmbedLinks])
-                        .toArray()
-                        .map(p => p.replace(/([A-Z])/g, ' $&')?.trim())
-                        .join(', '),
-                }),
+                content: Translator(interaction)(
+                    keys.embed.missing_permissions,
+                    {
+                        permisions: new PermissionsBitField([
+                            PermissionFlagsBits.SendMessages,
+                            PermissionFlagsBits.EmbedLinks,
+                        ])
+                            .toArray()
+                            .map(p => p.replace(/([A-Z])/g, ' $&')?.trim())
+                            .join(', '),
+                    },
+                ),
                 ephemeral: true,
             })
 
         const colorInput = interaction.options.getString('color')
         let color = new Color(`${Colors.Default}`)
-        if (colorInput && Color.isColor(colorInput)) color = new Color(colorInput)
+        if (colorInput && Color.isColor(colorInput))
+            color = new Color(colorInput)
         const immage = interaction.options.getAttachment('image')
         console.log(immage?.url)
         return await interaction.showModal(
@@ -88,7 +106,9 @@ export default class embed extends Command {
                     new ActionRowBuilder<TextInputBuilder>().setComponents(
                         new TextInputBuilder()
                             .setCustomId('title')
-                            .setPlaceholder(translate(keys.embed.modal.title_placeholder))
+                            .setPlaceholder(
+                                translate(keys.embed.modal.title_placeholder),
+                            )
                             .setLabel(translate(keys.embed.modal.title_label))
                             .setMaxLength(256)
                             .setStyle(TextInputStyle.Short)
@@ -97,8 +117,14 @@ export default class embed extends Command {
                     new ActionRowBuilder<TextInputBuilder>().setComponents(
                         new TextInputBuilder()
                             .setCustomId('description')
-                            .setPlaceholder(translate(keys.embed.modal.description_placeholder))
-                            .setLabel(translate(keys.embed.modal.description_label))
+                            .setPlaceholder(
+                                translate(
+                                    keys.embed.modal.description_placeholder,
+                                ),
+                            )
+                            .setLabel(
+                                translate(keys.embed.modal.description_label),
+                            )
                             .setStyle(TextInputStyle.Paragraph)
                             .setRequired(false),
                     ),
@@ -116,6 +142,7 @@ export default class embed extends Command {
                             .setCustomId('image')
                             .setPlaceholder('https://imgur.com/Vicmk2N'),
                     ),
-                ))
+                ),
+        )
     }
 }

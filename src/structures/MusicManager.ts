@@ -37,7 +37,7 @@ export default class MusicManager extends EventEmitter {
     youtubei = Innertube.create()
     youtubeCodes = new Collection<string, UserExtended>()
 
-    private async sendSpamMSG (user: UserExtended, player: Player) {
+    private async sendSpamMSG(user: UserExtended, player: Player) {
         await player.youtubei.session.signIn(undefined)
         // if (!this.spamInterval.checkUser(user.id)) {
 
@@ -45,7 +45,11 @@ export default class MusicManager extends EventEmitter {
         // } else return
     }
 
-    async createNewPlayer (vc: VoiceChannel, textChannelId: string, volume?: number) {
+    async createNewPlayer(
+        vc: VoiceChannel,
+        textChannelId: string,
+        volume?: number,
+    ) {
         const player = new Player({
             musicManager: this,
             voiceChannel: vc,
@@ -68,13 +72,16 @@ export default class MusicManager extends EventEmitter {
         return player
     }
 
-    async trackPause (player: Player, interaction: ChatInputCommandInteraction<'cached'> | ButtonInteraction): Promise<false | Message<boolean>> {
+    async trackPause(
+        player: Player,
+        interaction: ChatInputCommandInteraction<'cached'> | ButtonInteraction,
+    ): Promise<false | Message<boolean>> {
         // Return false in case the player is not playing || paused || there is no message
         const translate = Translator(interaction)
         if (!player.queue.current) return false
         player.playing ? player.pause() : player.pause(false)
         type Writeable<T extends { [x: string]: any }, K extends string> = {
-            [P in K]: T[P];
+            [P in K]: T[P]
         }
         const prevDesc = player.message?.embeds[0].description?.split('\n')[0]
         const newDesc = `${prevDesc}\n\n${translate(keys.stop[player.paused ? 'paused' : 'resumed'], { user: interaction.user.toString() })}`
@@ -88,31 +95,46 @@ export default class MusicManager extends EventEmitter {
         if (player.message?.components) {
             const actionRowComponents = player.message.components[0]?.components
             if (actionRowComponents) {
-                const pauseButton = actionRowComponents.find((c) => c.customId === 'pauseMusic' && c.type === ComponentType.Button)
-                if (pauseButton && pauseButton.type === 2) // Make sure it's a button component
+                const pauseButton = actionRowComponents.find(
+                    c =>
+                        c.customId === 'pauseMusic' &&
+                        c.type === ComponentType.Button,
+                )
+                if (pauseButton && pauseButton.type === 2)
                     if (player.playing)
-                         // @ts-expect-error
-                        (pauseButton.data.emoji as Writeable<APIMessageComponentEmoji, keyof APIMessageComponentEmoji>) = {
+                        // Make sure it's a button component
+                        // @ts-expect-error
+                        (pauseButton.data.emoji as Writeable<
+                            APIMessageComponentEmoji,
+                            keyof APIMessageComponentEmoji
+                        >) = {
                             name: client.settings.emojis.white.pause.name.toString(),
                             id: client.settings.emojis.white.pause.id.toString(),
-                             // @ts-expect-error
+                            // @ts-expect-error
                             animated: pauseButton.data.emoji?.animated,
                         }
                     else
-                     // @ts-expect-error
-                        (pauseButton.data.emoji as Writeable<APIMessageComponentEmoji, keyof APIMessageComponentEmoji>) = {
+                        // @ts-expect-error
+                        (pauseButton.data.emoji as Writeable<
+                            APIMessageComponentEmoji,
+                            keyof APIMessageComponentEmoji
+                        >) = {
                             name: client.settings.emojis.white.play.name.toString(),
                             id: client.settings.emojis.white.play.id.toString(),
-                             // @ts-expect-error
+                            // @ts-expect-error
                             animated: pauseButton.data.emoji?.animated,
                         }
             }
         }
-        if (player.message) return await player.message.edit({ components: player.message.components, embeds: [updatedEmbed2] })
+        if (player.message)
+            return await player.message.edit({
+                components: player.message.components,
+                embeds: [updatedEmbed2],
+            })
         else return false
     }
 
-    async trackStart (player: Player): Promise<void> {
+    async trackStart(player: Player): Promise<void> {
         // TODO: Check if the song limit is the saçme as stablished for the admins
         // if(player.queue.current?.duration > player.guild.)
 
@@ -159,8 +181,7 @@ export default class MusicManager extends EventEmitter {
                 .setEmoji(`${client.settings.emojis.white.library.full}`),
         )
 
-        const embed = new EmbedBuilder()
-            .setColor(client.settings.color)
+        const embed = new EmbedBuilder().setColor(client.settings.color)
         if (song.platform === 'Youtube')
             embed
                 .setImage(song.thumbnails?.[0].url ?? null)
@@ -182,7 +203,7 @@ export default class MusicManager extends EventEmitter {
         if (client.settings.debug === 'true')
             logger.music(
                 'Playing | ' +
-                player.queue.current?.title +
+                    player.queue.current?.title +
                     ' | ' +
                     player.guild.name +
                     ' | ' +
@@ -190,17 +211,19 @@ export default class MusicManager extends EventEmitter {
             )
 
         try {
-            (player.message = await (await player.getTextChannel())?.send({
+            player.message = await (
+                await player.getTextChannel()
+            )?.send({
                 embeds: [embed],
                 components: [row],
-            }))
+            })
         } catch (error) {
             client.errorHandler.captureException(error as Error)
             logger.error(error)
         }
     }
 
-    trackEnd (player: Player, finished: boolean) {
+    trackEnd(player: Player, finished: boolean) {
         const track = player.queue.current
         // logger.log(player.queue.length, player.queue.previous)
         if (!track) return
@@ -233,20 +256,22 @@ export default class MusicManager extends EventEmitter {
         return this
     }
 
-    async queueEnd (player: Player) {
+    async queueEnd(player: Player) {
         const translate = Translator(player.guild)
         if (player.queue.current) {
             const embed = new EmbedBuilder()
                 .setColor(client.settings.color)
                 .setDescription(
                     'Ha terminado ' +
-                    `**[${player.queue.current.title}](https://music.youtube.com/watch?v=${
-                        player.queue.current.id
-                    })** [${formatDuration(player.queue.current.duration ?? 0)}] • <@${
-                        player.queue.current?.requester.id
-                    }>`,
+                        `**[${player.queue.current.title}](https://music.youtube.com/watch?v=${
+                            player.queue.current.id
+                        })** [${formatDuration(player.queue.current.duration ?? 0)}] • <@${
+                            player.queue.current?.requester.id
+                        }>`,
                 )
-                .setThumbnail(`https://img.youtube.com/vi/${player.queue.current.id}/maxresdefault.jpg`)
+                .setThumbnail(
+                    `https://img.youtube.com/vi/${player.queue.current.id}/maxresdefault.jpg`,
+                )
             player.message?.edit({
                 components: [],
                 embeds: [embed],
@@ -257,11 +282,16 @@ export default class MusicManager extends EventEmitter {
         } catch (error) {
             client.errorHandler.captureException(error as Error)
         }
-        const playlist = await player.youtubei.music.getUpNext(player.queue.current?.id ?? '', true)
-        this.ejecutarAccionesEnParalelo(playlist.contents, 5, player).then(() => {
-            player.skip()
-            player.play()
-        }).catch((err) => client.errorHandler.captureException(err))
+        const playlist = await player.youtubei.music.getUpNext(
+            player.queue.current?.id ?? '',
+            true,
+        )
+        this.ejecutarAccionesEnParalelo(playlist.contents, 5, player)
+            .then(() => {
+                player.skip()
+                player.play()
+            })
+            .catch(err => client.errorHandler.captureException(err))
         const e = new EmbedBuilder()
             .setTitle(translate(keys.automix.generated))
             .setColor(Colors.Green)
@@ -282,9 +312,13 @@ export default class MusicManager extends EventEmitter {
                     inline: true,
                 },
             )
-            .setThumbnail(`https://img.youtube.com/vi/${player.queue.current?.id}/maxresdefault.jpg`)
+            .setThumbnail(
+                `https://img.youtube.com/vi/${player.queue.current?.id}/maxresdefault.jpg`,
+            )
         try {
-            await (await player.getTextChannel())?.send({
+            await (
+                await player.getTextChannel()
+            )?.send({
                 embeds: [e],
                 content: '',
             })
@@ -294,7 +328,11 @@ export default class MusicManager extends EventEmitter {
         }
     }
 
-    async ejecutarAccionesEnParalelo (contents: any[], maxVeces: number, player: Player): Promise<void> {
+    async ejecutarAccionesEnParalelo(
+        contents: any[],
+        maxVeces: number,
+        player: Player,
+    ): Promise<void> {
         const cantidadEjecuciones = Math.min(maxVeces, contents.length)
         const promesas: Array<Promise<void>> = []
 
@@ -307,22 +345,26 @@ export default class MusicManager extends EventEmitter {
         await Promise.all(promesas)
     }
 
-    async ejecutarAccion (elemento: any, player: Player) {
+    async ejecutarAccion(elemento: any, player: Player) {
         // Lógica de tu acción
-        const track = await client.music.search(elemento.video_id, client.user, 'Youtube')
+        const track = await client.music.search(
+            elemento.video_id,
+            client.user,
+            'Youtube',
+        )
         if (!track) return
         player.queue.add(track)
     }
 
-    get (guild: Guild) {
+    get(guild: Guild) {
         return this.players.get(guild.id)
     }
 
-    async destroy (guild: Guild) {
+    async destroy(guild: Guild) {
         return await this.players.get(guild.id)?.destroy()
     }
 
-    shuffleArray (array: any[]) {
+    shuffleArray(array: any[]) {
         for (let i = array.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1))
             ;[array[i], array[j]] = [array[j], array[i]]
@@ -330,7 +372,11 @@ export default class MusicManager extends EventEmitter {
         return array
     }
 
-    async search (query: any, requester: YoutubeInjecter<User>, source: 'Spotify' | 'Youtube' | 'Soundcloud'): Promise<RequesterInjecter<any> | undefined> {
+    async search(
+        query: any,
+        requester: YoutubeInjecter<User>,
+        source: 'Spotify' | 'Youtube' | 'Soundcloud',
+    ): Promise<RequesterInjecter<any> | undefined> {
         // let track
         // if (requester.youtubei)
         //     if (requester.youtubei.session.logged_in) {
@@ -345,7 +391,7 @@ export default class MusicManager extends EventEmitter {
         try {
             let track = await yasha.Source.resolve(query)
             if (!track) {
-                 // @ts-expect-error
+                // @ts-expect-error
                 const search = await yasha.Source.Youtube.search(query)
                 if (!search.length) {
                     logger.debug(query, 'No se encontró nada')
@@ -374,23 +420,25 @@ export default class MusicManager extends EventEmitter {
             return track
             // }
         } catch (error) {
-            if ([
-                'Video is age restricted',
-                'Playlist not found',
-                'This video is not available',
-            ].includes((error as Error).message))
+            if (
+                [
+                    'Video is age restricted',
+                    'Playlist not found',
+                    'This video is not available',
+                ].includes((error as Error).message)
+            )
                 throw new Error((error as Error).message)
             client.errorHandler.captureException(error as Error)
         }
         return undefined
     }
 
-    getPlayingPlayers () {
+    getPlayingPlayers() {
         return this.players.filter(p => p.playing)
     }
 }
 
-export function formatDuration (duration: number) {
+export function formatDuration(duration: number) {
     if (isNaN(duration) || typeof duration === 'undefined') return '00:00'
     // if (duration > 3600000000) return language.LIVE
     return formatTime(duration, true)

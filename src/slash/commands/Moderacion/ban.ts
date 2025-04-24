@@ -1,9 +1,12 @@
-import { ApplicationCommandOptionType, ChatInputCommandInteraction } from 'discord.js'
+import {
+    ApplicationCommandOptionType,
+    ChatInputCommandInteraction,
+} from 'discord.js'
 import Command from '#structures/Command.js'
 import Translator, { keys } from '#utils/Translator.js'
 
 export default class Ban extends Command {
-    constructor () {
+    constructor() {
         super({
             name: 'ban',
             description: 'Ban a user from the server',
@@ -32,7 +35,7 @@ export default class Ban extends Command {
         })
     }
 
-    override async run (interaction: ChatInputCommandInteraction<'cached'>) {
+    override async run(interaction: ChatInputCommandInteraction<'cached'>) {
         const translate = Translator(interaction)
         const member = interaction.options.getMember('user')
         if (!member) {
@@ -41,7 +44,8 @@ export default class Ban extends Command {
                 ephemeral: true,
             })
         }
-        const reason = interaction.options.getString('reason') ?? 'No reason provided'
+        const reason =
+            interaction.options.getString('reason') ?? 'No reason provided'
         const days = interaction.options.getInteger('days') ?? 0
         if (member.id === interaction.user.id) {
             return await interaction.reply({
@@ -55,7 +59,10 @@ export default class Ban extends Command {
                 ephemeral: true,
             })
         }
-        if (member.roles.highest.position >= interaction.member.roles.highest.position) {
+        if (
+            member.roles.highest.position >=
+            interaction.member.roles.highest.position
+        ) {
             return await interaction.reply({
                 content: translate(keys.ban.higher),
                 ephemeral: true,

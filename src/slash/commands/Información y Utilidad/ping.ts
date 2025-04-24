@@ -7,7 +7,7 @@ import Translator, { keys } from '#utils/Translator.js'
 
 import logger from '#utils/logger.js'
 export default class ping extends Command {
-    constructor () {
+    constructor() {
         super({
             name: 'ping',
             description: 'Shows the bot latency.',
@@ -15,10 +15,12 @@ export default class ping extends Command {
         })
     }
 
-    override async run (interaction: ChatInputCommandInteraction) {
+    override async run(interaction: ChatInputCommandInteraction) {
         const translate = Translator(interaction)
         const client = interaction.client as Client
-        const ping = Math.abs((interaction.createdAt.getTime() - Date.now()) / 1000)
+        const ping = Math.abs(
+            (interaction.createdAt.getTime() - Date.now()) / 1000,
+        )
         return await client.cluster
             .broadcastEval(
                 (c: any) => ({
@@ -27,7 +29,9 @@ export default class ping extends Command {
                 { cluster: client.cluster.id },
             )
             .then(async (results: any) => {
-                const performance = performanceMeters.get('interaction_' + interaction.id)
+                const performance = performanceMeters.get(
+                    'interaction_' + interaction.id,
+                )
                 const time = performance?.stop() ?? 0
                 if (performance)
                     performanceMeters.delete('interaction_' + interaction.id)
@@ -39,9 +43,20 @@ export default class ping extends Command {
                             new EmbedBuilder()
                                 .setColor(Colors.Green)
                                 .setFields(
-                                    { name: translate(keys.API), value: `${results[0].ping}ms`, inline: true },
-                                    { name: translate(keys.ping.internal), value: time + 'ms' },
-                                    { name: translate(keys.ping.global), value: `${ping}ms`, inline: true },
+                                    {
+                                        name: translate(keys.API),
+                                        value: `${results[0].ping}ms`,
+                                        inline: true,
+                                    },
+                                    {
+                                        name: translate(keys.ping.internal),
+                                        value: time + 'ms',
+                                    },
+                                    {
+                                        name: translate(keys.ping.global),
+                                        value: `${ping}ms`,
+                                        inline: true,
+                                    },
                                 )
                                 .setTitle(translate(keys.PING))
                                 .setTimestamp(),

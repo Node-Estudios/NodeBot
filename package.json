@@ -25,7 +25,7 @@
         "build": "npm run db:generate && npm run type:locales && npx tsc",
         "dev": "nodemon -e ts --exec \"npm start\"",
         "tsc:watch": "nodemon -e ts --exec tsc",
-        "type:locales": "cd locales && type-locales && mv locales.ts ../src/utils/locales.ts && cd .. && if [ -f \"build/utils/testLocales.js\" ]; then node build/utils/testLocales.js; fi",
+        "type:locales": "type-locales && if [ -f \"build/utils/testLocales.js\" ]; then node build/utils/testLocales.js; fi",
         "db:migrate": "prisma migrate dev",
         "db:generate": "prisma generate"
     },
@@ -53,6 +53,7 @@
         "sodium": "^3.0.2",
         "statcord.js": "3.4.3",
         "stripe": "12.18.0",
+        "type-locales": "3.2.4",
         "yasha": "github:Node-Estudios/ts-yasha",
         "youtubei.js": "5.8.0"
     },
@@ -73,10 +74,9 @@
         "eslint-plugin-prettier": "^5.2.6",
         "globals": "^16.0.0",
         "nodemon": "3.0.1",
-        "prisma": "6.6.0",
         "prettier": "^3.5.3",
+        "prisma": "6.6.0",
         "transjson": "github:OnekiDevs/transjson#1187c4b",
-        "type-locales": "github:OnekiDevs/type-locales#ab4ea48",
         "typescript": "5.8.3",
         "typescript-eslint": "^8.30.1"
     },

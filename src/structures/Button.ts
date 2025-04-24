@@ -4,15 +4,15 @@ import Client from './Client.js'
 
 export default class Button {
     #pattern: string | RegExp
-    constructor (pattern: string | RegExp) {
+    constructor(pattern: string | RegExp) {
         this.#pattern = pattern
     }
 
-    get name () {
+    get name() {
         return this.#pattern
     }
 
-    async run (interaction: ButtonInteraction): Promise<any> {
+    async run(interaction: ButtonInteraction): Promise<any> {
         const translate = Translator(interaction)
         const client = interaction.client as Client
         return await interaction.reply({
@@ -23,7 +23,7 @@ export default class Button {
         })
     }
 
-    match (id: string) {
+    match(id: string) {
         if (typeof this.#pattern === 'string') return this.#pattern === id
         else return this.#pattern.test(id)
     }

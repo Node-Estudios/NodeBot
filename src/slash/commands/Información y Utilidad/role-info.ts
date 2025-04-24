@@ -1,10 +1,13 @@
-import { ApplicationCommandOptionType, ChatInputCommandInteraction } from 'discord.js'
+import {
+    ApplicationCommandOptionType,
+    ChatInputCommandInteraction,
+} from 'discord.js'
 import EmbedBuilder from '#structures/EmbedBuilder.js'
 import Command from '#structures/Command.js'
 import Translator, { keys } from '#utils/Translator.js'
 
 export default class roleinfo extends Command {
-    constructor () {
+    constructor() {
         super({
             name: 'roleinfo',
             description: 'Get information about a role.',
@@ -21,7 +24,7 @@ export default class roleinfo extends Command {
         })
     }
 
-    override async run (interaction: ChatInputCommandInteraction) {
+    override async run(interaction: ChatInputCommandInteraction) {
         if (!interaction.inCachedGuild()) return
         const translate = Translator(interaction)
         const role = interaction.options.getRole('role', true)
@@ -46,7 +49,12 @@ export default class roleinfo extends Command {
                 },
                 {
                     name: `🔢 ${translate(keys.POSITION)}:`,
-                    value: '```' + Math.abs(role.position - interaction.guild.roles.cache.size) + '```',
+                    value:
+                        '```' +
+                        Math.abs(
+                            role.position - interaction.guild.roles.cache.size,
+                        ) +
+                        '```',
                     inline: true,
                 },
                 {
@@ -56,17 +64,26 @@ export default class roleinfo extends Command {
                 },
                 {
                     name: `<:star:893553167915188275> ${translate(keys.MENTIONABLE)}:`,
-                    value: '```' + translate(keys[role.mentionable ? 'YES' : 'NO']) + '```',
+                    value:
+                        '```' +
+                        translate(keys[role.mentionable ? 'YES' : 'NO']) +
+                        '```',
                     inline: true,
                 },
                 {
                     name: `<:share:893553167894216744> ${translate(keys.SEPARATED)}:`,
-                    value: '```' + translate(keys[role.hoist ? 'YES' : 'NO']) + '```',
+                    value:
+                        '```' +
+                        translate(keys[role.hoist ? 'YES' : 'NO']) +
+                        '```',
                     inline: true,
                 },
                 {
                     name: `<:cmd:894171593431994388> ${translate(keys.roleinfo.managed)}:`,
-                    value: '```' + translate(keys[role.managed ? 'YES' : 'NO']) + '```',
+                    value:
+                        '```' +
+                        translate(keys[role.managed ? 'YES' : 'NO']) +
+                        '```',
                     inline: true,
                 },
             )

@@ -6,7 +6,7 @@ import Client from '#structures/Client.js'
 import logger from '#utils/logger.js'
 
 export default class stayinvoice extends Command {
-    constructor () {
+    constructor() {
         super({
             name: '247',
             description: 'Stay 24/7 in a voice channel',
@@ -15,47 +15,56 @@ export default class stayinvoice extends Command {
         })
     }
 
-    override async run (interaction: ChatInputCommandInteraction) {
+    override async run(interaction: ChatInputCommandInteraction) {
         if (!interaction.inCachedGuild()) return
         const client = interaction.client as Client
         const translate = Translator(interaction)
         const msgr = randomMessage(translate, keys.skip.messages)
         const player = client.music.players.get(interaction.guild.id)
         if (!player)
-            return await interaction.reply(
-                {
+            return await interaction
+                .reply({
                     embeds: [
-                        new EmbedBuilder().setColor(client.settings.color).setFooter({
-                            text: msgr,
-                            iconURL: interaction.user.displayAvatarURL(),
-                        }),
+                        new EmbedBuilder()
+                            .setColor(client.settings.color)
+                            .setFooter({
+                                text: msgr,
+                                iconURL: interaction.user.displayAvatarURL(),
+                            }),
                     ],
                     ephemeral: true,
-                },
-            )
+                })
                 .catch(logger.error)
 
         if (player.stayInVc) {
             player.stayInVc = false
-            return await interaction.reply({
-                embeds: [
-                    new EmbedBuilder()
-                        .setColor(client.settings.color)
-                        .setAuthor({ iconURL: interaction.user.displayAvatarURL(), name: interaction.user.displayName })
-                        .setTitle(translate(keys[247].disabled)),
-                ],
-            })
+            return await interaction
+                .reply({
+                    embeds: [
+                        new EmbedBuilder()
+                            .setColor(client.settings.color)
+                            .setAuthor({
+                                iconURL: interaction.user.displayAvatarURL(),
+                                name: interaction.user.displayName,
+                            })
+                            .setTitle(translate(keys[247].disabled)),
+                    ],
+                })
                 .catch(logger.error)
         } else {
             player.stayInVc = true
-            return await interaction.reply({
-                embeds: [
-                    new EmbedBuilder()
-                        .setColor(client.settings.color)
-                        .setAuthor({ iconURL: interaction.user.displayAvatarURL(), name: interaction.user.displayName })
-                        .setTitle(translate(keys[247].enabled)),
-                ],
-            })
+            return await interaction
+                .reply({
+                    embeds: [
+                        new EmbedBuilder()
+                            .setColor(client.settings.color)
+                            .setAuthor({
+                                iconURL: interaction.user.displayAvatarURL(),
+                                name: interaction.user.displayName,
+                            })
+                            .setTitle(translate(keys[247].enabled)),
+                    ],
+                })
                 .catch(logger.error)
         }
     }

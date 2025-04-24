@@ -5,7 +5,7 @@ import Command from '#structures/Command.js'
 import Translator, { keys } from '#utils/Translator.js'
 
 export default class help extends Command {
-    constructor () {
+    constructor() {
         super({
             name: 'help',
             description: 'Show information about me.',
@@ -13,7 +13,7 @@ export default class help extends Command {
         })
     }
 
-    override async run (interaction: ChatInputCommandInteraction) {
+    override async run(interaction: ChatInputCommandInteraction) {
         const translate = Translator(interaction)
         const client = interaction.client as Client
         return await interaction.reply({

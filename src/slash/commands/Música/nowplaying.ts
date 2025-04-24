@@ -7,7 +7,7 @@ import logger from '#utils/logger.js'
 // import Player from '#structures/Player.js'
 
 export default class NowPlaying extends Command {
-    constructor () {
+    constructor() {
         super({
             name: 'nowplaying',
             description: 'See the current song playing.',
@@ -15,7 +15,7 @@ export default class NowPlaying extends Command {
         })
     }
 
-    override async run (interaction: ChatInputCommandInteraction<'cached'>) {
+    override async run(interaction: ChatInputCommandInteraction<'cached'>) {
         /*         const client = interaction.client as Client
         const translate = Translator(interaction)
         const message = new MessageHelper(interaction)
@@ -31,7 +31,9 @@ export default class NowPlaying extends Command {
                 ],
             }, true)
         } */
-        return await interaction.reply({ content: 'En desarrollo, comando no disponible' }).catch(logger.error)
+        return await interaction
+            .reply({ content: 'En desarrollo, comando no disponible' })
+            .catch(logger.error)
         // const song = player.queue.current
         // const parsedCurrentDuration = moment
         //   .duration(player.position, 'milliseconds')

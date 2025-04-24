@@ -7,33 +7,41 @@ import Button from '#structures/Button.js'
 import logger from '#utils/logger.js'
 
 export default class Queue extends Button {
-    constructor () {
+    constructor() {
         super('queueMusic')
     }
 
-    override async run (interaction: ButtonInteraction) {
+    override async run(interaction: ButtonInteraction) {
         try {
-            if (!interaction.inCachedGuild()) return await interaction.deferUpdate()
+            if (!interaction.inCachedGuild())
+                return await interaction.deferUpdate()
             const translate = Translator(interaction)
             const client = interaction.client as Client
             const player = client.music.players.get(interaction.guild.id)
             if (!player?.queue.current)
                 return await interaction.reply({
                     embeds: [
-                        new EmbedBuilder().setColor(client.settings.color).setFooter({
-                            text: translate(keys.queue.no_queue),
-                            iconURL: interaction.user.displayAvatarURL(),
-                        }),
+                        new EmbedBuilder()
+                            .setColor(client.settings.color)
+                            .setFooter({
+                                text: translate(keys.queue.no_queue),
+                                iconURL: interaction.user.displayAvatarURL(),
+                            }),
                     ],
                 })
 
-            if (interaction.member.voice.channelId !== (player.voiceChannel.id ?? ''))
+            if (
+                interaction.member.voice.channelId !==
+                (player.voiceChannel.id ?? '')
+            )
                 return await interaction.reply({
                     embeds: [
-                        new EmbedBuilder().setColor(client.settings.color).setFooter({
-                            text: translate(keys.skip.no_same),
-                            iconURL: interaction.user.displayAvatarURL(),
-                        }),
+                        new EmbedBuilder()
+                            .setColor(client.settings.color)
+                            .setFooter({
+                                text: translate(keys.skip.no_same),
+                                iconURL: interaction.user.displayAvatarURL(),
+                            }),
                     ],
                 })
 
@@ -51,13 +59,16 @@ export default class Queue extends Button {
                                 `🎧 ${translate(keys.queue.current)}\n[${title}](https://www.music.youtube.com/watch?v=${
                                     player.queue.current.id
                                 }) [<@${player.queue.current.requester.id}> - ${formatTime(
-                                    Math.trunc(player.queue.current.duration ?? 0),
+                                    Math.trunc(
+                                        player.queue.current.duration ?? 0,
+                                    ),
                                     false,
                                 )} - ${player.queue.current.streams?.[0].bitrate.toString().slice(0, 3)}Kbps]`,
                             )
                             .setAuthor({
                                 name: `${translate(keys.queue.queue, {
-                                    name: interaction.user.username ?? 'Unknown',
+                                    name:
+                                        interaction.user.username ?? 'Unknown',
                                 })}`,
                                 iconURL: 'https://i.imgur.com/CCqeomm.gif',
                             })
@@ -75,7 +86,9 @@ export default class Queue extends Button {
                     () =>
                         `**${++j}.** [${queue[++i].title}](https://www.music.youtube.com/watch?v=${queue[i].id}) [<@${
                             queue[i].requester.id
-                        }> - ${formatTime(Math.trunc(queue[i].duration ?? 0), false)} - ${queue[i].streams?.[0].bitrate
+                        }> - ${formatTime(Math.trunc(queue[i].duration ?? 0), false)} - ${queue[
+                            i
+                        ].streams?.[0].bitrate
                             .toString()
                             .slice(0, 3)}Kbps]`,
                 )
@@ -84,10 +97,12 @@ export default class Queue extends Button {
             if (!queuelist)
                 return await interaction.reply({
                     embeds: [
-                        new EmbedBuilder().setColor(client.settings.color).setFooter({
-                            text: translate(keys.queue.no_page),
-                            iconURL: interaction.user.displayAvatarURL(),
-                        }),
+                        new EmbedBuilder()
+                            .setColor(client.settings.color)
+                            .setFooter({
+                                text: translate(keys.queue.no_page),
+                                iconURL: interaction.user.displayAvatarURL(),
+                            }),
                     ],
                 })
 
@@ -100,9 +115,9 @@ export default class Queue extends Button {
                             }) [<@${player.queue.current.requester.id}> - ${formatTime(
                                 Math.trunc(player.queue.current.duration ?? 0),
                                 false,
-                            )} - ${player.queue.current.streams?.[0].bitrate.toString().slice(0, 3)}Kbps]\n__${
-                                translate(keys.NEXT)
-                            }__:\n${queuelist}`,
+                            )} - ${player.queue.current.streams?.[0].bitrate.toString().slice(0, 3)}Kbps]\n__${translate(
+                                keys.NEXT,
+                            )}__:\n${queuelist}`,
                         )
                         .setThumbnail(client.user.displayAvatarURL())
                         .setAuthor({

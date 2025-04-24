@@ -4,15 +4,15 @@ import Client from './Client.js'
 
 export default class Modal {
     #pattern: string | RegExp
-    constructor (pattern: string | RegExp) {
+    constructor(pattern: string | RegExp) {
         this.#pattern = pattern
     }
 
-    get name () {
+    get name() {
         return this.#pattern
     }
 
-    async run (interaction: ModalSubmitInteraction): Promise<any> {
+    async run(interaction: ModalSubmitInteraction): Promise<any> {
         const translate = Translator(interaction)
         const client = interaction.client as Client
         return await interaction.reply({
@@ -23,7 +23,7 @@ export default class Modal {
         })
     }
 
-    match (id: string) {
+    match(id: string) {
         if (typeof this.#pattern === 'string') return this.#pattern === id
         else return this.#pattern.test(id)
     }

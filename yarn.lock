@@ -2322,7 +2322,7 @@ humanize-ms@^1.2.1:
   dependencies:
     ms "^2.0.0"
 
-i18n@0.15.1:
+i18n@^0.15.1, i18n@0.15.1:
   version "0.15.1"
   resolved "https://registry.npmjs.org/i18n/-/i18n-0.15.1.tgz"
   integrity sha512-yue187t8MqUPMHdKjiZGrX+L+xcUsDClGO0Cz4loaKUOK9WrGw5pgan4bv130utOwX7fHE9w2iUeHFalVQWkXA==
@@ -4266,9 +4266,10 @@ type-is@~1.6.18:
     media-typer "0.3.0"
     mime-types "~2.1.24"
 
-"type-locales@github:OnekiDevs/type-locales#ab4ea48":
-  version "1.1.1"
-  resolved "git+ssh://git@github.com/OnekiDevs/type-locales.git#239c1717e18f62c8fb9ce2f971cb3d8098da248a"
+type-locales@3.2.4:
+  version "3.2.4"
+  resolved "https://registry.npmjs.org/type-locales/-/type-locales-3.2.4.tgz"
+  integrity sha512-gQr1BfQUPcyxT+Yd3AyzinAjeIqkJAjuGcSGRh8gNF0gNOB2nWNsR05PKIp3XFXREkcWGSP7dtDID2UKoaAHyw==
 
 typescript-eslint@^8.30.1:
   version "8.30.1"

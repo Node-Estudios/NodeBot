@@ -151,8 +151,8 @@
         "paused": "Música pausada por {user}",
         "success": "Música detenida"
     },
-    "paused":"Música pausada",
-    "resumed":"Música reanudada",
+    "paused": "Música pausada",
+    "resumed": "Música reanudada",
     "voice_update": {
         "leaving": "Saliendo de {channel} en {time} minutos",
         "alone": "Estaba solo, y me fui {channel}"

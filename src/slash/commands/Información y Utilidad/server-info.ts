@@ -5,7 +5,7 @@ import Command from '#structures/Command.js'
 import Translator, { keys } from '#utils/Translator.js'
 
 export default class serverinfo extends Command {
-    constructor () {
+    constructor() {
         super({
             name: 'serverinfo',
             description: 'Get information about the server.',
@@ -14,7 +14,7 @@ export default class serverinfo extends Command {
         })
     }
 
-    override async run (interaction: ChatInputCommandInteraction<'cached'>) {
+    override async run(interaction: ChatInputCommandInteraction<'cached'>) {
         const client = interaction.client as Client
         const translate = Translator(interaction)
         // try {
@@ -52,20 +52,32 @@ export default class serverinfo extends Command {
             1: translate(keys.serverinfo.explicit.members_without_role),
             2: translate(keys.serverinfo.explicit.all_members),
         }
-        const role = interaction.guild.roles.cache.sort((a, b) => b.position - a.position).map(role => role.toString())
+        const role = interaction.guild.roles.cache
+            .sort((a, b) => b.position - a.position)
+            .map(role => role.toString())
         const boost = interaction.guild.premiumTier
         const emojis = interaction.guild.emojis.cache
         const boostcount = interaction.guild.premiumSubscriptionCount
-        const [category, others] = interaction.guild.channels.cache.partition((c: any) => c.type === 'GUILD_CATEGORY')
-        const [text, voice] = others.partition((c: any) => c.type === 'GUILD_TEXT')
+        const [category, others] = interaction.guild.channels.cache.partition(
+            (c: any) => c.type === 'GUILD_CATEGORY',
+        )
+        const [text, voice] = others.partition(
+            (c: any) => c.type === 'GUILD_TEXT',
+        )
         const [regular, animated] = emojis.partition(emoji => !emoji.animated)
-        const banner = interaction.guild.bannerURL({ extension: 'gif', size: 4096 })
+        const banner = interaction.guild.bannerURL({
+            extension: 'gif',
+            size: 4096,
+        })
         const iconURL = interaction.guild.iconURL()
         const embed = new EmbedBuilder()
             .setColor(client.settings.color)
             .setThumbnail(iconURL)
             .setTimestamp()
-            .setFooter({ text: interaction.guild.name, iconURL: iconURL ?? undefined })
+            .setFooter({
+                text: interaction.guild.name,
+                iconURL: iconURL ?? undefined,
+            })
             .setTitle(interaction.guild.name)
             .setFields(
                 {
@@ -119,7 +131,10 @@ export default class serverinfo extends Command {
                 },
                 {
                     name: `<:money:893553167596421131> ${translate(keys.serverinfo.tier_level)}`,
-                    value: '```' + (boost ? `${translate(keys.TIER)} ${boost}` : 'No') + '```',
+                    value:
+                        '```' +
+                        (boost ? `${translate(keys.TIER)} ${boost}` : 'No') +
+                        '```',
                     inline: true,
                 },
                 {
@@ -128,7 +143,12 @@ export default class serverinfo extends Command {
                 },
                 {
                     name: `**${translate(keys.serverinfo.explicit_filter)}**`,
-                    value: '```' + explicitContent[interaction.guild?.explicitContentFilter] + '```',
+                    value:
+                        '```' +
+                        explicitContent[
+                            interaction.guild?.explicitContentFilter
+                        ] +
+                        '```',
                 },
             )
             .setImage(banner)

@@ -5,11 +5,11 @@ import Client from '#structures/Client.js'
 import Button from '#structures/Button.js'
 
 export default class Pause extends Button {
-    constructor () {
+    constructor() {
         super('pauseMusic')
     }
 
-    override async run (interaction: ButtonInteraction) {
+    override async run(interaction: ButtonInteraction) {
         if (!interaction.inCachedGuild()) return await interaction.deferUpdate()
         const client = interaction.client as Client
         const translate = Translator(interaction)

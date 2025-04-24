@@ -29,8 +29,9 @@ export class interactionCreate extends BaseEvent {
                 'Interaction, type: ' +
                     interaction.type +
                     ' | ' +
-                    interaction.guild?.name ??
-                    'No guild' + ' | ' + interaction.user.username,
+                    (interaction.guild?.name ?? 'No guild') +
+                    ' | ' +
+                    interaction.user.username,
             )
         if (!client.isReady()) return // <-- return statement here
 
