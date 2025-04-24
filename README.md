@@ -38,7 +38,7 @@ Node es un bot multifunción, multilenguaje, programado en [Discord.js](https://
     ```sh-session
     yay -Sy libsodium-git doppler-cli cmake protobuf
 
-    npm i -g protoc-gen-js
+    npm i -g protoc-gen-js protoc-gen-ts
     ```
 
 ## 🛠️ Características
