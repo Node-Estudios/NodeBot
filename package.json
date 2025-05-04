@@ -50,7 +50,6 @@
         "jsonwebtoken": "9.0.1",
         "moment": "2.29.4",
         "signale": "1.4.0",
-        "sodium": "^3.0.2",
         "statcord.js": "3.4.3",
         "stripe": "12.18.0",
         "type-locales": "3.2.4",
