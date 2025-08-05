@@ -22,12 +22,13 @@
     "scripts": {
         "start": "doppler run -- node build/index.js",
         "run": "node build/index.js",
-        "build": "npm run db:generate && npm run type:locales && npx tsc",
+        "build": "npm run db:generate && npm run type:locales && npm i --save-dev @types/node-fetch && npx tsc",
         "dev": "nodemon -e ts --exec \"npm start\"",
         "tsc:watch": "nodemon -e ts --exec tsc",
         "type:locales": "type-locales && if [ -f \"build/utils/testLocales.js\" ]; then node build/utils/testLocales.js; fi",
         "db:migrate": "prisma migrate dev",
-        "db:generate": "prisma generate"
+        "db:generate": "prisma generate",
+        "postinstall": "patch-package"
     },
     "author": "",
     "license": "ISC",
@@ -53,8 +54,8 @@
         "statcord.js": "3.4.3",
         "stripe": "12.18.0",
         "type-locales": "3.2.4",
-        "yasha": "github:Node-Estudios/ts-yasha",
-        "youtubei.js": "5.8.0"
+        "yasha": "github:/davidzeng0/yasha#dist",
+        "youtubei.js": "15.0.0"
     },
     "devDependencies": {
         "@eslint/js": "^9.25.0",
@@ -63,9 +64,11 @@
         "@types/cors": "2.8.13",
         "@types/express": "4.17.17",
         "@types/figlet": "1.5.6",
+        "@types/google-protobuf": "^3.15.12",
         "@types/i18n": "0.13.6",
         "@types/jsonwebtoken": "9.0.2",
         "@types/node": "22.14.1",
+        "@types/node-fetch": "^2.6.13",
         "@types/signale": "1.4.4",
         "concurrently": "8.2.0",
         "eslint": "^9.25.0",
@@ -73,6 +76,7 @@
         "eslint-plugin-prettier": "^5.2.6",
         "globals": "^16.0.0",
         "nodemon": "3.0.1",
+        "patch-package": "^8.0.0",
         "prettier": "^3.5.3",
         "prisma": "6.6.0",
         "transjson": "github:OnekiDevs/transjson#1187c4b",
