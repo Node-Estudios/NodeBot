@@ -41,7 +41,10 @@ export default class NodeManager extends ClusterManager {
         this.players = new Collection<string, any[]>()
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         let clusterList: any[]
-        if (!process.env.TOKEN) throw new Error('No pudimos encontrar tu token, asegurate de añadirlo al .env con el nombre de TOKEN!')
+        if (!process.env.DISCORD_TOKEN)
+            throw new Error(
+                'No pudimos encontrar tu token, asegurate de añadirlo al .env con el nombre de TOKEN!',
+            )
 
         // Inicializa las colecciones para los clusters de diferentes nodos
         this.clustersArray.set('node', [])
@@ -50,7 +53,7 @@ export default class NodeManager extends ClusterManager {
         this.clustersArray.set('node3', [])
         this.clustersArray.set('node4', [])
 
-        fetchRecommendedShards(process.env.TOKEN)
+        fetchRecommendedShards(process.env.DISCORD_TOKEN)
             .then((data: number) => {
                 // * Crea una lista de shards
                 const shardList = [...Array(data).keys()]
@@ -92,7 +95,7 @@ export default class NodeManager extends ClusterManager {
                         run: async () => {
                             const cluster = this.clusters.get(i)
                              // @ts-expect-error
-                            await cluster?.spawn(1000000, process.env.TOKEN, datos)
+                            await cluster?.spawn(1000000, process.env.DISCORD_TOKEN, datos)
                             return await this.queue.next()
                         },
                         args: [],

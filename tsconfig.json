@@ -10,7 +10,7 @@
             "#structures/*": ["./src/structures/*"],
             "#utils/*": ["./src/utils/*"],
             "#cache/*": ["./src/cache/*"],
-            "#prisma/client": ["./src/prisma/client/index.ts"],
+            "#prisma/client": ["./src/prisma/client/client.ts"],
             "#prisma/*": ["./src/prisma/*"],
             "#env": ["./src/env.ts"],
             "#constants": ["./src/constants.ts"]

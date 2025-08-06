@@ -1,8 +1,11 @@
+// src/structures/Youtubei.ts
+
 import { Collection, GuildMember, Message } from 'discord.js'
 import EmbedBuilder from '#structures/EmbedBuilder.js'
 import Music from 'youtubei.js/dist/src/core/clients/Music.js'
 import { SpamIntervalDB } from './spamInterval.js'
-import { Session, Innertube, Credentials } from 'youtubei.js'
+// Se elimina la importación de 'Credentials' y se usará el tipo inferido más adelante
+import { Session, Innertube, type OAuth2Tokens } from 'youtubei.js'
 import logger from '#utils/logger.js'
 import { db } from 'src/prisma/db.js'
 import { encrypt } from '#utils/encrypt.js'
@@ -55,7 +58,8 @@ export default class Youtubei {
         }
     }
 
-    async upsertCredentials({ credentials }: { credentials: Credentials }) {
+    // Se especifica el tipo 'OAuth2Tokens' para las credenciales
+    async upsertCredentials({ credentials }: { credentials: OAuth2Tokens }) {
         const user = await db.user.findFirst({
             where: { id: this.user.id },
             // Only get users.credentials.id for check if exist
@@ -63,12 +67,19 @@ export default class Youtubei {
         })
 
         if (!user) await db.user.create({ data: { id: this.user.id } })
+
+        // Se calcula la fecha de expiración usando 'expires_in' (en segundos)
+        const expiresIn = credentials.expires_in ?? 3600 // default to 1 hour if undefined
+        const expires = new Date(Date.now() + expiresIn * 1000)
+
         if (!user?.user_credentials)
             return await db.userCredentials.create({
                 data: {
                     access_token: await encrypt(credentials.access_token),
-                    expires: credentials.expires,
-                    refresh_token: await encrypt(credentials.refresh_token),
+                    expires: expires, // Se usa la nueva fecha calculada
+                    refresh_token: await encrypt(
+                        credentials.refresh_token ?? '',
+                    ), // El refresh token puede ser opcional
                     user_id: this.user.id,
                 },
             })
@@ -77,8 +88,8 @@ export default class Youtubei {
             where: { user_id: this.user.id },
             data: {
                 access_token: await encrypt(credentials.access_token),
-                expires: credentials.expires,
-                refresh_token: await encrypt(credentials.refresh_token),
+                expires: expires, // Se usa la nueva fecha calculada
+                refresh_token: await encrypt(credentials.refresh_token ?? ''), // El refresh token puede ser opcional
             },
         })
     }
@@ -126,13 +137,7 @@ export default class Youtubei {
             logger.debug('iniciado sesión correctamente')
             // Busca un documento en la base de datos que coincida con el ID del usuario
             this.upsertCredentials({
-                credentials: {
-                    access_token: await encrypt(credentials.access_token),
-                    refresh_token: await encrypt(credentials.refresh_token),
-                    expires: new Date(
-                        Date.now() + credentials.expires.getTime(),
-                    ),
-                },
+                credentials,
             })
             // await this.session?.oauth.cacheCredentials();
             // Imprime un mensaje de depuración

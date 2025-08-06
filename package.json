@@ -91,13 +91,14 @@
         "#structures/*": "./build/structures/*",
         "#utils/*": "./build/utils/*",
         "#cache/*": "./build/cache/*",
-        "#prisma/client": "./build/prisma/client/index.js",
+        "#prisma/client": "./build/prisma/client/client.js",
         "#prisma/*": "./build/prisma/*",
         "#env": "./build/env.js",
         "#constants": "./build/constants.js"
     },
     "prisma": {
-        "schema": "src/prisma/schema.prisma"
+        "schema": "src/prisma/schema.prisma",
+        "seed": ""
     },
     "type": "module"
 }
