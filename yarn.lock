@@ -146,16 +146,6 @@
     tslib "^2.6.3"
     ws "^8.18.0"
 
-"@discordjs/voice@https://github.com/davidzeng0/voice.git#dist":
-  version "0.16.1"
-  resolved "git+ssh://git@github.com/davidzeng0/voice.git#de474b6cc02ebf52c88cb700a101bf7f44457dab"
-  dependencies:
-    "@types/ws" "^8.5.4"
-    discord-api-types "^0.37.39"
-    prism-media "^1.3.5"
-    tslib "^2.5.0"
-    ws "^8.13.0"
-
 "@discordjs/ws@^1.2.0":
   version "1.2.0"
   resolved "https://registry.npmjs.org/@discordjs/ws/-/ws-1.2.0.tgz"
@@ -821,7 +811,7 @@
   resolved "https://registry.npmjs.org/@types/unist/-/unist-3.0.3.tgz"
   integrity sha512-ko/gIFJRv177XgZsZcBwnqJN5x/Gien8qNOn0D5bQU/zAzVf9Zt3BlcUiLqhV9y4ARk0GbT3tnUiPNgnTXzc/Q==
 
-"@types/ws@^8.5.10", "@types/ws@^8.5.12", "@types/ws@^8.5.4":
+"@types/ws@^8.5.10", "@types/ws@^8.5.12":
   version "8.5.13"
   resolved "https://registry.npmjs.org/@types/ws/-/ws-8.5.13.tgz"
   integrity sha512-osM/gWBTPKgHV8XkTunnegTRIsvF6owmf5w+JtAfOw472dptdm0dlGv4xCt6GwQRcC2XVOvvRE/0bAoQcL2QkA==
@@ -1068,7 +1058,7 @@ binary-extensions@^2.0.0:
   resolved "https://registry.npmjs.org/binary-extensions/-/binary-extensions-2.2.0.tgz"
   integrity sha512-jDctJ/IVQbZoJykoeHbhXpOlNBqGNcwXJKJog42E5HDPUwQTSdjCHdihjj0DlnheQ7blbT6dHOafNAiS8ooQKA==
 
-bindings@^1.5.0, bindings@1.5.0:
+bindings@1.5.0:
   version "1.5.0"
   resolved "https://registry.npmjs.org/bindings/-/bindings-1.5.0.tgz"
   integrity sha512-p2q/t/mhvuOj/UeLlV6566GD/guowlr0hHxClI0W9m7MWYkL1F0hLo+0Aexs9HSPCtR1SXQ0TD3MMKrXZajbiQ==
@@ -1359,11 +1349,6 @@ cookie-signature@1.0.6:
   resolved "https://registry.npmjs.org/cookie-signature/-/cookie-signature-1.0.6.tgz"
   integrity sha512-QADzlaHc8icV8I7vbaJXJwod9HWYp8uCqf1xa4OfNu1T7JVxQIrUgOWtHdNDtPiywmFbiS12VjotIXLrKM3orQ==
 
-cookie@^0.5.0:
-  version "0.5.0"
-  resolved "https://registry.npmjs.org/cookie/-/cookie-0.5.0.tgz"
-  integrity sha512-YZ3GUyn/o8gfKJlnlX7g7xq4gyO6OSuhGPKaaGssGB2qgDUS0gPgtTvoyZLTt9Ab6dC4hfc9dV5arkvc/OCmrw==
-
 cookie@0.7.1:
   version "0.7.1"
   resolved "https://registry.npmjs.org/cookie/-/cookie-0.7.1.tgz"
@@ -1544,7 +1529,7 @@ diagnostics_channel@^1.1.0:
   resolved "https://registry.npmjs.org/diagnostics_channel/-/diagnostics_channel-1.1.0.tgz"
   integrity sha512-OE1ngLDjSBPG6Tx0YATELzYzy3RKHC+7veQ8gLa8yS7AAgw65mFbVdcsu3501abqOZCEZqZyAIemB0zXlqDSuw==
 
-discord-api-types@^0.37.103, discord-api-types@^0.37.114, discord-api-types@^0.37.39:
+discord-api-types@^0.37.103, discord-api-types@^0.37.114:
   version "0.37.117"
   resolved "https://registry.npmjs.org/discord-api-types/-/discord-api-types-0.37.117.tgz"
   integrity sha512-d+Z6RKd7v3q22lsil7yASucqMfVVV0s0XSqu3cw7kyHVXiDO/mAnqMzqma26IYnIm2mk3TlupYJDGrdL908ZKA==
@@ -1555,7 +1540,7 @@ discord-api-types@^0.37.103, discord-api-types@^0.37.114, discord-api-types@^0.3
   dependencies:
     node-fetch "^2.6.7"
 
-discord.js@^14.11.0, discord.js@14.17.3:
+discord.js@^14.12.1, discord.js@14.17.3:
   version "14.17.3"
   resolved "https://registry.npmjs.org/discord.js/-/discord.js-14.17.3.tgz"
   integrity sha512-8/j8udc3CU7dz3Eqch64UaSHoJtUT6IXK4da5ixjbav4NAXJicloWswD/iwn1ImZEMoAV3LscsdO0zhBh6H+0Q==
@@ -2203,7 +2188,7 @@ globals@^16.0.0:
   resolved "https://registry.npmjs.org/globals/-/globals-16.0.0.tgz"
   integrity sha512-iInW14XItCXET01CQFqudPOWP2jYMl7T+QRQT+UNcR/iQncN/F0UNpgd76iFkBPgNQb4+X3LV9tLJYzwh+Gl3A==
 
-google-protobuf@^3.21.2:
+google-protobuf@3.21.2:
   version "3.21.2"
   resolved "https://registry.npmjs.org/google-protobuf/-/google-protobuf-3.21.2.tgz"
   integrity sha512-3MSOYFO5U9mPGikIYCzK0SaThypfGgS6bHqrUGXG3DPHCrb+txNqeEcns1W0lkGfk0rCyNXm7xB9rMxnCiZOoA==
@@ -2502,15 +2487,6 @@ jintr@^3.3.1:
   integrity sha512-nnOzyhf0SLpbWuZ270Omwbj5LcXUkTcZkVnK8/veJXtSZOiATM5gMZMdmzN75FmTyj+NVgrGaPdH12zIJ24oIA==
   dependencies:
     acorn "^8.8.0"
-
-"js-common@https://github.com/davidzeng0/js-common.git#dist":
-  version "1.0.0"
-  resolved "git+ssh://git@github.com/davidzeng0/js-common.git#82432ed4afb1183b52ce08fb68cc7245d69cfc36"
-  dependencies:
-    cookie "^0.5.0"
-    js-yaml "^4.1.0"
-    node-fetch "^2.6.9"
-    yaml "^2.3.1"
 
 js-yaml@^4.1.0:
   version "4.1.0"
@@ -3410,17 +3386,17 @@ node-addon-api@^6.1.0:
   resolved "https://registry.npmjs.org/node-addon-api/-/node-addon-api-6.1.0.tgz"
   integrity sha512-+eawOlIgy680F0kBzPUNFhMZGtJ1YmqM6l4+Crf4IkImjYrO/mqPwRMh352g23uIaQKFItcQ64I7KMaJxHgAVA==
 
-node-addon-api@^7.0.0:
-  version "7.1.1"
-  resolved "https://registry.npmjs.org/node-addon-api/-/node-addon-api-7.1.1.tgz"
-  integrity sha512-5m3bsyrjFWE1xf7nz7YXdN4udnVtXK6/Yfgn5qnahL6bCkf2yKt4k3nuTKAtT4r3IG8JNR2ncsIMdZuAzJjHQQ==
+node-addon-api@7.0.0:
+  version "7.0.0"
+  resolved "https://registry.npmjs.org/node-addon-api/-/node-addon-api-7.0.0.tgz"
+  integrity sha512-vgbBJTS4m5/KkE16t5Ly0WW9hz46swAstv0hYYwMtbG7AznRhNyfLRe8HZAiWIpcHzoO7HxhLuBQj9rJ/Ho0ZA==
 
 node-api-headers@^0.0.2:
   version "0.0.2"
   resolved "https://registry.npmjs.org/node-api-headers/-/node-api-headers-0.0.2.tgz"
   integrity sha512-YsjmaKGPDkmhoNKIpkChtCsPVaRE0a274IdERKnuc/E8K1UJdBZ4/mvI006OijlQZHCfpRNOH3dfHQs92se8gg==
 
-node-fetch@^2.6.12, node-fetch@^2.6.6, node-fetch@^2.6.7, node-fetch@^2.6.9:
+node-fetch@^2.6.12, node-fetch@^2.6.7:
   version "2.6.12"
   resolved "https://registry.npmjs.org/node-fetch/-/node-fetch-2.6.12.tgz"
   integrity sha512-C/fGU2E8ToujUivIO0H+tpQ6HWo4eEmchoPIoXtxCrVghxdKq+QOHqEZW7tuP3KlV3bC8FRMO5nMCC7Zm1VP6g==
@@ -3927,13 +3903,13 @@ safe-identifier@^0.4.1:
   resolved "https://registry.npmjs.org/safer-buffer/-/safer-buffer-2.1.2.tgz"
   integrity sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==
 
-"sange@https://github.com/davidzeng0/sange.git":
+"sange@github:Node-Estudios/sange":
   version "1.0.0"
-  resolved "git+ssh://git@github.com/davidzeng0/sange.git#1d3f83b8ee3e78bb4257a0e7ea32535641c3bbe4"
+  resolved "git+ssh://git@github.com/Node-Estudios/sange.git#da4c1bd5b2edcc0c79682a1c9fa5af6642048c0c"
   dependencies:
-    bindings "^1.5.0"
+    bindings "1.5.0"
     cmake-js "7.2.1"
-    node-addon-api "^7.0.0"
+    node-addon-api "7.0.0"
 
 semver@^7.3.5, semver@^7.3.8, semver@^7.5.3, semver@^7.5.4, semver@^7.6.0:
   version "7.7.1"
@@ -4101,13 +4077,13 @@ socks@^2.6.2:
     ip "^2.0.0"
     smart-buffer "^4.2.0"
 
-"sodium@https://github.com/davidzeng0/sodium.git#dist":
+"sodium@github:Node-Estudios/sodium":
   version "1.0.0"
-  resolved "git+ssh://git@github.com/davidzeng0/sodium.git#22647437190b085c7ec9a8ba136d369a03fce0f8"
+  resolved "git+ssh://git@github.com/Node-Estudios/sodium.git#a1eacdd3255e49c0b1907fac71243df4c58cf77d"
   dependencies:
-    bindings "^1.5.0"
+    bindings "1.5.0"
     cmake-js "7.2.1"
-    node-addon-api "^7.0.0"
+    node-addon-api "7.0.0"
 
 source-map@^0.7.4:
   version "0.7.4"
@@ -4528,7 +4504,7 @@ wrappy@1:
   resolved "https://registry.npmjs.org/wrappy/-/wrappy-1.0.2.tgz"
   integrity sha512-l4Sp/DRseor9wL6EvV2+TuQn63dMkPjZ/sp9XkghTEbV9KlPS1xUsZ3u7/IQO4wxtcFB4bgpQPRcR3QCvezPcQ==
 
-ws@^8.13.0, ws@^8.17.0, ws@^8.18.0:
+ws@^8.17.0, ws@^8.18.0:
   version "8.18.0"
   resolved "https://registry.npmjs.org/ws/-/ws-8.18.0.tgz"
   integrity sha512-8VbfWfHLbbwu3+N6OKsOMpBdT4kXPDDB9cJk2bJ6mh9ucxdlnNvH1e+roYkKmN9Nxw2yjz7VzeO9oOz2zJ04Pw==
@@ -4543,7 +4519,7 @@ yallist@^4.0.0:
   resolved "https://registry.npmjs.org/yallist/-/yallist-4.0.0.tgz"
   integrity sha512-3wdGidZyq5PB084XLES5TpOSRA3wjXAlIWMhum2kRcv/41Sn2emQ0dycQW4uZXLejwKvg6EsvbdlVL+FYEct7A==
 
-yaml@^2.2.2, yaml@^2.3.1:
+yaml@^2.2.2:
   version "2.8.0"
   resolved "https://registry.npmjs.org/yaml/-/yaml-2.8.0.tgz"
   integrity sha512-4lLa/EcQCB0cJkyts+FpIRx5G/llPxfP6VQU5KByHEhLxY3IJCH0f0Hy1MHI8sClTvsIb8qwRJ6R/ZdlDJ/leQ==
@@ -4566,17 +4542,13 @@ yargs@^17.6.0, yargs@^17.7.2:
     y18n "^5.0.5"
     yargs-parser "^21.1.1"
 
-"yasha@github:/davidzeng0/yasha#dist":
+"yasha@github:Node-Estudios/ts-yasha#main":
   version "3.1.0"
-  resolved "git+ssh://git@github.com/davidzeng0/yasha.git#d3a596ad3b4584e40f589609f958a122e76a68c4"
+  resolved "git+ssh://git@github.com/Node-Estudios/ts-yasha.git#005c63e6aea9a846a9aa5a33f95988d8cf620e5b"
   dependencies:
-    "@discordjs/voice" "https://github.com/davidzeng0/voice.git#dist"
-    discord.js "^14.11.0"
-    google-protobuf "^3.21.2"
-    js-common "https://github.com/davidzeng0/js-common.git#dist"
-    node-fetch "^2.6.6"
-    sange "https://github.com/davidzeng0/sange.git"
-    sodium "https://github.com/davidzeng0/sodium.git#dist"
+    google-protobuf "3.21.2"
+    sange "github:Node-Estudios/sange"
+    sodium "github:Node-Estudios/sodium"
 
 yocto-queue@^0.1.0:
   version "0.1.0"

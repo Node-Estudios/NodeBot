@@ -135,7 +135,8 @@ export class interactionCreate extends BaseEvent {
                     })
                 })
                 .finally(() => {
-                    transaction.finish()
+                    transaction?.finish() // Añadimos '?'
+
                     cooldowns.registerInteraction(
                         interaction.user.id,
                         interaction.commandName,

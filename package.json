@@ -54,7 +54,7 @@
         "statcord.js": "3.4.3",
         "stripe": "12.18.0",
         "type-locales": "3.2.4",
-        "yasha": "github:/davidzeng0/yasha#dist",
+        "yasha": "github:Node-Estudios/ts-yasha#main",
         "youtubei.js": "15.0.0"
     },
     "devDependencies": {
