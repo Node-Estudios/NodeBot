@@ -20,7 +20,7 @@ import {
     VoiceChannel,
 } from 'discord.js'
 import EventEmitter from 'events'
-import yasha from 'yasha'
+import yasha from '@eliyya/yasha'
 import { Innertube } from 'youtubei.js'
 import client from '../bot.js'
 import Player from './Player.js'

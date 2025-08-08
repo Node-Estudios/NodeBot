@@ -12,7 +12,7 @@ import MusicManager from './MusicManager.js'
 import logger from '#utils/logger.js'
 import { Innertube } from 'youtubei.js'
 import Queue from './Queue.js'
-import yasha from 'yasha'
+import yasha from '@eliyya/yasha'
 import Translator, { keys } from '#utils/Translator.js'
 
 export default class Player extends yasha.TrackPlayer {
