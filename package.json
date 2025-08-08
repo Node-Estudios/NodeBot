@@ -33,14 +33,15 @@
     "license": "ISC",
     "dependencies": {
         "@discordjs/voice": "0.18.0",
+        "@eliyya/yasha": "^3.2.0",
         "@prisma/client": "6.13.0",
-        "@sentry/cli": "2.51.0",
-        "@sentry/node": "10.2.0",
-        "@sentry/profiling-node": "1.1.2",
+        "@sentry/cli": "2.51.1",
+        "@sentry/node": "10.3.0",
+        "@sentry/profiling-node": "10.3.0",
         "bindings": "1.5.0",
         "cors": "2.8.5",
         "datadog-metrics": "0.12.1",
-        "dd-trace": "4.55.0",
+        "dd-trace": "5.62.0",
         "discord-hybrid-sharding": "github:Node-Estudios/discord-hybrid-sharding#ts-rewrite",
         "discord.js": "14.21.0",
         "express": "5.1.0",
@@ -55,7 +56,7 @@
         "youtubei.js": "5.8.0"
     },
     "devDependencies": {
-        "@eslint/js": "9.32.0",
+        "@eslint/js": "9.33.0",
         "@eslint/json": "0.13.1",
         "@eslint/markdown": "7.1.0",
         "@types/cors": "2.8.19",
@@ -65,8 +66,9 @@
         "@types/jsonwebtoken": "9.0.10",
         "@types/node": "24.2.0",
         "@types/signale": "1.4.7",
+        "cmake-js": "7.3.1",
         "concurrently": "9.2.0",
-        "eslint": "9.32.0",
+        "eslint": "9.33.0",
         "eslint-config-prettier": "10.1.8",
         "eslint-plugin-prettier": "5.5.4",
         "globals": "16.3.0",
@@ -75,8 +77,7 @@
         "prisma": "6.13.0",
         "transjson": "github:OnekiDevs/transjson#1187c4b",
         "typescript": "5.9.2",
-        "typescript-eslint": "8.39.0",
-        "cmake-js": "7.3.1"
+        "typescript-eslint": "8.39.0"
     },
     "optionalDependencies": {
         "bufferutil": "4.0.9",

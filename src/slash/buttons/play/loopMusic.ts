@@ -81,14 +81,12 @@ export default class Repeat extends Button {
                     c.type === ComponentType.Button,
             )
             if (repeatButton && repeatButton.type === ComponentType.Button)
-                // @ts-expect-error
                 (repeatButton.data.emoji as Writeable<
                     APIMessageComponentEmoji,
                     keyof APIMessageComponentEmoji
                 >) = {
                     name: blueRepeatEmoji.name.toString(),
                     id: blueRepeatEmoji.id.toString(),
-                    // @ts-expect-error
                     animated: repeatButton.data.emoji?.animated,
                 }
 
