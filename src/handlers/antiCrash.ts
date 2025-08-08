@@ -1,10 +1,8 @@
 import Client from '#structures/Client.js'
 import * as Sentry from '@sentry/node'
-import { ProfilingIntegration } from '@sentry/profiling-node'
 import { WebhookClient } from 'discord.js'
 import EmbedBuilder from '#structures/EmbedBuilder.js'
 import logger from '#utils/logger.js'
-// TODO: se cmbiara a sentry
 
 class ErrorManager {
     client: Client
@@ -16,13 +14,21 @@ class ErrorManager {
         if (process.env.SENTRY_DSN && process.env.NODE_ENV === 'production') {
             Sentry.init({
                 dsn: process.env.SENTRY_DSN,
-                integrations: [
-                    new Sentry.Integrations.Console(),
-                    new ProfilingIntegration(),
-                    ...Sentry.autoDiscoverNodePerformanceMonitoringIntegrations(),
-                ],
-                environment: process.env.NODE_ENV,
-                tracesSampleRate: 0.5,
+                environment: process.env.NODE_ENV || 'development',
+                // Basic error tracking
+                attachStacktrace: true,
+                // Performance Monitoring
+                tracesSampleRate: 1.0,
+                // Set sampling rate for profiling - this is relative to tracesSampleRate
+                profilesSampleRate: 1.0,
+                // Filter out common non-error console logs
+                beforeSend(event) {
+                    // Only send errors and warnings to Sentry
+                    if (event.level === 'log') {
+                        return null
+                    }
+                    return event
+                },
             })
             this.services.sentry.loggedIn = true
             logger.log('Connected to Sentry')

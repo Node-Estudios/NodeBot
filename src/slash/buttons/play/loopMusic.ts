@@ -3,6 +3,8 @@ import {
     APIMessageComponentEmoji,
     ButtonInteraction,
     ComponentType,
+    ButtonComponent,
+    ActionRowComponent,
 } from 'discord.js'
 import EmbedBuilder from '#structures/EmbedBuilder.js'
 import Client from '#structures/Client.js'
@@ -75,20 +77,48 @@ export default class Repeat extends Button {
 
             const blueRepeatEmoji = getBlueRepeatEmoji(queueRepeatMode, client)
 
-            const repeatButton = player.message?.components[0].components.find(
-                c =>
+            // Safely find the repeat button in the message components
+            if (
+                !player.message ||
+                !('components' in player.message) ||
+                !Array.isArray(player.message.components)
+            ) {
+                logger.warn('No valid message components found in player')
+                return await interaction.deferUpdate()
+            }
+
+            const actionRow = player.message.components[0]
+            if (
+                !actionRow ||
+                !('components' in actionRow) ||
+                !Array.isArray(actionRow.components)
+            ) {
+                logger.warn('No valid components found in action row')
+                return await interaction.deferUpdate()
+            }
+
+            // Find the repeat button in the components
+            const repeatButton = actionRow.components.find(
+                (c): c is ButtonComponent =>
+                    c.type === ComponentType.Button &&
+                    'customId' in c &&
                     c.customId === 'repeatMusic' &&
-                    c.type === ComponentType.Button,
+                    'emoji' in c,
             )
-            if (repeatButton && repeatButton.type === ComponentType.Button)
-                (repeatButton.data.emoji as Writeable<
+
+            if (repeatButton && repeatButton.emoji) {
+                const emojiData = repeatButton.emoji as Writeable<
                     APIMessageComponentEmoji,
                     keyof APIMessageComponentEmoji
-                >) = {
-                    name: blueRepeatEmoji.name.toString(),
-                    id: blueRepeatEmoji.id.toString(),
-                    animated: repeatButton.data.emoji?.animated,
-                }
+                >
+
+                if (blueRepeatEmoji.name)
+                    emojiData.name = blueRepeatEmoji.name.toString()
+                if (blueRepeatEmoji.id)
+                    emojiData.id = blueRepeatEmoji.id.toString()
+                if ('animated' in blueRepeatEmoji)
+                    emojiData.animated = Boolean(blueRepeatEmoji.animated)
+            }
 
             if (player.message)
                 await player.message.edit({

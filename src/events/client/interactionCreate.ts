@@ -57,12 +57,30 @@ export class interactionCreate extends BaseEvent {
             )
             if (!cmd) return
             if (interaction.guild && cmd?.only_dm) return // <-- return statement here
-            const transaction = Sentry.startTransaction({
-                op: cmd.name,
-                name: 'Executed /' + cmd.name,
+
+            Sentry.setTag('command', interaction.isCommand() ? interaction.commandName : 'interaction')
+            Sentry.setContext('interaction', {
+                type: interaction.type,
+                id: interaction.id,
+                channelId: interaction.channelId,
+                guildId: interaction.guildId,
             })
-            Sentry.setContext('user', interaction.user)
-            Sentry.setContext('guild', interaction.guild)
+            
+            Sentry.setContext('user', {
+                id: interaction.user.id,
+                username: interaction.user.username,
+                discriminator: interaction.user.discriminator,
+                bot: interaction.user.bot,
+            })
+            
+            if (interaction.guild) {
+                Sentry.setContext('guild', {
+                    id: interaction.guild.id,
+                    name: interaction.guild.name,
+                    memberCount: interaction.guild.memberCount,
+                    ownerId: interaction.guild.ownerId,
+                })
+            }
 
             logger.command(
                 `Comando ${cmd.name} ejecutado | ${interaction.user.username}`,
@@ -83,10 +101,12 @@ export class interactionCreate extends BaseEvent {
 
                 // Check if the bot has the needed permissions to run the command
                 if (cmd.permissions.botPermissions) {
-                    const botMember = await interaction.guild?.members.fetchMe()
-                    const missingPermissions = botMember?.permissions.missing(
-                        cmd.permissions.botPermissions,
-                    )
+                    const botMember =
+                        await interaction.guild?.members.fetchMe()
+                    const missingPermissions =
+                        botMember?.permissions.missing(
+                            cmd.permissions.botPermissions,
+                        )
 
                     // If there are missing permissions, return an error message
                     if (missingPermissions?.length)
@@ -98,53 +118,43 @@ export class interactionCreate extends BaseEvent {
                         })
                 }
             }
-            if (
-                !cooldowns.canProced(
+            if (!cooldowns.canProced(interaction.user.id, interaction.commandName)) {
+                return await interaction.reply({
+                    content: `Debes esperar ${Math.round(cooldowns.leftTime(interaction.user.id, interaction.commandName) / 1000)} segundos para volver a usar este comando`,
+                    ephemeral: true
+                });
+            }
+
+            try {
+                await cmd.run(interaction);
+            } catch (e) {
+                logger.error(e, '\x1b[33mCommand Info\x1b[0m', {
+                    cmd: cmd.name,
+                    options: JSON.stringify(
+                        interaction.options.data,
+                        (key, value) =>
+                            ![
+                                'client',
+                                'channel',
+                                'guild',
+                                'user',
+                                'member',
+                                'role',
+                            ].includes(key)
+                                ? value
+                                : undefined,
+                        4,
+                    ),
+                });
+                Sentry.captureException(e);
+            } finally {
+                cooldowns.registerInteraction(
                     interaction.user.id,
                     interaction.commandName,
-                )
-            )
-                return await interaction.reply({
-                    content: `Debes esperar ${Math.round(
-                        cooldowns.leftTime(
-                            interaction.user.id,
-                            interaction.commandName,
-                        ) / 1000,
-                    )} segundos para volver a ejecutar este comando`,
-                })
-            return await cmd
-                .run(interaction)
-                .catch(e => {
-                    logger.error(e, '\x1b[33mCommand Info\x1b[0m', {
-                        cmd: cmd.name,
-                        options: JSON.stringify(
-                            interaction.options.data,
-                            (key, value) =>
-                                ![
-                                    'client',
-                                    'channel',
-                                    'guild',
-                                    'user',
-                                    'member',
-                                    'role',
-                                ].includes(key)
-                                    ? value
-                                    : undefined,
-                            4,
-                        ),
-                    })
-                })
-                .finally(() => {
-                    transaction.finish()
-                    cooldowns.registerInteraction(
-                        interaction.user.id,
-                        interaction.commandName,
-                    )
-                    performanceMeters
-                        .get('interaction_' + interaction.id)
-                        ?.stop()
-                    performanceMeters.delete('interaction_' + interaction.id)
-                })
+                );
+                performanceMeters.get('interaction_' + interaction.id)?.stop();
+                performanceMeters.delete('interaction_' + interaction.id);
+            }
         } catch (e) {
             return logger.error(e)
         }
