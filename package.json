@@ -22,7 +22,7 @@
     "scripts": {
         "start": "doppler run -- node build/index.js",
         "run": "node build/index.js",
-        "build": "npm run db:generate && npm run type:locales && npm i --save-dev @types/node-fetch && npx tsc",
+        "build": "npm run db:generate && npm run type:locales && npx tsc",
         "dev": "nodemon -e ts --exec \"npm start\"",
         "tsc:watch": "nodemon -e ts --exec tsc",
         "type:locales": "type-locales && if [ -f \"build/utils/testLocales.js\" ]; then node build/utils/testLocales.js; fi",
