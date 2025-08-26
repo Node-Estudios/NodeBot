@@ -12,33 +12,46 @@ import MusicManager from './MusicManager.js'
 import logger from '#utils/logger.js'
 import { Innertube } from 'youtubei.js'
 import Queue from './Queue.js'
-import yasha from '@eliyya/yasha'
+// Usamos el nombre del paquete que configuramos, 'sange'
+import SangePackage from 'sange'
+import { EventEmitter } from 'node:events'
+import {
+    VoiceConnection,
+    VoiceConnectionStatus,
+    entersState,
+    joinVoiceChannel,
+} from '@discordjs/voice'
 import Translator, { keys } from '#utils/Translator.js'
 
-export default class Player extends yasha.TrackPlayer {
-    trackRepeat = false
-    queueRepeat = false
-    stayInVoice = false
-    position = 0
-    playing = false
-    paused = false
-    volume = 100
-    queue = new Queue()
-    manager: MusicManager
+// La clase Player es un emisor de eventos, no hereda del reproductor nativo
+export default class Player extends EventEmitter {
+    public trackRepeat = false
+    public queueRepeat = false
+    public stayInVoice = false
+    public position = 0
+    public playing = false
+    public paused = false
+    public volume = 100
+    public queue = new Queue()
+    public manager: MusicManager
+    public voiceChannel: VoiceChannel
+    public message?: Message
+    public guild: Guild
+    public leaveTimeout?: NodeJS.Timeout
+    public bitrate?: number
+    public connection?: VoiceConnection
+    public stayInVc = false
+    public previouslyPaused = false
+    public pausedUser?: User
+    public resumedUser?: User
+    public youtubei: Innertube
+    public waitingMessage?: Message
+
+    // Contiene la instancia del reproductor nativo
+    private sangePlayer: any
+
     #textChannelId?: Snowflake
-    voiceChannel: VoiceChannel
-    message?: Message
-    guild: Guild
-    leaveTimeout?: NodeJS.Timeout
-    bitrate?: number
-    connection?: any
-    subscription?: any
-    stayInVc = false
-    previouslyPaused = false
-    pausedUser?: User
-    resumedUser?: User
-    youtubei: Innertube
-    waitingMessage?: Message
+
     constructor(options: {
         musicManager: MusicManager
         lang?: LocaleString
@@ -49,166 +62,153 @@ export default class Player extends yasha.TrackPlayer {
         guild?: Guild
         innertube: Innertube
     }) {
-        super({
-            external_packet_send: false,
-            external_encrypt: false,
-            normalize_volume: true,
-        })
+        super() // Llama al constructor de EventEmitter
         this.youtubei = options.innertube
         this.manager = options.musicManager
         this.bitrate = options.bitrate
         this.volume = options.volume ?? 100
-
         this.voiceChannel = options.voiceChannel
         this.guild = options.guild ?? options.voiceChannel.guild
-        this.guild.channels
-            .fetch(options.textChannelId)
-            .then(channel => {
-                if (!channel?.isTextBased()) return
-                if (
-                    this.guild.members.me
-                        ?.permissionsIn(channel)
-                        .has([
-                            PermissionFlagsBits.EmbedLinks,
-                            PermissionFlagsBits.SendMessages,
-                        ]) === false
-                )
-                    return
-                this.#textChannelId = options.textChannelId
-            })
-            .catch(() => null)
-        this.on('finish', () => (this.playing = false))
-        this.on(
-            'error',
-            (error: any) => (this.playing = false && logger.error(error)),
-        )
+
+        const SangePlayerConstructor =
+            (SangePackage as any).default || SangePackage
+        this.sangePlayer = new SangePlayerConstructor()
+
+        // El Player escucha los eventos del addon nativo y los re-emite.
+        // El MusicManager escuchará estos eventos.
+        this.sangePlayer.on('finish', () => {
+            this.playing = false
+            this.emit('finish')
+        })
+        this.sangePlayer.on('error', (error: any) => {
+            this.playing = false
+            logger.error(error)
+            this.emit('error', error)
+        })
+
+        this.setTextChannel(options.textChannelId)
+    }
+
+    private async setTextChannel(id: Snowflake) {
+        try {
+            const channel = await this.guild.channels.fetch(id)
+            if (!channel?.isTextBased()) return
+            if (
+                this.guild.members.me
+                    ?.permissionsIn(channel)
+                    .has([
+                        PermissionFlagsBits.EmbedLinks,
+                        PermissionFlagsBits.SendMessages,
+                    ]) === false
+            )
+                return
+            this.#textChannelId = id
+        } catch {
+            // Silenciar error si el canal no se encuentra
+        }
     }
 
     async connect() {
-        this.connection = await yasha.VoiceConnection.connect(
-            this.voiceChannel,
-            {
-                selfDeaf: true,
-            },
-        )
-        // TODO: Remove ts-ignore when yasha is updated
-        this.subscription = this.connection?.subscribe(this)
-        this.connection?.on('error', (error: any) => logger.error(error))
+        if (this.connection) return
+
+        this.connection = joinVoiceChannel({
+            channelId: this.voiceChannel.id,
+            guildId: this.guild.id,
+            adapterCreator: this.guild.voiceAdapterCreator,
+            selfDeaf: true,
+        })
+
+        try {
+            await entersState(
+                this.connection,
+                VoiceConnectionStatus.Ready,
+                30_000,
+            )
+        } catch (error) {
+            this.connection.destroy()
+            this.connection = undefined
+            throw new Error('Could not connect to voice channel')
+        }
     }
 
     disconnect() {
-        this.connection?.disconnect()
-        if (this.connection) this.connection.destroy()
+        this.connection?.destroy()
+        this.connection = undefined
     }
-    // @ts-expect-error
-    async play(track?: any) {
+
+    async play(trackUrl?: string) {
+        const urlToPlay = trackUrl || this.queue.current?.url
+        if (!urlToPlay) {
+            this.playing = false
+            return
+        }
+
         this.playing = true
-        // TODO: Check if this code works
-        if (!track && this.queue.current) super.play(this.queue.current)
-        else super.play(track)
+        this.sangePlayer.setURL(urlToPlay)
+        this.sangePlayer.setOutput(2, 48000, this.bitrate ?? 128000)
+        this.sangePlayer.setVolume(this.volume / 100)
+        this.sangePlayer.start()
+
         clearTimeout(this.leaveTimeout)
         this.leaveTimeout = undefined
-        try {
-            this.start()
-        } catch (error) {
-            if (`${error}`.includes('Video is age restricted'))
-                this.getTextChannel()
-                    .then(c => {
-                        const translate = Translator(this.guild)
-                        c?.send({
-                            content: translate(keys.play.age_restricted),
-                        })
-                    })
-                    .catch(e => undefined)
-        }
     }
 
-    override async destroy() {
-        try {
-            if (this.connection) this.disconnect()
-            // TODO: FIX
-            //if (this.player) super.destroy()
-
-            return this.manager.players.delete(this.guild.id)
-        } catch (e) {
-            return logger.error(e)
-        }
+    destroy() {
+        this.disconnect()
+        this.sangePlayer.destroy()
+        this.manager.players.delete(this.guild.id)
     }
 
+    // CAMBIO: skip() ahora solo detiene la reproducción.
+    // Esto disparará el evento 'finish', que será manejado por el MusicManager.
     skip() {
-        this.manager.trackEnd(this, false)
+        this.sangePlayer.stop()
     }
 
-    override setEqualizer(equalizer: any) {
-        super.setEqualizer(equalizer)
+    setEqualizer(equalizer: any) {
+        this.sangePlayer.setEqualizer(equalizer)
     }
 
-    override setVolume(volume: number) {
-        if (volume > 100000) volume = 100000
-        super.setVolume(volume / 100)
+    setVolume(volume: number) {
+        if (volume > 1000) volume = 1000
+        this.volume = volume
+        this.sangePlayer.setVolume(volume / 100)
     }
 
     setTrackRepeat(repeat = true) {
-        if (repeat) {
-            this.trackRepeat = true
-            this.queueRepeat = false
-        } else this.trackRepeat = false
-
+        this.trackRepeat = repeat
+        if (repeat) this.queueRepeat = false
         return this
     }
 
     setQueueRepeat(repeat = true) {
-        if (repeat) {
-            this.trackRepeat = false
-            this.queueRepeat = true
-        } else this.queueRepeat = false
-
+        this.queueRepeat = repeat
+        if (repeat) this.trackRepeat = false
         return this
     }
 
     pause(pause = true) {
-        if (this.paused === pause || !this.queue.totalSize) return this
-
+        if (this.paused === pause) return this
         this.playing = !pause
         this.paused = pause
-        this.setPaused(pause)
-
+        this.sangePlayer.setPaused(pause)
         return this
     }
 
-    override seek(time: number) {
+    seek(time: number) {
         if (!this.queue.current) return
-
-        // set timer in the player too
-        super.seek(Number(time))
+        this.sangePlayer.seek(time)
     }
 
-    async getTextChannel() {
-        const channel = await this.guild.channels.fetch(
-            this.#textChannelId ?? '',
-        )
+    async getTextChannel(): Promise<TextChannel | null> {
+        if (!this.#textChannelId) return null
+        const channel = await this.guild.channels.fetch(this.#textChannelId)
         if (!channel?.isTextBased()) return null
         return channel as TextChannel
     }
 
-    // eslint-disable-next-line accessor-pairs
     set textChannelId(id: Snowflake) {
-        this.guild.channels
-            .fetch(id)
-            .then(channel => {
-                if (!channel?.isTextBased()) return
-                if (
-                    this.guild.members.me
-                        ?.permissionsIn(channel)
-                        .has([
-                            PermissionFlagsBits.EmbedLinks,
-                            PermissionFlagsBits.SendMessages,
-                        ]) === false
-                )
-                    return
-                this.#textChannelId = id
-            })
-            .catch(() => null)
+        this.setTextChannel(id)
     }
 
     get textChannelId(): string | undefined {

@@ -2,11 +2,11 @@ import { ChatInputCommandInteraction } from 'discord.js'
 import EmbedBuilder from '#structures/EmbedBuilder.js'
 import Command from '#structures/Command.js'
 import logger from '#utils/logger.js'
-import Sentry from '@sentry/node'
+import * as Sentry from '@sentry/node'
 import Client from '#structures/Client.js'
 
 export default class shards extends Command {
-    constructor () {
+    constructor() {
         super({
             name: 'shards',
             description: 'Get information about shards.',
@@ -14,7 +14,7 @@ export default class shards extends Command {
         })
     }
 
-    override async run (interaction: ChatInputCommandInteraction<'cached'>) {
+    override async run(interaction: ChatInputCommandInteraction<'cached'>) {
         await interaction.deferReply()
         const client = interaction.client as Client
         const embeds = []
@@ -23,33 +23,52 @@ export default class shards extends Command {
         const shardInfo = await this.shardInfo(client)
         let totalPlayers = 0
         let totalPlayingPlayers = 0
-        const totalMemory = shardInfo.reduce((prev, s) => prev + parseInt(s.memoryUsage), 0)
-        const totalChannels = shardInfo.reduce((prev, s) => prev + s.channels, 0)
-        const avgLatency = Math.round(shardInfo.reduce((prev, s) => prev + s.ping, 0) / shardInfo.length)
+        const totalMemory = shardInfo.reduce(
+            (prev, s) => prev + parseInt(s.memoryUsage),
+            0,
+        )
+        const totalChannels = shardInfo.reduce(
+            (prev, s) => prev + s.channels,
+            0,
+        )
+        const avgLatency = Math.round(
+            shardInfo.reduce((prev, s) => prev + s.ping, 0) / shardInfo.length,
+        )
 
         const embedsPerMessage = 10
 
         const defaultEmbed = new EmbedBuilder()
             .setColor(client.settings.color)
-            .setDescription(`This guild is currently on **Cluster ${client.cluster.id}**.`)
-            .setAuthor({ name: 'NodeBot', iconURL: client.user.displayAvatarURL({ forceStatic: false }) })
+            .setDescription(
+                `This guild is currently on **Cluster ${client.cluster.id}**.`,
+            )
+            .setAuthor({
+                name: 'NodeBot',
+                iconURL: client.user.displayAvatarURL({ forceStatic: false }),
+            })
 
         interaction.editReply({ embeds: [defaultEmbed] }) // Edit the initial reply with the default embed
 
-        for (let n = 0; n < Math.ceil(shardInfo.length / embedsPerMessage); n++) {
+        for (
+            let n = 0;
+            n < Math.ceil(shardInfo.length / embedsPerMessage);
+            n++
+        ) {
             const startIndex = n * embedsPerMessage
             const endIndex = startIndex + embedsPerMessage
             const shardArray = shardInfo.slice(startIndex, endIndex)
 
-            const embed = new EmbedBuilder()
-                .setColor(client.settings.color)
+            const embed = new EmbedBuilder().setColor(client.settings.color)
 
             for (const shard of shardArray) {
-                const status = shard.status === 'online' ? '<:greendot:894171595365560340>' : '<:RedSmallDot:969759818569093172>'
+                const status =
+                    shard.status === 'online'
+                        ? '<:greendot:894171595365560340>'
+                        : '<:RedSmallDot:969759818569093172>'
                 embed.addFields([
                     {
                         inline: true,
-                        name: `${status} Cluster ${(shard.id).toString()}`,
+                        name: `${status} Cluster ${shard.id.toString()}`,
                         value: `\`\`\`Servers: ${shard.guilds.toLocaleString()}\nChannels: ${shard.channels.toLocaleString()}\nUsers: ${shard.members.toLocaleString()}\nMemory: ${Number(shard.memoryUsage).toLocaleString()} MB\nAPI: ${shard.ping.toLocaleString()} ms\nPlayers: ${shard.playingPlayers.toLocaleString()}/${shard.players.toLocaleString()} \`\`\``,
                     },
                 ])
@@ -81,10 +100,18 @@ export default class shards extends Command {
             }
     }
 
-    async getMembersCount (client: Client) {
+    async getMembersCount(client: Client) {
         try {
-            const membersCount = await client.cluster.broadcastEval(c => c.guilds.cache.reduce((prev, guild) => prev + guild.memberCount, 0))
-            const totalMembers = membersCount.reduce((prev, guildCount) => prev + guildCount, 0)
+            const membersCount = await client.cluster.broadcastEval(c =>
+                c.guilds.cache.reduce(
+                    (prev, guild) => prev + guild.memberCount,
+                    0,
+                ),
+            )
+            const totalMembers = membersCount.reduce(
+                (prev, guildCount) => prev + guildCount,
+                0,
+            )
             return totalMembers
         } catch (error) {
             logger.error(error)
@@ -92,10 +119,14 @@ export default class shards extends Command {
         }
     }
 
-    async getGuildsCount (client: Client) {
+    async getGuildsCount(client: Client) {
         try {
-            const guildCount = await client.cluster.fetchClientValues('guilds.cache.size')
-            const totalGuilds = guildCount.reduce((prev: any, guildCount: any) => prev + guildCount, 0)
+            const guildCount =
+                await client.cluster.fetchClientValues('guilds.cache.size')
+            const totalGuilds = guildCount.reduce(
+                (prev: any, guildCount: any) => prev + guildCount,
+                0,
+            )
             return totalGuilds
         } catch (error) {
             logger.error(error)
@@ -103,9 +134,9 @@ export default class shards extends Command {
         }
     }
 
-    async shardInfo (client: Client) {
+    async shardInfo(client: Client) {
         try {
-            const shardInfo = await client.cluster.broadcastEval((c) => ({
+            const shardInfo = await client.cluster.broadcastEval(c => ({
                 id: c.cluster.id,
                 status: c.cluster.client.user.presence.status,
                 guilds: c.guilds.cache.size,
@@ -114,9 +145,14 @@ export default class shards extends Command {
                     (prev, guild) => prev + guild.memberCount,
                     0,
                 ),
-                memoryUsage: (process.memoryUsage().heapUsed / 1024 / 1024).toFixed(2),
+                memoryUsage: (
+                    process.memoryUsage().heapUsed /
+                    1024 /
+                    1024
+                ).toFixed(2),
                 players: c.music?.players?.size ?? 0,
-                playingPlayers: c.music?.players?.filter((p) => p.playing).size ?? 0,
+                playingPlayers:
+                    c.music?.players?.filter(p => p.playing).size ?? 0,
                 ping: c.ws.ping,
             }))
             return shardInfo
@@ -125,4 +161,4 @@ export default class shards extends Command {
             return []
         }
     }
-};
+}

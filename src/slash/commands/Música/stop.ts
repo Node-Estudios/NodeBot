@@ -50,7 +50,7 @@ export default class Stop extends Command {
         if (player.trackRepeat) player.setTrackRepeat(false)
         if (player.queueRepeat) player.setQueueRepeat(false)
         try {
-            await client.music.queueEnd(player)
+            await player.destroy()
         } catch (error) {
             client.errorHandler.captureException(error as Error)
         }

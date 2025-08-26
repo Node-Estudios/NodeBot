@@ -15,3 +15,5 @@ testing.ts
 **/*.db-journal
 src/prisma/client
 build
+source.tar
+youtube_credentials.json

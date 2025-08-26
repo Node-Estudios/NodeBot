@@ -27,15 +27,17 @@
         "tsc:watch": "nodemon -e ts --exec tsc",
         "type:locales": "type-locales && if [ -f \"build/utils/testLocales.js\" ]; then node build/utils/testLocales.js; fi",
         "db:migrate": "prisma migrate dev",
-        "db:generate": "prisma generate"
+        "db:generate": "prisma generate",
+        "yt:login": "node yt_login.js"
     },
     "author": "",
     "license": "ISC",
     "dependencies": {
         "@discordjs/voice": "0.18.0",
+        "@eliyya/sange": "github:Node-Estudios/sange",
         "@prisma/client": "6.13.0",
         "@sentry/cli": "2.51.0",
-        "@sentry/node": "10.2.0",
+        "@sentry/node": "^10.5.0",
         "@sentry/profiling-node": "1.1.2",
         "bindings": "1.5.0",
         "cors": "2.8.5",
@@ -52,7 +54,7 @@
         "statcord.js": "3.4.3",
         "stripe": "18.4.0",
         "type-locales": "3.2.4",
-        "youtubei.js": "5.8.0"
+        "youtubei.js": "^15.0.1"
     },
     "devDependencies": {
         "@eslint/js": "9.32.0",
@@ -65,6 +67,7 @@
         "@types/jsonwebtoken": "9.0.10",
         "@types/node": "24.2.0",
         "@types/signale": "1.4.7",
+        "cmake-js": "7.3.1",
         "concurrently": "9.2.0",
         "eslint": "9.32.0",
         "eslint-config-prettier": "10.1.8",
@@ -75,8 +78,7 @@
         "prisma": "6.13.0",
         "transjson": "github:OnekiDevs/transjson#1187c4b",
         "typescript": "5.9.2",
-        "typescript-eslint": "8.39.0",
-        "cmake-js": "7.3.1"
+        "typescript-eslint": "8.39.0"
     },
     "optionalDependencies": {
         "bufferutil": "4.0.9",

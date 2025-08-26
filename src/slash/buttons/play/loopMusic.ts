@@ -75,20 +75,26 @@ export default class Repeat extends Button {
 
             const blueRepeatEmoji = getBlueRepeatEmoji(queueRepeatMode, client)
 
-            const repeatButton = player.message?.components[0].components.find(
-                c =>
-                    c.customId === 'repeatMusic' &&
-                    c.type === ComponentType.Button,
-            )
+            const actionRow = player.message?.components[0]
+            // Ensure actionRow is an ActionRow with components
+            const repeatButton =
+                actionRow &&
+                'components' in actionRow &&
+                Array.isArray((actionRow as any).components)
+                    ? (actionRow as any).components.find(
+                          (c: any) =>
+                              c.customId === 'repeatMusic' &&
+                              c.type === ComponentType.Button,
+                      )
+                    : undefined
             if (repeatButton && repeatButton.type === ComponentType.Button)
-                // @ts-expect-error
                 (repeatButton.data.emoji as Writeable<
                     APIMessageComponentEmoji,
                     keyof APIMessageComponentEmoji
                 >) = {
                     name: blueRepeatEmoji.name.toString(),
                     id: blueRepeatEmoji.id.toString(),
-                    // @ts-expect-error
+
                     animated: repeatButton.data.emoji?.animated,
                 }
 

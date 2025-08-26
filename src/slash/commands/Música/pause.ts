@@ -77,7 +77,7 @@ export default class Pause extends Command {
                 })
                 .catch(logger.error)
 
-        client.music.trackPause(player, interaction)
+        player.pause(!player.paused)
 
         return await interaction
             .reply({

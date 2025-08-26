@@ -3,7 +3,7 @@ import MusicManager from './MusicManager.js'
 import logger from '#utils/logger.js'
 import { Innertube } from 'youtubei.js'
 import Queue from './Queue.js'
-import yasha from '@eliyya/yasha'
+import yasha from 'yasha'
 
 export default class Player extends yasha.TrackPlayer {
     trackRepeat = false

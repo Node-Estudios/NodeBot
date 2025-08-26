@@ -1,40 +1,51 @@
-// @ts-nocheck
 import { AutocompleteInteraction } from 'discord.js'
 import Autocomplete from '#structures/Autocomplete.js'
-import yasha from '@eliyya/yasha'
-import logger from '#utils/logger.js'
 import Client from '#structures/Client.js'
+import logger from '#utils/logger.js'
 
-export default class Repeat extends Autocomplete {
-    constructor () {
+export default class Play extends Autocomplete {
+    constructor() {
         super('play')
     }
 
-    override async run (interaction: AutocompleteInteraction) {
+    override async run(interaction: AutocompleteInteraction): Promise<boolean> {
         const client = interaction.client as Client
+        const focusedValue = interaction.options.getFocused()
+
+        if (!focusedValue) {
+            await interaction.respond([])
+            return true
+        }
+
+        // CAMBIO: Se ha añadido un bloque try...catch para manejar errores de búsqueda
         try {
-            const query = interaction.options.getFocused()
-             // @ts-expect-error
-            const search = await yasha.Source.Youtube.search(query)
-            if (search.length > 25) search.length = 24
-            if (!this.canProced(interaction.user.id, interaction.id)) return false
-            await interaction.respond([{
-                name: query,
-                value: query,
-            }, ...search.map(r => {
-                const title = r.title ?? ''
-                // @ts-expect-error
-                const url = r.url ?? ''
-                return {
-                    name: title.length > 100 ? title.slice(0, 95) + '...' : title,
-                    value: url.length > 100 ? url.slice(0, 95) + '...' : url,
-                }
-            })]).catch(logger.error)
-            return true
+            const tracks = await client.music.search(
+                focusedValue,
+                interaction.user,
+            )
+
+            if (!tracks) {
+                await interaction.respond([])
+                return true
+            }
+
+            await interaction.respond(
+                tracks
+                    .map((track: any) => ({
+                        name: `[${track.duration_string}] ${track.title}`.slice(
+                            0,
+                            100,
+                        ),
+                        value: track.id,
+                    }))
+                    .slice(0, 25),
+            )
+            return true // Indicar que la interacción fue exitosa
         } catch (error) {
-            logger.error(error)
-            client.errorHandler.captureException(error as Error)
-            return true
+            logger.error('Error en el autocompletado de Play:', error)
+            // Responder con un array vacío si hay un error para que no se congele
+            await interaction.respond([]).catch(() => {})
+            return false // Indicar que hubo un error
         }
     }
 }

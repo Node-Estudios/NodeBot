@@ -40,46 +40,43 @@ export default class play extends Command {
     }
 
     override async run(interaction: ChatInputCommandInteraction) {
-        if (!interaction.inCachedGuild()) return
+        if (!interaction.inCachedGuild()) return true
         const client = interaction.client as Client
+        const translate = Translator(interaction)
+
         try {
             await interaction.deferReply()
-        } catch (error) {
-            logger.error(error)
-            return client.errorHandler.captureException(error as Error)
-        }
-        const translate = Translator(interaction)
-        if (!interaction.member.voice.channelId)
-            return await interaction.editReply({
-                embeds: [
-                    new EmbedBuilder().setColor(Colors.Red).setFooter({
-                        text: translate(keys.play.not_voice),
-                        iconURL: client.user?.displayAvatarURL(),
-                    }),
-                ],
-            })
-        let player = client.music.players.get(interaction.guildId)
-        if (!player) {
-            player = await client.music.createNewPlayer(
-                interaction.member.voice.channel as VoiceChannel,
-                interaction.channelId,
-            )
-            try {
-                await player.connect()
-            } catch (error) {
+
+            if (!interaction.member.voice.channel) {
                 return await interaction.editReply({
                     embeds: [
                         new EmbedBuilder().setColor(Colors.Red).setFooter({
-                            text: translate(keys.play.cant_join),
+                            text: translate(keys.play.not_voice),
                             iconURL: client.user?.displayAvatarURL(),
                         }),
                     ],
                 })
             }
-        }
-        if (player.voiceChannel.id !== interaction.member.voice.channelId)
-            return await interaction
-                .editReply({
+
+            // Se obtiene o se crea el reproductor
+            let player: Player = client.music.players.get(
+                interaction.guildId,
+            ) as Player
+            if (!player) {
+                await client.music.createNewPlayer(
+                    interaction.member.voice.channel as VoiceChannel,
+                    interaction.channelId,
+                )
+                player = client.music.players.get(interaction.guildId) as Player
+                await player.connect()
+            }
+
+            // A partir de aquí, TypeScript está seguro de que 'player' está definido.
+
+            if (
+                player.voiceChannel.id !== interaction.member.voice.channel.id
+            ) {
+                return await interaction.editReply({
                     embeds: [
                         new EmbedBuilder().setColor(Colors.Red).setFooter({
                             text: translate(keys.play.same),
@@ -87,207 +84,105 @@ export default class play extends Command {
                         }),
                     ],
                 })
-                .catch(logger.error)
-
-        player.textChannelId = interaction.channelId
-
-        // Si el usuario está en el mismo canal de voz que el bot
-        try {
-            const song = interaction.options.getString('song', false)
-            const search = !song
-                ? await this.getRecomended(player, interaction.user)
-                      .then(t => {
-                          if (!t) {
-                              interaction
-                                  .editReply({
-                                      embeds: [
-                                          new EmbedBuilder()
-                                              .setColor(Colors.Red)
-                                              .setFooter({
-                                                  text: translate(
-                                                      keys.play
-                                                          .not_reproducible,
-                                                  ),
-                                                  iconURL:
-                                                      client.user?.displayAvatarURL(),
-                                              }),
-                                      ],
-                                  })
-                                  .catch(logger.error)
-                              return undefined
-                          }
-                          return t
-                      })
-                      .catch(logger.error)
-                : await client.music
-                      .search(song, interaction.user, 'Youtube')
-                      .then(t => {
-                          if (!t) {
-                              interaction
-                                  .editReply({
-                                      embeds: [
-                                          new EmbedBuilder()
-                                              .setColor(Colors.Red)
-                                              .setFooter({
-                                                  text: translate(
-                                                      keys.play
-                                                          .not_reproducible,
-                                                  ),
-                                                  iconURL:
-                                                      client.user?.displayAvatarURL(),
-                                              }),
-                                      ],
-                                  })
-                                  .catch(logger.error)
-                              return undefined
-                          }
-                          return t
-                      })
-                      .catch(async e => {
-                          if (
-                              (e as Error).message.includes(
-                                  'Video is age restricted',
-                              )
-                          ) {
-                              interaction
-                                  .editReply({
-                                      content: translate(
-                                          keys.play.age_restricted,
-                                      ),
-                                  })
-                                  .catch(logger.error)
-                              return undefined
-                          }
-                          if (
-                              (e as Error).message.includes(
-                                  'Playlist not found',
-                              )
-                          ) {
-                              interaction
-                                  .editReply({
-                                      content: translate(
-                                          keys.play.playlist_not_found,
-                                      ),
-                                  })
-                                  .catch(logger.error)
-                              return undefined
-                          }
-                          if (
-                              (e as Error).message.includes(
-                                  'This video is not available',
-                              )
-                          ) {
-                              interaction
-                                  .editReply({
-                                      content: translate(
-                                          keys.play.not_available,
-                                      ),
-                                  })
-                                  .catch(logger.error)
-                              return undefined
-                          }
-                          logger.error(e)
-                          interaction
-                              .editReply({
-                                  embeds: [
-                                      new EmbedBuilder()
-                                          .setColor(Colors.Red)
-                                          .setFooter({
-                                              text: translate(
-                                                  keys.play.not_reproducible,
-                                              ),
-                                              iconURL:
-                                                  client.user?.displayAvatarURL(),
-                                          }),
-                                  ],
-                              })
-                              .catch(logger.error)
-                          return undefined
-                      })
-            if (!search) return
-            // TODO: Add streaming support
-            if (search.streams?.live)
-                return await interaction
-                    .editReply({
-                        content:
-                            'We are currently working on supporting Live Streaming videos. :D',
-                    })
-                    .catch(logger.error)
-
-            player.queue.add(search)
-            try {
-                if (!player.playing || player.paused) await player.play()
-            } catch (error) {
-                if (
-                    (error as Error).message.includes('Video is age restricted')
-                ) {
-                    interaction
-                        .editReply({
-                            content: translate(keys.play.age_restricted),
-                        })
-                        .catch(logger.error)
-                    return
-                }
-                logger.error(error)
             }
+
+            player.textChannelId = interaction.channelId
+
+            const songQuery = interaction.options.getString('song', false)
+
+            // CAMBIO: Se elimina el tercer argumento de 'search'
+            const searchResult = !songQuery
+                ? await this.getRecomended(player, interaction.user)
+                : await client.music.search(songQuery, interaction.user)
+
+            if (!searchResult) {
+                return await interaction.editReply({
+                    embeds: [
+                        new EmbedBuilder().setColor(Colors.Red).setFooter({
+                            text: translate(keys.play.not_reproducible),
+                            iconURL: client.user?.displayAvatarURL(),
+                        }),
+                    ],
+                })
+            }
+
+            if ((searchResult as any).streams?.live) {
+                // Se añade un cast a 'any' por si la propiedad no siempre existe
+                return await interaction.editReply({
+                    content:
+                        'We are currently working on supporting Live Streaming videos. :D',
+                })
+            }
+
+            player.queue.add(searchResult)
+            if (!player.playing || player.paused) {
+                await player.play()
+            }
+
             const embed = new EmbedBuilder()
                 .setColor(client.settings.color)
-                .addFields({
-                    name: translate(keys.AUTHOR),
-                    value: search.author ?? 'unknown',
-                    inline: true,
-                })
-                .addFields({
-                    name: translate(keys.REQUESTER),
-                    value: `${interaction.user}`,
-                    inline: true,
-                })
-            const duration = formatTime(Math.trunc(search.duration ?? 0), false)
-            if (duration)
+                .addFields(
+                    {
+                        name: translate(keys.AUTHOR),
+                        value: searchResult.author ?? 'unknown',
+                        inline: true,
+                    },
+                    {
+                        name: translate(keys.REQUESTER),
+                        value: `${interaction.user}`,
+                        inline: true,
+                    },
+                )
+
+            const duration = formatTime(
+                Math.trunc(searchResult.duration ?? 0),
+                false,
+            )
+            if (duration) {
                 embed.addFields({
                     name: translate(keys.DURATION),
                     value: duration,
                     inline: true,
                 })
+            }
+
             if (client.settings.mode === 'development') {
                 const execution = performanceMeters.get(
                     'interaction_' + interaction.id,
                 )
                 const executionTime = execution?.stop()
-                const finaltext =
-                    'Internal execution time: ' + executionTime + 'ms'
-                embed.setFooter({ text: finaltext })
+                embed.setFooter({
+                    text: `Internal execution time: ${executionTime}ms`,
+                })
             }
-            // if (source === 'Youtube') {
+
             embed.setThumbnail(
-                `https://img.youtube.com/vi/${search.id}/maxresdefault.jpg`,
+                `https://img.youtube.com/vi/${searchResult.id}/maxresdefault.jpg`,
             )
             embed.setDescription(
                 `**${translate(keys.play.added, {
-                    song: `[${search.title}](https://www.youtube.com/watch?v=${search.id})`,
+                    song: `[${searchResult.title}](https://www.youtube.com/watch?v=${searchResult.id})`,
                 })}** <:pepeblink:967941236029788160>`,
             )
-            // }
-            // else if (source === 'Spotify') {
-            //     if (search.thumbnails?.[0])
-            //         embed.setDescription(
-            //             `**${translate(keys.play.added, {
-            //                 song: `[${search.title}](https://open.spotify.com/track/${search.id})`,
-            //             })}** <:pepeblink:967941236029788160>`,
-            //         )
 
-            //     embed.setThumbnail(search.thumbnails?.[0].url ?? null)
-            // }
-            await interaction.editReply({ embeds: [embed] }).catch(logger.error)
+            await interaction.editReply({ embeds: [embed] })
         } catch (e) {
-            logger.error(e)
-            // @ts-expect-error
-            if (e.errors) logger.error(e.errors)
-            interaction.editReply({
-                content: translate(keys.GENERICERROR, {
-                    inviteURL: client.officialServerURL,
-                }),
+            logger.error(e, 'Error en el comando Play')
+
+            // CAMBIO: Se ha corregido la llamada a 'translate'
+            const errorMessage = translate(keys.GENERICERROR, {
+                inviteURL: client.officialServerURL,
             })
+
+            if (interaction.replied || interaction.deferred) {
+                await interaction
+                    .editReply({ content: errorMessage, embeds: [] })
+                    .catch(logger.error)
+            } else {
+                await interaction
+                    .reply({ content: errorMessage, ephemeral: true })
+                    .catch(logger.error)
+            }
         }
         return true
     }
@@ -300,11 +195,8 @@ export default class play extends Command {
             const song = songs.contents?.[
                 randomInt(songs.contents.length)
             ] as MusicResponsiveListItem
-            return await client.music.search(
-                song.name ?? 'music',
-                user,
-                'Youtube',
-            )
+            // CAMBIO: Se ha eliminado el tercer argumento de 'search'
+            return await client.music.search(song.name ?? 'music', user)
         } catch (error) {
             logger.error(error)
             client.errorHandler.captureException(error as Error)

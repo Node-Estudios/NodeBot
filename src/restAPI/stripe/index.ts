@@ -4,23 +4,30 @@ import NodeManager from '#structures/NodeManager.js'
 import { Stripe } from 'stripe'
 import logger from '#utils/logger.js'
 
-const stripeAcces = new Stripe(process.env.STRIPE, { apiVersion: '2022-11-15', typescript: true })
+const stripeAcces = new Stripe(process.env.STRIPE, {
+    apiVersion: '2025-07-30.basil',
+    typescript: true,
+})
 const endpointSecret = ''
 // export default router
 export default class StripeApi {
     manager: NodeManager
     router = router()
     // app: Express.Application
-    constructor (manager: NodeManager) {
+    constructor(manager: NodeManager) {
         this.manager = manager
         this.#load()
     }
 
-    #load () {
+    #load() {
         this.router.use(express.json())
         this.router.post('/pay', async (req: Request<{}, {}, payBody>, res) => {
-            const product = await stripeAcces.products.retrieve(req.body.product_id)
-            const price = await stripeAcces.prices.retrieve(product.default_price as string)
+            const product = await stripeAcces.products.retrieve(
+                req.body.product_id,
+            )
+            const price = await stripeAcces.prices.retrieve(
+                product.default_price as string,
+            )
             const session = await stripeAcces.checkout.sessions.create({
                 line_items: [
                     {
@@ -39,40 +46,49 @@ export default class StripeApi {
             res.status(303).redirect(session.url ?? '')
         })
 
-        this.router.post('/webhook', express.raw({ type: 'application/json' }), (request, response): any => {
-            let event: Stripe.Event
-            try {
-                event = stripeAcces.webhooks.constructEvent(
-                    request.body,
-                    request.headers['stripe-signature'] ?? '',
-                    endpointSecret,
-                )
-            } catch (err: any) {
-                logger.error('⚠️  Webhook signature verification failed.', err.message)
-                return response.sendStatus(400)
-            }
+        this.router.post(
+            '/webhook',
+            express.raw({ type: 'application/json' }),
+            (request, response): any => {
+                let event: Stripe.Event
+                try {
+                    event = stripeAcces.webhooks.constructEvent(
+                        request.body,
+                        request.headers['stripe-signature'] ?? '',
+                        endpointSecret,
+                    )
+                } catch (err: any) {
+                    logger.error(
+                        '⚠️  Webhook signature verification failed.',
+                        err.message,
+                    )
+                    return response.sendStatus(400)
+                }
 
-            // Handle the event
-            switch (event.type) {
-                case 'payment_intent.succeeded':
-                    const paymentIntent = event.data.object as any
-                    logger.debug(`PaymentIntent for ${paymentIntent.amount} was successful!`)
-                    // Then define and call a method to handle the successful payment intent.
-                    // handlePaymentIntentSucceeded(paymentIntent);
-                    break
-                case 'payment_method.attached':
-                    const paymentMethod = event.data.object
-                    // Then define and call a method to handle the successful attachment of a PaymentMethod.
-                    // handlePaymentMethodAttached(paymentMethod);
-                    break
-                default:
-                    // Unexpected event type
-                    logger.debug(`Unhandled event type ${event.type}.`)
-            }
+                // Handle the event
+                switch (event.type) {
+                    case 'payment_intent.succeeded':
+                        const paymentIntent = event.data.object as any
+                        logger.debug(
+                            `PaymentIntent for ${paymentIntent.amount} was successful!`,
+                        )
+                        // Then define and call a method to handle the successful payment intent.
+                        // handlePaymentIntentSucceeded(paymentIntent);
+                        break
+                    case 'payment_method.attached':
+                        const paymentMethod = event.data.object
+                        // Then define and call a method to handle the successful attachment of a PaymentMethod.
+                        // handlePaymentMethodAttached(paymentMethod);
+                        break
+                    default:
+                        // Unexpected event type
+                        logger.debug(`Unhandled event type ${event.type}.`)
+                }
 
-            // Return a 200 response to acknowledge receipt of the event
-            response.send()
-        })
+                // Return a 200 response to acknowledge receipt of the event
+                response.send()
+            },
+        )
         return this.router
     }
 }
