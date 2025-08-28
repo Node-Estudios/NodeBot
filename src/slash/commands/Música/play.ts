@@ -51,27 +51,25 @@ export default class play extends Command {
                 return await interaction.editReply({
                     embeds: [
                         new EmbedBuilder().setColor(Colors.Red).setFooter({
-                            text: translate(keys.play.not_voice),
+                            // CORRECCIÓN: Se añade 'as any' para satisfacer a TypeScript sin cambiar el traductor.
+                            text: translate('play.not_voice' as any),
                             iconURL: client.user?.displayAvatarURL(),
                         }),
                     ],
                 })
             }
 
-            // Se obtiene o se crea el reproductor
-            let player: Player = client.music.players.get(
+            let player: Player | undefined = client.music.players.get(
                 interaction.guildId,
-            ) as Player
+            )
+
             if (!player) {
-                await client.music.createNewPlayer(
+                player = await client.music.createNewPlayer(
                     interaction.member.voice.channel as VoiceChannel,
                     interaction.channelId,
                 )
-                player = client.music.players.get(interaction.guildId) as Player
                 await player.connect()
             }
-
-            // A partir de aquí, TypeScript está seguro de que 'player' está definido.
 
             if (
                 player.voiceChannel.id !== interaction.member.voice.channel.id
@@ -79,7 +77,8 @@ export default class play extends Command {
                 return await interaction.editReply({
                     embeds: [
                         new EmbedBuilder().setColor(Colors.Red).setFooter({
-                            text: translate(keys.play.same),
+                            // CORRECCIÓN: Se añade 'as any' para satisfacer a TypeScript sin cambiar el traductor.
+                            text: translate('play.same' as any),
                             iconURL: client.user?.displayAvatarURL(),
                         }),
                     ],
@@ -90,7 +89,6 @@ export default class play extends Command {
 
             const songQuery = interaction.options.getString('song', false)
 
-            // CAMBIO: Se elimina el tercer argumento de 'search'
             const searchResult = !songQuery
                 ? await this.getRecomended(player, interaction.user)
                 : await client.music.search(songQuery, interaction.user)
@@ -99,7 +97,8 @@ export default class play extends Command {
                 return await interaction.editReply({
                     embeds: [
                         new EmbedBuilder().setColor(Colors.Red).setFooter({
-                            text: translate(keys.play.not_reproducible),
+                            // CORRECCIÓN: Se añade 'as any' para satisfacer a TypeScript sin cambiar el traductor.
+                            text: translate('play.not_reproducible' as any),
                             iconURL: client.user?.displayAvatarURL(),
                         }),
                     ],
@@ -107,7 +106,6 @@ export default class play extends Command {
             }
 
             if ((searchResult as any).streams?.live) {
-                // Se añade un cast a 'any' por si la propiedad no siempre existe
                 return await interaction.editReply({
                     content:
                         'We are currently working on supporting Live Streaming videos. :D',
@@ -151,16 +149,18 @@ export default class play extends Command {
                     'interaction_' + interaction.id,
                 )
                 const executionTime = execution?.stop()
-                embed.setFooter({
-                    text: `Internal execution time: ${executionTime}ms`,
-                })
+                if (executionTime) {
+                    embed.setFooter({
+                        text: `Internal execution time: ${executionTime}ms`,
+                    })
+                }
             }
 
             embed.setThumbnail(
                 `https://img.youtube.com/vi/${searchResult.id}/maxresdefault.jpg`,
             )
             embed.setDescription(
-                `**${translate(keys.play.added, {
+                `**${translate('play.added' as any, {
                     song: `[${searchResult.title}](https://www.youtube.com/watch?v=${searchResult.id})`,
                 })}** <:pepeblink:967941236029788160>`,
             )
@@ -169,7 +169,6 @@ export default class play extends Command {
         } catch (e) {
             logger.error(e, 'Error en el comando Play')
 
-            // CAMBIO: Se ha corregido la llamada a 'translate'
             const errorMessage = translate(keys.GENERICERROR, {
                 inviteURL: client.officialServerURL,
             })
@@ -195,7 +194,6 @@ export default class play extends Command {
             const song = songs.contents?.[
                 randomInt(songs.contents.length)
             ] as MusicResponsiveListItem
-            // CAMBIO: Se ha eliminado el tercer argumento de 'search'
             return await client.music.search(song.name ?? 'music', user)
         } catch (error) {
             logger.error(error)

@@ -57,14 +57,12 @@ export class interactionCreate extends BaseEvent {
             if (!cmd) return
             if (interaction.guild && cmd?.only_dm) return
 
-            // CAMBIO: Usar Sentry.startSpan en lugar de startTransaction
             await Sentry.startSpan(
                 {
                     op: cmd.name,
                     name: `Executed /${cmd.name}`,
                 },
                 async () => {
-                    // CAMBIO: Convertir los objetos complejos a simples objetos JSON para el contexto
                     Sentry.setContext('user', {
                         id: interaction.user.id,
                         username: interaction.user.username,
@@ -176,11 +174,24 @@ export class interactionCreate extends BaseEvent {
 
     async processAutocompleteInteraction(interaction: AutocompleteInteraction) {
         autocomplete.registerInteraction(interaction.user.id, interaction.id)
-        const respond = await autocomplete.cache
-            .find(b => b.match(interaction.commandName))
-            ?.run(interaction)
-            .catch(logger.error)
-        if (respond) autocomplete.removeInteraction(interaction.user.id)
+
+        // CAMBIO: Se busca un manejador que tenga una función 'match' y que coincida con el nombre del comando.
+        // Esto evita que se ejecute un manejador de comandos por error.
+        const handler = autocomplete.cache.find(
+            b =>
+                typeof b.match === 'function' &&
+                b.match(interaction.commandName),
+        )
+
+        if (handler) {
+            const respond = await handler.run(interaction).catch(logger.error)
+            if (respond) autocomplete.removeInteraction(interaction.user.id)
+        } else {
+            // Si no se encuentra un manejador válido, respondemos con un array vacío para que la interacción no falle.
+            if (!interaction.responded) {
+                await interaction.respond([]).catch(() => {})
+            }
+        }
     }
 
     async processModalSubmitInteraction(interaction: ModalSubmitInteraction) {

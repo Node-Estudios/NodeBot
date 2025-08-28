@@ -12,18 +12,21 @@ import MusicManager from './MusicManager.js'
 import logger from '#utils/logger.js'
 import { Innertube } from 'youtubei.js'
 import Queue from './Queue.js'
-// Usamos el nombre del paquete que configuramos, 'sange'
-import SangePackage from 'sange'
+import * as SangePackage from 'sange'
 import { EventEmitter } from 'node:events'
 import {
     VoiceConnection,
     VoiceConnectionStatus,
     entersState,
     joinVoiceChannel,
+    createAudioPlayer,
+    createAudioResource,
+    AudioPlayer,
+    AudioPlayerStatus,
+    StreamType,
 } from '@discordjs/voice'
-import Translator, { keys } from '#utils/Translator.js'
+import { PassThrough } from 'stream'
 
-// La clase Player es un emisor de eventos, no hereda del reproductor nativo
 export default class Player extends EventEmitter {
     public trackRepeat = false
     public queueRepeat = false
@@ -47,8 +50,9 @@ export default class Player extends EventEmitter {
     public youtubei: Innertube
     public waitingMessage?: Message
 
-    // Contiene la instancia del reproductor nativo
     private sangePlayer: any
+    private audioPlayer: AudioPlayer
+    private audioStream: PassThrough | null = null
 
     #textChannelId?: Snowflake
 
@@ -59,30 +63,53 @@ export default class Player extends EventEmitter {
         volume?: number
         voiceChannel: VoiceChannel
         textChannelId: Snowflake
-        guild?: Guild
+        guild: Guild
         innertube: Innertube
     }) {
-        super() // Llama al constructor de EventEmitter
+        super()
         this.youtubei = options.innertube
         this.manager = options.musicManager
         this.bitrate = options.bitrate
         this.volume = options.volume ?? 100
         this.voiceChannel = options.voiceChannel
-        this.guild = options.guild ?? options.voiceChannel.guild
+        this.guild = options.guild
 
-        const SangePlayerConstructor =
-            (SangePackage as any).default || SangePackage
+        let SangePlayerConstructor: any
+        if (typeof (SangePackage as any).default === 'function') {
+            SangePlayerConstructor = (SangePackage as any).default
+        } else if (typeof SangePackage === 'function') {
+            SangePlayerConstructor = SangePackage
+        } else {
+            throw new Error(
+                'Could not find a valid SangePlayer constructor in the "sange" package.',
+            )
+        }
+
         this.sangePlayer = new SangePlayerConstructor()
+        this.audioPlayer = createAudioPlayer()
 
-        // El Player escucha los eventos del addon nativo y los re-emite.
-        // El MusicManager escuchará estos eventos.
+        this.sangePlayer.on('packet', (packet: { buffer: Buffer }) => {
+            this.audioStream?.write(packet.buffer)
+        })
+
         this.sangePlayer.on('finish', () => {
+            this.audioStream?.end()
+        })
+
+        this.sangePlayer.on('error', (error: any) => {
+            this.playing = false
+            logger.error(error, 'Error en SangePlayer')
+            this.emit('error', error)
+        })
+
+        this.audioPlayer.on(AudioPlayerStatus.Idle, () => {
             this.playing = false
             this.emit('finish')
         })
-        this.sangePlayer.on('error', (error: any) => {
+
+        this.audioPlayer.on('error', error => {
             this.playing = false
-            logger.error(error)
+            logger.error(error, 'Error en AudioPlayer')
             this.emit('error', error)
         })
 
@@ -94,17 +121,17 @@ export default class Player extends EventEmitter {
             const channel = await this.guild.channels.fetch(id)
             if (!channel?.isTextBased()) return
             if (
-                this.guild.members.me
+                !this.guild.members.me
                     ?.permissionsIn(channel)
                     .has([
                         PermissionFlagsBits.EmbedLinks,
                         PermissionFlagsBits.SendMessages,
-                    ]) === false
+                    ])
             )
                 return
             this.#textChannelId = id
         } catch {
-            // Silenciar error si el canal no se encuentra
+            // Silenciar
         }
     }
 
@@ -119,11 +146,14 @@ export default class Player extends EventEmitter {
         })
 
         try {
+            // --- CORRECCIÓN AQUÍ ---
+            // Se ha corregido el valor de 30_0G00 a 30_000
             await entersState(
                 this.connection,
                 VoiceConnectionStatus.Ready,
                 30_000,
             )
+            this.connection.subscribe(this.audioPlayer)
         } catch (error) {
             this.connection.destroy()
             this.connection = undefined
@@ -143,26 +173,40 @@ export default class Player extends EventEmitter {
             return
         }
 
-        this.playing = true
-        this.sangePlayer.setURL(urlToPlay)
-        this.sangePlayer.setOutput(2, 48000, this.bitrate ?? 128000)
-        this.sangePlayer.setVolume(this.volume / 100)
-        this.sangePlayer.start()
+        try {
+            this.playing = true
+            this.paused = false
 
-        clearTimeout(this.leaveTimeout)
-        this.leaveTimeout = undefined
+            this.audioStream = new PassThrough()
+
+            const resource = createAudioResource(this.audioStream, {
+                inputType: StreamType.Opus,
+            })
+
+            this.audioPlayer.play(resource)
+
+            this.sangePlayer.setURL(urlToPlay)
+            this.sangePlayer.setOutput(2, 48000, this.bitrate ?? 128000)
+            this.sangePlayer.setVolume(this.volume / 100)
+            this.sangePlayer.start()
+
+            clearTimeout(this.leaveTimeout)
+            this.leaveTimeout = undefined
+        } catch (e) {
+            logger.error(e, 'Error during play')
+            this.emit('error', e)
+        }
     }
 
     destroy() {
         this.disconnect()
+        this.audioPlayer.stop(true)
         this.sangePlayer.destroy()
         this.manager.players.delete(this.guild.id)
     }
 
-    // CAMBIO: skip() ahora solo detiene la reproducción.
-    // Esto disparará el evento 'finish', que será manejado por el MusicManager.
     skip() {
-        this.sangePlayer.stop()
+        this.audioPlayer.stop()
     }
 
     setEqualizer(equalizer: any) {
@@ -189,9 +233,15 @@ export default class Player extends EventEmitter {
 
     pause(pause = true) {
         if (this.paused === pause) return this
-        this.playing = !pause
+
         this.paused = pause
-        this.sangePlayer.setPaused(pause)
+        if (pause) {
+            this.audioPlayer.pause()
+        } else {
+            this.audioPlayer.unpause()
+        }
+        this.playing = !pause
+
         return this
     }
 
